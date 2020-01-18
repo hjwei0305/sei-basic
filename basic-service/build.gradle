@@ -15,6 +15,9 @@ dependencies {
 bootJar  { enabled = false }
 jar {
     enabled = true
+    exclude('bootstrap.yaml')
+    exclude('application.yaml')
+    exclude('com/changhong/sei/basic/BasicRestApplication.*')
     manifest {
         attributes("Manifest-Version": "4.0")
         attributes("Created-By": "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})".toString())
