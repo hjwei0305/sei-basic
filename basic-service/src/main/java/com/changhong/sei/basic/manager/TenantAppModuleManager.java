@@ -8,6 +8,7 @@ import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseRelationDao;
 import com.changhong.sei.core.manager.BaseRelationManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
  * <p/>
  * *************************************************************************************************
  */
-@Service
+@Component
 public class TenantAppModuleManager extends BaseRelationManager<TenantAppModule, Tenant, AppModule> {
 
     @Autowired
