@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * <strong>实现功能:</strong>
@@ -21,12 +22,14 @@ public class AppModuleDto extends BaseEntityDto {
      * 代码
      */
     @NotBlank
+    @Size(max = 20)
     private String code;
 
     /**
      * 名称
      */
     @NotBlank
+    @Size(max = 30)
     private String name;
 
     /**
