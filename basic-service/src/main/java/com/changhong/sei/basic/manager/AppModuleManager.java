@@ -1,14 +1,14 @@
 package com.changhong.sei.basic.manager;
 
 import com.changhong.sei.basic.dao.AppModuleDao;
+import com.changhong.sei.basic.dao.FeatureGroupDao;
 import com.changhong.sei.basic.entity.AppModule;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.manager.BaseEntityManager;
-import com.changhong.sei.core.manager.bo.OperateResultWithData;
+import com.changhong.sei.core.manager.bo.OperateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
@@ -33,10 +33,32 @@ public class AppModuleManager extends BaseEntityManager<AppModule> {
 
     @Autowired
     private AppModuleDao appModuleDao;
+    @Autowired
+    private FeatureGroupDao featureGroupDao;
+    @Autowired
+    private TenantAppModuleManager tenantAppModuleManager;
 
     @Override
     protected BaseEntityDao<AppModule> getDao() {
         return appModuleDao;
+    }
+
+    /**
+     * 删除数据保存数据之前额外操作回调方法 子类根据需要覆写添加逻辑即可
+     *
+     * @param s 待删除数据对象主键
+     */
+    @Override
+    protected OperateResult preDelete(String s) {
+        if (featureGroupDao.isExistsByProperty("appModule.id", s)) {
+            //00018 = 该应用模块下存在功能项组，禁止删除！
+            return OperateResult.operationFailure("00018");
+        }
+        if (tenantAppModuleManager.isExistsByProperty("child.id", s)) {
+            //该应用模块已分配给租户，禁止删除！
+            return OperateResult.operationFailure("00046");
+        }
+        return super.preDelete(s);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.changhong.sei.basic.service;
 
+import com.changhong.sei.basic.api.TenantService;
 import com.changhong.sei.basic.dto.TenantDto;
 import com.changhong.sei.basic.entity.Tenant;
 import com.changhong.sei.basic.manager.TenantManager;
@@ -20,7 +21,8 @@ import org.springframework.stereotype.Service;
 @Service
 @Api(value = "TenantService", tags = "租户的API服务")
 public class TenantServiceImpl implements DefaultBaseEntityService<Tenant, TenantDto>,
-        DefaultFindAllService<Tenant, TenantDto> {
+        DefaultFindAllService<Tenant, TenantDto>,
+        TenantService {
     @Autowired
     private TenantManager manager;
     @Autowired
