@@ -2,14 +2,17 @@ package com.changhong.sei.basic.manager;
 
 import com.changhong.sei.basic.dao.FeatureDao;
 import com.changhong.sei.basic.dao.FeatureGroupDao;
+import com.changhong.sei.basic.dao.MenuDao;
 import com.changhong.sei.basic.dto.FeatureType;
 import com.changhong.sei.basic.entity.Feature;
 import com.changhong.sei.basic.entity.FeatureGroup;
+import com.changhong.sei.basic.entity.Menu;
 import com.changhong.sei.basic.entity.Tenant;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.dto.serach.SearchFilter;
 import com.changhong.sei.core.manager.BaseEntityManager;
+import com.changhong.sei.core.manager.bo.OperateResult;
 import com.changhong.sei.core.manager.bo.OperateResultWithData;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -44,6 +47,8 @@ import java.util.stream.Collectors;
 public class FeatureManager extends BaseEntityManager<Feature>{
     @Autowired
     private FeatureDao featureDao;
+    @Autowired
+    private MenuDao menuDao;
     @Autowired
     private FeatureGroupDao featureGroupDao;
 
@@ -179,5 +184,20 @@ public class FeatureManager extends BaseEntityManager<Feature>{
             return Collections.emptyList();
         }
         return featureDao.getTenantCanUseFeatures(tenant.getId());
+    }
+
+    /**
+     * 删除数据保存数据之前额外操作回调方法 子类根据需要覆写添加逻辑即可
+     *
+     * @param s 待删除数据对象主键
+     */
+    @Override
+    protected OperateResult preDelete(String s) {
+        List<Menu> menus = menuDao.findByFeatureId(s);
+        if (menus != null && menus.size() > 0) {
+            //该功能项存在菜单，禁止删除！
+            return OperateResult.operationFailure("00015");
+        }
+        return super.preDelete(s);
     }
 }

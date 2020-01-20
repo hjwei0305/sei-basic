@@ -101,6 +101,14 @@ public class Menu extends BaseAuditableEntity implements TreeEntity<Menu> {
         this.code = code;
     }
 
+    public String getFeatureId() {
+        return featureId;
+    }
+
+    public void setFeatureId(String featureId) {
+        this.featureId = featureId;
+    }
+
     public Feature getFeature() {
         return feature;
     }

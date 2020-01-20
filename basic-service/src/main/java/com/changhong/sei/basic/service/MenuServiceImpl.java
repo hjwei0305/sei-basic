@@ -96,26 +96,18 @@ public class MenuServiceImpl implements DefaultTreeService<Menu, MenuDto>,
      */
     @Override
     public MenuDto convertToDto(Menu entity) {
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper custMapper = new ModelMapper();
         // 创建自定义映射规则
         PropertyMap<Menu, MenuDto> propertyMap = new PropertyMap<Menu, MenuDto>() {
             @Override
             protected void configure() {
-                // 使用自定义转换规则
-                if (Objects.nonNull(source.getFeature())) {
-                    map(source.getFeature().getCode(), destination.getFeatureCode());
-                    map(source.getFeature().getName(), destination.getFeatureName());
-                }
-                if (CollectionUtils.isNotEmpty(source.getChildren())){
-                    List<MenuDto> childDtos = source.getChildren().stream().map(MenuServiceImpl.this::convertToDto).collect(Collectors.toList());
-                    map(childDtos, destination.getChildren());
-                }
+                // 使用自定义转换规则确定FeatureId
+                map().setFeatureId(source.getFeatureId());
             }
         };
         // 添加映射器
-        modelMapper.addMappings(propertyMap);
-        modelMapper.validate();
+        custMapper.addMappings(propertyMap);
         // 转换
-        return modelMapper.map(entity, MenuDto.class);
+        return custMapper.map(entity, MenuDto.class);
     }
 }

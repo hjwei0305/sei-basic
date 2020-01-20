@@ -70,10 +70,7 @@ public class FeatureDto extends BaseEntityDto {
      * 应用模块名称
      */
     private String appModuleName;
-    /**
-     * 功能项备注
-     */
-    private String featureTypeRemark;
+
     /**
      * 功能项组代码
      */
@@ -131,14 +128,6 @@ public class FeatureDto extends BaseEntityDto {
         this.featureType = featureType;
     }
 
-    public String getFeatureGroupId() {
-        return featureGroupId;
-    }
-
-    public void setFeatureGroupId(String featureGroupId) {
-        this.featureGroupId = featureGroupId;
-    }
-
     public Boolean getTenantCanUse() {
         return tenantCanUse;
     }
@@ -155,12 +144,12 @@ public class FeatureDto extends BaseEntityDto {
         this.appModuleName = appModuleName;
     }
 
-    public String getFeatureTypeRemark() {
-        return featureTypeRemark;
+    public String getFeatureGroupId() {
+        return featureGroupId;
     }
 
-    public void setFeatureTypeRemark(String featureTypeRemark) {
-        this.featureTypeRemark = featureTypeRemark;
+    public void setFeatureGroupId(String featureGroupId) {
+        this.featureGroupId = featureGroupId;
     }
 
     public String getFeatureGroupCode() {

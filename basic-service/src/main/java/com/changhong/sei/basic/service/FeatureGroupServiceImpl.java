@@ -98,22 +98,18 @@ public class FeatureGroupServiceImpl implements DefaultBaseEntityService<Feature
      */
     @Override
     public FeatureGroupDto convertToDto(FeatureGroup entity) {
-        ModelMapper modelMapper = new ModelMapper();
+        ModelMapper custMapper = new ModelMapper();
         // 创建自定义映射规则
         PropertyMap<FeatureGroup,FeatureGroupDto> propertyMap = new PropertyMap<FeatureGroup, FeatureGroupDto>() {
             @Override
             protected void configure() {
-                // 使用自定义转换规则
-                if (Objects.nonNull(source.getAppModule())){
-                    map(source.getAppModule().getCode(),destination.getAppModuleCode());
-                    map(source.getAppModule().getName(),destination.getAppModuleName());
-                }
+                // 使用自定义转换规则(明确AppModuleId来自source的appModuleId而不是source.appModule.id)
+                map().setAppModuleId(source.getAppModuleId());
             }
         };
         // 添加映射器
-        modelMapper.addMappings(propertyMap);
-        modelMapper.validate();
+        custMapper.addMappings(propertyMap);
         // 转换
-        return modelMapper.map(entity,FeatureGroupDto.class);
+        return custMapper.map(entity,FeatureGroupDto.class);
     }
 }
