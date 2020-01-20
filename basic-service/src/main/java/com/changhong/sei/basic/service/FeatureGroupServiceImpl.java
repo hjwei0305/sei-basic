@@ -8,7 +8,6 @@ import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.manager.BaseEntityManager;
 import com.changhong.sei.core.service.DefaultBaseEntityService;
 import com.changhong.sei.core.service.DefaultFindAllService;
-import com.sun.org.apache.xalan.internal.utils.FeatureManager;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
