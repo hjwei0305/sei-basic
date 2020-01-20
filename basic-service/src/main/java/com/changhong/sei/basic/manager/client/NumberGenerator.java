@@ -66,6 +66,9 @@ public class NumberGenerator {
         if (Objects.isNull(entityClass)) {
             throw new IllegalArgumentException("业务实体类名不能为空");
         }
-        return getNumber(entityClass.getName(), null);
+        // todo 暂时替换包名，调用3.0的给号服务
+        String className = entityClass.getName();
+        className = StringUtils.replace(className, "changhong.sei", "ecmp");
+        return getNumber(className, null);
     }
 }

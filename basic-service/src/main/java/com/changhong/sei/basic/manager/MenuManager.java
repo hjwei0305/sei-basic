@@ -58,7 +58,7 @@ public class MenuManager extends BaseTreeManager<Menu> {
     @Override
     public OperateResultWithData<Menu> save(Menu menu) {
         if (StringUtils.isBlank(menu.getCode())) {
-            menu.setCode(numberGenerator.getNumber("com.ecmp.basic.entity.Menu"));
+            menu.setCode(numberGenerator.getNumber(Menu.class));
         }
         return super.save(menu);
     }

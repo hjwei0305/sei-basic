@@ -17,8 +17,6 @@ public class DataRoleGroupDto extends BaseEntityDto {
     /**
      * 租户代码
      */
-    @NotBlank
-    @Size(max = 10)
     private String tenantCode;
 
     /**

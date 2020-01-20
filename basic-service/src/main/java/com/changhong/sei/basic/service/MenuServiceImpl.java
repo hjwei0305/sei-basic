@@ -8,14 +8,12 @@ import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.manager.BaseTreeManager;
 import com.changhong.sei.core.service.DefaultTreeService;
 import io.swagger.annotations.Api;
-import org.apache.commons.collections.CollectionUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
