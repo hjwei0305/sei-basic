@@ -1,9 +1,11 @@
 package com.changhong.sei.basic.manager;
 
 import com.changhong.sei.basic.dao.DataAuthorizeTypeDao;
+import com.changhong.sei.basic.dto.DataAuthorizeTypeVo;
 import com.changhong.sei.basic.entity.DataAuthorizeType;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.manager.BaseEntityManager;
+import com.changhong.sei.core.manager.bo.OperateResult;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +33,73 @@ public class DataAuthorizeTypeManager extends BaseEntityManager<DataAuthorizeTyp
     private DataAuthorizeTypeDao dao;
     @Autowired
     private TenantAppModuleManager tenantAppModuleManager;
-
+    @Autowired
+    private DataRoleAuthTypeValueManager dataRoleAuthTypeValueManager;
     @Override
     protected BaseEntityDao<DataAuthorizeType> getDao() {
         return dao;
+    }
+
+    /**
+     * 删除数据保存数据之前额外操作回调方法 子类根据需要覆写添加逻辑即可
+     *
+     * @param s 待删除数据对象主键
+     */
+    @Override
+    protected OperateResult preDelete(String s) {
+        if (dataRoleAuthTypeValueManager.isExistsByProperty("dataAuthorizeType.id", s)) {
+            //数据权限类型存在数据角色分配权限类型的值，禁止删除！
+            return OperateResult.operationFailure("00020");
+        }
+        return super.preDelete(s);
+    }
+
+    /**
+     * 通过数据角色Id获取数据权限类型（VO）
+     *
+     * @param roleId 数据角色Id
+     * @return 数据权限类型
+     */
+    public List<DataAuthorizeTypeVo> getByDataRole(String roleId) {
+        List<String> appModuleIds = tenantAppModuleManager.getTenantAppModuleIds();
+        List<DataAuthorizeType> authorizeTypes = dao.findByAuthorizeEntityTypeAppModuleIdIn(appModuleIds);
+        return constructVo(authorizeTypes, roleId);
+    }
+
+    /**
+     * 通过数据角色Id获取数据权限类型（VO）
+     *
+     * @param appModuleId 应用模块Id
+     * @param roleId      数据角色Id
+     * @return 数据权限类型
+     */
+    public List<DataAuthorizeTypeVo> getByAppModuleAndDataRole(String appModuleId, String roleId) {
+        List<DataAuthorizeType> authorizeTypes = dao.findByAuthorizeEntityTypeAppModuleId(appModuleId);
+        return constructVo(authorizeTypes, roleId);
+    }
+
+    /**
+     * 构造一个数据权限类型的VO
+     * @param authorizeTypes 数据权限类型
+     * @param roleId 数据角色Id
+     * @return 数据权限类型的VO
+     */
+    private List<DataAuthorizeTypeVo> constructVo(List<DataAuthorizeType> authorizeTypes, String roleId){
+        List<DataAuthorizeTypeVo> vos = new ArrayList<>();
+        if (CollectionUtils.isEmpty(authorizeTypes)) {
+            return vos;
+        }
+        DataAuthorizeTypeVo vo = new DataAuthorizeTypeVo();
+        authorizeTypes.forEach(t -> {
+            vo.setId(t.getId());
+            vo.setCode(t.getCode());
+            vo.setName(t.getName());
+            vo.setAppModuleId(t.getAuthorizeEntityType().getAppModule().getId());
+            vo.setBeTree(t.getAuthorizeEntityType().getBeTree());
+            vo.setAlreadyAssign(dataRoleAuthTypeValueManager.isAlreadyAssign(roleId, t.getId()));
+            vos.add(vo);
+        });
+        return vos;
     }
 
     /**

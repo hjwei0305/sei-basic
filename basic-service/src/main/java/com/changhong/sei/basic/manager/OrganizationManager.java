@@ -2,11 +2,13 @@ package com.changhong.sei.basic.manager;
 
 import com.changhong.sei.basic.dao.OrganizationDao;
 import com.changhong.sei.basic.dto.OrganizationDimension;
+import com.changhong.sei.basic.entity.Employee;
 import com.changhong.sei.basic.entity.Organization;
 import com.changhong.sei.basic.manager.client.NumberGenerator;
 import com.changhong.sei.core.api.BaseTreeService;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseTreeDao;
+import com.changhong.sei.core.entity.BaseEntity;
 import com.changhong.sei.core.manager.BaseTreeManager;
 import com.changhong.sei.core.manager.bo.OperateResult;
 import com.changhong.sei.core.manager.bo.OperateResultWithData;
@@ -14,6 +16,7 @@ import com.chonghong.sei.enums.UserAuthorityPolicy;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,12 +35,20 @@ import java.util.stream.Collectors;
  * <p/>
  * *************************************************************************************************
  */
-@Service
+@Component
 public class OrganizationManager extends BaseTreeManager<Organization> {
     @Autowired
     private OrganizationDao organizationDao;
     @Autowired
     private NumberGenerator numberGenerator;
+    @Autowired
+    private PositionManager positionManager;
+    @Autowired
+    private EmployeeManager employeeManager;
+    @Autowired
+    private FeatureRoleManager featureRoleManager;
+    @Autowired
+    private DataRoleManager dataRoleManager;
 
     @Override
     protected BaseTreeDao<Organization> getDao() {
@@ -124,7 +135,6 @@ public class OrganizationManager extends BaseTreeManager<Organization> {
         return organizationDao.findByParentIdIsNullAndId(id);
     }
 
-
     /**
      * 通过代码获取组织机构
      *
@@ -205,6 +215,57 @@ public class OrganizationManager extends BaseTreeManager<Organization> {
      */
     public List<Organization> getChildrenNodes4Unfrozen(String nodeId) {
         return organizationDao.getChildrenNodes4Unfrozen(nodeId);
+    }
+
+    /**
+     * 删除数据保存数据之前额外操作回调方法 子类根据需要覆写添加逻辑即可
+     *
+     * @param s 待删除数据对象主键
+     */
+    @Override
+    protected OperateResult preDelete(String s) {
+        if (positionManager.isExistsByProperty("organization.id", s)) {
+            //00042 = 该组织机构下存在岗位，禁止删除！
+            return OperateResult.operationFailure("00042");
+        }
+        if (employeeManager.isExistsByProperty("organization.id", s)) {
+            //00043 = 该组织机构下存在企业员工，禁止删除！
+            return OperateResult.operationFailure("00043");
+        }
+        if (featureRoleManager.isExistsByProperty("publicOrg.id", s)) {
+            //00044 = 该组织机构下存在功能角色，禁止删除！
+            return OperateResult.operationFailure("00044");
+        }
+        if (dataRoleManager.isExistsByProperty("publicOrg.id", s)) {
+            //00045 = 该组织机构下存在数据角色，禁止删除！
+            return OperateResult.operationFailure("00045");
+        }
+        return super.preDelete(s);
+    }
+
+    /**
+     * 获取一般用户有权限的业务实体Id清单
+     *
+     * @param featureCode 功能项代码
+     * @param userId      用户Id
+     * @return 业务实体Id清单
+     */
+    @Override
+    protected List<String> getNormalUserAuthorizedEntityIds(String featureCode, String userId) {
+        Set<String> authorizedEntityIds = new HashSet<>();
+        List<String> entityIds = super.getNormalUserAuthorizedEntityIds(featureCode, userId);
+        if (Objects.nonNull(entityIds) && !entityIds.isEmpty()){
+            authorizedEntityIds.addAll(entityIds);
+        }
+        // 获取企业用户的组织机构
+        Employee employee = employeeManager.findOne(userId);
+        if (Objects.nonNull(employee) && Objects.nonNull(employee.getOrganization())){
+            // 获取所有子节点清单
+            List<Organization> children = organizationDao.getChildrenNodes4Unfrozen(employee.getOrganization().getId());
+            List<String> childIds = children.stream().map(BaseEntity::getId).collect(Collectors.toList());
+            authorizedEntityIds.addAll(childIds);
+        }
+        return new ArrayList<>(authorizedEntityIds);
     }
 
     /**
