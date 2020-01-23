@@ -380,7 +380,6 @@ public class SupplierUserManager extends BaseEntityManager<SupplierUser> {
      * @return
      */
     public OperateResult saveApplySupUser(SupplierUserVo supplierUserVo) {
-
         return OperateResult.operationSuccess();
     }
 
