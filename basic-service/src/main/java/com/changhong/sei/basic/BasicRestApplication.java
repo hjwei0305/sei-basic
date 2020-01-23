@@ -12,7 +12,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @version 1.0.1 2019-12-18 10:41
  */
 @SpringBootApplication
-@EnableFeignClients(basePackages = {"com.changhong.sei.basic.manager.client"})
+@EnableFeignClients(basePackages = {"com.changhong.sei.basic.manager.client",
+        "com.changhong.sei.notify.api"})
 public class BasicRestApplication {
     public static void main(String[] args) {
         SpringApplication.run(BasicRestApplication.class, args);

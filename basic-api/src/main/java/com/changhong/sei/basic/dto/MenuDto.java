@@ -81,6 +81,11 @@ public class MenuDto extends BaseEntityDto{
      */
     private List<MenuDto> children;
 
+    /**
+     * 菜单项资源
+     */
+    private String menuUrl;
+
     public String getCode() {
         return code;
     }
@@ -175,5 +180,13 @@ public class MenuDto extends BaseEntityDto{
 
     public void setChildren(List<MenuDto> children) {
         this.children = children;
+    }
+
+    public String getMenuUrl() {
+        return menuUrl;
+    }
+
+    public void setMenuUrl(String menuUrl) {
+        this.menuUrl = menuUrl;
     }
 }

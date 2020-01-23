@@ -92,6 +92,12 @@ public class Menu extends BaseAuditableEntity implements TreeEntity<Menu> {
     @Transient
     private List<Menu> children;
 
+    /**
+     * 菜单项资源
+     */
+    @Transient
+    private String menuUrl;
+
     @Override
     public String getCode() {
         return code;
@@ -191,5 +197,13 @@ public class Menu extends BaseAuditableEntity implements TreeEntity<Menu> {
     @Override
     public void setChildren(List<Menu> children) {
         this.children = children;
+    }
+
+    public String getMenuUrl() {
+        return menuUrl;
+    }
+
+    public void setMenuUrl(String menuUrl) {
+        this.menuUrl = menuUrl;
     }
 }

@@ -1,8 +1,10 @@
 package com.changhong.sei.basic.manager;
 
-import com.changhong.sei.basic.api.OrganizationService;
 import com.changhong.sei.basic.dao.DataRoleDao;
 import com.changhong.sei.basic.entity.DataRole;
+import com.changhong.sei.basic.entity.Employee;
+import com.changhong.sei.basic.entity.Organization;
+import com.changhong.sei.basic.entity.User;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.context.SessionUser;
 import com.changhong.sei.core.dao.BaseEntityDao;
@@ -39,7 +41,9 @@ public class DataRoleManager extends BaseEntityManager<DataRole> {
         return dao;
     }
     @Autowired
-    private OrganizationService organizationService;
+    private EmployeeManager employeeManager;
+    @Autowired
+    private OrganizationManager organizationManager;
     /**
      * 通过角色组Id获取角色清单
      *
@@ -93,5 +97,28 @@ public class DataRoleManager extends BaseEntityManager<DataRole> {
         }
         // 如果是一般分级授权用户，返回本人创建的角色
         return dao.findByCreator(roleGroupId, sessionUser.getAccount(), sessionUser.getTenantCode());
+    }
+
+    /**
+     * 获取用户的公共功能角色
+     * @param user 用户
+     * @return 公共功能角色清单
+     */
+    List<DataRole> getPublicDataRoles(User user){
+        List<DataRole> result = new ArrayList<>();
+        //获取用户类型匹配的全局公共角色
+        List<DataRole> publicRoles = dao.getPublicRoles(user);
+        result.addAll(publicRoles);
+        //获取用户的组织机构
+        if (user.getUserType()== UserType.Employee){
+            Employee employee =employeeManager.findOne(user.getId());
+            if (employee!=null){
+                //获取企业用户的组织机构
+                List<Organization> orgs = organizationManager.getParentNodes(employee.getOrganization().getId(),true);
+                List<DataRole> orgPubRoles = dao.getPublicRoles(user,orgs);
+                result.addAll(orgPubRoles);
+            }
+        }
+        return result;
     }
 }
