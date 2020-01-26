@@ -24,7 +24,6 @@ import java.util.Map;
  * @author 秦有宝
  * @version 1.0.00
  */
-@EnableAsync
 @Component
 public class EmailUtil {
     @Autowired

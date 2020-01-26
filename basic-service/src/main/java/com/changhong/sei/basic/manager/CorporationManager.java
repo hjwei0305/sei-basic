@@ -2,6 +2,7 @@ package com.changhong.sei.basic.manager;
 
 import com.changhong.sei.basic.dao.CorporationDao;
 import com.changhong.sei.basic.entity.Corporation;
+import com.changhong.sei.basic.manager.cust.CorporationManagerCust;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.local.LocalUtil;
@@ -33,6 +34,10 @@ public class CorporationManager extends BaseEntityManager<Corporation> {
     @Autowired
     private CorporationDao corporationDao;
 
+    // 注入扩展业务逻辑
+    @Autowired
+    private CorporationManagerCust managerCust;
+
     @Override
     protected BaseEntityDao<Corporation> getDao() {
         return corporationDao;
@@ -48,7 +53,8 @@ public class CorporationManager extends BaseEntityManager<Corporation> {
         Corporation corporation = corporationDao.findByCode(code);
         // 多语言
         LocalUtil.local(ContextUtil.getAppCode(), Corporation.class, corporation);
-        return corporation;
+        // 执行扩展业务逻辑
+        return managerCust.afterfindByCode(corporation);
     }
 
     /**
