@@ -1,76 +1,75 @@
-package com.changhong.sei.basic.entity;
+package com.changhong.sei.basic.dto;
 
+import com.changhong.sei.core.dto.BaseEntityDto;
 import com.changhong.sei.core.dto.IDataDict;
-import com.changhong.sei.core.dto.IRank;
-import com.changhong.sei.core.entity.*;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
+import io.swagger.annotations.ApiModel;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
- * 实现功能：数据字典
+ * 实现功能: 数据字典项目DTO
+ *
+ * @author 王锦光 wangjg
+ * @version 2020-01-26 19:50
  */
-@Entity
-@Access(AccessType.FIELD)
-@Table(name = "data_dict_item")
-@DynamicUpdate
-@DynamicInsert
-public class DataDictItem extends BaseAuditableEntity implements ITenant, ICodeUnique, IFrozen, IRank, IDataDict {
+@ApiModel(description = "数据字典项目DTO")
+public class DataDictItemDto extends BaseEntityDto implements IDataDict {
     public static final String DEFAULT_TENANT = "global";
     /**
      * 租户代码
      * 默认租户代码为 global
      */
-    @Column(name = "tenant_code", nullable = false)
     private String tenantCode = DEFAULT_TENANT;
     /**
      * 字典分类code
      */
-    @Column(name = "dict_category_code", length = 50, nullable = false)
+    @NotBlank
+    @Size(max = 50)
     private String categoryCode;
     /**
      * 代码
      */
-    @Column(name = "code", unique = true, length = 50, nullable = false)
+    @NotBlank
+    @Size(max = 50)
     private String code;
     /**
      * 名称
      */
-    @Column(name = "name", length = 50, nullable = false)
+    @NotBlank
+    @Size(max = 50)
     private String name;
     /**
      * 值
      */
-    @Column(name = "dict_value", length = 100, nullable = false)
+    @NotBlank
+    @Size(max = 100)
     private String value;
     /**
      * 值名称
      */
-    @Column(name = "dict_value_name", length = 100, nullable = false)
+    @NotBlank
+    @Size(max = 100)
     private String valueName;
     /**
      * 是否冻结
      */
-    @Column(name = "frozen")
+    @NotNull
     private Boolean frozen = Boolean.FALSE;
     /**
      * 排序
      */
-    @Column(name = "rank")
     private Integer rank = 0;
     /**
      * 备注
      */
-    @Column(name = "remark")
     private String remark;
 
-    @Override
     public String getTenantCode() {
         return tenantCode;
     }
 
-    @Override
     public void setTenantCode(String tenantCode) {
         this.tenantCode = tenantCode;
     }
@@ -83,12 +82,10 @@ public class DataDictItem extends BaseAuditableEntity implements ITenant, ICodeU
         this.categoryCode = categoryCode;
     }
 
-    @Override
     public String getCode() {
         return code;
     }
 
-    @Override
     public void setCode(String code) {
         this.code = code;
     }
@@ -102,9 +99,6 @@ public class DataDictItem extends BaseAuditableEntity implements ITenant, ICodeU
     }
 
     public String getValue() {
-        if (value == null || value.length() == 0) {
-            value = getCode();
-        }
         return value;
     }
 
@@ -113,9 +107,6 @@ public class DataDictItem extends BaseAuditableEntity implements ITenant, ICodeU
     }
 
     public String getValueName() {
-        if (valueName == null || valueName.length() == 0) {
-            valueName = getName();
-        }
         return valueName;
     }
 
@@ -123,7 +114,6 @@ public class DataDictItem extends BaseAuditableEntity implements ITenant, ICodeU
         this.valueName = valueName;
     }
 
-    @Override
     public Boolean getFrozen() {
         return frozen;
     }
@@ -132,7 +122,6 @@ public class DataDictItem extends BaseAuditableEntity implements ITenant, ICodeU
         this.frozen = frozen;
     }
 
-    @Override
     public Integer getRank() {
         return rank;
     }

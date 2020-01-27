@@ -18,7 +18,7 @@ public class CorporationManagerCustBase implements CorporationManagerCust{
      * @return 扩展处理结果
      */
     @Override
-    public Corporation afterfindByCode(Corporation corporation) {
+    public Corporation afterFindByCode(Corporation corporation) {
         // 公司业务逻辑扩展接口默认实现逻辑
         System.out.println("执行公司业务逻辑扩展接口默认实现！");
         return corporation;

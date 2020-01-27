@@ -14,5 +14,5 @@ public interface CorporationManagerCust {
      * @param corporation 查询结果
      * @return  扩展处理结果
      */
-    Corporation afterfindByCode(Corporation corporation);
+    Corporation afterFindByCode(Corporation corporation);
 }

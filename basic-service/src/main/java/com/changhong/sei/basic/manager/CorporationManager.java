@@ -9,7 +9,6 @@ import com.changhong.sei.core.local.LocalUtil;
 import com.changhong.sei.core.manager.BaseEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -54,7 +53,7 @@ public class CorporationManager extends BaseEntityManager<Corporation> {
         // 多语言
         LocalUtil.local(ContextUtil.getAppCode(), Corporation.class, corporation);
         // 执行扩展业务逻辑
-        return managerCust.afterfindByCode(corporation);
+        return managerCust.afterFindByCode(corporation);
     }
 
     /**

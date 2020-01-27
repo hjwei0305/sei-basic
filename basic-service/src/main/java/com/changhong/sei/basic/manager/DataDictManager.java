@@ -6,13 +6,14 @@ import com.changhong.sei.basic.entity.DataDict;
 import com.changhong.sei.basic.entity.DataDictItem;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
+import com.changhong.sei.core.dto.IDataDict;
 import com.changhong.sei.core.dto.ResultData;
-import com.changhong.sei.core.entity.IDataDict;
 import com.changhong.sei.core.manager.BaseEntityManager;
 import com.changhong.sei.core.manager.bo.OperateResult;
 import com.changhong.sei.core.manager.bo.OperateResultWithData;
 import com.chonghong.sei.util.IdGenerator;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -157,7 +158,7 @@ public class DataDictManager extends BaseEntityManager<DataDict> {
      * @param categoryCode 字典类别代码
      * @return 返回当前类别下的字典项目
      */
-    public ResultData<List<DataDictItem>> getDataDictItems(String categoryCode, Boolean isAll) {
+    public List<DataDictItem> getDataDictItems(String categoryCode, Boolean isAll) {
         List<DataDictItem> dataDictItems;
         if (isAll == null || isAll) {
             dataDictItems = dictItemDao.findByCategoryCodeOrderByRank(categoryCode);
@@ -169,7 +170,7 @@ public class DataDictManager extends BaseEntityManager<DataDict> {
                 dataDictItems = dictItemDao.findByCategoryCodeAndTenantCodeAndFrozenIsFalseOrderByRank(categoryCode, tenant);
             }
         }
-        return ResultData.success(dataDictItems);
+        return dataDictItems;
     }
 
     /**
@@ -180,10 +181,10 @@ public class DataDictManager extends BaseEntityManager<DataDict> {
      */
     public List<IDataDict> getDataDictItemsUnFrozen(String categoryCode) {
         List<IDataDict> dataDicts = null;
-        ResultData<List<DataDictItem>> rspData = getDataDictItems(categoryCode, Boolean.FALSE);
-        if (rspData.isSuccessful()) {
+        List<DataDictItem> dataDictItems = getDataDictItems(categoryCode, Boolean.FALSE);
+        if (Objects.nonNull(dataDictItems)) {
             //写入缓存
-            dataDicts = Lists.newArrayList(rspData.getData());
+            dataDicts = Lists.newArrayList(dataDictItems);
             putDataDictCache(categoryCode, dataDicts);
         }
         return dataDicts;
