@@ -1,0 +1,136 @@
+package com.changhong.sei.basic.dto;
+
+import com.changhong.sei.core.dto.BaseEntityDto;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+/**
+ * 实现功能: 岗位DTO
+ *
+ * @author 王锦光 wangjg
+ * @version 2020-01-27 15:54
+ */
+public class PositionDto extends BaseEntityDto {
+    /**
+     * 代码
+     */
+    private String code;
+    /**
+     * 名称
+     */
+    @NotBlank
+    @Size(max = 50)
+    private String name;
+
+    /**
+     * 租户代码
+     */
+    private String tenantCode;
+
+    /**
+     * 组织机构Id
+     */
+    @NotBlank
+    @Size(max = 36)
+    private String organizationId;
+
+    /**
+     * 组织机构代码
+     */
+    private String organizationCode;
+
+    /**
+     * 组织机构名称
+     */
+    private String organizationName;
+
+    /**
+     * 岗位类别Id
+     */
+    @NotBlank
+    @Size(max = 36)
+    private String positionCategoryId;
+
+    /**
+     * 岗位类别代码
+     */
+    private String positionCategoryCode;
+
+    /**
+     * 岗位类别名称
+     */
+    private String positionCategoryName;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTenantCode() {
+        return tenantCode;
+    }
+
+    public void setTenantCode(String tenantCode) {
+        this.tenantCode = tenantCode;
+    }
+
+    public String getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(String organizationId) {
+        this.organizationId = organizationId;
+    }
+
+    public String getOrganizationCode() {
+        return organizationCode;
+    }
+
+    public void setOrganizationCode(String organizationCode) {
+        this.organizationCode = organizationCode;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public String getPositionCategoryId() {
+        return positionCategoryId;
+    }
+
+    public void setPositionCategoryId(String positionCategoryId) {
+        this.positionCategoryId = positionCategoryId;
+    }
+
+    public String getPositionCategoryCode() {
+        return positionCategoryCode;
+    }
+
+    public void setPositionCategoryCode(String positionCategoryCode) {
+        this.positionCategoryCode = positionCategoryCode;
+    }
+
+    public String getPositionCategoryName() {
+        return positionCategoryName;
+    }
+
+    public void setPositionCategoryName(String positionCategoryName) {
+        this.positionCategoryName = positionCategoryName;
+    }
+}

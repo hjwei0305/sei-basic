@@ -9,6 +9,7 @@ import com.changhong.sei.core.manager.BaseEntityManager;
 import com.changhong.sei.core.service.DefaultBaseEntityService;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,5 +84,38 @@ public class DataRoleServiceImpl implements DefaultBaseEntityService<DataRole, D
         List<DataRole> roles = manager.getCanAssignedRoles(roleGroupId);
         List<DataRoleDto> dtos = roles.stream().map(this::convertToDto).collect(Collectors.toList());
         return ResultData.success(dtos);
+    }
+
+    /**
+     * 将数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    @Override
+    public DataRoleDto convertToDto(DataRole entity) {
+        return custConvertToDto(entity);
+    }
+
+    /**
+     * 转换数据角色数据实体为DTO
+     * @param entity 数据角色数据实体
+     * @return 数据角色DTO
+     */
+    public static DataRoleDto custConvertToDto(DataRole entity){
+        ModelMapper custMapper = new ModelMapper();
+        // 创建自定义映射规则
+        PropertyMap<DataRole, DataRoleDto> propertyMap = new PropertyMap<DataRole, DataRoleDto>() {
+            @Override
+            protected void configure() {
+                // 使用自定义转换规则
+                map().setDataRoleGroupId(source.getDataRoleGroupId());
+                map().setPublicOrgId(source.getPublicOrgId());
+            }
+        };
+        // 添加映射器
+        custMapper.addMappings(propertyMap);
+        // 转换
+        return custMapper.map(entity, DataRoleDto.class);
     }
 }
