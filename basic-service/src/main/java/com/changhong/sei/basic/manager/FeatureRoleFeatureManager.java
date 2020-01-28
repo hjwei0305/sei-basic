@@ -1,10 +1,12 @@
 package com.changhong.sei.basic.manager;
 
 import com.changhong.sei.basic.dao.FeatureRoleFeatureDao;
-import com.changhong.sei.basic.entity.AuthTreeVo;
+import com.changhong.sei.basic.dto.AuthTreeVo;
+import com.changhong.sei.basic.dto.FeatureDto;
 import com.changhong.sei.basic.dto.FeatureType;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.manager.util.AuthorityUtil;
+import com.changhong.sei.basic.service.FeatureServiceImpl;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseRelationDao;
 import com.changhong.sei.core.dto.ResultData;
@@ -148,8 +150,9 @@ public class FeatureRoleFeatureManager extends BaseRelationManager<FeatureRoleFe
         Iterator<Feature> iter = sortFeatures.iterator();
         while (iter.hasNext()) {
             Feature feature = iter.next();
+            FeatureDto featureDto = FeatureServiceImpl.custConvertToDto(feature);
             if (FeatureType.Page.equals(feature.getFeatureType())) {
-                AuthTreeVo authTreeVo = new AuthTreeVo(feature);
+                AuthTreeVo authTreeVo = new AuthTreeVo(featureDto);
                 //层级
                 authTreeVo.setNodeLevel(1);
                 //是否勾选
@@ -162,13 +165,13 @@ public class FeatureRoleFeatureManager extends BaseRelationManager<FeatureRoleFe
                 if (Objects.isNull(parent)) {
                     //如果没有父节点，说明数据有问题，先记录 加在根节点
                     // log.warn("功能型[{0}]没有所属页面级功能项,请检查数据", feature.getId());
-                    AuthTreeVo authTreeVo = new AuthTreeVo(feature);
+                    AuthTreeVo authTreeVo = new AuthTreeVo(featureDto);
                     //层级
                     authTreeVo.setNodeLevel(1);
                     //是否勾选
                     authTreeVo.setAssigned(Objects.nonNull(assginedFeatures.get(feature.getId())));
                 } else {
-                    AuthTreeVo authTreeVo = new AuthTreeVo(feature);
+                    AuthTreeVo authTreeVo = new AuthTreeVo(featureDto);
                     //层级
                     authTreeVo.setNodeLevel(2);
                     //是否勾选

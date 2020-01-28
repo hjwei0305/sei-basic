@@ -1,7 +1,5 @@
-package com.changhong.sei.basic.entity;
+package com.changhong.sei.basic.dto;
 
-import com.changhong.sei.basic.dto.FeatureDto;
-import com.changhong.sei.basic.dto.FeatureType;
 import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -60,7 +58,7 @@ public class AuthTreeVo implements Serializable {
      *
      * @param feature 功能项
      */
-    public AuthTreeVo(Feature feature) {
+    public AuthTreeVo(FeatureDto feature) {
         this.id = feature.getId();
         this.code = feature.getCode();
         this.name = feature.getName();

@@ -140,6 +140,19 @@ public class FeatureServiceImpl implements DefaultBaseEntityService<Feature, Fea
      */
     @Override
     public FeatureDto convertToDto(Feature entity) {
+        return FeatureServiceImpl.custConvertToDto(entity);
+    }
+
+    /**
+     * 自定义将数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    public static FeatureDto custConvertToDto(Feature entity){
+        if (Objects.isNull(entity)){
+            return null;
+        }
         ModelMapper custMapper = new ModelMapper();
         // 创建自定义映射规则
         PropertyMap<Feature, FeatureDto> propertyMap = new PropertyMap<Feature, FeatureDto>() {
