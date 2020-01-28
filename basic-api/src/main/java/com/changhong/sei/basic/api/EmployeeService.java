@@ -39,14 +39,14 @@ public interface EmployeeService extends BaseEntityService<EmployeeDto>, FindByP
      *
      * @param ids 主键集合
      */
-    @PostMapping(path = "findByIds", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "findByIds", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据员工的id列表获取员工", notes = "根据员工的id列表获取员工")
     ResultData<List<EmployeeDto>> findByIds(@RequestBody List<String> ids);
 
     /**
      * 根据组合条件获取员工
      */
-    @PostMapping(path = "findByFilters", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "findByFilters", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据组合条件获取员工", notes = "根据组合条件获取员工")
     ResultData<List<EmployeeDto>> findByFilters(@RequestBody Search searchConfig);
 
@@ -76,7 +76,7 @@ public interface EmployeeService extends BaseEntityService<EmployeeDto>, FindByP
      * @param param 企业员工用户查询参数
      * @return 员工用户查询结果
      */
-    @PostMapping(path = "findByUserQueryParam", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "findByUserQueryParam", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "获取企业员工用户", notes = "根据企业员工用户查询参数获取企业员工用户")
     ResultData<PageResult<EmployeeDto>> findByUserQueryParam(@RequestBody UserQueryParam param);
 
@@ -86,7 +86,7 @@ public interface EmployeeService extends BaseEntityService<EmployeeDto>, FindByP
      * @param employeeIds 企业员工的id列表
      * @return 执行人清单
      */
-    @PostMapping(path = "getExecutorsByEmployeeIds", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "getExecutorsByEmployeeIds", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据企业员工的id列表获取执行人", notes = "根据企业员工的id列表获取执行人")
     ResultData<List<Executor>> getExecutorsByEmployeeIds(@RequestBody List<String> employeeIds);
 

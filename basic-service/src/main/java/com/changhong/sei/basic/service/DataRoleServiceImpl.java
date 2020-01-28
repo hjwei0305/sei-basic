@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -102,7 +103,10 @@ public class DataRoleServiceImpl implements DefaultBaseEntityService<DataRole, D
      * @param entity 数据角色数据实体
      * @return 数据角色DTO
      */
-    public static DataRoleDto custConvertToDto(DataRole entity){
+    static DataRoleDto custConvertToDto(DataRole entity){
+        if (Objects.isNull(entity)){
+            return null;
+        }
         ModelMapper custMapper = new ModelMapper();
         // 创建自定义映射规则
         PropertyMap<DataRole, DataRoleDto> propertyMap = new PropertyMap<DataRole, DataRoleDto>() {

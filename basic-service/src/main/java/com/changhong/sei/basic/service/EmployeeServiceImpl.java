@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -63,7 +64,7 @@ public class EmployeeServiceImpl implements DefaultBaseEntityService<Employee, E
     /**
      * 根据组合条件获取员工
      *
-     * @param searchConfig
+     * @param searchConfig 查询参数
      */
     @Override
     public ResultData<List<EmployeeDto>> findByFilters(Search searchConfig) {
@@ -135,6 +136,9 @@ public class EmployeeServiceImpl implements DefaultBaseEntityService<Employee, E
      * @return 功能角色DTO
      */
     private static FeatureRoleDto convertToDto(FeatureRole entity){
+        if (Objects.isNull(entity)){
+            return null;
+        }
         ModelMapper custMapper = new ModelMapper();
         // 创建自定义映射规则
         PropertyMap<FeatureRole, FeatureRoleDto> propertyMap = new PropertyMap<FeatureRole, FeatureRoleDto>() {
@@ -304,7 +308,10 @@ public class EmployeeServiceImpl implements DefaultBaseEntityService<Employee, E
      * @param entity 数据实体
      * @return DTO
      */
-    private static EmployeeDto custConvertToDto(Employee entity){
+    static EmployeeDto custConvertToDto(Employee entity){
+        if (Objects.isNull(entity)){
+            return null;
+        }
         ModelMapper custMapper = new ModelMapper();
         // 创建自定义映射规则
         PropertyMap<Employee, EmployeeDto> propertyMap = new PropertyMap<Employee, EmployeeDto>() {
