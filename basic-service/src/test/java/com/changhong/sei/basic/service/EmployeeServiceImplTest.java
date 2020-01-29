@@ -22,7 +22,7 @@ public class EmployeeServiceImplTest extends BaseUnitTest {
 
     @Test
     public void findByCode() {
-        String code = "11006086";
+        String code = "1100116";
         ResultData resultData = service.findByCode(code);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.isSuccessful());
