@@ -126,33 +126,8 @@ public class EmployeeServiceImpl implements DefaultBaseEntityService<Employee, E
     @Override
     public ResultData<List<FeatureRoleDto>> getCanAssignedFeatureRoles(String featureRoleGroupId, String userId) {
         List<FeatureRole> roles = manager.getCanAssignedFeatureRoles(featureRoleGroupId, userId);
-        List<FeatureRoleDto> dtos = roles.stream().map(EmployeeServiceImpl::convertToDto).collect(Collectors.toList());
+        List<FeatureRoleDto> dtos = roles.stream().map(FeatureRoleServiceImpl::custConvertToDto).collect(Collectors.toList());
         return ResultData.success(dtos);
-    }
-
-    /**
-     * 转换功能角色数据实体为DTO
-     * @param entity 功能角色数据实体
-     * @return 功能角色DTO
-     */
-    private static FeatureRoleDto convertToDto(FeatureRole entity){
-        if (Objects.isNull(entity)){
-            return null;
-        }
-        ModelMapper custMapper = new ModelMapper();
-        // 创建自定义映射规则
-        PropertyMap<FeatureRole, FeatureRoleDto> propertyMap = new PropertyMap<FeatureRole, FeatureRoleDto>() {
-            @Override
-            protected void configure() {
-                // 使用自定义转换规则
-                map().setFeatureGroupId(source.getFeatureGroupId());
-                map().setPublicOrgId(source.getPublicOrgId());
-            }
-        };
-        // 添加映射器
-        custMapper.addMappings(propertyMap);
-        // 转换
-        return custMapper.map(entity, FeatureRoleDto.class);
     }
 
     /**

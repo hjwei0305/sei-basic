@@ -86,7 +86,7 @@ public class FeatureRoleServiceImpl implements DefaultBaseEntityService<FeatureR
      * @param entity 数据实体
      * @return DTO
      */
-    private static UserDto custConvertToDto(User entity){
+    static UserDto custConvertToDto(User entity){
         if (Objects.isNull(entity)){
             return null;
         }
@@ -113,7 +113,7 @@ public class FeatureRoleServiceImpl implements DefaultBaseEntityService<FeatureR
      * @param entity 业务实体
      * @return DTO
      */
-    public static PositionDto custConvertToDto(Position entity) {
+    static PositionDto custConvertToDto(Position entity) {
         if (Objects.isNull(entity)){
             return null;
         }
@@ -186,5 +186,41 @@ public class FeatureRoleServiceImpl implements DefaultBaseEntityService<FeatureR
     @Override
     public ResultData<Map<String, String>> listAllUserType() {
         return ResultDataUtil.getEnumMap(UserType.class);
+    }
+
+    /**
+     * 将数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    @Override
+    public FeatureRoleDto convertToDto(FeatureRole entity) {
+        return FeatureRoleServiceImpl.custConvertToDto(entity);
+    }
+
+    /**
+     * 转换功能角色数据实体为DTO
+     * @param entity 功能角色数据实体
+     * @return 功能角色DTO
+     */
+    static FeatureRoleDto custConvertToDto(FeatureRole entity){
+        if (Objects.isNull(entity)){
+            return null;
+        }
+        ModelMapper custMapper = new ModelMapper();
+        // 创建自定义映射规则
+        PropertyMap<FeatureRole, FeatureRoleDto> propertyMap = new PropertyMap<FeatureRole, FeatureRoleDto>() {
+            @Override
+            protected void configure() {
+                // 使用自定义转换规则
+                map().setFeatureGroupId(source.getFeatureGroupId());
+                map().setPublicOrgId(source.getPublicOrgId());
+            }
+        };
+        // 添加映射器
+        custMapper.addMappings(propertyMap);
+        // 转换
+        return custMapper.map(entity, FeatureRoleDto.class);
     }
 }
