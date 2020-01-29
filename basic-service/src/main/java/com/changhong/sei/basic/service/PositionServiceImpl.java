@@ -16,11 +16,13 @@ import com.changhong.sei.core.service.DefaultFindByPageService;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -264,5 +266,42 @@ public class PositionServiceImpl implements DefaultBaseEntityService<Position, P
     @Override
     public ResultData copyToOrgNodes(PositionCopyParam copyParam) {
         return ResultDataUtil.convertFromOperateResult(manager.copyToOrgNodes(copyParam));
+    }
+
+    /**
+     * 将数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    @Override
+    public PositionDto convertToDto(Position entity) {
+        return null;
+    }
+
+    /**
+     * 自定义将数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    static PositionDto custConvertToDto(Position entity){
+        if (Objects.isNull(entity)){
+            return null;
+        }
+        ModelMapper custMapper = new ModelMapper();
+        // 创建自定义映射规则
+        PropertyMap<Position, PositionDto> propertyMap = new PropertyMap<Position, PositionDto>() {
+            @Override
+            protected void configure() {
+                // 自定义转换规则
+                map().setPositionCategoryId(source.getPositionCategoryId());
+                map().setOrganizationId(source.getOrganizationId());
+            }
+        };
+        // 添加映射器
+        custMapper.addMappings(propertyMap);
+        // 转换
+        return custMapper.map(entity, PositionDto.class);
     }
 }
