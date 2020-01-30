@@ -3,6 +3,7 @@ apply plugin: 'io.spring.dependency-management'
 
 dependencies {
     compile("com.changhong.sei:core-api:$sei_version")
+    compile("com.changhong.sei:notify-api:$sei_version")
 }
 
 //打包源代码jar包

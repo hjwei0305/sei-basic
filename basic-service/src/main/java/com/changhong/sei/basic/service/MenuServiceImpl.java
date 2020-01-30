@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -94,6 +95,19 @@ public class MenuServiceImpl implements DefaultTreeService<Menu, MenuDto>,
      */
     @Override
     public MenuDto convertToDto(Menu entity) {
+        return MenuServiceImpl.custConvertToDto(entity);
+    }
+
+    /**
+     * 自定义将数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    static MenuDto custConvertToDto(Menu entity) {
+        if (Objects.isNull(entity)){
+            return null;
+        }
         ModelMapper custMapper = new ModelMapper();
         // 创建自定义映射规则
         PropertyMap<Menu, MenuDto> propertyMap = new PropertyMap<Menu, MenuDto>() {
