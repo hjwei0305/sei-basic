@@ -7,6 +7,7 @@ import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.local.LocalUtil;
 import com.changhong.sei.core.manager.BaseEntityManager;
+import com.changhong.sei.core.manager.DataAuthEntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,10 +29,12 @@ import java.util.List;
  * *************************************************************************************************<br>
  */
 @Component
-public class CorporationManager extends BaseEntityManager<Corporation> {
+public class CorporationManager extends BaseEntityManager<Corporation> implements DataAuthEntityManager {
 
     @Autowired
     private CorporationDao corporationDao;
+    @Autowired
+    private UserManager userManager;
 
     // 注入扩展业务逻辑
     @Autowired
@@ -67,5 +70,19 @@ public class CorporationManager extends BaseEntityManager<Corporation> {
         // 多语言
         LocalUtil.localList(ContextUtil.getAppCode(), Corporation.class, corporations);
         return corporations;
+    }
+
+    /**
+     * 从平台基础应用获取一般用户有权限的数据实体Id清单
+     * 对于数据权限对象的业务实体，需要override，使用BASIC提供的通用工具来获取
+     *
+     * @param entityClassName 权限对象实体类型
+     * @param userId          用户Id
+     * @param featureCode     功能项代码
+     * @return 数据实体Id清单
+     */
+    @Override
+    public List<String> getNormalUserAuthorizedEntitiesFromBasic(String entityClassName, String userId, String featureCode) {
+        return userManager.getNormalUserAuthorizedEntities(entityClassName, userId, featureCode);
     }
 }

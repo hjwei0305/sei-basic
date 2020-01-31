@@ -24,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "position", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface PositionService extends BaseEntityService<PositionDto>,
-        FindByPageService<PositionDto>, DataAuthEntityService<PositionDto> {
+        FindByPageService<PositionDto> {
     /**
      * 根据岗位id列表获取岗位
      */

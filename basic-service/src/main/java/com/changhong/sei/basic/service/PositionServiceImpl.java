@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
 @Api(value = "PositionService", tags = "岗位API服务实现")
 public class PositionServiceImpl implements DefaultBaseEntityService<Position, PositionDto>,
         DefaultFindByPageService<Position, PositionDto>,
-        DefaultDataAuthEntityService<Position, PositionDto>,
         PositionService {
     @Autowired
     private PositionManager manager;

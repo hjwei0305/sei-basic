@@ -10,6 +10,7 @@ import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseTreeDao;
 import com.changhong.sei.core.entity.BaseEntity;
 import com.changhong.sei.core.manager.BaseTreeManager;
+import com.changhong.sei.core.manager.DataAuthEntityManager;
 import com.changhong.sei.core.manager.bo.OperateResult;
 import com.changhong.sei.core.manager.bo.OperateResultWithData;
 import com.chonghong.sei.enums.UserAuthorityPolicy;
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
  * *************************************************************************************************
  */
 @Component
-public class OrganizationManager extends BaseTreeManager<Organization> {
+public class OrganizationManager extends BaseTreeManager<Organization> implements DataAuthEntityManager {
     @Autowired
     private OrganizationDao organizationDao;
     @Autowired
@@ -49,6 +50,8 @@ public class OrganizationManager extends BaseTreeManager<Organization> {
     private FeatureRoleManager featureRoleManager;
     @Autowired
     private DataRoleManager dataRoleManager;
+    @Autowired
+    private UserManager userManager;
 
     @Override
     protected BaseTreeDao<Organization> getDao() {
@@ -294,5 +297,19 @@ public class OrganizationManager extends BaseTreeManager<Organization> {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 从平台基础应用获取一般用户有权限的数据实体Id清单
+     * 对于数据权限对象的业务实体，需要override，使用BASIC提供的通用工具来获取
+     *
+     * @param entityClassName 权限对象实体类型
+     * @param userId          用户Id
+     * @param featureCode     功能项代码
+     * @return 数据实体Id清单
+     */
+    @Override
+    public List<String> getNormalUserAuthorizedEntitiesFromBasic(String entityClassName, String userId, String featureCode) {
+        return userManager.getNormalUserAuthorizedEntities(entityClassName, userId, featureCode);
     }
 }
