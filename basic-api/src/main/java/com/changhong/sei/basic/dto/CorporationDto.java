@@ -1,6 +1,6 @@
 package com.changhong.sei.basic.dto;
 
-import com.changhong.sei.core.dto.BaseEntityDto;
+import com.changhong.sei.basic.dto.cust.CorporationCustDto;
 import io.swagger.annotations.ApiModel;
 
 import javax.validation.constraints.Min;
@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
  * @version 2020-01-26 16:17
  */
 @ApiModel(description = "公司DTO")
-public class CorporationDto extends BaseEntityDto {
+public class CorporationDto extends CorporationCustDto {
     /**
      * 代码
      */
