@@ -3,6 +3,7 @@ package com.changhong.sei.basic.dto;
 import com.changhong.sei.core.dto.BaseEntityDto;
 import com.changhong.sei.core.dto.auth.IDataAuthTreeEntity;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -22,6 +23,7 @@ public class OrganizationDto extends BaseEntityDto implements IDataAuthTreeEntit
      * 组织机构代码
      */
     @Size(max = 6)
+    @ApiModelProperty(value = "组织机构代码(系统给号)")
     private String code;
 
     /**
@@ -29,17 +31,20 @@ public class OrganizationDto extends BaseEntityDto implements IDataAuthTreeEntit
      */
     @NotBlank
     @Size(max = 100)
+    @ApiModelProperty(value = "组织机构名称(max = 100)", required = true)
     private String name;
 
     /**
      * 简称
      */
+    @ApiModelProperty(value = "简称(max = 100)")
     private String shortName;
 
     /**
      * 参考码
      */
     @Size(max = 50)
+    @ApiModelProperty(value = "参考码(max = 50)")
     private String refCode;
 
     /**
@@ -47,24 +52,28 @@ public class OrganizationDto extends BaseEntityDto implements IDataAuthTreeEntit
      */
     @NotNull
     @Min(0)
+    @ApiModelProperty(value = "层级")
     private Integer nodeLevel = 0;
 
     /**
      * 代码路径
      */
     @Size(max = 100)
+    @ApiModelProperty(value = "代码路径")
     private String codePath;
 
     /**
      * 名称路径
      */
     @Size(max = 1000)
+    @ApiModelProperty(value = "名称路径")
     private String namePath;
 
     /**
      * 父节点Id
      */
     @Size(max = 36)
+    @ApiModelProperty(value = "父节点Id")
     private String parentId;
 
     /**
@@ -72,17 +81,20 @@ public class OrganizationDto extends BaseEntityDto implements IDataAuthTreeEntit
      */
     @NotNull
     @Min(0)
+    @ApiModelProperty(value = "排序")
     private Integer rank = 0;
 
     /**
      * 租户代码
      */
+    @ApiModelProperty(value = "租户代码")
     private String tenantCode;
 
     /**
      * 是否冻结
      */
     @NotNull
+    @ApiModelProperty(value = "是否冻结", required = true)
     private Boolean frozen = Boolean.FALSE;
 
     private List<OrganizationDto> children;

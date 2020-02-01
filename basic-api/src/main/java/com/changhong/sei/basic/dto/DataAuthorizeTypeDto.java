@@ -2,6 +2,7 @@ package com.changhong.sei.basic.dto;
 
 import com.changhong.sei.core.dto.BaseEntityDto;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -19,6 +20,7 @@ public class DataAuthorizeTypeDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 50)
+    @ApiModelProperty(value = "代码(max = 50)", required = true)
     private String code;
 
     /**
@@ -26,6 +28,7 @@ public class DataAuthorizeTypeDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 50)
+    @ApiModelProperty(value = "名称(max = 50)", required = true)
     private String name;
 
     /**
@@ -33,32 +36,38 @@ public class DataAuthorizeTypeDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 36)
+    @ApiModelProperty(value = "权限对象类型Id(max = 36)", required = true)
     private String authorizeEntityTypeId;
 
     /**
      * 权限对象类型代码
      */
+    @ApiModelProperty(value = "权限对象类型代码")
     private String authorizeEntityTypeCode;
 
     /**
      * 权限对象类型名称
      */
+    @ApiModelProperty(value = "权限对象类型名称")
     private String authorizeEntityTypeName;
 
     /**
      * 功能项Id
      */
     @Size(max = 36)
+    @ApiModelProperty(value = "功能项Id(max = 36)")
     private String featureId;
 
     /**
      * 功能项代码
      */
+    @ApiModelProperty(value = "功能项代码")
     private String featureCode;
 
     /**
      * 功能项名称
      */
+    @ApiModelProperty(value = "功能项名称")
     private String featureName;
 
     public String getCode() {

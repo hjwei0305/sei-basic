@@ -1,5 +1,8 @@
 package com.changhong.sei.basic.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -8,68 +11,85 @@ import java.util.List;
  * Author:jamson
  * date:2018/3/19
  */
+@ApiModel(description = "供应商用户VO")
 public class SupplierUserVo implements Serializable {
+    @ApiModelProperty(value = "Id标识")
     private String id;
     /**
      * 代码
      */
+    @ApiModelProperty(value = "代码(max = 30)", required = true)
     private String code;
     /**
      * 名称
      */
+    @ApiModelProperty(value = "名称(max = 100)", required = true)
     private String name;
     /**
      * 供应商id
      */
+    @ApiModelProperty(value = "供应商id(max = 36)")
     private String supplierId;
     /**
      * 申请注册供应商id
      */
+    @ApiModelProperty(value = "申请注册供应商id(max = 36)")
     private String supplierApplyId;
     /**
      * 供应商代码
      */
+    @ApiModelProperty(value = "供应商代码(max = 30)")
     private String supplierCode;
     /**
      * 供应商名称
      */
+    @ApiModelProperty(value = "供应商名称(max = 100)")
     private String supplierName;
     /**
      * 邮箱
      */
+    @ApiModelProperty(value = "邮箱")
     private String email;
     /**
      * 性别
      */
+    @ApiModelProperty(value = "性别")
     private Boolean gender = true;
     /**
      * 手机
      */
+    @ApiModelProperty(value = "手机")
     private String mobile;
     /**
      * 电话
      */
+    @ApiModelProperty(value = "电话")
     private String telephone;
     /**
      * 地址
      */
+    @ApiModelProperty(value = "地址")
     private String mailingAddress;
     /**
      * 证件号码
      */
+    @ApiModelProperty(value = "证件号码")
     private String idNumber;
     /**
      * 业务办理委托书附件
      */
+    @ApiModelProperty(value = "业务办理委托书附件")
     private List<String> attachments;
     /**
      * 用户密码(加密后)
      */
+    @ApiModelProperty(value = "用户密码(加密后)")
     private String password;
 
     /**
      * 是否冻结
      */
+    @ApiModelProperty(value = "是否冻结")
     private boolean frozen;
     /**
      * 是否创建供应商管理员
@@ -78,6 +98,7 @@ public class SupplierUserVo implements Serializable {
     /**
      * 是否编辑供应商管理员
      */
+    @ApiModelProperty(value = "是否编辑供应商管理员")
     private boolean isEditSupplier = false;
 
     public boolean isEditSupplier() {

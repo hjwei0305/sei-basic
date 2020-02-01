@@ -2,6 +2,7 @@ package com.changhong.sei.basic.dto;
 
 import com.changhong.sei.core.dto.BaseEntityDto;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -19,6 +20,7 @@ public class AuthorizeEntityTypeDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 100)
+    @ApiModelProperty(value = "实体类名(max = 100)", required = true)
     private String entityClassName;
 
     /**
@@ -26,6 +28,7 @@ public class AuthorizeEntityTypeDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 50)
+    @ApiModelProperty(value = "名称(max = 50)", required = true)
     private String name;
 
     /**
@@ -33,21 +36,25 @@ public class AuthorizeEntityTypeDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 36)
+    @ApiModelProperty(value = "应用模块Id(max = 36)", required = true)
     private String appModuleId;
 
     /**
      * 应用模块代码
      */
+    @ApiModelProperty(value = "应用模块代码")
     private String appModuleCode;
 
     /**
      * 应用模块名称
      */
+    @ApiModelProperty(value = "应用模块名称")
     private String appModuleName;
 
     /**
      * 是树形结构
      */
+    @ApiModelProperty(value = "是树形结构")
     private Boolean beTree = Boolean.FALSE;
 
     /**
@@ -55,6 +62,7 @@ public class AuthorizeEntityTypeDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 100)
+    @ApiModelProperty(value = "API服务路径(max = 100)", required = true)
     private String apiPath;
 
     public String getEntityClassName() {

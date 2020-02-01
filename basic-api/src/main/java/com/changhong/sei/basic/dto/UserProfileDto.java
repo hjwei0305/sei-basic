@@ -6,6 +6,7 @@ import com.chonghong.sei.enums.UserAuthorityPolicy;
 import com.chonghong.sei.enums.UserType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -22,30 +23,36 @@ public class UserProfileDto extends BaseEntityDto {
      * 邮箱
      */
     @Size(max = 100)
+    @ApiModelProperty(value = "邮箱(max = 100)")
     private String email;
     /**
      * 性别 ，true表示男，false表示女
      */
+    @ApiModelProperty(value = "性别", required = true)
     private Boolean gender = Boolean.FALSE;
     /**
      * 语言代码
      */
     @Size(max = 10)
+    @ApiModelProperty(value = "语言代码(max = 10)")
     private String languageCode;
     /**
      * 身份证号码
      */
     @Size(max = 20)
+    @ApiModelProperty(value = "身份证号码(max = 20)")
     private String idCard;
     /**
      * 移动电话
      */
     @Size(max = 20)
+    @ApiModelProperty(value = "移动电话(max = 20)")
     private String mobile;
     /**
      * 记账用户
      */
     @Size(max = 20)
+    @ApiModelProperty(value = "记账用户(max = 20)")
     private String accountor;
 
     /**
@@ -53,22 +60,26 @@ public class UserProfileDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 36)
+    @ApiModelProperty(value = "关联的用户Id(max = 36)", required = true)
     private String userId;
 
     /**
      * 关联的用户名称
      */
+    @ApiModelProperty(value = "关联的用户名称")
     private String userName;
 
     /**
-     * 用户类型,0代表员工，1代表合作伙伴
+     * 用户类型
      */
+    @ApiModelProperty(value = "用户类型(enum)")
     @JsonSerialize(using = EnumJsonSerializer.class)
     private UserType userType;
 
     /**
      * 用户权限策略
      */
+    @ApiModelProperty(value = "用户权限策略(enum)")
     @JsonSerialize(using = EnumJsonSerializer.class)
     private UserAuthorityPolicy userAuthorityPolicy;
 

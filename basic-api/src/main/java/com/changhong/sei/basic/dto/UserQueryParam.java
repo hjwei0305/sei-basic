@@ -2,6 +2,8 @@ package com.changhong.sei.basic.dto;
 
 
 import com.changhong.sei.core.dto.serach.QuickSearchParam;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * *************************************************************************************************
@@ -15,21 +17,25 @@ import com.changhong.sei.core.dto.serach.QuickSearchParam;
  * <p/>
  * *************************************************************************************************
  */
+@ApiModel(description = "企业员工用户查询参数")
 public class UserQueryParam extends QuickSearchParam {
 
     /**
      * 是否包含组织机构子节点
      */
+    @ApiModelProperty(value = "是否包含组织机构子节点", required = true)
     private Boolean includeSubNode = Boolean.FALSE;
 
     /**
      * 组织机构Id
      */
+    @ApiModelProperty(value = "组织机构Id")
     private String organizationId;
 
     /**
      * 岗位id
      */
+    @ApiModelProperty(value = "岗位id")
     private String positionId;
 
     public Boolean getIncludeSubNode() {

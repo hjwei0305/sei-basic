@@ -2,6 +2,7 @@ package com.changhong.sei.basic.dto;
 
 import com.changhong.sei.core.dto.BaseEntityDto;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -22,6 +23,7 @@ public class RegionDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 10)
+    @ApiModelProperty(value = "代码(max = 10)", required = true)
     private String code;
 
     /**
@@ -29,21 +31,25 @@ public class RegionDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 90)
+    @ApiModelProperty(value = "名称(max = 90)", required = true)
     private String name;
 
     /**
      * 代码路径
      */
+    @ApiModelProperty(value = "代码路径")
     private String codePath;
 
     /**
      * 名称路径
      */
+    @ApiModelProperty(value = "名称路径")
     private String namePath;
 
     /**
      * 父节点Id
      */
+    @ApiModelProperty(value = "父节点Id")
     private String parentId;
 
     /**
@@ -51,6 +57,7 @@ public class RegionDto extends BaseEntityDto {
      */
     @NotNull
     @Min(0)
+    @ApiModelProperty(value = "层级")
     private Integer nodeLevel = 0;
 
     /**
@@ -58,16 +65,19 @@ public class RegionDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 36)
+    @ApiModelProperty(value = "国家Id(max = 36)", required = true)
     private String countryId;
 
     /**
      * 关联国家代码
      */
+    @ApiModelProperty(value = "关联国家代码")
     private String countryCode;
 
     /**
      * 关联国家名称
      */
+    @ApiModelProperty(value = "关联国家名称")
     private String countryName;
 
     /**
@@ -75,6 +85,7 @@ public class RegionDto extends BaseEntityDto {
      */
     @NotNull
     @Min(0)
+    @ApiModelProperty(value = "排序")
     private Integer rank = 0;
 
 
@@ -82,22 +93,26 @@ public class RegionDto extends BaseEntityDto {
      * 缩写
      */
     @Size(max = 30)
+    @ApiModelProperty(value = "缩写(max = 30)")
     private String shortName;
 
     /**
      * 拼音
      */
     @Size(max = 200)
+    @ApiModelProperty(value = "拼音(max = 200)")
     private String pinYin;
 
     /**
      * 租户代码
      */
+    @ApiModelProperty(value = "租户代码")
     private String tenantCode;
 
     /**
      * 子节点列表
      */
+    @ApiModelProperty(value = "子节点列表(List)")
     private List<RegionDto> children;
 
     public String getCode() {

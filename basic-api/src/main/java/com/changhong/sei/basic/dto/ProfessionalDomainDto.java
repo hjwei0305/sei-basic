@@ -2,6 +2,7 @@ package com.changhong.sei.basic.dto;
 
 import com.changhong.sei.core.dto.BaseEntityDto;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -22,22 +23,26 @@ public class ProfessionalDomainDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 30)
+    @ApiModelProperty(value = "代码(max = 30)", required = true)
     private String code;
     /**
      * 名称
      */
     @NotBlank
     @Size(max = 100)
+    @ApiModelProperty(value = "名称(max = 100)", required = true)
     private String name;
 
     /**
      * 代码路径
      */
+    @ApiModelProperty(value = "代码路径")
     private String codePath;
 
     /**
      * 名称路径
      */
+    @ApiModelProperty(value = "名称路径")
     private String namePath;
 
     /**
@@ -45,6 +50,7 @@ public class ProfessionalDomainDto extends BaseEntityDto {
      */
     @NotNull
     @Min(0)
+    @ApiModelProperty(value = "层级")
     private Integer nodeLevel = 0;
 
     /**
@@ -52,15 +58,18 @@ public class ProfessionalDomainDto extends BaseEntityDto {
      */
     @NotNull
     @Min(0)
+    @ApiModelProperty(value = "排序号")
     private Integer rank = 0;
 
     /**
      * 父节点id
      */
+    @ApiModelProperty(value = "父节点id")
     private String parentId;
     /**
      * 子节点列表
      */
+    @ApiModelProperty(value = "子节点列表(List)")
     private List<ProfessionalDomainDto> children;
 
     public String getCode() {

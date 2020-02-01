@@ -2,6 +2,7 @@ package com.changhong.sei.basic.dto;
 
 import com.changhong.sei.core.dto.BaseEntityDto;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -17,6 +18,7 @@ public class PositionCategoryDto extends BaseEntityDto {
     /**
      * 代码
      */
+    @ApiModelProperty(value = "代码(系统给号)")
     private String code;
 
     /**
@@ -24,6 +26,7 @@ public class PositionCategoryDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 50)
+    @ApiModelProperty(value = "名称(max = 50)", required = true)
     private String name;
 
     /**

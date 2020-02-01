@@ -1,5 +1,8 @@
 package com.changhong.sei.basic.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,20 +18,24 @@ import java.util.List;
  * <p/>
  * *************************************************************************************************
  */
+@ApiModel(description = "数据角色分配关系类输入参数")
 public class DataRoleRelation implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
      * 数据角色Id
      */
+    @ApiModelProperty(value = "数据角色Id(max = 36)", required = true)
     private String dataRoleId;
     /**
      * 数据权限类型Id
      */
+    @ApiModelProperty(value = "数据权限类型Id(max = 36)", required = true)
     private String dataAuthorizeTypeId;
     /**
      * 权限对象实体Id清单
      */
+    @ApiModelProperty(value = "权限对象实体Id清单(List)", required = true)
     private List<String> entityIds;
 
     public String getDataRoleId() {

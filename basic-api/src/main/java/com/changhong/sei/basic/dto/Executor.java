@@ -1,5 +1,8 @@
 package com.changhong.sei.basic.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 
 /**
@@ -14,57 +17,68 @@ import java.io.Serializable;
  * <p/>
  * *************************************************************************************************
  */
+@ApiModel(description = "执行人")
 public class Executor implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
      * 用户id
      */
+    @ApiModelProperty(value = "用户id")
     private String id;
 
     /**
      * 用户员工编号
      */
+    @ApiModelProperty(value = "用户员工编号")
     private String code;
 
     /**
      * 用户名
      */
+    @ApiModelProperty(value = "用户名")
     private String name;
 
     /**
      * 组织机构id
      */
+    @ApiModelProperty(value = "组织机构id")
     private String organizationId;
 
     /**
      * 组织机构code
      */
+    @ApiModelProperty(value = "组织机构code")
     private String organizationCode;
 
     /**
      * 组织机构名称
      */
+    @ApiModelProperty(value = "组织机构名称")
     private String organizationName;
 
     /**
      * 岗位id
      */
+    @ApiModelProperty(value = "岗位id")
     private String positionId;
 
     /**
      * 岗位代码
      */
+    @ApiModelProperty(value = "岗位代码")
     private String positionCode;
 
     /**
      * 岗位名称
      */
+    @ApiModelProperty(value = "岗位名称")
     private String positionName;
 
     /**
      * 备注
      */
+    @ApiModelProperty(value = "备注")
     private String Remark;
 
     public String getId() {

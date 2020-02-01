@@ -6,6 +6,7 @@ import com.chonghong.sei.enums.UserAuthorityPolicy;
 import com.chonghong.sei.enums.UserType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -23,42 +24,50 @@ public class EmployeeDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 10)
+    @ApiModelProperty(value = "员工编号(max = 10)", required = true)
     private String code;
 
     /**
      * 租户代码
      */
+    @ApiModelProperty(value = "租户代码")
     private String tenantCode;
 
     /**
      * 用户名称
      */
+    @ApiModelProperty(value = "用户名称")
     private String userName;
     /**
-     * 用户类型,0代表员工，1代表合作伙伴
+     * 用户类型
      */
+    @ApiModelProperty(value = "用户类型(enum)")
     @JsonSerialize(using = EnumJsonSerializer.class)
     private UserType userType;
 
     /**
      * 用户权限策略
      */
+    @ApiModelProperty(value = "用户权限策略(enum)")
     @JsonSerialize(using = EnumJsonSerializer.class)
     private UserAuthorityPolicy userAuthorityPolicy;
 
     /**
      * 组织机构Id
      */
+    @ApiModelProperty(value = "组织机构Id")
     private String organizationId;
 
     /**
      * 组织机构代码
      */
+    @ApiModelProperty(value = "组织机构代码")
     private String organizationCode;
 
     /**
      * 组织机构名称
      */
+    @ApiModelProperty(value = "组织机构名称")
     private String organizationName;
 
     public String getCode() {

@@ -6,6 +6,7 @@ import com.chonghong.sei.enums.UserAuthorityPolicy;
 import com.chonghong.sei.enums.UserType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -24,23 +25,27 @@ public class UserDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 50)
+    @ApiModelProperty(value = "用户姓名(max = 50)", required = true)
     private String userName;
 
     /**
      * 是否冻结
      */
     @NotNull
+    @ApiModelProperty(value = "是否冻结", required = true)
     private Boolean frozen = Boolean.FALSE;
 
     /**
      * 租户代码
      */
+    @ApiModelProperty(value = "租户代码")
     private String tenantCode;
 
     /**
-     * 用户类型,0代表员工，1代表合作伙伴
+     * 用户类型
      */
     @NotNull
+    @ApiModelProperty(value = "用户类型(enum)")
     @JsonSerialize(using = EnumJsonSerializer.class)
     private UserType userType;
 
@@ -48,6 +53,7 @@ public class UserDto extends BaseEntityDto {
      * 用户权限策略
      */
     @NotNull
+    @ApiModelProperty(value = "用户权限策略(enum)")
     @JsonSerialize(using = EnumJsonSerializer.class)
     private UserAuthorityPolicy userAuthorityPolicy;
 

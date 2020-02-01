@@ -3,6 +3,7 @@ package com.changhong.sei.basic.dto;
 import com.changhong.sei.core.dto.BaseEntityDto;
 import com.changhong.sei.core.dto.RelationEntityDto;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 实现功能: 租户分配应用模块DTO
@@ -13,13 +14,15 @@ import io.swagger.annotations.ApiModel;
 @ApiModel(description = "租户分配应用模块DTO")
 public class TenantAppModuleDto extends BaseEntityDto implements RelationEntityDto<TenantDto, AppModuleDto> {
     /**
-     * 父实体DTO
+     * 租户DTO
      */
+    @ApiModelProperty(value = "租户DTO", required = true)
     private TenantDto parent;
 
     /**
-     * 子实体DTO
+     * 应用模块DTO
      */
+    @ApiModelProperty(value = "应用模块DTO", required = true)
     private AppModuleDto child;
 
     @Override

@@ -4,6 +4,7 @@ import com.changhong.sei.core.dto.BaseEntityDto;
 import com.chonghong.sei.util.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -23,17 +24,20 @@ public class ExpertUserDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 30)
+    @ApiModelProperty(value = "代码(max = 30)", required = true)
     private String code;
     /**
      * 名称
      */
     @NotBlank
     @Size(max = 100)
+    @ApiModelProperty(value = "名称(max = 100)", required = true)
     private String name;
 
     /**
      * 有效期
      */
+    @ApiModelProperty(value = "有效期(Date)", required = true)
     @NotNull
     @JsonFormat(timezone = DateUtils.DEFAULT_TIMEZONE, pattern = DateUtils.DEFAULT_DATE_FORMAT)
     private Date expireDate;
@@ -41,12 +45,14 @@ public class ExpertUserDto extends BaseEntityDto {
     /**
      * 租户代码
      */
+    @ApiModelProperty(value = "租户代码")
     private String tenantCode;
     /**
      * 专家ID（同步过来的源表中的ID）
      */
     @NotBlank
     @Size(max = 36)
+    @ApiModelProperty(value = "专家ID(max = 36)", required = true)
     private String expertId;
 
     public String getName() {

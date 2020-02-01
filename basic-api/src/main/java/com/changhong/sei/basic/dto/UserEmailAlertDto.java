@@ -2,6 +2,7 @@ package com.changhong.sei.basic.dto;
 
 import com.changhong.sei.core.dto.BaseEntityDto;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -21,28 +22,33 @@ public class UserEmailAlertDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 36)
+    @ApiModelProperty(value = "用户Id(max = 36)", required = true)
     private String userId;
 
     /**
      * 待办工作数量
      */
     @Min(0)
+    @ApiModelProperty(value = "待办工作数量")
     private Integer toDoAmount=0;
 
     /**
      * 间隔时间（小时）
      */
     @Min(0)
+    @ApiModelProperty(value = "间隔时间（小时）")
     private Integer hours=0;
 
     /**
      * 最后提醒时间
      */
+    @ApiModelProperty(value = "最后提醒时间")
     private Date lastTime;
 
     /**
      * 租户代码
      */
+    @ApiModelProperty(value = "租户代码")
     private String tenantCode;
 
     public String getUserId() {

@@ -2,6 +2,7 @@ package com.changhong.sei.basic.dto;
 
 import com.changhong.sei.core.dto.BaseEntityDto;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -19,37 +20,44 @@ public class SupplierUserDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 30)
+    @ApiModelProperty(value = "代码(max = 30)", required = true)
     private String code;
     /**
      * 名称
      */
     @Size(max = 100)
+    @ApiModelProperty(value = "名称(max = 100)", required = true)
     private String name;
     /**
      * 供应商id
      */
     @Size(max = 36)
+    @ApiModelProperty(value = "供应商id(max = 36)")
     private String supplierId;
     /**
      * 申请注册供应商ID
      *
      */
     @Size(max = 36)
+    @ApiModelProperty(value = "申请注册供应商Id(max = 36)")
     private String supplierApplyId;
     /**
      * 供应商代码
      */
     @Size(max = 30)
+    @ApiModelProperty(value = "供应商代码(max = 30)")
     private String supplierCode;
     /**
      * 供应商名称
      */
     @Size(max = 100)
+    @ApiModelProperty(value = "供应商名称(max = 100)")
     private String supplierName;
 
     /**
      * 租户代码
      */
+    @ApiModelProperty(value = "租户代码")
     private String tenantCode;
 
     public String getCode() {

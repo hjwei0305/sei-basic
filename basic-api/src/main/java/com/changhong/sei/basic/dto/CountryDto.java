@@ -2,6 +2,7 @@ package com.changhong.sei.basic.dto;
 
 import com.changhong.sei.core.dto.BaseEntityDto;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,6 +21,7 @@ public class CountryDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 4)
+    @ApiModelProperty(value = "代码(max = 4)", required = true)
     private String code;
 
     /**
@@ -27,6 +29,7 @@ public class CountryDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 60)
+    @ApiModelProperty(value = "名称(max = 60)", required = true)
     private String name;
 
     /**
@@ -34,30 +37,35 @@ public class CountryDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 5)
+    @ApiModelProperty(value = "国家货币代码(max = 5)", required = true)
     private String currencyCode;
 
     /**
      * 国家货币名称
      */
     @NotBlank
-    @Size(max = 150)
+    @Size(max = 20)
+    @ApiModelProperty(value = "国家货币名称(max = 20)", required = true)
     private String currencyName;
 
     /**
      * 是否国外
      */
     @NotNull
+    @ApiModelProperty(value = "是否国外", required = true)
     private Boolean toForeign = Boolean.FALSE;
 
     /**
      * 排序
      */
     @NotNull
+    @ApiModelProperty(value = "排序", required = true)
     private Integer rank = 0;
 
     /**
      * 租户代码
      */
+    @ApiModelProperty(value = "租户代码")
     private String tenantCode;
 
     public String getCode() {

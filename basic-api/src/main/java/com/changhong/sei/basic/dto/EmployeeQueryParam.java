@@ -1,5 +1,8 @@
 package com.changhong.sei.basic.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,6 +18,7 @@ import java.util.List;
  * <p/>
  * *************************************************************************************************
  */
+@ApiModel(description = "员工用户查询参数")
 public class EmployeeQueryParam implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -22,16 +26,19 @@ public class EmployeeQueryParam implements Serializable {
     /**
      * 页数
      */
+    @ApiModelProperty(value = "页数")
     private int page;
 
     /**
      * 行数
      */
+    @ApiModelProperty(value = "行数")
     private int rows;
 
     /**
      * 需要排除的员工用户id列表
      */
+    @ApiModelProperty(value = "需要排除的员工用户id列表")
     private List<String> ids;
 
     public int getPage() {

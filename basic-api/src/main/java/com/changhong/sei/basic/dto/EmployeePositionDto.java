@@ -3,6 +3,7 @@ package com.changhong.sei.basic.dto;
 import com.changhong.sei.core.dto.BaseEntityDto;
 import com.changhong.sei.core.dto.RelationEntityDto;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 实现功能: 企业员工用户分配岗位DTO
@@ -15,11 +16,13 @@ public class EmployeePositionDto extends BaseEntityDto implements RelationEntity
     /**
      * 企业员工用户DTO
      */
+    @ApiModelProperty(value = "企业员工用户DTO(EmployeeDto)", required = true)
     private EmployeeDto parent;
 
     /**
      * 岗位DTO
      */
+    @ApiModelProperty(value = "岗位DTO(PositionDto)", required = true)
     private PositionDto child;
 
     @Override

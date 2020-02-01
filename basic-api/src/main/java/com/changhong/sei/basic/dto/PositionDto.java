@@ -1,6 +1,8 @@
 package com.changhong.sei.basic.dto;
 
 import com.changhong.sei.core.dto.BaseEntityDto;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -11,21 +13,25 @@ import javax.validation.constraints.Size;
  * @author 王锦光 wangjg
  * @version 2020-01-27 15:54
  */
+@ApiModel(description = "岗位DTO")
 public class PositionDto extends BaseEntityDto {
     /**
      * 代码
      */
+    @ApiModelProperty(value = "代码(系统给号)")
     private String code;
     /**
      * 名称
      */
     @NotBlank
     @Size(max = 50)
+    @ApiModelProperty(value = "名称(max = 50)", required = true)
     private String name;
 
     /**
      * 租户代码
      */
+    @ApiModelProperty(value = "租户代码")
     private String tenantCode;
 
     /**
@@ -33,16 +39,19 @@ public class PositionDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 36)
+    @ApiModelProperty(value = "组织机构Id(max = 36)", required = true)
     private String organizationId;
 
     /**
      * 组织机构代码
      */
+    @ApiModelProperty(value = "组织机构代码")
     private String organizationCode;
 
     /**
      * 组织机构名称
      */
+    @ApiModelProperty(value = "组织机构名称")
     private String organizationName;
 
     /**
@@ -50,16 +59,19 @@ public class PositionDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 36)
+    @ApiModelProperty(value = "岗位类别Id(max = 36)", required = true)
     private String positionCategoryId;
 
     /**
      * 岗位类别代码
      */
+    @ApiModelProperty(value = "岗位类别代码")
     private String positionCategoryCode;
 
     /**
      * 岗位类别名称
      */
+    @ApiModelProperty(value = "岗位类别名称")
     private String positionCategoryName;
 
     public String getCode() {

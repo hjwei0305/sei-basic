@@ -2,6 +2,7 @@ package com.changhong.sei.basic.dto;
 
 import com.changhong.sei.core.dto.BaseEntityDto;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -20,21 +21,25 @@ public class MenuDto extends BaseEntityDto{
     /**
      * 菜单代码
      */
+    @ApiModelProperty(value = "菜单代码(系统给号)")
     private String code;
     /**
      * 菜单名称
      */
     @NotBlank
     @Size(max = 20)
+    @ApiModelProperty(value = "菜单名称(max = 20)", required = true)
     private String name;
     /**
      * 菜单代码路径
      */
+    @ApiModelProperty(value = "菜单代码路径")
     private String codePath;
 
     /**
      * 菜单名称路径
      */
+    @ApiModelProperty(value = "菜单名称路径")
     private String namePath;
 
     /**
@@ -42,6 +47,7 @@ public class MenuDto extends BaseEntityDto{
      */
     @NotNull
     @Min(0)
+    @ApiModelProperty(value = "菜单层级")
     private Integer nodeLevel = 0;
 
     /**
@@ -49,41 +55,49 @@ public class MenuDto extends BaseEntityDto{
      */
     @NotNull
     @Min(0)
+    @ApiModelProperty(value = "排序号")
     private Integer rank=0;
 
     /**
      * 父节点id
      */
+    @ApiModelProperty(value = "父节点id")
     private String parentId;
 
     /**
      * 功能项组Id
      */
+    @ApiModelProperty(value = "功能项组Id")
     private String featureId;
 
     /**
      * 关联功能项代码
      */
+    @ApiModelProperty(value = "关联功能项代码")
     private String featureCode;
 
     /**
      * 关联功能项名称
      */
+    @ApiModelProperty(value = "关联功能项名称")
     private String featureName;
 
     /**
      * 图标样式名称
      */
+    @ApiModelProperty(value = "图标样式名称")
     private String iconCls;
 
     /**
      * 子节点列表
      */
+    @ApiModelProperty(value = "子节点列表")
     private List<MenuDto> children;
 
     /**
      * 菜单项资源
      */
+    @ApiModelProperty(value = "菜单项资源")
     private String menuUrl;
 
     public String getCode() {

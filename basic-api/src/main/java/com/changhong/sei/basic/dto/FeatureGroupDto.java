@@ -2,6 +2,7 @@ package com.changhong.sei.basic.dto;
 
 import com.changhong.sei.core.dto.BaseEntityDto;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -19,6 +20,7 @@ public class FeatureGroupDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 30)
+    @ApiModelProperty(value = "代码(max = 30)", required = true)
     private String code;
 
     /**
@@ -26,6 +28,7 @@ public class FeatureGroupDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 30)
+    @ApiModelProperty(value = "名称(max = 30)", required = true)
     private String name;
 
     /**
@@ -33,16 +36,19 @@ public class FeatureGroupDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 36)
+    @ApiModelProperty(value = "应用模块Id(max = 36)", required = true)
     private String appModuleId;
 
     /**
      * 应用模块代码
      */
+    @ApiModelProperty(value = "应用模块代码")
     private String appModuleCode;
 
     /**
      * 应用模块名称
      */
+    @ApiModelProperty(value = "应用模块名称")
     private String appModuleName;
 
     public String getCode() {

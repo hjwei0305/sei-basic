@@ -4,6 +4,7 @@ import com.changhong.sei.core.dto.BaseEntityDto;
 import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -22,6 +23,7 @@ public class FeatureDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 50)
+    @ApiModelProperty(value = "功能项代码(max = 50)", required = true)
     private String code;
 
     /**
@@ -29,26 +31,31 @@ public class FeatureDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 30)
+    @ApiModelProperty(value = "功能项名称(max = 30)", required = true)
     private String name;
 
     /**
      * 分组代码
      */
+    @ApiModelProperty(value = "分组代码(max = 128)")
     private String groupCode;
 
     /**
      * 资源
      */
+    @ApiModelProperty(value = "资源(max = 400)")
     private String url;
 
     /**
      * 是否菜单项
      */
+    @ApiModelProperty(value = "是否菜单项", required = true)
     private Boolean canMenu = Boolean.FALSE;
 
     /**
      * 功能项类型：0：操作(Operate),1：业务(Business),2:页面(Page)
      */
+    @ApiModelProperty(value = "功能项类型(enum)", required = true)
     @NotNull
     @JsonSerialize(using = EnumJsonSerializer.class)
     private FeatureType featureType = FeatureType.Operate;
@@ -58,26 +65,31 @@ public class FeatureDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 36)
+    @ApiModelProperty(value = "功能项组Id(max = 36)", required = true)
     private String featureGroupId;
 
     /**
      * 租户可用
      */
     @NotNull
+    @ApiModelProperty(value = "租户可用", required = true)
     private Boolean tenantCanUse = Boolean.FALSE;
 
     /**
      * 应用模块名称
      */
+    @ApiModelProperty(value = "应用模块名称")
     private String appModuleName;
 
     /**
      * 功能项组代码
      */
+    @ApiModelProperty(value = "功能项组代码")
     private String featureGroupCode;
     /**
      * 功能项组名称
      */
+    @ApiModelProperty(value = "功能项组名称")
     private String featureGroupName;
 
     public String getCode() {

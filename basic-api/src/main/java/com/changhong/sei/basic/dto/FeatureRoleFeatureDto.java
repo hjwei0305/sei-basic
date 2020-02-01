@@ -3,6 +3,7 @@ package com.changhong.sei.basic.dto;
 import com.changhong.sei.core.dto.BaseEntityDto;
 import com.changhong.sei.core.dto.RelationEntityDto;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * 实现功能: 功能角色分配的功能项DTO
@@ -16,11 +17,13 @@ public class FeatureRoleFeatureDto extends BaseEntityDto
     /**
      * 功能角色DTO
      */
+    @ApiModelProperty(value = "功能角色DTO", required = true)
     private FeatureRoleDto parent;
 
     /**
      * 功能项DTO
      */
+    @ApiModelProperty(value = "功能项DTO", required = true)
     private FeatureDto child;
 
     @Override

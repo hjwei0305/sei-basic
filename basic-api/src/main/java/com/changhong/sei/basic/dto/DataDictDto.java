@@ -2,6 +2,7 @@ package com.changhong.sei.basic.dto;
 
 import com.changhong.sei.core.dto.BaseEntityDto;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,27 +21,32 @@ public class DataDictDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 50)
+    @ApiModelProperty(value = "代码(max = 50)", required = true)
     private String code;
     /**
      * 名称
      */
     @NotBlank
     @Size(max = 100)
+    @ApiModelProperty(value = "名称(max = 100)", required = true)
     private String name;
     /**
      * 是否冻结
      */
     @NotNull
+    @ApiModelProperty(value = "是否冻结", required = true)
     private Boolean frozen = Boolean.FALSE;
     /**
      * 排序
      */
     @NotNull
+    @ApiModelProperty(value = "排序", required = true)
     private Integer rank = 0;
     /**
      * 备注
      */
     @Size(max = 100)
+    @ApiModelProperty(value = "备注(max = 100)")
     private String remark;
 
     public String getCode() {

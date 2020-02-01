@@ -2,6 +2,7 @@ package com.changhong.sei.basic.dto;
 
 import com.changhong.sei.core.dto.BaseEntityDto;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -17,6 +18,7 @@ public class DataRoleGroupDto extends BaseEntityDto {
     /**
      * 租户代码
      */
+    @ApiModelProperty(value = "租户代码")
     private String tenantCode;
 
     /**
@@ -24,6 +26,7 @@ public class DataRoleGroupDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 20)
+    @ApiModelProperty(value = "代码(max = 20)", required = true)
     private String code;
 
     /**
@@ -31,6 +34,7 @@ public class DataRoleGroupDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 50)
+    @ApiModelProperty(value = "名称(max = 50)", required = true)
     private String name;
 
     public String getTenantCode() {

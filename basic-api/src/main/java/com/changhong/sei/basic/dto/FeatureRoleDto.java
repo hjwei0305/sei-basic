@@ -5,6 +5,7 @@ import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
 import com.chonghong.sei.enums.UserType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -21,55 +22,66 @@ public class FeatureRoleDto extends BaseEntityDto {
     /**
      * 租户代码
      */
+    @ApiModelProperty(value = "租户代码")
     private String tenantCode;
     /**
      * 代码
      */
     @NotBlank
     @Size(max = 50)
+    @ApiModelProperty(value = "代码(max = 50)", required = true)
     private String code;
     /**
      * 名称
      */
     @NotBlank
     @Size(max = 50)
+    @ApiModelProperty(value = "名称(max = 50)", required = true)
     private String name;
     /**
      * 功能角色组Id
      */
     @NotBlank
     @Size(max = 36)
+    @ApiModelProperty(value = "功能角色组Id(max = 36)", required = true)
     private String featureGroupId;
     /**
      * 功能角色组代码
      */
+    @ApiModelProperty(value = "功能角色组代码")
     private String featureRoleGroupCode;
     /**
      * 功能角色组名称
      */
+    @ApiModelProperty(value = "功能角色组名称")
     private String featureRoleGroupName;
     /**
      * 角色类型(0-可使用，1-可分配)
      */
     @NotNull
+    @ApiModelProperty(value = "角色类型(enum)", required = true)
     @JsonSerialize(using = EnumJsonSerializer.class)
     private RoleType roleType;
     /**
      * 公共角色的用户类型
      */
+    @ApiModelProperty(value = "公共角色的用户类型(enum)")
     @JsonSerialize(using = EnumJsonSerializer.class)
     private UserType publicUserType;
     /**
      * 公共角色的组织机构Id
      */
+    @ApiModelProperty(value = "公共角色的组织机构Id")
     private String publicOrgId;
     /**
      * 公共角色的组织机构代码
      */
+    @ApiModelProperty(value = "公共角色的组织机构代码")
     private String publicOrgCode;
     /**
      * 公共角色的组织机构名称
      */
+    @ApiModelProperty(value = "公共角色的组织机构名称")
     private String publicOrgName;
 
     public String getTenantCode() {
