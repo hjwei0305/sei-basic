@@ -23,6 +23,7 @@ public class AppModuleDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 20)
+    @ApiModelProperty(value = "代码", required = true)
     private String code;
 
     /**
@@ -30,22 +31,26 @@ public class AppModuleDto extends BaseEntityDto {
      */
     @NotBlank
     @Size(max = 30)
+    @ApiModelProperty(value = "名称", required = true)
     private String name;
 
     /**
      * 备注
      */
+    @ApiModelProperty(value = "备注")
     private String remark;
 
 
     /**
      * web基地址
      */
+    @ApiModelProperty(value = "web基地址")
     private String webBaseAddress;
 
     /**
      * api基地址
      */
+    @ApiModelProperty(value = "api基地址")
     private String apiBaseAddress;
 
     /**
@@ -53,6 +58,7 @@ public class AppModuleDto extends BaseEntityDto {
      */
     @NotNull
     @Min(1)
+    @ApiModelProperty(value = "api基地址", required = true)
     private Integer rank;
 
     public String getName() {
