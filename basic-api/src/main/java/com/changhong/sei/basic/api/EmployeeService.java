@@ -23,7 +23,8 @@ import java.util.List;
 @FeignClient(name = "sei-basic", path = "employee")
 @RestController
 @RequestMapping(path = "employee", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public interface EmployeeService extends BaseEntityService<EmployeeDto>, FindByPageService<EmployeeDto> {
+public interface EmployeeService extends BaseEntityService<EmployeeDto>,
+        FindByPageService<EmployeeDto> {
     /**
      * 根据查询参数获取企业员工(分页)
      *

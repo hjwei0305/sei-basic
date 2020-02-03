@@ -75,7 +75,7 @@ public class EmployeeManager extends BaseEntityManager<Employee> {
      * @return 返回操作对象
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public OperateResultWithData<Employee> save(Employee entity) {
         entity.setPassword(DigestUtils.md5Hex("123456"));   //默认为：123456
         return saveEmployee(entity);

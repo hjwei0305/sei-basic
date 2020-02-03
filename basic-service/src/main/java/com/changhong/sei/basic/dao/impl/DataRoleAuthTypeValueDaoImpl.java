@@ -38,7 +38,6 @@ public class DataRoleAuthTypeValueDaoImpl extends BaseEntityDaoImpl<DataRoleAuth
      * @return 分配关系
      */
     @Override
-    @Transactional(readOnly = true)
     public DataRoleRelation getDataRoleRelation(String roleId, String dataAuthTypeId) {
         DataRoleRelation relation = new DataRoleRelation();
         relation.setDataRoleId(roleId);

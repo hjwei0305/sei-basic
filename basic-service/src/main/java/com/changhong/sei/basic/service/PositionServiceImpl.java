@@ -275,7 +275,7 @@ public class PositionServiceImpl implements DefaultBaseEntityService<Position, P
      */
     @Override
     public PositionDto convertToDto(Position entity) {
-        return null;
+        return PositionServiceImpl.custConvertToDto(entity);
     }
 
     /**

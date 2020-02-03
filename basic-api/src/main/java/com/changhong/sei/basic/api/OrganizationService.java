@@ -22,7 +22,8 @@ import java.util.List;
 @FeignClient(name = "sei-basic", path = "organization")
 @RestController
 @RequestMapping(path = "organization", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public interface OrganizationService extends BaseTreeService<OrganizationDto>, DataAuthTreeEntityService<OrganizationDto> {
+public interface OrganizationService extends BaseTreeService<OrganizationDto>,
+        DataAuthTreeEntityService<OrganizationDto> {
     /**
      * 通过代码获取组织机构
      *

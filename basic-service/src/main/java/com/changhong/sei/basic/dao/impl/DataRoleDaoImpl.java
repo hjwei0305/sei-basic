@@ -44,20 +44,19 @@ public class DataRoleDaoImpl extends BaseEntityDaoImpl<DataRole> implements Data
      * @return 全局公共角色
      */
     @Override
-    @Transactional(readOnly = true)
     public List<DataRole> getPublicRoles(User user) {
-        if (Objects.isNull(user)){
+        if (Objects.isNull(user)) {
             return new ArrayList<>();
         }
         String sql = "select r from DataRole r where r.tenantCode=:tenantCode and r.publicUserType=:publicUserType and r.publicOrg is null";
         Query query = entityManager.createQuery(sql);
-        query.setParameter("tenantCode",user.getTenantCode());
-        query.setParameter("publicUserType",user.getUserType());
+        query.setParameter("tenantCode", user.getTenantCode());
+        query.setParameter("publicUserType", user.getUserType());
         List queryResult = query.getResultList();
         List<DataRole> result = new ArrayList<>();
-        for (Object r:queryResult
-             ) {
-                result.add((DataRole)r);
+        for (Object r : queryResult
+        ) {
+            result.add((DataRole) r);
         }
         return result;
     }
@@ -70,33 +69,32 @@ public class DataRoleDaoImpl extends BaseEntityDaoImpl<DataRole> implements Data
      * @return 组织机构公共角色
      */
     @Override
-    @Transactional(readOnly = true)
     public List<DataRole> getPublicRoles(User user, List<Organization> orgs) {
         List<DataRole> result = new ArrayList<>();
-        if (Objects.isNull(user)||Objects.isNull(orgs)||orgs.isEmpty()){
+        if (Objects.isNull(user) || Objects.isNull(orgs) || orgs.isEmpty()) {
             return result;
         }
         //获取租户的角色组
         List<DataRoleGroup> groups = dataRoleGroupDao.findByTenantCode(user.getTenantCode());
-        for (DataRoleGroup group:groups){
+        for (DataRoleGroup group : groups) {
             //循环组织机构
-            for (Organization org:orgs){
+            for (Organization org : orgs) {
                 //获取匹配的公共角色
                 String sql = "select r from DataRole r where r.tenantCode=:tenantCode " +
                         "and r.publicUserType=:publicUserType " +
-                        "and r.dataRoleGroup.id=:dataRoleGroupId "+
+                        "and r.dataRoleGroup.id=:dataRoleGroupId " +
                         "and r.publicOrg is not null and r.publicOrg.id=:publicOrgId";
                 Query query = entityManager.createQuery(sql);
-                query.setParameter("tenantCode",user.getTenantCode());
-                query.setParameter("publicUserType",user.getUserType());
+                query.setParameter("tenantCode", user.getTenantCode());
+                query.setParameter("publicUserType", user.getUserType());
                 query.setParameter("dataRoleGroupId", group.getId());
                 query.setParameter("publicOrgId", org.getId());
                 List<DataRole> orgPubRoles = new ArrayList<>();
-                for (Object r: query.getResultList()
-                     ) {
+                for (Object r : query.getResultList()
+                ) {
                     orgPubRoles.add((DataRole) r);
                 }
-                if (!orgPubRoles.isEmpty()){
+                if (!orgPubRoles.isEmpty()) {
                     result.addAll(orgPubRoles);
                     break;
                 }
