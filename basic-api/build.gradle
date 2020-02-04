@@ -2,8 +2,8 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 dependencies {
-    compile("com.changhong.sei:core-api:$sei_version")
-    compile("com.changhong.sei:notify-api:$sei_version")
+    compile("com.changhong.sei:core-api:4.0.0.75")
+    compile("com.changhong.sei:notify-api:4.0.3")
 }
 
 //打包源代码jar包
