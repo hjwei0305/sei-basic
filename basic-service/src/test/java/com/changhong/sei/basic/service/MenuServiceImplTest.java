@@ -5,7 +5,9 @@ import com.changhong.sei.basic.dto.FeatureType;
 import com.changhong.sei.basic.dto.MenuDto;
 import com.changhong.sei.basic.entity.Feature;
 import com.changhong.sei.basic.entity.Menu;
+import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.util.JsonUtils;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -53,5 +55,12 @@ public class MenuServiceImplTest extends BaseUnitTest {
 
         MenuDto menuDto = service.convertToDto(menu);
         System.out.println(JsonUtils.toJson(menuDto));
+    }
+
+    @Test
+    public void getMenuTree(){
+        ResultData resultData = service.getMenuTree();
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.isSuccessful());
     }
 }

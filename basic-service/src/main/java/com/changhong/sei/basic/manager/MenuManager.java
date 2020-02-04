@@ -1,6 +1,7 @@
 package com.changhong.sei.basic.manager;
 
 import com.changhong.sei.basic.dao.MenuDao;
+import com.changhong.sei.basic.entity.AppModule;
 import com.changhong.sei.basic.entity.Feature;
 import com.changhong.sei.basic.entity.Menu;
 import com.changhong.sei.basic.manager.client.NumberGenerator;
@@ -91,10 +92,17 @@ public class MenuManager extends BaseTreeManager<Menu> {
         if (menu.getFeature() != null) {
             if (menu.getFeature().getFeatureGroup() != null) {
                 if (menu.getFeature().getFeatureGroup().getAppModule() != null) {
-                    String apiBaseAddress = ContextUtil.getProperty(menu.getFeature().getFeatureGroup().getAppModule().getApiBaseAddress());
-                    String webBaseAddress = ContextUtil.getProperty(menu.getFeature().getFeatureGroup().getAppModule().getWebBaseAddress());
-                    menu.getFeature().getFeatureGroup().getAppModule().setApiBaseAddress(apiBaseAddress);
-                    menu.getFeature().getFeatureGroup().getAppModule().setWebBaseAddress(webBaseAddress);
+                    AppModule appModule = menu.getFeature().getFeatureGroup().getAppModule();
+                    String apiBaseAddress = appModule.getApiBaseAddress();
+                    if (StringUtils.isNotBlank(apiBaseAddress)){
+                        String baseAddress = ContextUtil.getProperty(apiBaseAddress);
+                        menu.getFeature().getFeatureGroup().getAppModule().setApiBaseAddress(baseAddress);
+                    }
+                    String webBaseAddress = appModule.getWebBaseAddress();
+                    if (StringUtils.isNotBlank(webBaseAddress)){
+                        String baseAddress = ContextUtil.getProperty(webBaseAddress);
+                        menu.getFeature().getFeatureGroup().getAppModule().setWebBaseAddress(baseAddress);
+                    }
                 }
             }
         }
