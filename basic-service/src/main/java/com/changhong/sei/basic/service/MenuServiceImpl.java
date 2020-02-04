@@ -115,6 +115,7 @@ public class MenuServiceImpl implements DefaultTreeService<Menu, MenuDto>,
             protected void configure() {
                 // 使用自定义转换规则确定FeatureId
                 map().setFeatureId(source.getFeatureId());
+                map().setMenuUrl(source.getFeature().getGroupCode());
             }
         };
         // 添加映射器
