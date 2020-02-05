@@ -12,8 +12,10 @@ import com.changhong.sei.basic.service.FeatureRoleService;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
+import com.changhong.sei.core.utils.ResultDataUtil;
 import com.chonghong.sei.enums.UserType;
 import com.chonghong.sei.util.EnumUtils;
+import io.lettuce.core.models.role.RedisInstance;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -174,7 +176,7 @@ public class FeatureRoleController implements DefaultBaseEntityController<Featur
      */
     @Override
     public ResultData<List<EnumUtils.EnumEntity>> getRoleTypeList() {
-        return ResultData.success(EnumUtils.getEnumDataList(RoleType.class));
+        return ResultDataUtil.getEnumEntities(RoleType.class);
     }
 
     /**
@@ -184,7 +186,7 @@ public class FeatureRoleController implements DefaultBaseEntityController<Featur
      */
     @Override
     public ResultData<List<EnumUtils.EnumEntity>> listAllUserType() {
-        return ResultData.success(EnumUtils.getEnumDataList(UserType.class));
+        return ResultDataUtil.getEnumEntities(UserType.class);
     }
 
     /**
