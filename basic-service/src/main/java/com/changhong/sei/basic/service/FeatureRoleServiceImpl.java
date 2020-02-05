@@ -14,6 +14,7 @@ import com.changhong.sei.core.manager.BaseEntityManager;
 import com.changhong.sei.core.service.DefaultBaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import com.chonghong.sei.enums.UserType;
+import com.chonghong.sei.util.EnumUtils;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -174,8 +175,8 @@ public class FeatureRoleServiceImpl implements DefaultBaseEntityService<FeatureR
      * @return 用户角色类型列表
      */
     @Override
-    public ResultData<Map<String, String>> getRoleTypeList() {
-        return ResultDataUtil.getEnumMap(RoleType.class);
+    public ResultData<List<EnumUtils.EnumEntity>> getRoleTypeList() {
+        return ResultData.success(EnumUtils.getEnumDataList(RoleType.class));
     }
 
     /**
@@ -184,8 +185,8 @@ public class FeatureRoleServiceImpl implements DefaultBaseEntityService<FeatureR
      * @return 用户类型列表
      */
     @Override
-    public ResultData<Map<String, String>> listAllUserType() {
-        return ResultDataUtil.getEnumMap(UserType.class);
+    public ResultData<List<EnumUtils.EnumEntity>> listAllUserType() {
+        return ResultData.success(EnumUtils.getEnumDataList(UserType.class));
     }
 
     /**

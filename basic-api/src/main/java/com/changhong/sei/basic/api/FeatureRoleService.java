@@ -5,6 +5,7 @@ import com.changhong.sei.basic.dto.PositionDto;
 import com.changhong.sei.basic.dto.UserDto;
 import com.changhong.sei.core.api.BaseEntityService;
 import com.changhong.sei.core.dto.ResultData;
+import com.chonghong.sei.util.EnumUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -80,7 +81,7 @@ public interface FeatureRoleService extends BaseEntityService<FeatureRoleDto> {
      */
     @GetMapping(path = "listAllRoleTypeList")
     @ApiOperation(value = "获取角色类型", notes = "获取角色类型")
-    ResultData<Map<String, String>> getRoleTypeList();
+    ResultData<List<EnumUtils.EnumEntity>> getRoleTypeList();
 
     /**
      * 获取用户类型
@@ -88,5 +89,5 @@ public interface FeatureRoleService extends BaseEntityService<FeatureRoleDto> {
      */
     @GetMapping(path = "listAllUserType")
     @ApiOperation(value = "获取用户类型", notes = "获取用户类型")
-    ResultData<Map<String, String>> listAllUserType();
+    ResultData<List<EnumUtils.EnumEntity>> listAllUserType();
 }
