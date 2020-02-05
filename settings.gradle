@@ -1,4 +1,4 @@
 rootProject.name = 'sei-basic'
-include 'basic-api'
-include 'basic-service'
+include 'sei-basic-api'
+include 'sei-basic-service'
 
