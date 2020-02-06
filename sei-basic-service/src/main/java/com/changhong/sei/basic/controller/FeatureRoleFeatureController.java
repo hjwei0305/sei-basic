@@ -114,4 +114,15 @@ public class FeatureRoleFeatureController implements DefaultRelationController<F
     public Class<FeatureDto> getChildDtoClass() {
         return FeatureDto.class;
     }
+
+    /**
+     * 将子数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    @Override
+    public FeatureDto convertChildToDto(Feature entity) {
+        return FeatureController.custConvertToDto(entity);
+    }
 }

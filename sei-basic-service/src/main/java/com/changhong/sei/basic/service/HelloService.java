@@ -2,6 +2,7 @@ package com.changhong.sei.basic.service;
 
 import com.changhong.sei.core.log.LogUtil;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * <strong>实现功能:</strong>
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @author 王锦光 wangj
  * @version 1.0.1 2019-12-18 19:42
  */
-@Component
+@Service
 public class HelloService {
     /**
      * 你好业务逻辑
