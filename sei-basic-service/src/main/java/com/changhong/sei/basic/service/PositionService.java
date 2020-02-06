@@ -19,6 +19,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -70,7 +71,7 @@ public class PositionService extends BaseEntityService<Position> {
     @Override
     public OperateResultWithData<Position> save(Position entity) {
         //检查同一部门下的岗位名称是否存在
-        if (positionDao.isOrgAndNameExist(entity.getOrganization().getId(), entity.getName(), entity.getId())) {
+        if (positionDao.isOrgAndNameExist(entity.getOrganizationId(), entity.getName(), entity.getId())) {
             //00048= 该组织机构下的岗位【{0}】已存在，请重新输入！
             return OperateResultWithData.operationFailure("00048", entity.getName());
         }
@@ -246,6 +247,7 @@ public class PositionService extends BaseEntityService<Position> {
      * @param copyParam 复制参数
      * @return 操作结果
      */
+    @Transactional(rollbackFor = Exception.class)
     public OperateResult copyToOrgNodes(PositionCopyParam copyParam) {
         // 获取源岗位
         Position position = positionDao.findOne(copyParam.getPositionId());
@@ -293,6 +295,7 @@ public class PositionService extends BaseEntityService<Position> {
         copyPosition.setId(null);
         copyPosition.setCode(null);
         copyPosition.setOrganizationId(orgId);
+        copyPosition.setOrganization(null);
         OperateResultWithData<Position> saveResult = save(copyPosition);
         if (saveResult.notSuccessful()){
             return null;
