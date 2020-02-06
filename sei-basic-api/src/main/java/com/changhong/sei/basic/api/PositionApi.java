@@ -190,5 +190,5 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
      */
     @PostMapping(path = "copyToOrgNodes", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "把一个岗位复制到多个组织机构节点上", notes = "实现快速配置岗位，把一个岗位复制到多个组织机构节点上，可以复制功能角色")
-    ResultData copyToOrgNodes(PositionCopyParam copyParam);
+    ResultData copyToOrgNodes(@RequestBody PositionCopyParam copyParam);
 }
