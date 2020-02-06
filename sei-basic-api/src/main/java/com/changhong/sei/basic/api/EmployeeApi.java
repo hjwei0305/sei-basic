@@ -192,4 +192,22 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
     @PostMapping(path = "copyToEmployees", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "把一个企业用户的角色复制到多个企业用户", notes = "实现快速配置用户权限，把一个用户的角色复制到多个企业用户，可以复制功能角色和数据角色")
     ResultData copyToEmployees(@RequestBody EmployeeCopyParam copyParam);
+
+    /**
+     * 获取用户的组织机构代码清单
+     * @param userId 用户Id
+     * @return 组织机构代码清单
+     */
+    @GetMapping(path = "getEmployeeOrgCodes", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "获取用户的组织机构代码清单", notes = "获取企业用户所在组织机构节点的所有父节点代码")
+    ResultData<List<String>> getEmployeeOrgCodes(@RequestParam("userId") String userId);
+
+    /**
+     * 获取用户的岗位代码清单
+     * @param userId 用户Id
+     * @return 岗位代码清单
+     */
+    @GetMapping(path = "getEmployeePositionCodes", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "获取用户的岗位代码清单", notes = "获取企业用户已分配的所有岗位代码")
+    ResultData<List<String>> getEmployeePositionCodes(@RequestParam("userId") String userId);
 }

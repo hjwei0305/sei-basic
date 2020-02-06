@@ -7,6 +7,8 @@ import com.changhong.sei.core.dto.serach.SearchFilter;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,11 +36,12 @@ public class UserProfileDaoImpl extends BaseEntityDaoImpl<UserProfile> implement
      */
     @Override
     public List<UserProfile> findNotifyInfoByUserIds(List<String> userIds) {
-        if (!CollectionUtils.isEmpty(userIds)) {
-            SearchFilter filter = new SearchFilter("user.id", userIds, SearchFilter.Operator.IN);
-            return findByFilter(filter);
-        } else {
-            return null;
+        if (CollectionUtils.isEmpty(userIds)){
+            return new ArrayList<>();
         }
+        String queryStr = "select p from UserProfile p where p.userId in :userIds";
+        Query query = entityManager.createQuery(queryStr);
+        query.setParameter("userIds", userIds);
+        return query.getResultList();
     }
 }

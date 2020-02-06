@@ -2,10 +2,10 @@ package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.EmployeeApi;
 import com.changhong.sei.basic.dto.*;
-import com.changhong.sei.basic.entity.DataRole;
-import com.changhong.sei.basic.entity.Employee;
-import com.changhong.sei.basic.entity.FeatureRole;
+import com.changhong.sei.basic.entity.*;
+import com.changhong.sei.basic.service.EmployeePositionService;
 import com.changhong.sei.basic.service.EmployeeService;
+import com.changhong.sei.basic.service.OrganizationService;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageResult;
@@ -14,12 +14,14 @@ import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
+import javafx.geometry.Pos;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -36,6 +38,10 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
         EmployeeApi {
     @Autowired
     private EmployeeService service;
+    @Autowired
+    private OrganizationService organizationService;
+    @Autowired
+    private EmployeePositionService employeePositionService;
     @Autowired
     private ModelMapper modelMapper;
     /**
@@ -234,6 +240,38 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
     @Override
     public ResultData copyToEmployees(EmployeeCopyParam copyParam) {
         return ResultDataUtil.convertFromOperateResult(service.copyToEmployees(copyParam));
+    }
+
+    /**
+     * 获取用户的组织机构代码清单
+     *
+     * @param userId 用户Id
+     * @return 组织机构代码清单
+     */
+    @Override
+    public ResultData<List<String>> getEmployeeOrgCodes(String userId) {
+        List<String> orgCodes = new ArrayList<>();
+        // 获取企业员工的组织
+        Employee employee = service.findOne(userId);
+        if (Objects.isNull(employee) || Objects.isNull(employee.getOrganization())){
+            return ResultData.success(orgCodes);
+        }
+        // 获取组织机构节点清单
+        List<Organization> organizations = organizationService.getParentNodes(employee.getOrganization(), true);
+        return ResultData.success(organizations.stream().map(Organization::getCode).collect(Collectors.toList()));
+    }
+
+    /**
+     * 获取用户的岗位代码清单
+     *
+     * @param userId 用户Id
+     * @return 岗位代码清单
+     */
+    @Override
+    public ResultData<List<String>> getEmployeePositionCodes(String userId) {
+        // 获取企业用户的岗位
+        List<Position> positions = employeePositionService.getChildrenFromParentId(userId);
+        return ResultData.success(positions.stream().map(Position::getCode).collect(Collectors.toList()));
     }
 
     @Override
