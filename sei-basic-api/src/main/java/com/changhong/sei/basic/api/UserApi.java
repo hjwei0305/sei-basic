@@ -3,6 +3,7 @@ package com.changhong.sei.basic.api;
 import com.changhong.sei.basic.dto.Executor;
 import com.changhong.sei.basic.dto.MenuDto;
 import com.changhong.sei.basic.dto.UserDto;
+import com.changhong.sei.basic.dto.UserInformation;
 import com.changhong.sei.core.api.BaseEntityApi;
 import com.changhong.sei.core.api.FindByPageApi;
 import com.changhong.sei.core.dto.ResultData;
@@ -128,4 +129,14 @@ public interface UserApi extends BaseEntityApi<UserDto>,
     @GetMapping(path = "getUserAuthorizedFeature")
     @ApiOperation(value = "获取用户是否有该页面的权限", notes = "获取用户是否有该页面的权限(有权限则data返回true，无则返回data为false)")
     ResultData<Map<String, String>> getUserAuthorizedFeature(@RequestParam("userId") String userId, @RequestParam("url") String pageGroupCode);
+
+    /**
+     * 通过用户userId查询用户信息
+     *
+     * @param userId 用户id
+     * @return 用户信息
+     */
+    @GetMapping(path = "getUserInformation")
+    @ApiOperation(notes = "根据用户id查询用户", value = "根据用户id查询一个用户")
+    ResultData<UserInformation> getUserInformation(@RequestParam("userId")String userId);
 }

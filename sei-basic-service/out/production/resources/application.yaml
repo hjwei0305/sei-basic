@@ -36,4 +36,4 @@ spring:
 
 # sei 参数配置
 sei:
-  number-generator-url: http://10.4.208.87:19002/config-center-controller/api
+  number-generator-url: http://10.4.208.87:19002/config-center-service/api

@@ -50,7 +50,7 @@ public class User extends BaseEntity implements ITenant, IFrozen {
     private String tenantCode;
 
     /**
-     * 用户类型,0代表员工，1代表合作伙伴
+     * 用户类型
      */
     @Enumerated
     @JsonSerialize(using = EnumJsonSerializer.class)

@@ -4,9 +4,13 @@ import com.changhong.sei.basic.api.UserApi;
 import com.changhong.sei.basic.dto.Executor;
 import com.changhong.sei.basic.dto.MenuDto;
 import com.changhong.sei.basic.dto.UserDto;
+import com.changhong.sei.basic.dto.UserInformation;
 import com.changhong.sei.basic.entity.Menu;
 import com.changhong.sei.basic.entity.User;
+import com.changhong.sei.basic.entity.UserProfile;
+import com.changhong.sei.basic.service.UserProfileService;
 import com.changhong.sei.basic.service.UserService;
+import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthEntityData;
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +40,8 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
         UserApi {
     @Autowired
     private UserService service;
+    @Autowired
+    private UserProfileService userProfileService;
     @Autowired
     private ModelMapper modelMapper;
     /**
@@ -153,6 +160,32 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
     @Override
     public ResultData<Map<String, String>> getUserAuthorizedFeature(String userId, String pageGroupCode) {
         return service.getUserAuthorizedFeature(userId, pageGroupCode);
+    }
+
+    /**
+     * 通过用户userId查询用户信息
+     *
+     * @param userId 用户id
+     * @return 用户信息
+     */
+    @Override
+    public ResultData<UserInformation> getUserInformation(String userId) {
+        UserInformation information = new UserInformation();
+        information.setUserId(userId);
+        // 获取用户基本信息
+        User user = service.findById(userId);
+        if (Objects.isNull(user)){
+            // 用户【{0}】不存在！
+            return ResultData.fail(ContextUtil.getMessage("00092", userId));
+        }
+        information.setUserType(user.getUserType());
+        information.setUserAuthorityPolicy(user.getUserAuthorityPolicy());
+        // 获取用户配置信息
+        UserProfile profile = userProfileService.findByUserId(userId);
+        if (Objects.nonNull(profile)){
+            information.setLanguageCode(profile.getLanguageCode());
+        }
+        return ResultData.success(information);
     }
 
     /**
