@@ -292,9 +292,7 @@ public class PositionService extends BaseEntityService<Position> {
         Position copyPosition = JsonUtils.cloneByJson(position);
         copyPosition.setId(null);
         copyPosition.setCode(null);
-        Organization targetOrg = new Organization();
-        targetOrg.setId(orgId);
-        copyPosition.setOrganization(targetOrg);
+        copyPosition.setOrganizationId(orgId);
         OperateResultWithData<Position> saveResult = save(copyPosition);
         if (saveResult.notSuccessful()){
             return null;
