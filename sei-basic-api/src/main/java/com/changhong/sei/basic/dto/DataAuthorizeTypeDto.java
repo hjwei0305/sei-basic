@@ -40,10 +40,10 @@ public class DataAuthorizeTypeDto extends BaseEntityDto {
     private String authorizeEntityTypeId;
 
     /**
-     * 权限对象类型代码
+     * 权限对象类型类名
      */
-    @ApiModelProperty(value = "权限对象类型代码")
-    private String authorizeEntityTypeCode;
+    @ApiModelProperty(value = "权限对象类型类名")
+    private String authorizeEntityTypeEntityClassName;
 
     /**
      * 权限对象类型名称
@@ -94,12 +94,12 @@ public class DataAuthorizeTypeDto extends BaseEntityDto {
         this.authorizeEntityTypeId = authorizeEntityTypeId;
     }
 
-    public String getAuthorizeEntityTypeCode() {
-        return authorizeEntityTypeCode;
+    public String getAuthorizeEntityTypeEntityClassName() {
+        return authorizeEntityTypeEntityClassName;
     }
 
-    public void setAuthorizeEntityTypeCode(String authorizeEntityTypeCode) {
-        this.authorizeEntityTypeCode = authorizeEntityTypeCode;
+    public void setAuthorizeEntityTypeEntityClassName(String authorizeEntityTypeEntityClassName) {
+        this.authorizeEntityTypeEntityClassName = authorizeEntityTypeEntityClassName;
     }
 
     public String getAuthorizeEntityTypeName() {
