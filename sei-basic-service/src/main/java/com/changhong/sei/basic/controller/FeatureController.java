@@ -159,6 +159,7 @@ public class FeatureController implements DefaultBaseEntityController<Feature, F
             protected void configure() {
                 // 自定义转换规则(明确FeatureGroupId来自source的featureGroupId而不是source.featureGroup.id)
                 map().setFeatureGroupId(source.getFeatureGroupId());
+                map().setAppModuleName(source.getFeatureGroup().getAppModule().getName());
             }
         };
         // 添加映射器

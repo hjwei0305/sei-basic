@@ -26,4 +26,12 @@ public class FeatureRoleFeatureControllerTest extends BaseUnitTest {
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }
+
+    @Test
+    public void getChildrenFromParentId() {
+        String parentId = "10206823-47EA-11EA-BFEE-0242C0A84604";
+        ResultData resultData = controller.getChildrenFromParentId(parentId);
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
 }
