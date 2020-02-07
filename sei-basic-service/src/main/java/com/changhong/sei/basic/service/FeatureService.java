@@ -70,18 +70,8 @@ public class FeatureService extends BaseEntityService<Feature> {
     public OperateResultWithData<Feature> save(Feature entity) {
         String url = entity.getUrl();
         entity.setUrl(StringUtils.strip(url, "/"));
-        if(entity.isNew()){
-            return super.save(entity);
-        }else {
-            Feature feature = findOne(entity.getId());
-            if(feature.getGroupCode().equals(entity.getGroupCode())){
-                return super.save(entity);
-            }else {
-                featureDao.updateGroup(feature.getGroupCode(),entity.getGroupCode());
-                return super.save(entity);
-            }
-        }
-
+        // 对功能项的groupCode不做特殊处理
+        return super.save(entity);
     }
 
     /**
