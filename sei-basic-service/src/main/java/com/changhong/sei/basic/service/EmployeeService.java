@@ -116,6 +116,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
             if (entity.isCreateAdmin()) {
                 UserProfile userProfile = userProfileService.findByUserId(entity.getId());
                 userProfile.setEmail(entity.getEmail());
+                userProfile.setMobile(entity.getMobile());
                 userProfileService.save(userProfile);
             }
             employeeDao.save(entity, false);

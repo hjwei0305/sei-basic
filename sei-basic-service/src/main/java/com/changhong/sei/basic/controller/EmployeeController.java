@@ -13,6 +13,8 @@ import com.changhong.sei.core.dto.serach.QuickSearchParam;
 import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
+import com.chonghong.sei.enums.UserAuthorityPolicy;
+import com.chonghong.sei.enums.UserType;
 import io.swagger.annotations.Api;
 import javafx.geometry.Pos;
 import org.modelmapper.ModelMapper;
@@ -272,6 +274,21 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
         // 获取企业用户的岗位
         List<Position> positions = employeePositionService.getChildrenFromParentId(userId);
         return ResultData.success(positions.stream().map(Position::getCode).collect(Collectors.toList()));
+    }
+
+    /**
+     * 保存一个租户的系统管理员
+     *
+     * @param employeeDto 企业员工用户
+     * @return 操作结果
+     */
+    @Override
+    public ResultData saveTenantAdmin(EmployeeDto employeeDto) {
+        // 设置租户的系统管理员属性
+        employeeDto.setUserType(UserType.Employee);
+        employeeDto.setUserAuthorityPolicy(UserAuthorityPolicy.TenantAdmin);
+        employeeDto.setCreateAdmin(Boolean.TRUE);
+        return DefaultBaseEntityController.super.save(employeeDto);
     }
 
     @Override

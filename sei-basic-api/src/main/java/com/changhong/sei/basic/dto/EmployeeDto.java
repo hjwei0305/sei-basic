@@ -36,6 +36,7 @@ public class EmployeeDto extends BaseEntityDto {
     /**
      * 用户名称
      */
+    @NotBlank
     @ApiModelProperty(value = "用户名称")
     private String userName;
     /**
@@ -55,6 +56,8 @@ public class EmployeeDto extends BaseEntityDto {
     /**
      * 组织机构Id
      */
+    @NotBlank
+    @Size(max = 36)
     @ApiModelProperty(value = "组织机构Id")
     private String organizationId;
 
@@ -69,6 +72,23 @@ public class EmployeeDto extends BaseEntityDto {
      */
     @ApiModelProperty(value = "组织机构名称")
     private String organizationName;
+
+    /**
+     * 是否是创建租户管理员
+     */
+    @ApiModelProperty(value = "是否为创建租户管理员")
+    private Boolean createAdmin = Boolean.FALSE;
+
+    /**
+     * 邮箱,创建租户管理员时发送邮件
+     */
+    @ApiModelProperty(value = "邮箱")
+    private String email;
+    /**
+     * 手机号,创建租户管理员时发送邮件
+     */
+    @ApiModelProperty(value = "邮箱")
+    private String mobile;
 
     public String getCode() {
         return code;
@@ -132,5 +152,29 @@ public class EmployeeDto extends BaseEntityDto {
 
     public void setOrganizationName(String organizationName) {
         this.organizationName = organizationName;
+    }
+
+    public Boolean getCreateAdmin() {
+        return createAdmin;
+    }
+
+    public void setCreateAdmin(Boolean createAdmin) {
+        this.createAdmin = createAdmin;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }
