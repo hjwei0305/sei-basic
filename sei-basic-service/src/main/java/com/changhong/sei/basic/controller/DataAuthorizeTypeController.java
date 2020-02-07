@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 实现功能: 数据权限类型API服务
@@ -82,6 +83,33 @@ public class DataAuthorizeTypeController implements DefaultBaseEntityController<
         custMapper.addMappings(propertyMap);
         // 转换
         return custMapper.map(entity, DataAuthorizeTypeDto.class);
+    }
+
+    /**
+     * 将DTO转换成数据实体
+     *
+     * @param dto 业务实体
+     * @return 数据实体
+     */
+    @Override
+    public DataAuthorizeType convertToEntity(DataAuthorizeTypeDto dto) {
+        if (Objects.isNull(dto)){
+            return null;
+        }
+        ModelMapper custMapper = new ModelMapper();
+        // 创建自定义映射规则
+        PropertyMap<DataAuthorizeTypeDto,DataAuthorizeType> propertyMap = new PropertyMap<DataAuthorizeTypeDto,DataAuthorizeType>() {
+            @Override
+            protected void configure() {
+                // 使用自定义转换规则,不映射关联对象
+                skip().setFeature(null);
+                skip().setAuthorizeEntityType(null);
+            }
+        };
+        // 添加映射器
+        custMapper.addMappings(propertyMap);
+        // 转换
+        return custMapper.map(dto, DataAuthorizeType.class);
     }
 
     /**
