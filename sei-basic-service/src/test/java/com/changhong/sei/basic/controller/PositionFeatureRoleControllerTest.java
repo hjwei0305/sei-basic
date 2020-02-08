@@ -31,4 +31,12 @@ public class PositionFeatureRoleControllerTest extends BaseUnitTest {
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }
+
+    @Test
+    public void getRelationsByParentId(){
+        String parentId="282648C6-4881-11EA-B817-0242C0A84603";
+        ResultData resultData = controller.getRelationsByParentId(parentId);
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
 }

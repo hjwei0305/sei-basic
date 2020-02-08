@@ -109,4 +109,15 @@ public class PositionFeatureRoleController implements DefaultRelationController<
     public FeatureRoleDto convertChildToDto(FeatureRole entity) {
         return FeatureRoleController.custConvertToDto(entity);
     }
+
+    /**
+     * 将父数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    @Override
+    public PositionDto convertParentToDto(Position entity) {
+        return PositionController.custConvertToDto(entity);
+    }
 }
