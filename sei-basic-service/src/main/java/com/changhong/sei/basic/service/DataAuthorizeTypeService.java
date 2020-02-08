@@ -2,6 +2,7 @@ package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.DataAuthorizeTypeDao;
 import com.changhong.sei.basic.dto.DataAuthorizeTypeVo;
+import com.changhong.sei.basic.entity.AppModule;
 import com.changhong.sei.basic.entity.DataAuthorizeType;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.service.BaseEntityService;
@@ -93,7 +94,9 @@ public class DataAuthorizeTypeService extends BaseEntityService<DataAuthorizeTyp
             vo.setId(t.getId());
             vo.setCode(t.getCode());
             vo.setName(t.getName());
-            vo.setAppModuleId(t.getAuthorizeEntityType().getAppModule().getId());
+            AppModule appModule = t.getAuthorizeEntityType().getAppModule();
+            vo.setAppModuleId(appModule.getId());
+            vo.setAppModuleName(appModule.getName());
             vo.setBeTree(t.getAuthorizeEntityType().getBeTree());
             vo.setAlreadyAssign(dataRoleAuthTypeValueService.isAlreadyAssign(roleId, t.getId()));
             vos.add(vo);

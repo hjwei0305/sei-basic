@@ -33,6 +33,10 @@ public class DataAuthorizeTypeVo implements Serializable {
      */
     private String appModuleId;
     /**
+     * 应用模块名称
+     */
+    private String appModuleName;
+    /**
      * 是树形结构
      */
     private boolean beTree;
@@ -71,6 +75,14 @@ public class DataAuthorizeTypeVo implements Serializable {
 
     public void setAppModuleId(String appModuleId) {
         this.appModuleId = appModuleId;
+    }
+
+    public String getAppModuleName() {
+        return appModuleName;
+    }
+
+    public void setAppModuleName(String appModuleName) {
+        this.appModuleName = appModuleName;
     }
 
     public boolean isAlreadyAssign() {

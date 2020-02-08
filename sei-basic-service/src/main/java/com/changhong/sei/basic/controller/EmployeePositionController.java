@@ -99,4 +99,26 @@ public class EmployeePositionController implements DefaultRelationController<Emp
     public Class<PositionDto> getChildDtoClass() {
         return PositionDto.class;
     }
+
+    /**
+     * 将父数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    @Override
+    public EmployeeDto convertParentToDto(Employee entity) {
+        return EmployeeController.custConvertToDto(entity);
+    }
+
+    /**
+     * 将子数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    @Override
+    public PositionDto convertChildToDto(Position entity) {
+        return PositionController.custConvertToDto(entity);
+    }
 }
