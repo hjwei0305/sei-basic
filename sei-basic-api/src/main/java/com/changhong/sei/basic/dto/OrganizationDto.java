@@ -22,7 +22,7 @@ public class OrganizationDto extends BaseEntityDto implements IDataAuthTreeEntit
     /**
      * 组织机构代码
      */
-    @Size(max = 6)
+    @Size(max = 10)
     @ApiModelProperty(value = "组织机构代码(系统给号)")
     private String code;
 

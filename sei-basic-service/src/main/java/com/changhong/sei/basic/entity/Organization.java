@@ -34,7 +34,7 @@ public class Organization extends OrganizationCust
     /**
      * 组织机构代码
      */
-    @Column(name = "code", length = 6, unique = true, nullable = false)
+    @Column(name = "code", length = 10, unique = true, nullable = false)
     private String code;
 
     /**
