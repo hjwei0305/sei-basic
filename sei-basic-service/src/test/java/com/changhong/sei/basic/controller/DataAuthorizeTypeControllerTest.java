@@ -28,7 +28,7 @@ public class DataAuthorizeTypeControllerTest extends BaseUnitTest {
     }
 
     @Test
-    public void save(){
+    public void save() {
         DataAuthorizeTypeDto dto = new DataAuthorizeTypeDto();
         dto.setAuthorizeEntityTypeId("6CDA2DD4-4984-11EA-ADFF-0242C0A84607");
         dto.setFeatureId("4CFD6B6D-4691-11EA-911F-0242C0A84604");
@@ -37,6 +37,14 @@ public class DataAuthorizeTypeControllerTest extends BaseUnitTest {
         dto.setFeatureName("新增与修改");
         dto.setAuthorizeEntityTypeName("bbb");
         ResultData resultData = controller.save(dto);
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
+
+    @Test
+    public void getByDataRole() {
+        String dataRoleId = "72FA053A-4A23-11EA-8AF0-0242C0A84607";
+        ResultData resultData = controller.getByDataRole(dataRoleId);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }

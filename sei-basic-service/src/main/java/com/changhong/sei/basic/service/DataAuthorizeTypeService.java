@@ -88,8 +88,8 @@ public class DataAuthorizeTypeService extends BaseEntityService<DataAuthorizeTyp
         if (CollectionUtils.isEmpty(authorizeTypes)) {
             return vos;
         }
-        DataAuthorizeTypeVo vo = new DataAuthorizeTypeVo();
         authorizeTypes.forEach(t -> {
+            DataAuthorizeTypeVo vo = new DataAuthorizeTypeVo();
             vo.setId(t.getId());
             vo.setCode(t.getCode());
             vo.setName(t.getName());
