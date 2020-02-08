@@ -16,7 +16,8 @@ public class NumberGeneratorTest extends BaseUnitTest {
 
     @Test
     public void getNumber() {
-        String className = "com.ecmp.basic.entity.Menu";
+        //String className = "com.ecmp.basic.entity.Menu";
+        String className = "com.changhong.sei.basic.entity.Menu";
         String number = generator.getNumber(className);
         System.out.println("number："+number);
     }

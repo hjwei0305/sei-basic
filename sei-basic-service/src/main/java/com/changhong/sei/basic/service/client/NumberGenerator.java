@@ -1,13 +1,9 @@
 package com.changhong.sei.basic.service.client;
 
-import com.changhong.sei.apitemplate.ApiTemplate;
-import com.changhong.sei.core.context.ContextUtil;
-import org.apache.commons.lang3.StringUtils;
+import com.changhong.sei.serial.sdk.SerialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -19,7 +15,7 @@ import java.util.Objects;
 @Component
 public class NumberGenerator {
     @Autowired
-    private ApiTemplate apiTemplate;
+    private SerialService serialService;
     /**
      * 获取一个序列编号.
      * 有隔离码可为空
@@ -29,21 +25,7 @@ public class NumberGenerator {
      * @return 序列编号
      */
     public String getNumber(String entityClassName, String isolationCode) {
-        if (StringUtils.isBlank(entityClassName)) {
-            throw new IllegalArgumentException("业务实体类名不能为空");
-        }
-        String url = ContextUtil.getProperty("sei.number-generator-url");
-        String path;
-        Map<String, String> params = new HashMap<>();
-        params.put("envCode", ContextUtil.getProperty("spring.cloud.config.profile"));
-        params.put("entityClassName", entityClassName);
-        if (StringUtils.isNotBlank(isolationCode)) {
-            params.put("isolationCode", isolationCode);
-            path = "/serialNumberConfig/getNumberWithIsolation";
-        } else {
-            path = "/serialNumberConfig/getNumber";
-        }
-      return apiTemplate.getByUrl(url+path, String.class, params);
+        return serialService.getNumber(entityClassName, isolationCode);
     }
 
     /**
@@ -66,9 +48,7 @@ public class NumberGenerator {
         if (Objects.isNull(entityClass)) {
             throw new IllegalArgumentException("业务实体类名不能为空");
         }
-        // todo 暂时替换包名，调用3.0的给号服务
         String className = entityClass.getName();
-        className = StringUtils.replace(className, "changhong.sei", "ecmp");
         return getNumber(className, null);
     }
 }

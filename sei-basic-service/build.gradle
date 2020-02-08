@@ -4,6 +4,7 @@ apply plugin: 'io.spring.dependency-management'
 dependencies {
     compile project(':sei-basic-api')
     compile("com.changhong.sei:sei-service-starter:$sei_version")
+    compile("com.changhong.sei:sei-serial-sdk:$sei_version")
     compile("mysql:mysql-connector-java:$mysqlVersion")
 
     testCompile(
