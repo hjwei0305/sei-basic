@@ -4,6 +4,7 @@ import com.changhong.sei.basic.dto.DataAuthorizeTypeDto;
 import com.changhong.sei.basic.dto.DataAuthorizeTypeVo;
 import com.changhong.sei.core.api.BaseEntityApi;
 import com.changhong.sei.core.api.FindAllApi;
+import com.changhong.sei.core.dto.ResultData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -30,7 +31,7 @@ public interface DataAuthorizeTypeApi extends BaseEntityApi<DataAuthorizeTypeDto
      */
     @GetMapping(path = "getByDataRole")
     @ApiOperation(value = "获取数据权限类型清单",notes = "通过数据角色Id获取数据权限类型（VO）")
-    List<DataAuthorizeTypeVo> getByDataRole(@RequestParam("roleId") String roleId);
+    ResultData<List<DataAuthorizeTypeVo>> getByDataRole(@RequestParam("roleId") String roleId);
 
     /**
      * 通过数据角色Id获取数据权限类型（VO）
@@ -39,5 +40,5 @@ public interface DataAuthorizeTypeApi extends BaseEntityApi<DataAuthorizeTypeDto
      */
     @GetMapping(path = "getByAppModuleAndDataRole")
     @ApiOperation(value = "获取数据权限类型清单",notes = "通过应用模块Id和数据角色Id获取数据权限类型（VO）")
-    List<DataAuthorizeTypeVo> getByAppModuleAndDataRole(@RequestParam("appModuleId") String appModuleId, @RequestParam("roleId") String roleId);
+    ResultData<List<DataAuthorizeTypeVo>> getByAppModuleAndDataRole(@RequestParam("appModuleId") String appModuleId, @RequestParam("roleId") String roleId);
 }

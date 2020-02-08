@@ -24,7 +24,7 @@ import java.util.Objects;
  * @version 2020-01-20 14:27
  */
 @RestController
-@Api(value = "DataAuthorizeTypeService", tags = "数据权限类型API服务")
+@Api(value = "DataAuthorizeTypeApi", tags = "数据权限类型API服务")
 public class DataAuthorizeTypeController implements DefaultBaseEntityController<DataAuthorizeType, DataAuthorizeTypeDto>,
         DataAuthorizeTypeApi {
     @Autowired
@@ -119,8 +119,8 @@ public class DataAuthorizeTypeController implements DefaultBaseEntityController<
      * @return 数据权限类型
      */
     @Override
-    public List<DataAuthorizeTypeVo> getByDataRole(String roleId) {
-        return null;
+    public ResultData<List<DataAuthorizeTypeVo>> getByDataRole(String roleId) {
+        return ResultData.success(service.getByDataRole(roleId));
     }
 
     /**
@@ -131,8 +131,8 @@ public class DataAuthorizeTypeController implements DefaultBaseEntityController<
      * @return 数据权限类型
      */
     @Override
-    public List<DataAuthorizeTypeVo> getByAppModuleAndDataRole(String appModuleId, String roleId) {
-        return null;
+    public ResultData<List<DataAuthorizeTypeVo>> getByAppModuleAndDataRole(String appModuleId, String roleId) {
+        return ResultData.success(service.getByAppModuleAndDataRole(appModuleId, roleId));
     }
 
     /**
