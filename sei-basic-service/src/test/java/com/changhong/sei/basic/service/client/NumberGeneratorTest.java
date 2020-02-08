@@ -1,6 +1,9 @@
 package com.changhong.sei.basic.service.client;
 
 import com.changhong.com.sei.core.test.BaseUnitTest;
+import com.changhong.sei.basic.entity.Organization;
+import com.changhong.sei.basic.entity.Position;
+import com.changhong.sei.basic.entity.PositionCategory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,9 +19,7 @@ public class NumberGeneratorTest extends BaseUnitTest {
 
     @Test
     public void getNumber() {
-        //String className = "com.ecmp.basic.entity.Menu";
-        String className = "com.changhong.sei.basic.entity.Menu";
-        String number = generator.getNumber(className);
+        String number = generator.getNumber(PositionCategory.class.getName());
         System.out.println("number："+number);
     }
 }
