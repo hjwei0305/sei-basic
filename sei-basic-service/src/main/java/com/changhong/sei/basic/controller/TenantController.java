@@ -1,13 +1,17 @@
 package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.TenantApi;
+import com.changhong.sei.basic.dto.EmployeeDto;
+import com.changhong.sei.basic.dto.OrganizationDto;
 import com.changhong.sei.basic.dto.TenantDto;
 import com.changhong.sei.basic.entity.Tenant;
+import com.changhong.sei.basic.service.OrganizationService;
 import com.changhong.sei.basic.service.TenantService;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
+import org.apache.commons.collections.CollectionUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +30,10 @@ public class TenantController implements DefaultBaseEntityController<Tenant, Ten
         TenantApi {
     @Autowired
     private TenantService service;
+    @Autowired
+    private OrganizationController organizationController;
+    @Autowired
+    private EmployeeController employeeController;
     @Autowired
     private ModelMapper modelMapper;
     @Override
@@ -65,7 +73,23 @@ public class TenantController implements DefaultBaseEntityController<Tenant, Ten
      */
     @Override
     public ResultData<List<TenantDto>> findAll() {
-        return ResultData.success(convertToDtos(service.findAll()));
+        List<TenantDto> tenantDtos =  convertToDtos(service.findAll());
+        if (CollectionUtils.isEmpty(tenantDtos)){
+            return ResultData.success(tenantDtos);
+        }
+        tenantDtos.forEach(tenantDto -> {
+            // 获取对应的组织
+            ResultData<OrganizationDto> orgData = organizationController.findRootByTenantCode(tenantDto.getCode());
+            if (orgData.successful()){
+                tenantDto.setOrganizationDto(orgData.getData());
+            }
+            // 获取对应的系统管理员
+            ResultData<EmployeeDto> employeeData = employeeController.findAdminByTenantCode(tenantDto.getCode());
+            if (employeeData.successful()){
+                tenantDto.setEmployeeDto(employeeData.getData());
+            }
+        });
+        return ResultData.success(tenantDtos);
     }
 
     /**

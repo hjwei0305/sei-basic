@@ -98,4 +98,26 @@ public class PositionDataRoleController implements DefaultRelationController<Pos
     public Class<DataRoleDto> getChildDtoClass() {
         return DataRoleDto.class;
     }
+
+    /**
+     * 将父数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    @Override
+    public PositionDto convertParentToDto(Position entity) {
+        return PositionController.custConvertToDto(entity);
+    }
+
+    /**
+     * 将子数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    @Override
+    public DataRoleDto convertChildToDto(DataRole entity) {
+        return DataRoleController.custConvertToDto(entity);
+    }
 }

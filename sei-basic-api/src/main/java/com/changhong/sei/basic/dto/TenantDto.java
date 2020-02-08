@@ -36,6 +36,16 @@ public class TenantDto extends BaseEntityDto {
     @ApiModelProperty(value = "是否冻结", required = true)
     private Boolean frozen = Boolean.FALSE;
 
+    /**
+     * 租户对应的组织机构
+     */
+    private OrganizationDto organizationDto;
+
+    /**
+     * 租户对应的系统管理员
+     */
+    private EmployeeDto employeeDto;
+
     public String getCode() {
         return code;
     }
@@ -58,5 +68,21 @@ public class TenantDto extends BaseEntityDto {
 
     public void setFrozen(Boolean frozen) {
         this.frozen = frozen;
+    }
+
+    public OrganizationDto getOrganizationDto() {
+        return organizationDto;
+    }
+
+    public void setOrganizationDto(OrganizationDto organizationDto) {
+        this.organizationDto = organizationDto;
+    }
+
+    public EmployeeDto getEmployeeDto() {
+        return employeeDto;
+    }
+
+    public void setEmployeeDto(EmployeeDto employeeDto) {
+        this.employeeDto = employeeDto;
     }
 }
