@@ -22,7 +22,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -37,7 +39,8 @@ import java.util.stream.Collectors;
  * @version 2020-01-28 0:11
  */
 @RestController
-@Api(value = "EmployeeService", tags = "企业用户API服务实现")
+@Api(value = "EmployeeApi", tags = "企业用户API服务实现")
+@RequestMapping(path = "employee", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class EmployeeController implements DefaultBaseEntityController<Employee, EmployeeDto>,
         EmployeeApi {
     @Autowired

@@ -16,6 +16,7 @@ import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.service.bo.OperateResultWithData;
 import com.chonghong.sei.enums.UserAuthorityPolicy;
+import com.chonghong.sei.enums.UserType;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,10 @@ public class EmployeeService extends BaseEntityService<Employee> {
     @Transactional(rollbackFor = Exception.class)
     public OperateResultWithData<Employee> save(Employee entity) {
         entity.setPassword(DigestUtils.md5Hex("123456"));   //默认为：123456
+        entity.setUserType(UserType.Employee);
+        if (Objects.isNull(entity.getUserAuthorityPolicy())){
+            entity.setUserAuthorityPolicy(UserAuthorityPolicy.NormalUser);
+        }
         return saveEmployee(entity);
     }
 

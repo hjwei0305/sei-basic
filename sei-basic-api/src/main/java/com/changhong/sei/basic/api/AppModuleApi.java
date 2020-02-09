@@ -6,9 +6,7 @@ import com.changhong.sei.core.api.FindAllApi;
 import com.changhong.sei.core.dto.ResultData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @version 1.0.1 2020-01-19 13:41
  */
 @FeignClient(name = "sei-basic", path = "appModule")
-@RequestMapping(path = "appModule", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface AppModuleApi extends BaseEntityApi<AppModuleDto>,
         FindAllApi<AppModuleDto> {
     /**

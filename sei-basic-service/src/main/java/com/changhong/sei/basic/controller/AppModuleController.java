@@ -10,6 +10,8 @@ import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,7 +24,8 @@ import java.util.List;
  * @version 2020-01-19 13:50
  */
 @RestController
-@Api(value = "AppModuleService", tags = "应用模块的API服务")
+@Api(value = "AppModuleApi", tags = "应用模块的API服务")
+@RequestMapping(path = "appModule", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AppModuleController implements DefaultBaseEntityController<AppModule, AppModuleDto>,
         AppModuleApi {
     @Autowired

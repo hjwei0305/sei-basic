@@ -11,6 +11,8 @@ import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,7 +24,8 @@ import java.util.List;
  * @version 2020-01-20 11:21
  */
 @RestController
-@Api(value = "AuthorizeEntityTypeService", tags = "权限对象类型API服务")
+@Api(value = "AuthorizeEntityTypeApi", tags = "权限对象类型API服务")
+@RequestMapping(path = "authorizeEntityType", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class AuthorizeEntityTypeController implements DefaultBaseEntityController<AuthorizeEntityType, AuthorizeEntityTypeDto>,
         AuthorizeEntityTypeApi {
     @Autowired
