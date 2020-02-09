@@ -12,7 +12,6 @@ import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,8 +30,6 @@ public class ExpertUserController implements DefaultBaseController<ExpertUser, E
         ExpertUserApi {
     @Autowired
     private ExpertUserService service;
-    @Autowired
-    private ModelMapper modelMapper;
     /**
      * 分页查询业务实体
      *
@@ -104,11 +101,6 @@ public class ExpertUserController implements DefaultBaseController<ExpertUser, E
     @Override
     public BaseEntityService<ExpertUser> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

@@ -18,7 +18,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,16 +39,9 @@ public class PositionController implements DefaultBaseEntityController<Position,
         PositionApi {
     @Autowired
     private PositionService service;
-    @Autowired
-    private ModelMapper modelMapper;
     @Override
     public BaseEntityService<Position> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

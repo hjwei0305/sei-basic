@@ -30,16 +30,9 @@ public class AuthorizeEntityTypeController implements DefaultBaseEntityControlle
         AuthorizeEntityTypeApi {
     @Autowired
     private AuthorizeEntityTypeService service;
-    @Autowired
-    private ModelMapper modelMapper;
     @Override
     public BaseEntityService<AuthorizeEntityType> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

@@ -32,8 +32,6 @@ public class MenuController implements DefaultTreeController<Menu, MenuDto>,
         MenuApi {
     @Autowired
     private MenuService menuService;
-    @Autowired
-    private ModelMapper modelMapper;
 
     /**
      * 获取整个菜单树
@@ -63,11 +61,6 @@ public class MenuController implements DefaultTreeController<Menu, MenuDto>,
     @Override
     public BaseTreeService<Menu> getService() {
         return menuService;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

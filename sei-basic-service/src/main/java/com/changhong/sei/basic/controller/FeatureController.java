@@ -35,8 +35,6 @@ public class FeatureController implements DefaultBaseEntityController<Feature, F
         FeatureApi {
     @Autowired
     private FeatureService service;
-    @Autowired
-    private ModelMapper modelMapper;
 
     /**
      * 根据功能项组id查询功能项
@@ -107,11 +105,6 @@ public class FeatureController implements DefaultBaseEntityController<Feature, F
     @Override
     public BaseEntityService<Feature> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

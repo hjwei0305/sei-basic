@@ -19,7 +19,6 @@ import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,8 +44,6 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
     private UserService service;
     @Autowired
     private UserProfileService userProfileService;
-    @Autowired
-    private ModelMapper modelMapper;
     /**
      * 根据用户id查询用户
      *
@@ -205,11 +202,6 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
     @Override
     public BaseEntityService<User> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

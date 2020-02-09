@@ -10,7 +10,6 @@ import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
 import com.changhong.sei.core.service.BaseTreeService;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,8 +32,6 @@ public class OrganizationController implements DefaultTreeController<Organizatio
         OrganizationApi {
     @Autowired
     private OrganizationService service;
-    @Autowired
-    private ModelMapper modelMapper;
     /**
      * 通过代码获取组织机构
      *
@@ -179,11 +176,6 @@ public class OrganizationController implements DefaultTreeController<Organizatio
     @Override
     public BaseTreeService<Organization> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

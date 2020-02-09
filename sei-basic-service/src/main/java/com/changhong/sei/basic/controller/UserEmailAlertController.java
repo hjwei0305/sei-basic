@@ -10,7 +10,6 @@ import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,16 +31,9 @@ public class UserEmailAlertController implements DefaultBaseEntityController<Use
         UserEmailAlertApi {
     @Autowired
     private UserEmailAlertService service;
-    @Autowired
-    private ModelMapper modelMapper;
     @Override
     public BaseEntityService<UserEmailAlert> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

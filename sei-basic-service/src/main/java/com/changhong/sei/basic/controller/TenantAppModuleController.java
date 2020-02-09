@@ -12,10 +12,8 @@ import com.changhong.sei.core.controller.DefaultRelationController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseRelationService;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,8 +33,6 @@ public class TenantAppModuleController implements DefaultRelationController<Tena
         TenantAppModuleApi {
     @Autowired
     private TenantAppModuleService service;
-    @Autowired
-    private ModelMapper modelMapper;
     /**
      * 获取当前用户可用的应用模块代码清单
      *
@@ -63,11 +59,6 @@ public class TenantAppModuleController implements DefaultRelationController<Tena
     @Override
     public BaseRelationService<TenantAppModule, Tenant, AppModule> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

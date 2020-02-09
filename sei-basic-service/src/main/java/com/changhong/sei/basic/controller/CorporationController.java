@@ -9,7 +9,6 @@ import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,8 +30,6 @@ public class CorporationController implements DefaultBaseEntityController<Corpor
         CorporationApi {
     @Autowired
     private CorporationService service;
-    @Autowired
-    private ModelMapper modelMapper;
     /**
      * 根据公司代码查询公司
      *
@@ -61,11 +58,6 @@ public class CorporationController implements DefaultBaseEntityController<Corpor
     @Override
     public BaseEntityService<Corporation> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

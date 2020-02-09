@@ -13,10 +13,8 @@ import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResultWithData;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,8 +33,6 @@ public class SupplierUserController implements DefaultBaseEntityController<Suppl
         SupplierUserApi {
     @Autowired
     private SupplierUserService service;
-    @Autowired
-    private ModelMapper modelMapper;
     /**
      * 分页查询业务实体
      *
@@ -122,11 +118,6 @@ public class SupplierUserController implements DefaultBaseEntityController<Suppl
     @Override
     public BaseEntityService<SupplierUser> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

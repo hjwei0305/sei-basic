@@ -32,8 +32,6 @@ public class FeatureGroupController implements DefaultBaseEntityController<Featu
         FeatureGroupApi {
     @Autowired
     private FeatureGroupService service;
-    @Autowired
-    private ModelMapper modelMapper;
     /**
      * 模糊查询
      *
@@ -63,11 +61,6 @@ public class FeatureGroupController implements DefaultBaseEntityController<Featu
     @Override
     public BaseEntityService<FeatureGroup> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

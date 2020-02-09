@@ -32,16 +32,9 @@ public class DataRoleController implements DefaultBaseEntityController<DataRole,
         DataRoleApi {
     @Autowired
     private DataRoleService service;
-    @Autowired
-    private ModelMapper modelMapper;
     @Override
     public BaseEntityService<DataRole> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

@@ -30,17 +30,10 @@ public class UserFeatureRoleController implements DefaultRelationController<User
         UserFeatureRoleApi {
     @Autowired
     private UserFeatureRoleService service;
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Override
     public BaseRelationService<UserFeatureRole, User, FeatureRole> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

@@ -8,10 +8,8 @@ import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,8 +28,6 @@ public class CountryController implements DefaultBaseEntityController<Country, C
         CountryApi {
     @Autowired
     private CountryService service;
-    @Autowired
-    private ModelMapper modelMapper;
     /**
      * 根据代码查询国家
      *
@@ -47,11 +43,6 @@ public class CountryController implements DefaultBaseEntityController<Country, C
     @Override
     public BaseEntityService<Country> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

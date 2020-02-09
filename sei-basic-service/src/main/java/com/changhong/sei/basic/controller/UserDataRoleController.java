@@ -11,7 +11,6 @@ import com.changhong.sei.basic.service.UserDataRoleService;
 import com.changhong.sei.core.controller.DefaultRelationController;
 import com.changhong.sei.core.service.BaseRelationService;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,17 +29,10 @@ public class UserDataRoleController implements DefaultRelationController<UserDat
         UserDataRoleApi {
     @Autowired
     private UserDataRoleService service;
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Override
     public BaseRelationService<UserDataRole, User, DataRole> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

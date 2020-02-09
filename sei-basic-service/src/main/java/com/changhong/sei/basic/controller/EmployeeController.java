@@ -21,6 +21,8 @@ import javafx.geometry.Pos;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.modelmapper.TypeMap;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -49,8 +51,6 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
     private OrganizationService organizationService;
     @Autowired
     private EmployeePositionService employeePositionService;
-    @Autowired
-    private ModelMapper modelMapper;
     /**
      * 根据查询参数获取企业员工(分页)
      *
@@ -306,11 +306,6 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
         return service;
     }
 
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
-    }
-
     /**
      * 获取数据实体的类型
      *
@@ -365,32 +360,6 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
         custMapper.addMappings(propertyMap);
         // 转换
         return custMapper.map(entity, EmployeeDto.class);
-    }
-
-    /**
-     * 将DTO转换成数据实体
-     *
-     * @param dto 业务实体
-     * @return 数据实体
-     */
-    @Override
-    public Employee convertToEntity(EmployeeDto dto) {
-        if (Objects.isNull(dto)){
-            return null;
-        }
-        ModelMapper custMapper = new ModelMapper();
-        // 创建自定义映射规则
-        PropertyMap<EmployeeDto, Employee> propertyMap = new PropertyMap<EmployeeDto, Employee>() {
-            @Override
-            protected void configure() {
-                // 使用自定义转换规则
-                skip().setUser(null);
-            }
-        };
-        // 添加映射器
-        custMapper.addMappings(propertyMap);
-        // 转换
-        return custMapper.map(dto, Employee.class);
     }
 
     /**

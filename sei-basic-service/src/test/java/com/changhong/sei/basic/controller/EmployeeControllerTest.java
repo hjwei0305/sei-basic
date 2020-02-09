@@ -49,6 +49,7 @@ public class EmployeeControllerTest extends BaseUnitTest {
         dto.setUserName("易成");
         dto.setOrganizationId("322C8C8B-4A79-11EA-B122-0242C0A84607");
         dto.setEmail("93336406@qq.com");
+        dto.setTenantCode("20313494");
         ResultData resultData = controller.saveTenantAdmin(dto);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());

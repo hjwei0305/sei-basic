@@ -33,8 +33,6 @@ public class UserProfileController implements DefaultBaseEntityController<UserPr
         UserProfileApi {
     @Autowired
     private UserProfileService service;
-    @Autowired
-    private ModelMapper modelMapper;
     /**
      * 获取支持的语言
      */
@@ -77,11 +75,6 @@ public class UserProfileController implements DefaultBaseEntityController<UserPr
     @Override
     public BaseEntityService<UserProfile> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

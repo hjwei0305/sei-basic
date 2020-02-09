@@ -14,7 +14,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,8 +33,6 @@ public class RegionController implements DefaultTreeController<Region, RegionDto
         RegionApi {
     @Autowired
     private RegionService service;
-    @Autowired
-    private ModelMapper modelMapper;
     /**
      * 获取所有行政区域树
      *
@@ -80,11 +77,6 @@ public class RegionController implements DefaultTreeController<Region, RegionDto
     @Override
     public BaseTreeService<Region> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

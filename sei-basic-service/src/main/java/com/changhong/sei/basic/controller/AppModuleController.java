@@ -8,7 +8,6 @@ import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,16 +29,9 @@ public class AppModuleController implements DefaultBaseEntityController<AppModul
         AppModuleApi {
     @Autowired
     private AppModuleService service;
-    @Autowired
-    private ModelMapper modelMapper;
     @Override
     public BaseEntityService<AppModule> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

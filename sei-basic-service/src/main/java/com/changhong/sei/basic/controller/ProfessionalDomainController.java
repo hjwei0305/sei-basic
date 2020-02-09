@@ -8,7 +8,6 @@ import com.changhong.sei.core.controller.DefaultTreeController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseTreeService;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +28,6 @@ public class ProfessionalDomainController implements DefaultTreeController<Profe
         ProfessionalDomainApi {
     @Autowired
     private ProfessionalDomainService service;
-    @Autowired
-    private ModelMapper modelMapper;
     /**
      * 获取整个领域树
      *
@@ -44,11 +41,6 @@ public class ProfessionalDomainController implements DefaultTreeController<Profe
     @Override
     public BaseTreeService<ProfessionalDomain> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

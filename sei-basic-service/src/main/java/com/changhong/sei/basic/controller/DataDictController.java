@@ -17,7 +17,6 @@ import com.changhong.sei.core.service.bo.OperateResultWithData;
 import com.changhong.sei.core.service.bo.ResponseData;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,9 +39,6 @@ public class DataDictController implements DefaultBaseEntityController<DataDict,
         DataDictApi {
     @Autowired
     private DataDictService service;
-    @Autowired
-    private ModelMapper modelMapper;
-
 
     @Override
     public BaseEntityService<DataDict> getService() {
@@ -56,7 +52,7 @@ public class DataDictController implements DefaultBaseEntityController<DataDict,
      * @return 数据字典行项目
      */
     private DataDictItem convertToEntity(DataDictItemDto dto) {
-        return modelMapper.map(dto, DataDictItem.class);
+        return getModelMapper().map(dto, DataDictItem.class);
     }
 
     /**
@@ -66,7 +62,7 @@ public class DataDictController implements DefaultBaseEntityController<DataDict,
      * @return 数据字典行项目DTO
      */
     private DataDictItemDto convertToDto(DataDictItem entity) {
-        return modelMapper.map(entity, DataDictItemDto.class);
+        return getModelMapper().map(entity, DataDictItemDto.class);
     }
 
     /**
@@ -157,11 +153,6 @@ public class DataDictController implements DefaultBaseEntityController<DataDict,
     public ResultData<IDataDict> getDataDictByValueName(String categoryCode, String valueName) {
         ResponseData<IDataDict> responseData = service.getDataDictByValueName(categoryCode, valueName);
         return ResultDataUtil.convertFromResponseData(responseData, responseData.getData());
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

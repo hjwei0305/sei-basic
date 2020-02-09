@@ -34,8 +34,6 @@ public class FeatureRoleFeatureController implements DefaultRelationController<F
         FeatureRoleFeatureApi {
     @Autowired
     private FeatureRoleFeatureService service;
-    @Autowired
-    private ModelMapper modelMapper;
     /**
      * 根据模块，获取指定角色授权树
      *
@@ -51,11 +49,6 @@ public class FeatureRoleFeatureController implements DefaultRelationController<F
     @Override
     public BaseRelationService<FeatureRoleFeature, FeatureRole, Feature> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**
@@ -116,6 +109,17 @@ public class FeatureRoleFeatureController implements DefaultRelationController<F
     @Override
     public Class<FeatureDto> getChildDtoClass() {
         return FeatureDto.class;
+    }
+
+    /**
+     * 将父数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    @Override
+    public FeatureRoleDto convertParentToDto(FeatureRole entity) {
+        return FeatureRoleController.custConvertToDto(entity);
     }
 
     /**

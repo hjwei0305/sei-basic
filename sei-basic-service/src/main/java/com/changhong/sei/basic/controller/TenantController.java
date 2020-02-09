@@ -5,14 +5,12 @@ import com.changhong.sei.basic.dto.EmployeeDto;
 import com.changhong.sei.basic.dto.OrganizationDto;
 import com.changhong.sei.basic.dto.TenantDto;
 import com.changhong.sei.basic.entity.Tenant;
-import com.changhong.sei.basic.service.OrganizationService;
 import com.changhong.sei.basic.service.TenantService;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
 import org.apache.commons.collections.CollectionUtils;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,16 +35,9 @@ public class TenantController implements DefaultBaseEntityController<Tenant, Ten
     private OrganizationController organizationController;
     @Autowired
     private EmployeeController employeeController;
-    @Autowired
-    private ModelMapper modelMapper;
     @Override
     public BaseEntityService<Tenant> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

@@ -15,7 +15,6 @@ import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import com.chonghong.sei.enums.UserType;
 import com.chonghong.sei.util.EnumUtils;
-import io.lettuce.core.models.role.RedisInstance;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -41,17 +40,10 @@ public class FeatureRoleController implements DefaultBaseEntityController<Featur
         FeatureRoleApi {
     @Autowired
     private FeatureRoleService service;
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Override
     public BaseEntityService<FeatureRole> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**

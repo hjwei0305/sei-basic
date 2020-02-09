@@ -33,16 +33,9 @@ public class DataAuthorizeTypeController implements DefaultBaseEntityController<
         DataAuthorizeTypeApi {
     @Autowired
     private DataAuthorizeTypeService service;
-    @Autowired
-    private ModelMapper modelMapper;
     @Override
     public BaseEntityService<DataAuthorizeType> getService() {
         return service;
-    }
-
-    @Override
-    public ModelMapper getModelMapper() {
-        return modelMapper;
     }
 
     /**
