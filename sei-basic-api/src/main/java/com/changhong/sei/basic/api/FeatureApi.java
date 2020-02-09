@@ -9,7 +9,10 @@ import com.changhong.sei.core.dto.serach.Search;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -20,7 +23,6 @@ import java.util.List;
  * @version 2020-01-19 20:49
  */
 @FeignClient(name = "sei-basic", path = "feature")
-@RequestMapping(path = "feature", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface FeatureApi extends BaseEntityApi<FeatureDto>,
         FindByPageApi<FeatureDto> {
     /**

@@ -7,9 +7,7 @@ import com.changhong.sei.core.api.BaseRelationApi;
 import com.changhong.sei.core.dto.ResultData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -20,7 +18,6 @@ import java.util.List;
  * @version 2020-01-19 15:08
  */
 @FeignClient(name = "sei-basic", path = "tenantAppModule")
-@RequestMapping(path = "tenantAppModule", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface TenantAppModuleApi extends BaseRelationApi<TenantAppModuleDto, TenantDto, AppModuleDto> {
     /**
      * 获取当前用户可用的应用模块代码清单

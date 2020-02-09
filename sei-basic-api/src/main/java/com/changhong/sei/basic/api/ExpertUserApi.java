@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
  * @version 2020-01-28 9:50
  */
 @FeignClient(name = "sei-basic", path = "expertUser")
-@RequestMapping(path = "expertUser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface ExpertUserApi {
     /**
      * 分页查询业务实体

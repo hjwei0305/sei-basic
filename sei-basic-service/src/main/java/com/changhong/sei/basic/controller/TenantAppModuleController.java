@@ -14,7 +14,9 @@ import com.changhong.sei.core.service.BaseRelationService;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,7 +29,8 @@ import java.util.stream.Collectors;
  * @version 2020-01-19 15:16
  */
 @RestController
-@Api(value = "TenantAppModuleService", tags = "租户分配应用模块API服务")
+@Api(value = "TenantAppModuleApi", tags = "租户分配应用模块API服务")
+@RequestMapping(path = "tenantAppModule", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TenantAppModuleController implements DefaultRelationController<TenantAppModule, Tenant, AppModule, TenantAppModuleDto, TenantDto, AppModuleDto>,
         TenantAppModuleApi {
     @Autowired

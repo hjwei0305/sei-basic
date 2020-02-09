@@ -14,6 +14,8 @@ import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -23,7 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 2020-01-28 10:02
  */
 @RestController
-@Api(value = "ExpertUserService", tags = "专家用户API服务实现")
+@Api(value = "ExpertUserApi", tags = "专家用户API服务实现")
+@RequestMapping(path = "expertUser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ExpertUserController implements DefaultBaseController<ExpertUser, ExpertUserDto>,
         ExpertUserApi {
     @Autowired

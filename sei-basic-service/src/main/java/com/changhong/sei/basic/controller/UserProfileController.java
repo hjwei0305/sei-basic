@@ -13,6 +13,8 @@ import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,6 +28,7 @@ import java.util.Objects;
  */
 @RestController
 @Api(value = "UserProfileService", tags = "用户配置API服务实现")
+@RequestMapping(path = "userProfile", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class UserProfileController implements DefaultBaseEntityController<UserProfile, UserProfileDto>,
         UserProfileApi {
     @Autowired

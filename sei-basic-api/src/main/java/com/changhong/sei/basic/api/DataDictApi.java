@@ -8,7 +8,6 @@ import com.changhong.sei.core.dto.IDataDict;
 import com.changhong.sei.core.dto.ResultData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,7 +20,6 @@ import java.util.List;
  * @version 2020-01-26 19:55
  */
 @FeignClient(name = "sei-basic", path = "dataDict")
-@RequestMapping(path = "dataDict", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface DataDictApi extends BaseEntityApi<DataDictDto>,
         FindByPageApi<DataDictDto> {
     /**

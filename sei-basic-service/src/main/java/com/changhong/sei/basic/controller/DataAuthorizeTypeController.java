@@ -13,6 +13,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,6 +28,7 @@ import java.util.Objects;
  */
 @RestController
 @Api(value = "DataAuthorizeTypeApi", tags = "数据权限类型API服务")
+@RequestMapping(path = "dataAuthorizeType", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class DataAuthorizeTypeController implements DefaultBaseEntityController<DataAuthorizeType, DataAuthorizeTypeDto>,
         DataAuthorizeTypeApi {
     @Autowired

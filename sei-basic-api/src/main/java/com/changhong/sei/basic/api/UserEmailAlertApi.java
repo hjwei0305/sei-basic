@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -20,7 +19,6 @@ import java.util.List;
  * @version 2020-01-22 10:21
  */
 @FeignClient(name = "sei-basic", path = "userEmailAlert")
-@RequestMapping(path = "userEmailAlert", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface UserEmailAlertApi extends BaseEntityApi<UserEmailAlertDto> {
     /**
      * 通过用户ID列表获取用户邮件通知列表

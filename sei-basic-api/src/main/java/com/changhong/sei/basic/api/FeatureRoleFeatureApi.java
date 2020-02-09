@@ -8,9 +8,7 @@ import com.changhong.sei.core.api.BaseRelationApi;
 import com.changhong.sei.core.dto.ResultData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -22,7 +20,6 @@ import java.util.List;
  * @version 2020-01-28 10:26
  */
 @FeignClient(name = "sei-basic", path = "featureRoleFeature")
-@RequestMapping(path = "featureRoleFeature", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface FeatureRoleFeatureApi extends BaseRelationApi<FeatureRoleFeatureDto, FeatureRoleDto, FeatureDto> {
     /**
      * 根据模块，获取指定角色授权树

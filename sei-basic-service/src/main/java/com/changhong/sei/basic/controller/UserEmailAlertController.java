@@ -12,6 +12,8 @@ import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,7 +26,8 @@ import java.util.stream.Collectors;
  * @version 2020-01-22 10:28
  */
 @RestController
-@Api(value = "UserEmailAlertService", tags = "用户邮件提醒API服务")
+@Api(value = "UserEmailAlertApi", tags = "用户邮件提醒API服务")
+@RequestMapping(path = "userEmailAlert", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class UserEmailAlertController implements DefaultBaseEntityController<UserEmailAlert, UserEmailAlertDto>,
         UserEmailAlertApi {
     @Autowired

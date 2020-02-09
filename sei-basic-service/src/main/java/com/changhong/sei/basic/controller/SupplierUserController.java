@@ -15,7 +15,9 @@ import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,7 +29,8 @@ import java.util.List;
  * @version 2020-01-29 23:37
  */
 @RestController
-@Api(value = "SupplierUserService", tags = "供应商用户API服务实现")
+@Api(value = "SupplierUserApi", tags = "供应商用户API服务实现")
+@RequestMapping(path = "supplierUser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class SupplierUserController implements DefaultBaseEntityController<SupplierUser, SupplierUserDto>,
         SupplierUserApi {
     @Autowired

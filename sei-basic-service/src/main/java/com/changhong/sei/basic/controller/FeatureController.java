@@ -14,6 +14,8 @@ import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,7 +29,8 @@ import java.util.stream.Collectors;
  * @version 2020-01-19 21:18
  */
 @RestController
-@Api(value = "FeatureService", tags = "功能项API服务")
+@Api(value = "FeatureApi", tags = "功能项API服务")
+@RequestMapping(path = "feature", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class FeatureController implements DefaultBaseEntityController<Feature, FeatureDto>,
         FeatureApi {
     @Autowired

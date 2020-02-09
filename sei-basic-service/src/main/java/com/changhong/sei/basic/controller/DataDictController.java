@@ -19,6 +19,8 @@ import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -32,7 +34,8 @@ import java.util.stream.Collectors;
  * @version 2020-01-27 8:39
  */
 @RestController
-@Api(value = "DataDictService", tags = "数据字典API服务实现")
+@Api(value = "DataDictApi", tags = "数据字典API服务实现")
+@RequestMapping(path = "dataDict", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class DataDictController implements DefaultBaseEntityController<DataDict, DataDictDto>,
         DataDictApi {
     @Autowired

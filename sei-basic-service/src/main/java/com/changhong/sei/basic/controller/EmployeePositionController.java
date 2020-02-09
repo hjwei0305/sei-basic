@@ -13,6 +13,8 @@ import com.changhong.sei.core.service.BaseRelationService;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -22,7 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 2020-01-27 16:07
  */
 @RestController
-@Api(value = "EmployeePositionService", tags = "企业员工用户分配岗位的API服务实现")
+@Api(value = "EmployeePositionApi", tags = "企业员工用户分配岗位的API服务实现")
+@RequestMapping(path = "employeePosition", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class EmployeePositionController implements DefaultRelationController<EmployeePosition, Employee, Position, EmployeePositionDto, EmployeeDto, PositionDto>,
         EmployeePositionApi {
     @Autowired

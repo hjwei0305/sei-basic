@@ -8,9 +8,7 @@ import com.changhong.sei.core.dto.ResultData;
 import com.chonghong.sei.util.EnumUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -22,7 +20,6 @@ import java.util.List;
  * @version 2020-01-28 10:56
  */
 @FeignClient(name = "sei-basic", path = "featureRole")
-@RequestMapping(path = "featureRole", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface FeatureRoleApi extends BaseEntityApi<FeatureRoleDto> {
     /**
      * 通过角色组Id获取角色清单

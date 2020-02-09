@@ -11,6 +11,8 @@ import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,7 +26,8 @@ import java.util.stream.Collectors;
  * @version 2020-01-21 8:42
  */
 @RestController
-@Api(value = "DataRoleService", tags = "数据角色API服务")
+@Api(value = "DataRoleApi", tags = "数据角色API服务")
+@RequestMapping(path = "dataRole", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class DataRoleController implements DefaultBaseEntityController<DataRole, DataRoleDto>,
         DataRoleApi {
     @Autowired

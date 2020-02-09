@@ -9,7 +9,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -20,7 +19,6 @@ import java.util.List;
  * @version 2020-01-29 9:48
  */
 @FeignClient(name = "sei-basic", path = "positionCategory")
-@RequestMapping(path = "positionCategory", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface PositionCategoryApi extends BaseEntityApi<PositionCategoryDto>,
         FindAllApi<PositionCategoryDto> {
     /**

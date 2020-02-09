@@ -10,6 +10,8 @@ import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,7 +23,8 @@ import java.util.List;
  * @version 2020-01-27 14:34
  */
 @RestController
-@Api(value = "DataRoleAuthTypeValueService", tags = "数据角色分配权限类型的值API服务实现")
+@Api(value = "DataRoleAuthTypeValueApi", tags = "数据角色分配权限类型的值API服务实现")
+@RequestMapping(path = "dataRoleAuthTypeValue", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class DataRoleAuthTypeValueController implements DataRoleAuthTypeValueApi {
     @Autowired
     private DataRoleAuthTypeValueService service;

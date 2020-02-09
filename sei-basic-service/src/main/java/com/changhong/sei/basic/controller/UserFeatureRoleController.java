@@ -13,6 +13,8 @@ import com.changhong.sei.core.service.BaseRelationService;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -22,7 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 2020-01-30 9:26
  */
 @RestController
-@Api(value = "UserFeatureRoleService", tags = "用户分配的功能角色API服务实现")
+@Api(value = "UserFeatureRoleApi", tags = "用户分配的功能角色API服务实现")
+@RequestMapping(path = "userFeatureRole", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class UserFeatureRoleController implements DefaultRelationController<UserFeatureRole, User, FeatureRole, UserFeatureRoleDto, UserDto, FeatureRoleDto>,
         UserFeatureRoleApi {
     @Autowired

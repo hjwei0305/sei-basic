@@ -10,7 +10,9 @@ import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,7 +24,8 @@ import java.util.List;
  * @version 2020-01-26 19:41
  */
 @RestController
-@Api(value = "CountryService", tags = "国家API服务")
+@Api(value = "CountryApi", tags = "国家API服务")
+@RequestMapping(path = "country", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class CountryController implements DefaultBaseEntityController<Country, CountryDto>,
         CountryApi {
     @Autowired

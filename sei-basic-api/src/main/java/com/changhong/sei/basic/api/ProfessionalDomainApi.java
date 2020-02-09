@@ -5,9 +5,7 @@ import com.changhong.sei.core.api.BaseTreeApi;
 import com.changhong.sei.core.dto.ResultData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -18,7 +16,6 @@ import java.util.List;
  * @version 2020-01-29 22:37
  */
 @FeignClient(name = "sei-basic", path = "professionalDomain")
-@RequestMapping(path = "professionalDomain", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface ProfessionalDomainApi extends BaseTreeApi<ProfessionalDomainDto> {
     /**
      * 获取整个领域树

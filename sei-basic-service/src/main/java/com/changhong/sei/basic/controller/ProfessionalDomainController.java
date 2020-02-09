@@ -10,6 +10,8 @@ import com.changhong.sei.core.service.BaseTreeService;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,7 +23,8 @@ import java.util.List;
  * @version 2020-01-29 22:39
  */
 @RestController
-@Api(value = "ProfessionalDomainService", tags = "专业领域API服务")
+@Api(value = "ProfessionalDomainApi", tags = "专业领域API服务")
+@RequestMapping(path = "professionalDomain", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ProfessionalDomainController implements DefaultTreeController<ProfessionalDomain, ProfessionalDomainDto>,
         ProfessionalDomainApi {
     @Autowired

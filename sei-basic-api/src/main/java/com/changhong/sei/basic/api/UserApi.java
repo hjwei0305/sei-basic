@@ -11,9 +11,7 @@ import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -26,7 +24,6 @@ import java.util.Map;
  * @version 2020-01-30 10:23
  */
 @FeignClient(name = "sei-basic", path = "user")
-@RequestMapping(path = "user", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface UserApi extends BaseEntityApi<UserDto>,
         FindByPageApi<UserDto> {
     /**

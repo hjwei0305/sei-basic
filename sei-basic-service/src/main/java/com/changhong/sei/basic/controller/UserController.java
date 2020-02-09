@@ -21,6 +21,8 @@ import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -35,7 +37,8 @@ import java.util.stream.Collectors;
  * @version 2020-01-30 10:32
  */
 @RestController
-@Api(value = "UserService", tags = "用户API服务实现")
+@Api(value = "UserApi", tags = "用户API服务实现")
+@RequestMapping(path = "user", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class UserController implements DefaultBaseEntityController<User, UserDto>,
         UserApi {
     @Autowired

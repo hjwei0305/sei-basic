@@ -6,9 +6,7 @@ import com.changhong.sei.core.api.FindAllApi;
 import com.changhong.sei.core.dto.ResultData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @version 2020-01-26 19:37
  */
 @FeignClient(name = "sei-basic", path = "country")
-@RequestMapping(path = "country", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface CountryApi extends BaseEntityApi<CountryDto>,
         FindAllApi<CountryDto> {
     /**

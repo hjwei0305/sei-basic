@@ -7,7 +7,10 @@ import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -18,7 +21,6 @@ import java.util.List;
  * @version 2020-01-27 10:25
  */
 @FeignClient(name = "sei-basic", path = "dataRoleAuthTypeValue")
-@RequestMapping(path = "dataRoleAuthTypeValue", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface DataRoleAuthTypeValueApi {
     /**
      * 创建数据角色的分配关系

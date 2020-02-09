@@ -10,6 +10,8 @@ import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,7 +23,8 @@ import java.util.List;
  * @version 2020-01-20 15:04
  */
 @RestController
-@Api(value = "DataRoleGroupService", tags = "数据角色组API服务")
+@Api(value = "DataRoleGroupApi", tags = "数据角色组API服务")
+@RequestMapping(path = "dataRoleGroup", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class DataRoleGroupController implements DefaultBaseEntityController<DataRoleGroup, DataRoleGroupDto>,
         DataRoleGroupApi {
     @Autowired

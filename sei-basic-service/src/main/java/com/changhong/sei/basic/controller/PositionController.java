@@ -17,7 +17,9 @@ import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
@@ -32,7 +34,8 @@ import java.util.stream.Collectors;
  * @version 2020-01-29 10:47
  */
 @RestController
-@Api(value = "PositionService", tags = "岗位API服务实现")
+@Api(value = "PositionApi", tags = "岗位API服务实现")
+@RequestMapping(path = "position", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class PositionController implements DefaultBaseEntityController<Position, PositionDto>,
         PositionApi {
     @Autowired

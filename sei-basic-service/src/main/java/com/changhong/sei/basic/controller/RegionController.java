@@ -13,7 +13,9 @@ import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,7 +28,8 @@ import java.util.Objects;
  * @version 2020-01-29 23:02
  */
 @RestController
-@Api(value = "RegionService", tags = "行政区域的API服务实现")
+@Api(value = "RegionApi", tags = "行政区域的API服务实现")
+@RequestMapping(path = "region", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class RegionController implements DefaultTreeController<Region, RegionDto>,
         RegionApi {
     @Autowired

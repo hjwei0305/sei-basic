@@ -14,6 +14,8 @@ import io.swagger.annotations.Api;
 import org.apache.commons.collections.CollectionUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,7 +27,8 @@ import java.util.List;
  * @version 2020-01-19 14:51
  */
 @RestController
-@Api(value = "TenantService", tags = "租户的API服务")
+@Api(value = "TenantApi", tags = "租户的API服务")
+@RequestMapping(path = "tenant", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TenantController implements DefaultBaseEntityController<Tenant, TenantDto>,
         TenantApi {
     @Autowired

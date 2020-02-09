@@ -10,6 +10,8 @@ import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,7 +23,8 @@ import java.util.List;
  * @version 2020-01-29 9:56
  */
 @RestController
-@Api(value = "PositionCategoryService", tags = "岗位类别API服务实现")
+@Api(value = "PositionCategoryApi", tags = "岗位类别API服务实现")
+@RequestMapping(path = "positionCategory", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class PositionCategoryController implements DefaultBaseEntityController<PositionCategory, PositionCategoryDto>,
         PositionCategoryApi {
     @Autowired

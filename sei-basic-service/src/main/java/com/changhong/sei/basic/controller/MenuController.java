@@ -11,6 +11,8 @@ import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,7 +26,8 @@ import java.util.stream.Collectors;
  * @version 2020-01-19 22:09
  */
 @RestController
-@Api(value = "MenuService", tags = "系统菜单API服务")
+@Api(value = "MenuApi", tags = "系统菜单API服务")
+@RequestMapping(path = "menu", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class MenuController implements DefaultTreeController<Menu, MenuDto>,
         MenuApi {
     @Autowired

@@ -6,9 +6,7 @@ import com.changhong.sei.core.api.FindAllApi;
 import com.changhong.sei.core.dto.ResultData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -20,7 +18,6 @@ import java.util.List;
  * @version 2020-01-19 16:10
  */
 @FeignClient(name = "sei-basic", path = "featureGroup")
-@RequestMapping(path = "featureGroup", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface FeatureGroupApi extends BaseEntityApi<FeatureGroupDto>,
         FindAllApi<FeatureGroupDto> {
     /**

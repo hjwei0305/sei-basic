@@ -3,11 +3,8 @@ package com.changhong.sei.basic.api;
 import com.changhong.sei.core.dto.ResultData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <strong>实现功能:</strong>
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 1.0.1 2017-10-23 17:14
  */
 @FeignClient(name = "sei-basic", path = "basicHello")
-@RequestMapping(path = "basicHello", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface HelloApi {
     /**
      * say hello

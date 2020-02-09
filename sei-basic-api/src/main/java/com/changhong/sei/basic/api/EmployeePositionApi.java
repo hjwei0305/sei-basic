@@ -5,8 +5,6 @@ import com.changhong.sei.basic.dto.EmployeePositionDto;
 import com.changhong.sei.basic.dto.PositionDto;
 import com.changhong.sei.core.api.BaseRelationApi;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * 实现功能: 企业员工用户分配岗位的API接口
@@ -15,6 +13,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @version 2020-01-27 15:03
  */
 @FeignClient(name = "sei-basic", path = "employeePosition")
-@RequestMapping(path = "employeePosition", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface EmployeePositionApi extends BaseRelationApi<EmployeePositionDto, EmployeeDto, PositionDto> {
 }

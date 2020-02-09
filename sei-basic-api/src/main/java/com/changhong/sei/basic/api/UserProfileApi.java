@@ -8,7 +8,10 @@ import com.changhong.sei.notify.dto.UserNotifyInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -19,7 +22,6 @@ import java.util.List;
  * @version 2020-01-30 9:47
  */
 @FeignClient(name = "sei-basic", path = "userProfile")
-@RequestMapping(path = "userProfile", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public interface UserProfileApi extends BaseEntityApi<UserProfileDto> {
     /**
      * 获取支持的语言
