@@ -102,4 +102,15 @@ public class UserDataRoleController implements DefaultRelationController<UserDat
     public Class<DataRoleDto> getChildDtoClass() {
         return DataRoleDto.class;
     }
+
+    /**
+     * 将子数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    @Override
+    public DataRoleDto convertChildToDto(DataRole entity) {
+        return DataRoleController.custConvertToDto(entity);
+    }
 }
