@@ -102,4 +102,15 @@ public class UserFeatureRoleController implements DefaultRelationController<User
     public Class<FeatureRoleDto> getChildDtoClass() {
         return FeatureRoleDto.class;
     }
+
+    /**
+     * 将子数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    @Override
+    public FeatureRoleDto convertChildToDto(FeatureRole entity) {
+        return FeatureRoleController.custConvertToDto(entity);
+    }
 }
