@@ -6,6 +6,7 @@ import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.service.EmployeePositionService;
 import com.changhong.sei.basic.service.EmployeeService;
 import com.changhong.sei.basic.service.OrganizationService;
+import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageResult;
@@ -17,6 +18,7 @@ import com.chonghong.sei.enums.UserAuthorityPolicy;
 import com.chonghong.sei.enums.UserType;
 import io.swagger.annotations.Api;
 import javafx.geometry.Pos;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -284,6 +286,11 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
      */
     @Override
     public ResultData saveTenantAdmin(EmployeeDto employeeDto) {
+        // 检查租户代码
+        if (StringUtils.isBlank(employeeDto.getTenantCode())){
+            // 保存一个租户的系统管理员，需要确定租户代码！
+            return ResultData.fail(ContextUtil.getMessage("00094"));
+        }
         // 设置租户的系统管理员属性
         employeeDto.setUserType(UserType.Employee);
         employeeDto.setUserAuthorityPolicy(UserAuthorityPolicy.TenantAdmin);
@@ -355,6 +362,32 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
         custMapper.addMappings(propertyMap);
         // 转换
         return custMapper.map(entity, EmployeeDto.class);
+    }
+
+    /**
+     * 将DTO转换成数据实体
+     *
+     * @param dto 业务实体
+     * @return 数据实体
+     */
+    @Override
+    public Employee convertToEntity(EmployeeDto dto) {
+        if (Objects.isNull(dto)){
+            return null;
+        }
+        ModelMapper custMapper = new ModelMapper();
+        // 创建自定义映射规则
+        PropertyMap<EmployeeDto, Employee> propertyMap = new PropertyMap<EmployeeDto, Employee>() {
+            @Override
+            protected void configure() {
+                // 使用自定义转换规则
+                skip().setUser(null);
+            }
+        };
+        // 添加映射器
+        custMapper.addMappings(propertyMap);
+        // 转换
+        return custMapper.map(dto, Employee.class);
     }
 
     /**

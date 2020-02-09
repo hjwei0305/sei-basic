@@ -96,7 +96,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
      * @param entity 实体
      * @return 返回操作对象
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     protected OperateResultWithData<Employee> saveEmployee(Employee entity) {
         boolean isNew = entity.isNew();
         //检查该租户下员工编号不能重复
@@ -105,6 +105,27 @@ public class EmployeeService extends BaseEntityService<Employee> {
             return OperateResultWithData.operationFailure("00040", entity.getCode());
         }
         if (isNew) {
+            // 先保存user
+            User user = new User();
+            user.setTenantCode(entity.getTenantCode());
+            user.setUserName(entity.getUserName());
+            user.setUserType(entity.getUserType());
+            user.setUserAuthorityPolicy(entity.getUserAuthorityPolicy());
+            OperateResultWithData<User> userResult = userService.save(user);
+            if (userResult.notSuccessful()){
+                return OperateResultWithData.operationFailureWithData(userResult);
+            }
+            String userId = userResult.getData().getId();
+            // 设置员工用户的Id
+            entity.setId(userId);
+            //如果是修改管理员，修改用户配置邮箱
+            if (entity.isCreateAdmin()) {
+                UserProfile userProfile = new UserProfile();
+                userProfile.setUserId(userId);
+                userProfile.setEmail(entity.getEmail());
+                userProfile.setMobile(entity.getMobile());
+                userProfileService.save(userProfile);
+            }
             employeeDao.save(entity, true);
         } else {
             //修改用户

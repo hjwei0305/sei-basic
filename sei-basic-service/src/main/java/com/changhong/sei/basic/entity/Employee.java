@@ -1,7 +1,12 @@
 package com.changhong.sei.basic.entity;
 
+import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
 import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.ITenant;
+import com.chonghong.sei.enums.UserAuthorityPolicy;
+import com.chonghong.sei.enums.UserType;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -132,6 +137,18 @@ public class Employee extends BaseAuditableEntity implements ITenant {
     private String userRemark;
 
     /**
+     * 用户类型
+     */
+    @Transient
+    private UserType userType;
+
+    /**
+     * 用户权限策略
+     */
+    @Transient
+    private UserAuthorityPolicy userAuthorityPolicy;
+
+    /**
      * 设置租户代码
      *
      * @param tenantCode 租户代码
@@ -206,5 +223,21 @@ public class Employee extends BaseAuditableEntity implements ITenant {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
+    public UserAuthorityPolicy getUserAuthorityPolicy() {
+        return userAuthorityPolicy;
+    }
+
+    public void setUserAuthorityPolicy(UserAuthorityPolicy userAuthorityPolicy) {
+        this.userAuthorityPolicy = userAuthorityPolicy;
     }
 }

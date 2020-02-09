@@ -34,12 +34,12 @@ public class UserProfile extends BaseAuditableEntity {
      * 性别 ，true表示男，false表示女
      */
     @Column(name = "gender")
-    private Boolean gender;
+    private Boolean gender = Boolean.FALSE;
     /**
      * 语言代码
      */
     @Column(name = "language_code", length = 10)
-    private String languageCode;
+    private String languageCode = "zh_CN";
     /**
      * 身份证号码
      */
