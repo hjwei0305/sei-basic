@@ -360,6 +360,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
                 UserProfile userProfile = userProfileService.findByUserId(employee.getId());
                 if (Objects.nonNull(userProfile)) {
                     employee.setEmail(userProfile.getEmail());
+                    employee.setMobile(userProfile.getMobile());
                 }
                 return employee;
             }
