@@ -16,6 +16,7 @@ import com.chonghong.sei.enums.UserAuthorityPolicy;
 import com.chonghong.sei.enums.UserType;
 import com.chonghong.sei.util.IdGenerator;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -211,11 +212,13 @@ public class ExpertUserService extends BaseEntityService<ExpertUser> {
             //设置领域
             List<ProfessionalDomain> professionalDomainList = expertUserProfessionalDomainService.getChildrenFromParentId(expertUser.getId());
             StringBuilder professionalDomainName = new StringBuilder();
-            for (ProfessionalDomain professionalDomain : professionalDomainList) {
-                professionalDomainName.append(professionalDomain.getName());
-                professionalDomainName.append("/");
+            if (CollectionUtils.isNotEmpty(professionalDomainList)){
+                for (ProfessionalDomain professionalDomain : professionalDomainList) {
+                    professionalDomainName.append(professionalDomain.getName());
+                    professionalDomainName.append("/");
+                }
+                expertUserVo.setProfessionalDomainName(professionalDomainName.substring(0, professionalDomainName.length() - 1));
             }
-            expertUserVo.setProfessionalDomainName(professionalDomainName.substring(0, professionalDomainName.length() - 1));
             voList.add(expertUserVo);
         }
         page = new PageResult<>(pageResult);
