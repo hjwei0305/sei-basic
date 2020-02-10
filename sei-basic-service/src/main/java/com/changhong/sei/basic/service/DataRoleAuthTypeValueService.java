@@ -53,7 +53,8 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
      * @param relation 数据角色分配参数
      * @return 操作结果
      */
-    @CacheEvict(value = "getNormalUserAuthorizedEntities",allEntries = true)
+    //@CacheEvict(value = "getNormalUserAuthorizedEntities",allEntries = true)
+    @Transactional(rollbackFor = Exception.class)
     public OperateResult insertRelations(DataRoleRelation relation) {
         if (Objects.isNull(relation) || relation.getEntityIds().isEmpty()) {
             return OperateResult.operationSuccess("00006", 0);
@@ -82,8 +83,8 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
      * @param relation 数据角色分配参数
      * @return 操作结果
      */
-    @Transactional
-    @CacheEvict(value = "getNormalUserAuthorizedEntities",allEntries = true)
+    @Transactional(rollbackFor = Exception.class)
+    //@CacheEvict(value = "getNormalUserAuthorizedEntities",allEntries = true)
     public OperateResult removeRelations(DataRoleRelation relation) {
         if (Objects.isNull(relation) || relation.getEntityIds().isEmpty()) {
             return OperateResult.operationSuccess("00007", 0);
