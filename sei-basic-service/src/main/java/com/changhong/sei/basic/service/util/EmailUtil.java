@@ -1,17 +1,15 @@
 package com.changhong.sei.basic.service.util;
 
 import com.changhong.sei.basic.entity.Employee;
+import com.changhong.sei.core.context.ApplicationContextHolder;
+import com.changhong.sei.core.log.LogUtil;
 import com.changhong.sei.notify.api.EmailNotifyApi;
 import com.changhong.sei.notify.dto.EmailAccount;
 import com.changhong.sei.notify.dto.EmailMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -23,10 +21,10 @@ import java.util.Map;
  */
 @Component
 public class EmailUtil {
-    @Autowired
-    private EmailNotifyApi emailNotifyApi;
+
     /**
-     *  构造注册成功后发送的邮件
+     * 构造注册成功后发送的邮件
+     *
      * @param employee 注册的员工用户
      * @return 电子邮件的消息
      */
@@ -52,6 +50,15 @@ public class EmailUtil {
      */
     @Async
     public void sendEmailNotifyUser(EmailMessage message) {
-        emailNotifyApi.sendEmail(message);
+        EmailNotifyApi emailNotifyApi = null;
+        try {
+            emailNotifyApi = ApplicationContextHolder.getBean(EmailNotifyApi.class);
+        } catch (Exception e) {
+            LogUtil.error("发送邮件异常.", e);
+        }
+        if (Objects.nonNull(emailNotifyApi)) {
+            emailNotifyApi.sendEmail(message);
+            LogUtil.debug("成功发送邮件.");
+        }
     }
 }
