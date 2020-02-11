@@ -17,6 +17,7 @@ import com.changhong.sei.core.dto.serach.SearchFilter;
 import com.changhong.sei.core.local.LocalUtil;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
+import com.changhong.sei.core.util.JsonUtils;
 import com.chonghong.sei.enums.UserAuthorityPolicy;
 import com.chonghong.sei.enums.UserType;
 import com.chonghong.sei.exception.ServiceException;
@@ -543,7 +544,8 @@ public class UserService extends BaseEntityService<User> {
             if (resultData.failed()){
                 return new ArrayList<>();
             }
-            return (List<AuthTreeEntityData>)resultData.getData();
+            List<AuthTreeEntityData> authTreeEntityDatas = JsonUtils.fromJson2List(JsonUtils.toJson(resultData.getData()), AuthTreeEntityData.class);
+            return authTreeEntityDatas;
         }
         //一般用户，通过数据角色获取业务实体清单
         Set<String> entityIds = new HashSet<>();
