@@ -25,6 +25,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -426,11 +427,12 @@ public class UserService extends BaseEntityService<User> {
             //调用API服务，获取业务实体
             String appModuleCode = authorizeType.getAuthorizeEntityType().getAppModule().getApiBaseAddress();
             String path = String.format("%s/%s", authorizeType.getAuthorizeEntityType().getApiPath(), DataRoleAuthTypeValueService.FIND_ALL_AUTH_ENTITY_DATA_METHOD);
-            ResultData resultData = apiTemplate.getByAppModuleCode(appModuleCode, path, ResultData.class);
+            ParameterizedTypeReference<ResultData<List<AuthEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthEntityData>>>() {};
+            ResultData<List<AuthEntityData>> resultData = apiTemplate.getByAppModuleCode(appModuleCode, path, typeReference);
             if (resultData.failed()){
                 return new ArrayList<>();
             }
-            return (List<AuthEntityData>)resultData.getData();
+            return resultData.getData();
         }
         //一般用户，通过数据角色获取业务实体清单
         Set<AuthEntityData> entities = new HashSet<>();
@@ -540,12 +542,12 @@ public class UserService extends BaseEntityService<User> {
             //调用API服务，获取业务实体
             String appModuleCode = authorizeType.getAuthorizeEntityType().getAppModule().getApiBaseAddress();
             String path = String.format("%s/%s", authorizeType.getAuthorizeEntityType().getApiPath(), FIND_ALL_AUTH_TREE_ENTITY_DATA_METHOD);
-            ResultData resultData = apiTemplate.getByAppModuleCode(appModuleCode, path, ResultData.class);
+            ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>>() {};
+            ResultData<List<AuthTreeEntityData>> resultData = apiTemplate.getByAppModuleCode(appModuleCode, path, typeReference);
             if (resultData.failed()){
                 return new ArrayList<>();
             }
-            List<AuthTreeEntityData> authTreeEntityDatas = JsonUtils.fromJson2List(JsonUtils.toJson(resultData.getData()), AuthTreeEntityData.class);
-            return authTreeEntityDatas;
+            return resultData.getData();
         }
         //一般用户，通过数据角色获取业务实体清单
         Set<String> entityIds = new HashSet<>();
@@ -562,11 +564,12 @@ public class UserService extends BaseEntityService<User> {
         //调用API服务，获取业务实体
         String appModuleCode = authorizeType.getAuthorizeEntityType().getAppModule().getApiBaseAddress();
         String path = String.format("%s/%s", authorizeType.getAuthorizeEntityType().getApiPath(), GET_AUTH_TREE_ENTITY_DATA_METHOD);
-        ResultData resultData = apiTemplate.postByAppModuleCode(appModuleCode, path, ResultData.class, entityIds);
+        ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>>() {};
+        ResultData<List<AuthTreeEntityData>> resultData = apiTemplate.postByAppModuleCode(appModuleCode, path, typeReference, entityIds);
         if (resultData.failed()){
             return new ArrayList<>();
         }
-        return (List<AuthTreeEntityData>)resultData.getData();
+        return resultData.getData();
     }
 
     /**

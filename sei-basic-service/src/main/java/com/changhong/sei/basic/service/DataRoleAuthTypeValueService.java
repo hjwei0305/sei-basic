@@ -16,6 +16,7 @@ import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -120,11 +121,12 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
         //调用API服务，获取业务实体
         String appModuleCode = authorizeType.getAuthorizeEntityType().getAppModule().getApiBaseAddress();
         String path = String.format("%s/%s", authorizeType.getAuthorizeEntityType().getApiPath(), GET_AUTH_ENTITY_DATA_METHOD);
-        ResultData resultData = apiTemplate.postByAppModuleCode(appModuleCode, path, ResultData.class, entityIds);
+        ParameterizedTypeReference<ResultData<List<AuthEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthEntityData>>>() {};
+        ResultData<List<AuthEntityData>> resultData = apiTemplate.postByAppModuleCode(appModuleCode, path, typeReference, entityIds);
         if (resultData.failed()){
             return new ArrayList<>();
         }
-        return (List<AuthEntityData>)resultData.getData();
+        return resultData.getData();
     }
 
     /**
@@ -167,11 +169,12 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
         //调用API服务，获取业务实体
         String appModuleCode = authorizeType.getAuthorizeEntityType().getAppModule().getApiBaseAddress();
         String path = String.format("%s/%s", authorizeType.getAuthorizeEntityType().getApiPath(), GET_AUTH_TREE_ENTITY_DATA_METHOD);
-        ResultData resultData = apiTemplate.postByAppModuleCode(appModuleCode, path, ResultData.class, entityIds);
+        ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>>() {};
+        ResultData<List<AuthTreeEntityData>> resultData = apiTemplate.postByAppModuleCode(appModuleCode, path, typeReference, entityIds);
         if (resultData.failed()){
             return new ArrayList<>();
         }
-        return (List<AuthTreeEntityData>)resultData.getData();
+        return resultData.getData();
     }
 
     /**
