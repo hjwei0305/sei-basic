@@ -13,6 +13,7 @@ target/
 *.iws
 *.iml
 *.ipr
+out/
 
 ### NetBeans ###
 nbproject/private/
@@ -22,3 +23,10 @@ dist/
 nbdist/
 .nb-gradle/
 dependency-reduced-pom.xml
+
+### Gradle ###
+.gradle/
+gradle/
+
+### log ###
+logs/
