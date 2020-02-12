@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 实现功能: 用户API接口
@@ -52,7 +53,7 @@ public interface UserApi extends BaseEntityApi<UserDto>,
      */
     @GetMapping(path = "getUserAuthorizedFeatureMaps")
     @ApiOperation(value = "获取用户前端权限检查的功能项键值",notes = "获取用户前端权限检查的功能项键值(以应用模块代码分组)")
-    ResultData<Map<String, Map<String,String>>> getUserAuthorizedFeatureMaps(@RequestParam("userId") String userId);
+    ResultData<Map<String, Set<String>>> getUserAuthorizedFeatureMaps(@RequestParam("userId") String userId);
 
     /***
      * 判断用户是否有指定功能项的权限

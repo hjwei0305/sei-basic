@@ -296,8 +296,40 @@ public class UserService extends BaseEntityService<User> {
      * @param userId 用户Id
      * @return 功能项键值
      */
-    @Cacheable(value = "UserAuthorizedFeatureMapsCache", key = "'UserAuthorizedFeatureMaps:'+#userId")
-    public Map<String, Map<String, String>> getUserAuthorizedFeatureMaps(String userId) {
+    //@Cacheable(value = "UserAuthorizedFeatureMapsCache", key = "'UserAuthorizedFeatureMaps:'+#userId")
+    public Map<String, Set<String>> getUserAuthorizedFeatureMaps(String userId) {
+        Map<String, Set<String>> result = new HashMap<>();
+        // 获取用户有权限的功能项清单
+        List<Feature> authFeatures = userService.getUserAuthorizedFeatures(userId);
+        if (CollectionUtils.isEmpty(authFeatures)) {
+            return new LinkedHashMap<>();
+        }
+        //循环构造键值对
+        for (Feature feature : authFeatures) {
+            // 只添加操作功能项
+            if (feature.getFeatureType() != FeatureType.Operate) {
+                continue;
+            }
+            //判断分组代码键值是否存在
+            String key = feature.getGroupCode();
+            Set<String> codes = result.get(key);
+            if (Objects.isNull(codes)) {
+                codes = new LinkedHashSet<>();
+            }
+            //添加功能项代码
+            codes.add(feature.getCode());
+            result.put(key, codes);
+        }
+        return result;
+    }
+
+    /**
+     * 获取用户前端权限检查的功能项键值
+     *
+     * @param userId 用户Id
+     * @return 功能项键值
+     */
+    public Map<String, Map<String, String>> getUserAuthorizedFeatureAppMaps(String userId) {
         Map<String, Map<String, String>> result = new HashMap<>();
         //获取用户有权限的功能项清单
         List<Feature> authFeatures = userService.getUserAuthorizedFeatures(userId);
@@ -427,9 +459,10 @@ public class UserService extends BaseEntityService<User> {
             //调用API服务，获取业务实体
             String appModuleCode = authorizeType.getAuthorizeEntityType().getAppModule().getApiBaseAddress();
             String path = String.format("%s/%s", authorizeType.getAuthorizeEntityType().getApiPath(), DataRoleAuthTypeValueService.FIND_ALL_AUTH_ENTITY_DATA_METHOD);
-            ParameterizedTypeReference<ResultData<List<AuthEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthEntityData>>>() {};
+            ParameterizedTypeReference<ResultData<List<AuthEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthEntityData>>>() {
+            };
             ResultData<List<AuthEntityData>> resultData = apiTemplate.getByAppModuleCode(appModuleCode, path, typeReference);
-            if (resultData.failed()){
+            if (resultData.failed()) {
                 return new ArrayList<>();
             }
             return resultData.getData();
@@ -542,9 +575,10 @@ public class UserService extends BaseEntityService<User> {
             //调用API服务，获取业务实体
             String appModuleCode = authorizeType.getAuthorizeEntityType().getAppModule().getApiBaseAddress();
             String path = String.format("%s/%s", authorizeType.getAuthorizeEntityType().getApiPath(), FIND_ALL_AUTH_TREE_ENTITY_DATA_METHOD);
-            ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>>() {};
+            ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>>() {
+            };
             ResultData<List<AuthTreeEntityData>> resultData = apiTemplate.getByAppModuleCode(appModuleCode, path, typeReference);
-            if (resultData.failed()){
+            if (resultData.failed()) {
                 return new ArrayList<>();
             }
             return resultData.getData();
@@ -564,9 +598,10 @@ public class UserService extends BaseEntityService<User> {
         //调用API服务，获取业务实体
         String appModuleCode = authorizeType.getAuthorizeEntityType().getAppModule().getApiBaseAddress();
         String path = String.format("%s/%s", authorizeType.getAuthorizeEntityType().getApiPath(), GET_AUTH_TREE_ENTITY_DATA_METHOD);
-        ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>>() {};
+        ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>>() {
+        };
         ResultData<List<AuthTreeEntityData>> resultData = apiTemplate.postByAppModuleCode(appModuleCode, path, typeReference, entityIds);
-        if (resultData.failed()){
+        if (resultData.failed()) {
             return new ArrayList<>();
         }
         return resultData.getData();

@@ -26,7 +26,7 @@ public class DataRoleAuthTypeValueControllerTest extends BaseUnitTest {
 
     @Test
     public void getUnassignedAuthDataList() {
-        String roleId = "7F2FC891-4A23-11EA-8AF0-0242C0A84607";
+        String roleId = "72FA053A-4A23-11EA-8AF0-0242C0A84607";
         String authTypeId = "B8B785EF-498E-11EA-B2F9-0242C0A84607";
         ResultData resultData = controller.getUnassignedAuthDataList(roleId, authTypeId);
         System.out.println(JsonUtils.toJson(resultData));

@@ -137,14 +137,13 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
      * @return 业务实体数据
      */
     public List<AuthEntityData> getUnassignedAuthDataList(String roleId, String authTypeId) {
-        Set<AuthEntityData> dataSet = new HashSet<>();
         //获取当前用户
         SessionUser sessionUser = ContextUtil.getSessionUser();
         //获取当前用户可分配的数据
         List<AuthEntityData> canAssigned = userService.getUserCanAssignAuthDataList(authTypeId, sessionUser.getUserId());
         //获取已经分配的数据
         List<AuthEntityData> assigned = getAssignedAuthDataList(roleId, authTypeId);
-        dataSet.addAll(canAssigned);
+        Set<AuthEntityData> dataSet = new HashSet<>(canAssigned);
         dataSet.removeAll(assigned);
         return new ArrayList<>(dataSet);
     }

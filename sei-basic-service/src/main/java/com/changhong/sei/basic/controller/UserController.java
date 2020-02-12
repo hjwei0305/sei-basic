@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -75,7 +76,7 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
      * @return 功能项键值
      */
     @Override
-    public ResultData<Map<String, Map<String, String>>> getUserAuthorizedFeatureMaps(String userId) {
+    public ResultData<Map<String, Set<String>>> getUserAuthorizedFeatureMaps(String userId) {
         return ResultData.success(service.getUserAuthorizedFeatureMaps(userId));
     }
 
