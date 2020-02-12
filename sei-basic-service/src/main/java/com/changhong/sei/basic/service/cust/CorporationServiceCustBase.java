@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
  * @author 王锦光 wangjg
  * @version 2020-01-26 14:34
  */
-@Component
 public class CorporationServiceCustBase implements CorporationServiceCust {
     /**
      * 根据公司代码查询公司后，对公司的数据处理（无事务控制）

@@ -1,10 +1,10 @@
 package com.changhong.sei.basic.service.client;
 
-import com.changhong.com.sei.core.test.BaseUnitTest;
 import com.changhong.sei.basic.entity.Menu;
 import com.changhong.sei.basic.entity.Organization;
 import com.changhong.sei.basic.entity.Position;
 import com.changhong.sei.basic.entity.PositionCategory;
+import com.changhong.sei.core.test.BaseUnitTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

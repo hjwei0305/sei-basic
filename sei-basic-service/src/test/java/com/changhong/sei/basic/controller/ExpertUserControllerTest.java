@@ -1,9 +1,9 @@
 package com.changhong.sei.basic.controller;
 
-import com.changhong.com.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageInfo;
 import com.changhong.sei.core.dto.serach.Search;
+import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.util.JsonUtils;
 import org.junit.Assert;
 import org.junit.Test;

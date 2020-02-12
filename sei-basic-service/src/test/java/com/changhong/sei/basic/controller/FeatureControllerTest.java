@@ -1,10 +1,10 @@
 package com.changhong.sei.basic.controller;
 
-import com.changhong.com.sei.core.test.BaseUnitTest;
 import com.changhong.sei.basic.dto.FeatureDto;
 import com.changhong.sei.basic.dto.FeatureType;
 import com.changhong.sei.basic.entity.Feature;
 import com.changhong.sei.basic.entity.FeatureGroup;
+import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.util.JsonUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.changhong.sei.basic.service;
 
-import com.changhong.com.sei.core.test.BaseUnitTest;
 import com.changhong.sei.basic.entity.AppModule;
+import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.util.JsonUtils;
 import org.junit.Assert;
 import org.junit.Test;

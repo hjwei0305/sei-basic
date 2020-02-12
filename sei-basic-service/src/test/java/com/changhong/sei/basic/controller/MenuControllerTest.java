@@ -1,11 +1,11 @@
 package com.changhong.sei.basic.controller;
 
-import com.changhong.com.sei.core.test.BaseUnitTest;
 import com.changhong.sei.basic.dto.FeatureType;
 import com.changhong.sei.basic.dto.MenuDto;
 import com.changhong.sei.basic.entity.Feature;
 import com.changhong.sei.basic.entity.Menu;
 import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.util.JsonUtils;
 import org.junit.Assert;
 import org.junit.Test;
