@@ -296,7 +296,7 @@ public class UserService extends BaseEntityService<User> {
      * @param userId 用户Id
      * @return 功能项键值
      */
-    //@Cacheable(value = "UserAuthorizedFeatureMapsCache", key = "'UserAuthorizedFeatureMaps:'+#userId")
+    @Cacheable(value = "UserAuthorizedFeatureMapsCache", key = "'UserAuthorizedFeatureMaps:'+#userId")
     public Map<String, Set<String>> getUserAuthorizedFeatureMaps(String userId) {
         Map<String, Set<String>> result = new HashMap<>();
         // 获取用户有权限的功能项清单
