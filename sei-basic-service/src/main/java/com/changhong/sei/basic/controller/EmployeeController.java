@@ -203,13 +203,12 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
     /**
      * 根据组织机构Id清单与岗位分类Id清单获取执行人
      *
-     * @param orgIds     组织机构Id清单
-     * @param postCatIds 岗位分类Id清单
+     * @param queryParam     执行人查询参数
      * @return 执行人清单
      */
     @Override
-    public ResultData<List<Executor>> getExecutorsByPostCatAndOrg(List<String> orgIds, List<String> postCatIds) {
-        return ResultData.success(service.getExecutorsByPostCatAndOrg(orgIds, postCatIds));
+    public ResultData<List<Executor>> getExecutorsByPostCatAndOrg(ExecutorQueryParam queryParam) {
+        return ResultData.success(service.getExecutorsByPostCatAndOrg(queryParam.getOrgIds(), queryParam.getPostCatIds()));
     }
 
     /**

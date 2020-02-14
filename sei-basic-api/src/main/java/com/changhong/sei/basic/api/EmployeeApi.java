@@ -157,13 +157,12 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
     /**
      * 根据组织机构Id清单与岗位分类Id清单获取执行人
      *
-     * @param orgIds     组织机构Id清单
-     * @param postCatIds 岗位分类Id清单
+     * @param queryParam     执行人查询参数
      * @return 执行人清单
      */
-    @GetMapping(path = "getExecutorsByPostCatAndOrg")
+    @PostMapping(path = "getExecutorsByPostCatAndOrg", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据组织机构IDS与岗位分类IDS获取执行人", notes = "根据组织机构IDS与岗位分类IDS获取执行人")
-    ResultData<List<Executor>> getExecutorsByPostCatAndOrg(@RequestParam("orgIds") List<String> orgIds, @RequestParam("postCatIds") List<String> postCatIds);
+    ResultData<List<Executor>> getExecutorsByPostCatAndOrg(@RequestBody ExecutorQueryParam queryParam);
 
     /**
      * 根据岗位id和员工用户查询参数获取所有可分配企业员工用户
