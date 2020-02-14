@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * <strong>实现功能:</strong>
  * <p>应用模块API接口</p>
- *
- * @author 王锦光 wangj
- * @version 1.0.1 2020-01-19 13:41
  */
 @FeignClient(name = "sei-basic", path = "appModule")
 public interface AppModuleApi extends BaseEntityApi<AppModuleDto>,

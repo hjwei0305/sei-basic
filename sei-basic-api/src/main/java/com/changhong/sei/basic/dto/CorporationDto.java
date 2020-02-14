@@ -12,8 +12,6 @@ import javax.validation.constraints.Size;
 /**
  * 实现功能: 公司DTO
  *
- * @author 王锦光 wangjg
- * @version 2020-01-26 16:17
  */
 @ApiModel(description = "公司DTO")
 public class CorporationDto extends CorporationCustDto {

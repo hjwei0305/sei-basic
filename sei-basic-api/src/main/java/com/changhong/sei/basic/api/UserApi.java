@@ -11,9 +11,13 @@ import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -102,9 +106,9 @@ public interface UserApi extends BaseEntityApi<UserDto>,
      * @param userIds 用户的id列表
      * @return 执行人清单
      */
-    @GetMapping(path = "getExecutorsByUserIds")
+    @PostMapping(path = "getExecutorsByUserIds", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据用户的id列表获取执行人", notes = "根据用户的id列表获取执行人")
-    ResultData<List<Executor>> getExecutorsByUserIds(@RequestParam("userIds") List<String> userIds);
+    ResultData<List<Executor>> getExecutorsByUserIds(@RequestBody List<String> userIds);
 
     /**
      * 根据公司IDS与岗位分类IDS获取执行人

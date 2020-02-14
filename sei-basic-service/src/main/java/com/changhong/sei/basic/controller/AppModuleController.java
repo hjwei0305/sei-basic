@@ -18,9 +18,6 @@ import java.util.List;
 /**
  * 实现功能:
  * 应用模块的服务实现
- *
- * @author 王锦光 wangjg
- * @version 2020-01-19 13:50
  */
 @RestController
 @Api(value = "AppModuleApi", tags = "应用模块的API服务")
