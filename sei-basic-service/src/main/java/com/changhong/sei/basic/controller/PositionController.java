@@ -165,13 +165,12 @@ public class PositionController implements DefaultBaseEntityController<Position,
     /**
      * 根据组织机构ID与岗位分类IDS获取执行人，组织向上至根节点直到有企业员工
      *
-     * @param orgId      组织机构ID
-     * @param postCatIds 岗位类别的id列表
+     * @param findParam 岗位类别参数
      * @return 执行人清单
      */
     @Override
-    public ResultData<List<Executor>> getExecutorsByPostCatAndOrgToRoot(String orgId, List<String> postCatIds) {
-        return ResultData.success(service.getExecutorsByPostCatAndOrgToRoot(orgId, postCatIds));
+    public ResultData<List<Executor>> getExecutorsByPostCatAndOrgToRoot(FindExecutorByPositionCateParam findParam) {
+        return ResultData.success(service.getExecutorsByPostCatAndOrgToRoot(findParam.getOrgId(), findParam.getPostCatIds()));
     }
 
     /**

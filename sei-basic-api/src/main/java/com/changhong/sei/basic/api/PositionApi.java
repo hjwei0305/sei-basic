@@ -115,13 +115,12 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
     /**
      * 根据组织机构ID与岗位分类IDS获取执行人，组织向上至根节点直到有企业员工
      *
-     *  @param orgId 组织机构ID
-     * @param postCatIds 岗位类别的id列表
+     * @param findParam 岗位类别参数
      * @return 执行人清单
      */
-    @GetMapping(path = "getExecutorsByPostCatAndOrgToRoot")
+    @PostMapping(path = "getExecutorsByPostCatAndOrgToRoot", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据组织机构IDS与岗位分类IDS获取执行人，组织向上至根节点直到有企业员工", notes = "根据组织机构IDS与岗位分类IDS获取执行人，组织向上至根节点直到有企业员工")
-    ResultData<List<Executor>> getExecutorsByPostCatAndOrgToRoot(@RequestParam("orgId") String orgId, @RequestParam("postCatIds") List<String> postCatIds);
+    ResultData<List<Executor>> getExecutorsByPostCatAndOrgToRoot(@RequestBody FindExecutorByPositionCateParam findParam);
 
     /**
      * 根据岗位的id获取已分配的员工
