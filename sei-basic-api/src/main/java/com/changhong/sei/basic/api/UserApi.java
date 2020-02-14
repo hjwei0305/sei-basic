@@ -1,9 +1,6 @@
 package com.changhong.sei.basic.api;
 
-import com.changhong.sei.basic.dto.Executor;
-import com.changhong.sei.basic.dto.MenuDto;
-import com.changhong.sei.basic.dto.UserDto;
-import com.changhong.sei.basic.dto.UserInformation;
+import com.changhong.sei.basic.dto.*;
 import com.changhong.sei.core.api.BaseEntityApi;
 import com.changhong.sei.core.api.FindByPageApi;
 import com.changhong.sei.core.dto.ResultData;
@@ -113,13 +110,12 @@ public interface UserApi extends BaseEntityApi<UserDto>,
     /**
      * 根据公司IDS与岗位分类IDS获取执行人
      *
-     * @param corpIds    公司IDS
-     * @param postCatIds 岗位分类IDS
-     * @return
+     * @param queryParam 执行人查询参数
+     * @return 执行人清单
      */
-    @GetMapping(path = "getExecutorsByPostCatAndCorp")
+    @PostMapping(path = "getExecutorsByPostCatAndCorp", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据公司IDS与岗位分类IDS获取执行人", notes = "根据公司IDS与岗位分类IDS获取执行人")
-    ResultData<List<Executor>> getExecutorsByPostCatAndCorp(@RequestParam("corpIds") List<String> corpIds, @RequestParam("postCatIds") List<String> postCatIds);
+    ResultData<List<Executor>> getExecutorsByPostCatAndCorp(@RequestBody ExecutorQueryParam queryParam);
 
     /**
      * 获取用户是否有该页面的权限

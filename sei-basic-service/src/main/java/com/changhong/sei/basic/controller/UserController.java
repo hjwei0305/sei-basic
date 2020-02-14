@@ -1,10 +1,7 @@
 package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.UserApi;
-import com.changhong.sei.basic.dto.Executor;
-import com.changhong.sei.basic.dto.MenuDto;
-import com.changhong.sei.basic.dto.UserDto;
-import com.changhong.sei.basic.dto.UserInformation;
+import com.changhong.sei.basic.dto.*;
 import com.changhong.sei.basic.entity.Menu;
 import com.changhong.sei.basic.entity.User;
 import com.changhong.sei.basic.entity.UserProfile;
@@ -142,13 +139,12 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
     /**
      * 根据公司IDS与岗位分类IDS获取执行人
      *
-     * @param corpIds    公司IDS
-     * @param postCatIds 岗位分类IDS
-     * @return
+     * @param queryParam    执行人查询参数
+     * @return 执行人清单
      */
     @Override
-    public ResultData<List<Executor>> getExecutorsByPostCatAndCorp(List<String> corpIds, List<String> postCatIds) {
-        return ResultData.success(service.getExecutorsByPostCatAndCorp(corpIds, postCatIds));
+    public ResultData<List<Executor>> getExecutorsByPostCatAndCorp(ExecutorQueryParam queryParam) {
+        return ResultData.success(service.getExecutorsByPostCatAndCorp(queryParam.getCorpIds(), queryParam.getPostCatIds()));
     }
 
     /**

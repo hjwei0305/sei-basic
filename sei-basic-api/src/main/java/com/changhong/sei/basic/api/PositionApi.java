@@ -83,26 +83,14 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
     ResultData<List<Executor>> getExecutorsByPositionId(@RequestParam("positionId") String positionId);
 
     /**
-     * 根据岗位的id列表获取执行人
+     * 根据岗位的查询参数获取执行人
      *
-     * @param positionIds 岗位的id列表
+     * @param findParam 查询参数
      * @return 执行人清单
      */
     @PostMapping(path = "getExecutorsByPositionIds", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据岗位的id列表获取执行人", notes = "根据岗位的id列表获取执行人")
-    ResultData<List<Executor>> getExecutorsByPositionIds(@RequestBody List<String> positionIds);
-
-    /**
-     * 通过岗位ids、组织维度ids和组织机构id来获取执行人
-     *
-     * @param positionIds 岗位的id列表
-     * @param orgDimIds 组织维度的id列表
-     * @param orgId 组织机构id
-     * @return 执行人清单
-     */
-    @GetMapping(path = "getExecutors")
-    @ApiOperation(value = "通过岗位ids、组织维度ids和组织机构id来获取执行人", notes = "通过岗位ids、组织维度ids和组织机构id来获取执行人")
-    ResultData<List<Executor>> getExecutors(@RequestParam("positionIds") List<String> positionIds, @RequestParam("orgDimIds") List<String> orgDimIds, @RequestParam("orgId") String orgId);
+    ResultData<List<Executor>> getExecutors(@RequestBody FindExecutorByPositionParam findParam);
 
     /**
      * 根据岗位类别的id获取执行人

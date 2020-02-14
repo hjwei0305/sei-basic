@@ -349,13 +349,11 @@ public class PositionService extends BaseEntityService<Position> {
      * 通过岗位ids、组织维度ids和组织机构id来获取执行人
      *
      * @param positionIds 岗位的id列表
-     * @param orgDimIds   组织维度的id列表
      * @param orgId       组织机构id
      * @return 执行人清单
      */
-    public List<Executor> getExecutors(List<String> positionIds, List<String> orgDimIds, String orgId) {
-        List<Executor> executors = getExecutorsByPositionIds(positionIds).stream().filter(r -> r.getOrganizationId().equals(orgId)).collect(Collectors.toList());
-        return executors;
+    public List<Executor> getExecutors(List<String> positionIds, String orgId) {
+        return getExecutorsByPositionIds(positionIds).stream().filter(r -> r.getOrganizationId().equals(orgId)).collect(Collectors.toList());
     }
 
     /**
