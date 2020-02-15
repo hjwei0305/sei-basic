@@ -1,6 +1,8 @@
 package com.changhong.sei.basic.service;
 
 import com.changhong.sei.core.log.LogUtil;
+import com.chonghong.sei.exception.ServiceException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,10 @@ public class HelloService {
      */
     public String sayHello(String name, String param){
         LogUtil.bizLog("执行业务逻辑说：你好！");
+        // 测试异常
+        if (!StringUtils.equals(name, "王锦光")){
+            throw new ServiceException("你不是王锦光！");
+        }
         return "你好，"+name+"！参数："+param;
     }
 }

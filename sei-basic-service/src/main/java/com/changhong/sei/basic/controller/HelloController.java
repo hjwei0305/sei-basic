@@ -5,6 +5,7 @@ import com.changhong.sei.basic.service.HelloService;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.context.SessionUser;
 import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.core.log.LogUtil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +40,13 @@ public class HelloController implements HelloApi {
     public ResultData<String> sayHello(String name) {
         SessionUser sessionUser = ContextUtil.getSessionUser();
         System.out.println(sessionUser);
-        String data = service.sayHello(name, testKey);
+        String data;
+        try {
+            data = service.sayHello(name, testKey);
+        } catch (Exception e) {
+            LogUtil.error("执行方法sayHello异常！", e);
+            return ResultData.fail("执行方法sayHello异常！"+e.getMessage());
+        }
         return ResultData.success(data);
     }
 }
