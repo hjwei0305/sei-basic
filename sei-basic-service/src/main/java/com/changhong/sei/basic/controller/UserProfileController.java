@@ -38,6 +38,7 @@ public class UserProfileController implements DefaultBaseEntityController<UserPr
     private UserProfileService service;
     @Autowired
     private EmployeeService employeeService;
+
     /**
      * 获取支持的语言
      */
@@ -59,7 +60,7 @@ public class UserProfileController implements DefaultBaseEntityController<UserPr
         // 获取企业员工信息
         if (profileDto.getUserType() == UserType.Employee) {
             Employee employee = employeeService.findOne(userId);
-            if (Objects.nonNull(employee)){
+            if (Objects.nonNull(employee)) {
                 profileDto.setEmployeeCode(employee.getCode());
                 if (Objects.nonNull(employee.getOrganization())) {
                     profileDto.setOrganizationName(employee.getOrganization().getName());
@@ -127,11 +128,12 @@ public class UserProfileController implements DefaultBaseEntityController<UserPr
 
     /**
      * 将数据实体转换成DTO
+     *
      * @param entity 数据实体
      * @return DTO
      */
-    static UserProfileDto custConvertToDto(UserProfile entity){
-        if (Objects.isNull(entity)){
+    static UserProfileDto custConvertToDto(UserProfile entity) {
+        if (Objects.isNull(entity)) {
             return null;
         }
         ModelMapper custMapper = new ModelMapper();
@@ -147,5 +149,22 @@ public class UserProfileController implements DefaultBaseEntityController<UserPr
         custMapper.addMappings(propertyMap);
         // 转换
         return custMapper.map(entity, UserProfileDto.class);
+    }
+
+    /**
+     * 保存业务实体
+     *
+     * @param dto 业务实体DTO
+     * @return 操作结果
+     */
+    @Override
+    public ResultData<UserProfileDto> save(UserProfileDto dto) {
+        ResultData<UserProfileDto> resultData = DefaultBaseEntityController.super.save(dto);
+        if (resultData.failed()) {
+            return resultData;
+        }
+        // 重新获取数据
+        ResultData<UserProfileDto> profileDto = findByUserId(resultData.getData().getUserId());
+        return ResultData.success(resultData.getMessage(), profileDto.getData());
     }
 }
