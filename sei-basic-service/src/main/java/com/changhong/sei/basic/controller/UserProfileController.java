@@ -140,7 +140,7 @@ public class UserProfileController implements DefaultBaseEntityController<UserPr
             @Override
             protected void configure() {
                 // 使用自定义转换规则
-                map().setUserId(source.getId());
+                map().setUserId(source.getUserId());
             }
         };
         // 添加映射器
