@@ -2,13 +2,16 @@ package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.UserProfileApi;
 import com.changhong.sei.basic.dto.UserProfileDto;
+import com.changhong.sei.basic.entity.Employee;
 import com.changhong.sei.basic.entity.UserProfile;
+import com.changhong.sei.basic.service.EmployeeService;
 import com.changhong.sei.basic.service.UserProfileService;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.IDataValue;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.notify.dto.UserNotifyInfo;
+import com.chonghong.sei.enums.UserType;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -33,6 +36,8 @@ public class UserProfileController implements DefaultBaseEntityController<UserPr
         UserProfileApi {
     @Autowired
     private UserProfileService service;
+    @Autowired
+    private EmployeeService employeeService;
     /**
      * 获取支持的语言
      */
@@ -49,7 +54,19 @@ public class UserProfileController implements DefaultBaseEntityController<UserPr
      */
     @Override
     public ResultData<UserProfileDto> findByUserId(String userId) {
-        return ResultData.success(convertToDto(service.findByUserId(userId)));
+        // 获取用户配置信息
+        UserProfileDto profileDto = convertToDto(service.findByUserId(userId));
+        // 获取企业员工信息
+        if (profileDto.getUserType() == UserType.Employee) {
+            Employee employee = employeeService.findOne(userId);
+            if (Objects.nonNull(employee)){
+                profileDto.setEmployeeCode(employee.getCode());
+                if (Objects.nonNull(employee.getOrganization())) {
+                    profileDto.setOrganizationName(employee.getOrganization().getName());
+                }
+            }
+        }
+        return ResultData.success(profileDto);
     }
 
     /**

@@ -83,6 +83,18 @@ public class UserProfileDto extends BaseEntityDto {
     @JsonSerialize(using = EnumJsonSerializer.class)
     private UserAuthorityPolicy userAuthorityPolicy;
 
+    /**
+     * 企业员工编号
+     */
+    @ApiModelProperty(value = "企业员工编号")
+    private String employeeCode;
+
+    /**
+     * 员工组织机构名称
+     */
+    @ApiModelProperty(value = "员工组织机构名称")
+    private String organizationName;
+
     public String getEmail() {
         return email;
     }
@@ -161,5 +173,21 @@ public class UserProfileDto extends BaseEntityDto {
 
     public void setUserAuthorityPolicy(UserAuthorityPolicy userAuthorityPolicy) {
         this.userAuthorityPolicy = userAuthorityPolicy;
+    }
+
+    public String getEmployeeCode() {
+        return employeeCode;
+    }
+
+    public void setEmployeeCode(String employeeCode) {
+        this.employeeCode = employeeCode;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
     }
 }
