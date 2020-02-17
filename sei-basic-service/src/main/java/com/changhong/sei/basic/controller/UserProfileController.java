@@ -123,7 +123,7 @@ public class UserProfileController implements DefaultBaseEntityController<UserPr
             @Override
             protected void configure() {
                 // 使用自定义转换规则
-                map().setId(source.getId());
+                map().setUserId(source.getId());
             }
         };
         // 添加映射器
