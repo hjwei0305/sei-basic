@@ -16,17 +16,6 @@ import java.util.Objects;
 public class NumberGenerator {
     @Autowired
     private SerialService serialService;
-    /**
-     * 获取一个序列编号.
-     * 有隔离码可为空
-     *
-     * @param entityClassName 业务实体类名(含包路径)
-     * @param isolationCode   隔离码
-     * @return 序列编号
-     */
-    public String getNumber(String entityClassName, String isolationCode) {
-        return serialService.getNumber(entityClassName, isolationCode);
-    }
 
     /**
      * 获取一个序列编号.
@@ -35,7 +24,7 @@ public class NumberGenerator {
      * @return 序列编号
      */
     public String getNumber(String entityClassName) {
-        return getNumber(entityClassName, null);
+        return getNumber(entityClassName);
     }
 
     /**
@@ -49,6 +38,6 @@ public class NumberGenerator {
             throw new IllegalArgumentException("业务实体类名不能为空");
         }
         String className = entityClass.getName();
-        return getNumber(className, null);
+        return getNumber(className);
     }
 }

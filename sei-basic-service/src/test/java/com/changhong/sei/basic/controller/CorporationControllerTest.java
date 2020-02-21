@@ -15,13 +15,20 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class CorporationControllerTest extends BaseUnitTest {
     @Autowired
-    private CorporationController service;
+    private CorporationController controller;
 
     @Test
     public void findByErpCode() {
         String erpCode = "Q000";
-        ResultData resultData = service.findByErpCode(erpCode);
+        ResultData resultData = controller.findByErpCode(erpCode);
         Assert.assertTrue(resultData.successful());
         System.out.println(JsonUtils.toJson(resultData));
+    }
+
+    @Test
+    public void getUserAuthorizedEntities(){
+        ResultData resultData = controller.getUserAuthorizedEntities(null);
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
     }
 }
