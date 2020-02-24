@@ -10,6 +10,7 @@ import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.IDataValue;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
+import com.changhong.sei.core.utils.ResultDataUtil;
 import com.changhong.sei.notify.dto.UserNotifyInfo;
 import com.chonghong.sei.enums.UserType;
 import io.swagger.annotations.Api;
@@ -57,6 +58,10 @@ public class UserProfileController implements DefaultBaseEntityController<UserPr
     public ResultData<UserProfileDto> findByUserId(String userId) {
         // 获取用户配置信息
         UserProfileDto profileDto = convertToDto(service.findByUserId(userId));
+        if (Objects.isNull(profileDto)) {
+            // 用户【{0}】没有创建配置信息！
+            return ResultDataUtil.fail("00095", userId);
+        }
         // 获取企业员工信息
         if (profileDto.getUserType() == UserType.Employee) {
             Employee employee = employeeService.findOne(userId);
