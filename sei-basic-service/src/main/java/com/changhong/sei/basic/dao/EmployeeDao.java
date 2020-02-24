@@ -2,7 +2,7 @@ package com.changhong.sei.basic.dao;
 
 import com.changhong.sei.basic.entity.Employee;
 import com.changhong.sei.core.dao.BaseEntityDao;
-import com.chonghong.sei.enums.UserAuthorityPolicy;
+import com.changhong.sei.enums.UserAuthorityPolicy;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

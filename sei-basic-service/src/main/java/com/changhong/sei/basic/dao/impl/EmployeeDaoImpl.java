@@ -7,7 +7,7 @@ import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.impl.BaseEntityDaoImpl;
 import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.entity.ITenant;
-import com.chonghong.sei.util.IdGenerator;
+import com.changhong.sei.util.IdGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 

@@ -5,7 +5,7 @@ import com.changhong.sei.basic.entity.Position;
 import com.changhong.sei.core.dao.impl.BaseEntityDaoImpl;
 import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.dto.serach.SearchFilter;
-import com.chonghong.sei.util.IdGenerator;
+import com.changhong.sei.util.IdGenerator;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.EntityManager;

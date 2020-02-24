@@ -12,7 +12,7 @@ import com.changhong.sei.core.service.BaseTreeService;
 import com.changhong.sei.core.service.DataAuthEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.service.bo.OperateResultWithData;
-import com.chonghong.sei.enums.UserAuthorityPolicy;
+import com.changhong.sei.enums.UserAuthorityPolicy;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

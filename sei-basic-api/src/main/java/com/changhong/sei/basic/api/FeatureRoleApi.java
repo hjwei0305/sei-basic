@@ -5,7 +5,7 @@ import com.changhong.sei.basic.dto.PositionDto;
 import com.changhong.sei.basic.dto.UserDto;
 import com.changhong.sei.core.api.BaseEntityApi;
 import com.changhong.sei.core.dto.ResultData;
-import com.chonghong.sei.util.EnumUtils;
+import com.changhong.sei.util.EnumUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

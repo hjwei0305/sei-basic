@@ -11,9 +11,9 @@ import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.dto.serach.SearchFilter;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
-import com.chonghong.sei.enums.UserAuthorityPolicy;
-import com.chonghong.sei.enums.UserType;
-import com.chonghong.sei.util.EnumUtils;
+import com.changhong.sei.enums.UserAuthorityPolicy;
+import com.changhong.sei.enums.UserType;
+import com.changhong.sei.util.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

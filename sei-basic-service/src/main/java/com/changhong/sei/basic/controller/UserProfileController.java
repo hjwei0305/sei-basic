@@ -12,7 +12,7 @@ import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import com.changhong.sei.notify.dto.UserNotifyInfo;
-import com.chonghong.sei.enums.UserType;
+import com.changhong.sei.enums.UserType;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
