@@ -186,6 +186,16 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
     }
 
     /**
+     * 清除用户权限相关的所有缓存
+     *
+     * @param userId 用户Id
+     */
+    @Override
+    public void clearUserAuthorizedCaches(String userId) {
+        service.clearUserAuthorizedCaches(userId);
+    }
+
+    /**
      * 分页查询业务实体
      *
      * @param search 查询参数

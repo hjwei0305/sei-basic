@@ -18,7 +18,7 @@ public class UserServiceTest extends BaseUnitTest {
 
     @Test
     public void clearUserAuthorizedCaches() {
-        String userId = "0C0E05FA-5494-11EA-9A58-0242C0A84605";
+        String userId = "B54E8964-D14D-11E8-A64B-0242C0A8441B";
         service.clearUserAuthorizedCaches(userId);
     }
 }

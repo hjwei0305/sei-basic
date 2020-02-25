@@ -9,10 +9,7 @@ import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
 import java.util.List;
@@ -137,4 +134,11 @@ public interface UserApi extends BaseEntityApi<UserDto>,
     @GetMapping(path = "getUserInformation")
     @ApiOperation(notes = "根据用户id查询用户", value = "根据用户id查询一个用户")
     ResultData<UserInformation> getUserInformation(@RequestParam("userId")String userId);
+
+    /**
+     * 清除用户权限相关的所有缓存
+     * @param userId 用户Id
+     */
+    @PostMapping(path = "clearUserAuthorizedCaches/{userId}")
+    void clearUserAuthorizedCaches(@PathVariable("userId") String userId);
 }
