@@ -230,15 +230,19 @@ public class EmployeeService extends BaseEntityService<Employee> {
         }
         PageResult<Employee> employees = findByPage(search);
         Iterator<Employee> iterator = employees.getRows().iterator();
+        int removeCount = 0;
         while (iterator.hasNext()) {
             Employee employee = iterator.next();
             //去除管理员显示
             if (!UserAuthorityPolicy.NormalUser.equals(employee.getUser().getUserAuthorityPolicy())) {
                 iterator.remove();
+                removeCount+=1;
             }
             employee.setUserName(employee.getUser().getUserName());
             employee.setFrozen(employee.getUser().getFrozen());
         }
+        // 调整总记录数
+        employees.setRecords(employees.getRecords()-removeCount);
         return employees;
     }
 
