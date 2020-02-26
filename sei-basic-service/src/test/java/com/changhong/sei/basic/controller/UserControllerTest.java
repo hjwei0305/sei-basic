@@ -34,4 +34,12 @@ public class UserControllerTest extends BaseUnitTest {
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }
+
+    @Test
+    public void getDataRolesByAccount() {
+        String account = "admin";
+        ResultData resultData = controller.getDataRolesByAccount(account);
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
 }

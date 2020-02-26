@@ -140,5 +140,15 @@ public interface UserApi extends BaseEntityApi<UserDto>,
      * @param userId 用户Id
      */
     @PostMapping(path = "clearUserAuthorizedCaches/{userId}")
+    @ApiOperation(value = "清除用户权限相关的所有缓存", notes = "在退出时清除用户权限相关的所有分布式缓存")
     void clearUserAuthorizedCaches(@PathVariable("userId") String userId);
+
+    /**
+     * 通过用户账户获取用户的数据角色
+     * @param account 用户账户
+     * @return 数据角色清单
+     */
+    @GetMapping(path = "getDataRolesByAccount")
+    @ApiOperation(value = "通过用户账户获取用户的数据角色", notes = "通过用户账户获取当前租户下用户的数据角色")
+    ResultData<List<DataRoleDto>> getDataRolesByAccount(String account);
 }

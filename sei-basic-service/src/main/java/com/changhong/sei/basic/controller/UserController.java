@@ -2,11 +2,15 @@ package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.UserApi;
 import com.changhong.sei.basic.dto.*;
+import com.changhong.sei.basic.entity.DataRole;
 import com.changhong.sei.basic.entity.Menu;
 import com.changhong.sei.basic.entity.User;
 import com.changhong.sei.basic.entity.UserProfile;
+import com.changhong.sei.basic.service.DataRoleService;
 import com.changhong.sei.basic.service.UserProfileService;
 import com.changhong.sei.basic.service.UserService;
+import com.changhong.sei.basic.service.client.AccountManager;
+import com.changhong.sei.basic.service.client.dto.SessionUserResponse;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
@@ -15,6 +19,8 @@ import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
 import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.service.BaseEntityService;
+import com.changhong.sei.core.utils.ResultDataUtil;
+import com.changhong.sei.enums.UserAuthorityPolicy;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -42,6 +48,10 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
     private UserService service;
     @Autowired
     private UserProfileService userProfileService;
+    @Autowired
+    private AccountManager accountManager;
+    @Autowired
+    private DataRoleService dataRoleService;
     /**
      * 根据用户id查询用户
      *
@@ -193,6 +203,33 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
     @Override
     public void clearUserAuthorizedCaches(String userId) {
         service.clearUserAuthorizedCaches(userId);
+    }
+
+    /**
+     * 通过用户账户获取用户的数据角色
+     *
+     * @param account 用户账户
+     * @return 数据角色清单
+     */
+    @Override
+    public ResultData<List<DataRoleDto>> getDataRolesByAccount(String account) {
+        // 获取用户信息
+        SessionUserResponse userResponse = accountManager.getSessionUser(ContextUtil.getTenantCode(), account);
+        // 判断用户是否为租户的系统管理员
+        if (userResponse.getAuthorityPolicy() == UserAuthorityPolicy.TenantAdmin) {
+            // 返回所有数据角色
+            List<DataRole> dataRoles = dataRoleService.findAllUnfrozen();
+            List<DataRoleDto> roleDtos = dataRoles.stream().map(DataRoleController::custConvertToDto).collect(Collectors.toList());
+            return ResultData.success(roleDtos);
+        }
+        User user = service.findOne(userResponse.getUserId());
+        if (Objects.isNull(user)) {
+            // 账户【{0}】不存在对应的系统用户！
+            return ResultDataUtil.fail("00098", account);
+        }
+        Set<DataRole> roles = service.getNormalUserDataRoles(user);
+        List<DataRoleDto> roleDtos = roles.stream().map(DataRoleController::custConvertToDto).collect(Collectors.toList());
+        return ResultData.success(roleDtos);
     }
 
     /**

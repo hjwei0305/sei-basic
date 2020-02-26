@@ -488,7 +488,7 @@ public class UserService extends BaseEntityService<User> {
      * @param user 用户
      * @return 数据角色清单
      */
-    private Set<DataRole> getNormalUserDataRoles(User user) {
+    public Set<DataRole> getNormalUserDataRoles(User user) {
         //一般用户的数据角色
         Set<DataRole> userRoles = new HashSet<>();
         //获取用户的公共角色
