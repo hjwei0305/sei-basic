@@ -75,6 +75,16 @@ public class DataAuthorizeTypeDto extends BaseEntityDto {
     @ApiModelProperty(value = "功能项名称")
     private String featureName;
 
+    /**
+     * 应用模块Id
+     */
+    private String authorizeEntityTypeAppModuleId;
+
+    /**
+     * 应用模块名称
+     */
+    private String authorizeEntityTypeAppModuleName;
+
     public String getCode() {
         return code;
     }
@@ -145,5 +155,21 @@ public class DataAuthorizeTypeDto extends BaseEntityDto {
 
     public void setFeatureName(String featureName) {
         this.featureName = featureName;
+    }
+
+    public String getAuthorizeEntityTypeAppModuleId() {
+        return authorizeEntityTypeAppModuleId;
+    }
+
+    public void setAuthorizeEntityTypeAppModuleId(String authorizeEntityTypeAppModuleId) {
+        this.authorizeEntityTypeAppModuleId = authorizeEntityTypeAppModuleId;
+    }
+
+    public String getAuthorizeEntityTypeAppModuleName() {
+        return authorizeEntityTypeAppModuleName;
+    }
+
+    public void setAuthorizeEntityTypeAppModuleName(String authorizeEntityTypeAppModuleName) {
+        this.authorizeEntityTypeAppModuleName = authorizeEntityTypeAppModuleName;
     }
 }

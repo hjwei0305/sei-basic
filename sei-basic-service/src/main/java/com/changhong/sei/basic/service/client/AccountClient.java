@@ -1,6 +1,5 @@
 package com.changhong.sei.basic.service.client;
 
-import com.changhong.sei.basic.service.client.dto.AccountResponse;
 import com.changhong.sei.basic.service.client.dto.CreateAccountRequest;
 import com.changhong.sei.basic.service.client.dto.SessionUserResponse;
 import com.changhong.sei.basic.service.client.dto.UpdateAccountRequest;

@@ -86,6 +86,7 @@ public class DataAuthorizeTypeController implements DefaultBaseEntityController<
                 // 使用自定义转换规则
                 map().setAuthorizeEntityTypeId(source.getAuthorizeEntityTypeId());
                 map().setFeatureId(source.getFeatureId());
+                map().setAuthorizeEntityTypeAppModuleId(source.getAuthorizeEntityType().getAppModuleId());
             }
         };
         // 添加映射器
