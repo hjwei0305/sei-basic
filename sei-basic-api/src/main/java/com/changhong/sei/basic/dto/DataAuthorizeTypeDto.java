@@ -54,7 +54,7 @@ public class DataAuthorizeTypeDto extends BaseEntityDto {
     /**
      * 权限对象类型是否为树型
      */
-    private String authorizeEntityTypeBeTree;
+    private Boolean authorizeEntityTypeBeTree = Boolean.FALSE;
 
     /**
      * 功能项Id
@@ -115,11 +115,11 @@ public class DataAuthorizeTypeDto extends BaseEntityDto {
         this.authorizeEntityTypeName = authorizeEntityTypeName;
     }
 
-    public String getAuthorizeEntityTypeBeTree() {
+    public Boolean getAuthorizeEntityTypeBeTree() {
         return authorizeEntityTypeBeTree;
     }
 
-    public void setAuthorizeEntityTypeBeTree(String authorizeEntityTypeBeTree) {
+    public void setAuthorizeEntityTypeBeTree(Boolean authorizeEntityTypeBeTree) {
         this.authorizeEntityTypeBeTree = authorizeEntityTypeBeTree;
     }
 

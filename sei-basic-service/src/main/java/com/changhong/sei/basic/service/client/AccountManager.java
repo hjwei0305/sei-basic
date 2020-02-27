@@ -29,7 +29,7 @@ public class AccountManager {
     public SessionUserResponse getSessionUser(String tenantCode, String account) {
         ResultData<SessionUserResponse> resultData = client.getByTenantAccount(tenantCode, account);
         if (resultData.failed()) {
-            throw new ServiceException("通过租户和账号获取已有账户异常！"+resultData.getMessage());
+            throw new ServiceException("租户【"+tenantCode+"】中获取账户【"+account+"】信息失败！"+resultData.getMessage());
         }
         return resultData.getData();
     }
