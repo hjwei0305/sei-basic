@@ -1,7 +1,9 @@
 package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.DataRoleAuthTypeValueApi;
+import com.changhong.sei.basic.dto.DataAuthorizeTypeDto;
 import com.changhong.sei.basic.dto.DataRoleRelation;
+import com.changhong.sei.basic.entity.DataAuthorizeType;
 import com.changhong.sei.basic.service.DataRoleAuthTypeValueService;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthEntityData;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 实现功能: 数据角色分配权限类型的值API服务实现
@@ -102,5 +105,18 @@ public class DataRoleAuthTypeValueController implements DataRoleAuthTypeValueApi
     public ResultData<List<AuthTreeEntityData>> getUnassignedAuthTreeDataList(String roleId, String authTypeId) {
         List<AuthTreeEntityData> authEntityDatas = service.getUnassignedAuthTreeDataList(roleId, authTypeId);
         return ResultData.success(authEntityDatas);
+    }
+
+    /**
+     * 通过数据角色Id获取数据权限类型
+     *
+     * @param roleId 数据角色Id
+     * @return 数据权限类型清单
+     */
+    @Override
+    public ResultData<List<DataAuthorizeTypeDto>> getAuthorizeTypesByRoleId(String roleId) {
+        List<DataAuthorizeType> authorizeTypes = service.getAuthorizeTypesByRoleId(roleId);
+        List<DataAuthorizeTypeDto> dtos = authorizeTypes.stream().map(DataAuthorizeTypeController::custConvertToDto).collect(Collectors.toList());
+        return ResultData.success(dtos);
     }
 }

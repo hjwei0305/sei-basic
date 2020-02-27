@@ -253,4 +253,13 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
         }
         return dao.getRoleIdsByDataAuthTypeAndEntityIds(dataAuthTypeId, entityIds);
     }
+
+    /**
+     * 通过数据角色Id获取数据权限类型
+     * @param roleId 数据角色Id
+     * @return 数据权限类型清单
+     */
+    public List<DataAuthorizeType> getAuthorizeTypesByRoleId(String roleId) {
+        return dao.getDataAuthTypesByRoleId(roleId);
+    }
 }

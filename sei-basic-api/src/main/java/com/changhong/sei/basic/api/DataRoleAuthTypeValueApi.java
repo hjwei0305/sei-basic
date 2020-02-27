@@ -1,5 +1,6 @@
 package com.changhong.sei.basic.api;
 
+import com.changhong.sei.basic.dto.DataAuthorizeTypeDto;
 import com.changhong.sei.basic.dto.DataRoleRelation;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthEntityData;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -85,4 +87,13 @@ public interface DataRoleAuthTypeValueApi {
     @GetMapping(path = "getUnassignedAuthTreeDataList")
     @ApiOperation(value = "通过数据角色和权限类型获取未分配的树形业务实体数据", notes = "通过数据角色Id和数据权限类型Id获取未分配的树形业务实体数据")
     ResultData<List<AuthTreeEntityData>> getUnassignedAuthTreeDataList(@RequestParam("roleId") String roleId, @RequestParam("authTypeId") String authTypeId);
+
+    /**
+     * 通过数据角色Id获取数据权限类型
+     * @param roleId 数据角色Id
+     * @return 数据权限类型清单
+     */
+    @GetMapping(path = "getAuthorizeTypesByRoleId")
+    @ApiOperation(value = "通过数据角色Id获取数据权限类型", notes = "通过数据角色Id获取此角色中所包含的数据权限类型清单")
+    ResultData<List<DataAuthorizeTypeDto>> getAuthorizeTypesByRoleId(@RequestParam("roleId") String roleId);
 }

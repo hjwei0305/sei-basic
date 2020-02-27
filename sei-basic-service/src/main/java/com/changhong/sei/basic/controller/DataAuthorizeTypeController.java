@@ -66,6 +66,18 @@ public class DataAuthorizeTypeController implements DefaultBaseEntityController<
      */
     @Override
     public DataAuthorizeTypeDto convertToDto(DataAuthorizeType entity) {
+        return custConvertToDto(entity);
+    }
+
+    /**
+     * 自定义数据实体转换成DTO
+     * @param entity 业务实体
+     * @return DTO
+     */
+    public static DataAuthorizeTypeDto custConvertToDto(DataAuthorizeType entity) {
+        if (Objects.isNull(entity)) {
+            return null;
+        }
         ModelMapper custMapper = new ModelMapper();
         // 创建自定义映射规则
         PropertyMap<DataAuthorizeType,DataAuthorizeTypeDto> propertyMap = new PropertyMap<DataAuthorizeType,DataAuthorizeTypeDto>() {

@@ -1,5 +1,6 @@
 package com.changhong.sei.basic.dao;
 
+import com.changhong.sei.basic.entity.DataAuthorizeType;
 import com.changhong.sei.basic.entity.DataRoleAuthTypeValue;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import org.springframework.data.jpa.repository.Query;
@@ -30,4 +31,12 @@ public interface DataRoleAuthTypeValueDao extends BaseEntityDao<DataRoleAuthType
      */
     @Query("select distinct t.dataRole.id from DataRoleAuthTypeValue as t where t.dataAuthorizeType.id=:dataAuthorizeTypeId and t.entityId in:entityIds")
     List<String> getRoleIdsByDataAuthTypeAndEntityIds(@Param("dataAuthorizeTypeId") String dataAuthorizeTypeId, @Param("entityIds") List<String> entityIds);
+
+    /**
+     * 通过数据角色Id获取数据权限类型清单
+     * @param roleId 数据角色Id
+     * @return 数据权限类型清单
+     */
+    @Query("select distinct t.dataAuthorizeType from DataRoleAuthTypeValue as t where t.dataRoleId=:roleId")
+    List<DataAuthorizeType> getDataAuthTypesByRoleId(@Param("roleId") String roleId);
 }

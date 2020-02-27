@@ -52,6 +52,11 @@ public class DataAuthorizeTypeDto extends BaseEntityDto {
     private String authorizeEntityTypeName;
 
     /**
+     * 权限对象类型是否为树型
+     */
+    private String authorizeEntityTypeBeTree;
+
+    /**
      * 功能项Id
      */
     @Size(max = 36)
@@ -108,6 +113,14 @@ public class DataAuthorizeTypeDto extends BaseEntityDto {
 
     public void setAuthorizeEntityTypeName(String authorizeEntityTypeName) {
         this.authorizeEntityTypeName = authorizeEntityTypeName;
+    }
+
+    public String getAuthorizeEntityTypeBeTree() {
+        return authorizeEntityTypeBeTree;
+    }
+
+    public void setAuthorizeEntityTypeBeTree(String authorizeEntityTypeBeTree) {
+        this.authorizeEntityTypeBeTree = authorizeEntityTypeBeTree;
     }
 
     public String getFeatureId() {

@@ -1,6 +1,9 @@
 package com.changhong.sei.basic.service.client;
 
+import com.changhong.sei.basic.service.client.dto.AccountResponse;
+import com.changhong.sei.basic.service.client.dto.CreateAccountRequest;
 import com.changhong.sei.basic.service.client.dto.SessionUserResponse;
+import com.changhong.sei.basic.service.client.dto.UpdateAccountRequest;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +32,35 @@ public class AccountManager {
             throw new ServiceException("通过租户和账号获取已有账户异常！"+resultData.getMessage());
         }
         return resultData.getData();
+    }
+
+    /**
+     * 创建新账户
+     * @param request 创建参数
+     */
+    public void create(CreateAccountRequest request) {
+        try {
+            ResultData resultData = client.create(request);
+            if (resultData.failed()) {
+                throw new ServiceException("创建新账户失败！"+resultData.getMessage());
+            }
+        } catch (IllegalAccessException e) {
+            throw new ServiceException("创建新账户异常！"+e.getMessage());
+        }
+    }
+
+    /**
+     * 更改账户
+     * @param request 更改参数
+     */
+    public void update(UpdateAccountRequest request) {
+        try {
+            ResultData resultData = client.update(request);
+            if (resultData.failed()) {
+                throw new ServiceException("更改账户失败！"+resultData.getMessage());
+            }
+        } catch (IllegalAccessException e) {
+            throw new ServiceException("更改账户异常！"+e.getMessage());
+        }
     }
 }
