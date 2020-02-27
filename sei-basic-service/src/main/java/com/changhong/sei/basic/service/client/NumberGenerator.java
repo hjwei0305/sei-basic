@@ -24,7 +24,7 @@ public class NumberGenerator {
      * @return 序列编号
      */
     public String getNumber(String entityClassName) {
-        return getNumber(entityClassName);
+        return serialService.getNumber(entityClassName);
     }
 
     /**

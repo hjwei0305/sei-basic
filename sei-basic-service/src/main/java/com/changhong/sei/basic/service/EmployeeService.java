@@ -7,6 +7,9 @@ import com.changhong.sei.basic.dto.EmployeeQueryParam;
 import com.changhong.sei.basic.dto.Executor;
 import com.changhong.sei.basic.dto.UserQueryParam;
 import com.changhong.sei.basic.entity.*;
+import com.changhong.sei.basic.service.client.AccountManager;
+import com.changhong.sei.basic.service.client.dto.CreateAccountRequest;
+import com.changhong.sei.basic.service.client.dto.UpdateAccountRequest;
 import com.changhong.sei.basic.service.util.EmailUtil;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
@@ -61,6 +64,8 @@ public class EmployeeService extends BaseEntityService<Employee> {
     private UserFeatureRoleService userFeatureRoleService;
     @Autowired
     private UserDataRoleService userDataRoleService;
+    @Autowired
+    private AccountManager accountManager;
 
     @Override
     protected BaseEntityDao<Employee> getDao() {
@@ -123,15 +128,24 @@ public class EmployeeService extends BaseEntityService<Employee> {
             String userId = userResult.getData().getId();
             // 设置员工用户的Id
             entity.setId(userId);
-            //如果是修改管理员，修改用户配置邮箱
-            if (entity.isCreateAdmin()) {
-                UserProfile userProfile = new UserProfile();
-                userProfile.setUserId(userId);
-                userProfile.setEmail(entity.getEmail());
-                userProfile.setMobile(entity.getMobile());
-                userProfileService.save(userProfile);
-            }
+            // 保存用户配置信息
+            UserProfile userProfile = new UserProfile();
+            userProfile.setUserId(userId);
+            userProfile.setEmail(entity.getEmail());
+            userProfile.setMobile(entity.getMobile());
+            userProfileService.save(userProfile);
+            // 保存企业用户
             employeeDao.save(entity, true);
+            // 创建用户账户
+            CreateAccountRequest accountRequest = new CreateAccountRequest();
+            // 员工编号作为账号
+            accountRequest.setTenantCode(userResult.getData().getTenantCode());
+            accountRequest.setAccount(entity.getCode());
+            accountRequest.setName(entity.getUserName());
+            accountRequest.setAccountType(UserType.Employee.name());
+            accountRequest.setUserId(userId);
+            accountRequest.setSystemCode("sei-basic");
+            accountManager.create(accountRequest);
         } else {
             //修改用户
             User user = userService.findById(entity.getId());
@@ -139,13 +153,20 @@ public class EmployeeService extends BaseEntityService<Employee> {
             user.setFrozen(entity.isFrozen());
             userService.save(user);
             //如果是修改管理员，修改用户配置邮箱
-            if (entity.isCreateAdmin()) {
-                UserProfile userProfile = userProfileService.findByUserId(entity.getId());
+            UserProfile userProfile = userProfileService.findByUserId(entity.getId());
+            if (Objects.nonNull(userProfile)) {
                 userProfile.setEmail(entity.getEmail());
                 userProfile.setMobile(entity.getMobile());
                 userProfileService.save(userProfile);
             }
+            // 保存企业用户
             employeeDao.save(entity, false);
+            // 更改用户账户
+            UpdateAccountRequest accountRequest = new UpdateAccountRequest();
+            accountRequest.setAccountType(user.getUserType().name());
+            accountRequest.setName(entity.getUserName());
+            accountRequest.setSystemCode("sei-basic");
+            accountManager.update(accountRequest);
         }
 
         OperateResultWithData<Employee> operateResultWithData;
