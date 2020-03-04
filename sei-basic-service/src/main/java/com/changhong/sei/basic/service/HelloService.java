@@ -3,7 +3,6 @@ package com.changhong.sei.basic.service;
 import com.changhong.sei.core.log.LogUtil;
 import com.changhong.sei.exception.ServiceException;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**

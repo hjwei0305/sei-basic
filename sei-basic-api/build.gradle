@@ -3,6 +3,7 @@ apply plugin: 'io.spring.dependency-management'
 
 dependencies {
     compile("com.changhong.sei:sei-core-api:$sei_version")
+    // 直接引用消息通知API包
     compile("com.changhong.sei:sei-notify-api:$sei_version")
 }
 

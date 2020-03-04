@@ -1,5 +1,6 @@
 package com.changhong.sei.basic.service;
 
+import com.changhong.sei.basic.dao.DataRoleDao;
 import com.changhong.sei.basic.dao.DataRoleGroupDao;
 import com.changhong.sei.basic.entity.DataRoleGroup;
 import com.changhong.sei.core.dao.BaseEntityDao;
@@ -25,7 +26,7 @@ public class DataRoleGroupService extends BaseEntityService<DataRoleGroup> {
     @Autowired
     private DataRoleGroupDao dao;
     @Autowired
-    private DataRoleService dataRoleService;
+    private DataRoleDao dataRoleDao;
     @Override
     protected BaseEntityDao<DataRoleGroup> getDao() {
         return dao;
@@ -38,7 +39,7 @@ public class DataRoleGroupService extends BaseEntityService<DataRoleGroup> {
      */
     @Override
     protected OperateResult preDelete(String s) {
-        if (dataRoleService.isExistsByProperty("dataRoleGroup.id",s)){
+        if (dataRoleDao.isExistsByProperty("dataRoleGroup.id",s)){
             //数据角色组存在数据角色，禁止删除！
             return OperateResult.operationFailure("00021");
         }

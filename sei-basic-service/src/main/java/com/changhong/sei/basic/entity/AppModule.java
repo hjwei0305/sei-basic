@@ -25,7 +25,7 @@ import javax.persistence.*;
  * *************************************************************************************************<br>
  */
 @Access(AccessType.FIELD)
-@Entity()
+@Entity
 @Table(name = "app_module")
 @DynamicInsert
 @DynamicUpdate

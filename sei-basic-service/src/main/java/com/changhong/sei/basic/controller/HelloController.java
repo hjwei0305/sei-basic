@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * <strong>实现功能:</strong>
  * <p>调试你好的API服务实现</p>
- *
- * @author 王锦光 wangj
- * @version 1.0.1 2019-12-16 17:22
  */
 @RestController
 @RefreshScope
@@ -30,7 +27,7 @@ public class HelloController implements HelloApi {
     private HelloService service;
 
     @Value("${basic.test-key}")
-    private String testKey;
+    private String paramValue;
 
     /**
      * 你好
@@ -42,7 +39,7 @@ public class HelloController implements HelloApi {
         System.out.println(sessionUser);
         String data;
         try {
-            data = service.sayHello(name, testKey);
+            data = service.sayHello(name, paramValue);
         } catch (Exception e) {
             LogUtil.error("执行方法sayHello异常！", e);
             return ResultData.fail("执行方法sayHello异常！"+e.getMessage());

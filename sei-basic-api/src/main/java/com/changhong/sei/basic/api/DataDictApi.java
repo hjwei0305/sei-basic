@@ -38,9 +38,9 @@ public interface DataDictApi extends BaseEntityApi<DataDictDto>,
      * @param id 字典项目id
      * @return 返回保存字典项目的结果
      */
-    @DeleteMapping(path = "deleteDictItem")
+    @DeleteMapping(path = "deleteDictItem/{id}")
     @ApiOperation(value = "删除字典项目", notes = "删除字典项目")
-    ResultData deleteDictItem(@RequestParam("id") String id);
+    ResultData deleteDictItem(@PathVariable("id") String id);
 
     /**
      * 根据字段类别代码，获取字典项目

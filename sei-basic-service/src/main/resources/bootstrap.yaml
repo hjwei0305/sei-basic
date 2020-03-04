@@ -1,19 +1,19 @@
 spring:
   application:
-    name: sei-basic
+    name: sei-basic # 注册的应用服务名
   cloud:
-    bus:
+    bus: # 启用平台的配置中心
       trace:
         enabled: true
       enabled: true
-    config:
+    config: # 配置中心地址
       uri: http://10.4.208.86:8100/config-center
-      profile: DEV
+      profile: DEV #当前环境
       name: ${spring.application.name}
-    zookeeper:
-      # zk 地址
+    zookeeper: #启用平台注册发现
+      # zk地址
       connect-string: 10.4.208.132:2181
-      # 关闭zk可用不用依赖zk
+      # 关闭zk可用不用依赖平台注册中心
       enabled: true
 
 sei:

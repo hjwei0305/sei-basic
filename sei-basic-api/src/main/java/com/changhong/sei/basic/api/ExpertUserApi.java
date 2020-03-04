@@ -66,9 +66,9 @@ public interface ExpertUserApi {
      * @param expertId 专家用户中的专家的ID
      * @return 操作结果
      */
-    @DeleteMapping(path = "deleteByExpertId")
+    @DeleteMapping(path = "deleteByExpertId/{expertId}")
     @ApiOperation(value = "根据专家用户中的专家的ID删除业务实体", notes = "根据专家用户中的专家的ID删除业务实体")
-    ResultData deleteByExpertId(@RequestParam("expertId") String expertId);
+    ResultData deleteByExpertId(@PathVariable("expertId") String expertId);
 
     /**
      * 通过Id获取一个业务实体
