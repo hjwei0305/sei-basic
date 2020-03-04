@@ -149,6 +149,8 @@ public class EmployeeService extends BaseEntityService<Employee> {
         } else {
             //修改用户
             User user = userService.findById(entity.getId());
+            boolean isChangeAccount = !user.getUserName().equals(entity.getUserName())
+                    || user.getUserType()!=entity.getUserType();
             user.setUserName(entity.getUserName());
             user.setFrozen(entity.isFrozen());
             userService.save(user);
@@ -161,12 +163,15 @@ public class EmployeeService extends BaseEntityService<Employee> {
             }
             // 保存企业用户
             employeeDao.save(entity, false);
-            // 更改用户账户
-            UpdateAccountRequest accountRequest = new UpdateAccountRequest();
-            accountRequest.setAccountType(user.getUserType().name());
-            accountRequest.setName(entity.getUserName());
-            accountRequest.setSystemCode("sei-basic");
-            accountManager.update(accountRequest);
+            // 判断更改用户账户
+            if (isChangeAccount) {
+                UpdateAccountRequest accountRequest = new UpdateAccountRequest();
+                accountRequest.setId(entity.getId());
+                accountRequest.setAccountType(user.getUserType().name());
+                accountRequest.setName(entity.getUserName());
+                accountRequest.setSystemCode("sei-basic");
+                accountManager.update(accountRequest);
+            }
         }
 
         OperateResultWithData<Employee> operateResultWithData;
