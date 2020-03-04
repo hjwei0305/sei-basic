@@ -8,8 +8,7 @@ import com.changhong.sei.basic.dto.Executor;
 import com.changhong.sei.basic.dto.UserQueryParam;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.service.client.AccountManager;
-import com.changhong.sei.basic.service.client.dto.CreateAccountRequest;
-import com.changhong.sei.basic.service.client.dto.UpdateAccountRequest;
+import com.changhong.sei.basic.service.client.dto.*;
 import com.changhong.sei.basic.service.util.EmailUtil;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
@@ -149,8 +148,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
         } else {
             //修改用户
             User user = userService.findById(entity.getId());
-            boolean isChangeAccount = !user.getUserName().equals(entity.getUserName())
-                    || user.getUserType()!=entity.getUserType();
+            boolean isChangeAccount = !user.getUserName().equals(entity.getUserName());
             user.setUserName(entity.getUserName());
             user.setFrozen(entity.isFrozen());
             userService.save(user);
@@ -163,13 +161,12 @@ public class EmployeeService extends BaseEntityService<Employee> {
             }
             // 保存企业用户
             employeeDao.save(entity, false);
-            // 判断更改用户账户
+            // 判断并更改用户账户
             if (isChangeAccount) {
-                UpdateAccountRequest accountRequest = new UpdateAccountRequest();
-                accountRequest.setId(entity.getId());
-                accountRequest.setAccountType(user.getUserType().name());
+                UpdateAccountByAccountRequest accountRequest = new UpdateAccountByAccountRequest();
+                accountRequest.setTenant(user.getTenantCode());
+                accountRequest.setAccount(entity.getCode());
                 accountRequest.setName(entity.getUserName());
-                accountRequest.setSystemCode("sei-basic");
                 accountManager.update(accountRequest);
             }
         }

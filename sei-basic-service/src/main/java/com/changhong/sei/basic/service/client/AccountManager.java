@@ -1,9 +1,6 @@
 package com.changhong.sei.basic.service.client;
 
-import com.changhong.sei.basic.service.client.dto.AccountResponse;
-import com.changhong.sei.basic.service.client.dto.CreateAccountRequest;
-import com.changhong.sei.basic.service.client.dto.SessionUserResponse;
-import com.changhong.sei.basic.service.client.dto.UpdateAccountRequest;
+import com.changhong.sei.basic.service.client.dto.*;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +50,9 @@ public class AccountManager {
      * 更改账户
      * @param request 更改参数
      */
-    public void update(UpdateAccountRequest request) {
+    public void update(UpdateAccountByAccountRequest request) {
         try {
-            ResultData resultData = client.update(request);
+            ResultData resultData = client.updateByTenantAccount(request);
             if (resultData.failed()) {
                 throw new ServiceException("更改账户失败！"+resultData.getMessage());
             }
