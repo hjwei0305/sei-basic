@@ -20,24 +20,10 @@ public class NumberGenerator {
     /**
      * 获取一个序列编号.
      *
-     * @param entityClassName 业务实体类名(含包路径)
-     * @return 序列编号
-     */
-    public String getNumber(String entityClassName) {
-        return serialService.getNumber(entityClassName);
-    }
-
-    /**
-     * 获取一个序列编号.
-     *
      * @param entityClass 业务实体类
      * @return 序列编号
      */
     public String getNumber(Class entityClass) {
-        if (Objects.isNull(entityClass)) {
-            throw new IllegalArgumentException("业务实体类名不能为空");
-        }
-        String className = entityClass.getName();
-        return getNumber(className);
+        return serialService.getNumber(entityClass);
     }
 }

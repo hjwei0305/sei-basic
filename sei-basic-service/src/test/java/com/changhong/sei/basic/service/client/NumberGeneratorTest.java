@@ -19,12 +19,6 @@ public class NumberGeneratorTest extends BaseUnitTest {
     private NumberGenerator generator;
 
     @Test
-    public void getNumber() {
-        String number = generator.getNumber(PositionCategory.class.getName());
-        System.out.println("number："+number);
-    }
-
-    @Test
     public void getNumberByClassName() {
         String number = generator.getNumber(Menu.class);
         System.out.println("number："+number);
