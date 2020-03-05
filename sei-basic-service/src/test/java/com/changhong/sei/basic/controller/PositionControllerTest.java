@@ -22,7 +22,7 @@ public class PositionControllerTest extends BaseUnitTest {
 
     @Test
     public void findByOrganizationId() {
-        String orgId = "877035BF-A40C-11E7-A8B9-02420B99179E";
+        String orgId = "C34F75A2-4703-11EA-911F-0242C0A84604";
         ResultData resultData = service.findByOrganizationId(orgId);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());

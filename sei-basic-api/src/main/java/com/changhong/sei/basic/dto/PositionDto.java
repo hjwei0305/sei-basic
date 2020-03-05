@@ -55,6 +55,12 @@ public class PositionDto extends BaseEntityDto {
     private String organizationName;
 
     /**
+     * 组织机构的名称路径
+     */
+    @ApiModelProperty(value = "组织机构的名称路径")
+    private String organizationNamePath;
+
+    /**
      * 岗位类别Id
      */
     @NotBlank
@@ -120,6 +126,14 @@ public class PositionDto extends BaseEntityDto {
 
     public void setOrganizationName(String organizationName) {
         this.organizationName = organizationName;
+    }
+
+    public String getOrganizationNamePath() {
+        return organizationNamePath;
+    }
+
+    public void setOrganizationNamePath(String organizationNamePath) {
+        this.organizationNamePath = organizationNamePath;
     }
 
     public String getPositionCategoryId() {
