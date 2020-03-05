@@ -1,20 +1,17 @@
 package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.UserProfileDao;
+import com.changhong.sei.basic.dto.LanguageValue;
 import com.changhong.sei.basic.entity.UserProfile;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
-import com.changhong.sei.core.dto.IDataValue;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.notify.dto.UserNotifyInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 /**
  * *************************************************************************************************
@@ -42,42 +39,10 @@ public class UserProfileService extends BaseEntityService<UserProfile> {
      * 获取用户配置的默认语言
      * @return 对象Id/Name/value
      */
-    public ResultData<List<IDataValue>> getLanguages() {
-        List<IDataValue> languages = new ArrayList<>();
-        languages.add(new IDataValue() {
-            @Override
-            public Object getId() {
-                return null;
-            }
-
-            @Override
-            public String getName() {
-                return "中文 (中国)";
-            }
-
-            @Override
-            public Object getValue() {
-                return "zh_CN";
-            }
-        });
-
-        languages.add(new IDataValue() {
-            @Override
-            public Object getId() {
-                return null;
-            }
-
-            @Override
-            public String getName() {
-                return "English";
-            }
-
-            @Override
-            public Object getValue() {
-                return "en_US";
-            }
-        });
-
+    public ResultData<List<LanguageValue>> getLanguages() {
+        List<LanguageValue> languages = new LinkedList<>();
+        languages.add(new LanguageValue("中文 (中国)", "zh_CN"));
+        languages.add(new LanguageValue("English", "en_US"));
         return ResultData.success(languages);
     }
 

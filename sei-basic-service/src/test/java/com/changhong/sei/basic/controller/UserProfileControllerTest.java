@@ -6,6 +6,7 @@ import com.changhong.sei.core.util.JsonUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import springfox.documentation.spring.web.json.Json;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,5 +39,11 @@ public class UserProfileControllerTest extends BaseUnitTest {
         ResultData resultData = controller.findByUserId(userId);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
+    }
+
+    @Test
+    public void getLanguages() {
+        ResultData resultData = controller.getLanguages();
+        System.out.println(JsonUtils.toJson(resultData));
     }
 }

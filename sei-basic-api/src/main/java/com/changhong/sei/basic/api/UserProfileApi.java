@@ -1,8 +1,8 @@
 package com.changhong.sei.basic.api;
 
+import com.changhong.sei.basic.dto.LanguageValue;
 import com.changhong.sei.basic.dto.UserProfileDto;
 import com.changhong.sei.core.api.BaseEntityApi;
-import com.changhong.sei.core.dto.IDataValue;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.notify.dto.UserNotifyInfo;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +28,7 @@ public interface UserProfileApi extends BaseEntityApi<UserProfileDto> {
      */
     @GetMapping(path = "getLanguages")
     @ApiOperation(value = "获取支持的语言", notes = "获取支持的语言")
-    ResultData<List<IDataValue>> getLanguages();
+    ResultData<List<LanguageValue>> getLanguages();
 
     /**
      * 查询一个用户配置

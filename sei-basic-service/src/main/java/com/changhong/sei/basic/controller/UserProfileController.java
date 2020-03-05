@@ -1,13 +1,13 @@
 package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.UserProfileApi;
+import com.changhong.sei.basic.dto.LanguageValue;
 import com.changhong.sei.basic.dto.UserProfileDto;
 import com.changhong.sei.basic.entity.Employee;
 import com.changhong.sei.basic.entity.UserProfile;
 import com.changhong.sei.basic.service.EmployeeService;
 import com.changhong.sei.basic.service.UserProfileService;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
-import com.changhong.sei.core.dto.IDataValue;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
@@ -44,7 +44,7 @@ public class UserProfileController implements DefaultBaseEntityController<UserPr
      * 获取支持的语言
      */
     @Override
-    public ResultData<List<IDataValue>> getLanguages() {
+    public ResultData<List<LanguageValue>> getLanguages() {
         return service.getLanguages();
     }
 
