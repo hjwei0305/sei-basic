@@ -7,6 +7,7 @@ import com.changhong.sei.basic.entity.DataAuthorizeType;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
+import com.changhong.sei.core.service.bo.OperateResultWithData;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * *************************************************************************************************
@@ -123,5 +125,37 @@ public class DataAuthorizeTypeService extends BaseEntityService<DataAuthorizeTyp
             return null;
         }
         return result.get(0);
+    }
+
+    /**
+     * 创建数据保存数据之前额外操作回调方法 默认为空逻辑，子类根据需要覆写添加逻辑即可
+     *
+     * @param entity 待创建数据对象
+     */
+    @Override
+    protected OperateResultWithData<DataAuthorizeType> preInsert(DataAuthorizeType entity) {
+        // 检查重复
+        DataAuthorizeType authorizeType = dao.findByAuthorizeEntityTypeIdAndFeatureId(entity.getAuthorizeEntityTypeId(), entity.getFeatureId());
+        if (Objects.nonNull(authorizeType)) {
+            // 存在相同权限对象和功能项的数据权限，禁止保存！
+            return OperateResultWithData.operationFailure("00101");
+        }
+        return super.preInsert(entity);
+    }
+
+    /**
+     * 更新数据保存数据之前额外操作回调方法 默认为空逻辑，子类根据需要覆写添加逻辑即可
+     *
+     * @param entity 待更新数据对象
+     */
+    @Override
+    protected OperateResultWithData<DataAuthorizeType> preUpdate(DataAuthorizeType entity) {
+        // 检查重复
+        DataAuthorizeType authorizeType = dao.findByAuthorizeEntityTypeIdAndFeatureId(entity.getAuthorizeEntityTypeId(), entity.getFeatureId());
+        if (Objects.nonNull(authorizeType) && !authorizeType.getId().equals(entity.getId())) {
+            // 存在相同权限对象和功能项的数据权限，禁止保存！
+            return OperateResultWithData.operationFailure("00101");
+        }
+        return super.preUpdate(entity);
     }
 }
