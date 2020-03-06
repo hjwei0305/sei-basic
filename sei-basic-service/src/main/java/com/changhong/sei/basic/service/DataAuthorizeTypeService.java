@@ -134,6 +134,7 @@ public class DataAuthorizeTypeService extends BaseEntityService<DataAuthorizeTyp
      */
     @Override
     protected OperateResultWithData<DataAuthorizeType> preInsert(DataAuthorizeType entity) {
+
         // 检查重复
         DataAuthorizeType authorizeType = dao.findByAuthorizeEntityTypeIdAndFeatureId(entity.getAuthorizeEntityTypeId(), entity.getFeatureId());
         if (Objects.nonNull(authorizeType)) {

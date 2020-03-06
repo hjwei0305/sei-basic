@@ -4,9 +4,13 @@ import com.changhong.sei.basic.api.MenuApi;
 import com.changhong.sei.basic.dto.MenuDto;
 import com.changhong.sei.basic.entity.Menu;
 import com.changhong.sei.basic.service.MenuService;
+import com.changhong.sei.basic.service.UserService;
+import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.controller.DefaultTreeController;
 import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.core.dto.TreeNodeMoveParam;
 import com.changhong.sei.core.service.BaseTreeService;
+import com.changhong.sei.utils.AsyncRunUtil;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -15,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -32,6 +37,10 @@ public class MenuController implements DefaultTreeController<Menu, MenuDto>,
         MenuApi {
     @Autowired
     private MenuService menuService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AsyncRunUtil asyncRunUtil;
 
     /**
      * 获取整个菜单树
@@ -118,5 +127,59 @@ public class MenuController implements DefaultTreeController<Menu, MenuDto>,
         custMapper.addMappings(propertyMap);
         // 转换
         return custMapper.map(entity, MenuDto.class);
+    }
+
+    /**
+     * 保存业务实体
+     *
+     * @param dto 业务实体DTO
+     * @return 操作结果
+     */
+    @Override
+    public ResultData<MenuDto> save(@Valid MenuDto dto) {
+        ResultData<MenuDto> result = DefaultTreeController.super.save(dto);
+        if (result.failed()) {
+            return result;
+        }
+        // 清除当前用户的权限缓存
+        String userId = ContextUtil.getUserId();
+        asyncRunUtil.runAsync(() -> userService.clearUserAuthorizedCaches(userId));
+        return result;
+    }
+
+    /**
+     * 删除业务实体
+     *
+     * @param id 业务实体Id
+     * @return 操作结果
+     */
+    @Override
+    public ResultData delete(String id) {
+        ResultData result = DefaultTreeController.super.delete(id);
+        if (result.failed()) {
+            return result;
+        }
+        // 清除当前用户的权限缓存
+        String userId = ContextUtil.getUserId();
+        asyncRunUtil.runAsync(() -> userService.clearUserAuthorizedCaches(userId));
+        return result;
+    }
+
+    /**
+     * 移动一个节点
+     *
+     * @param moveParam 节点移动参数
+     * @return 操作状态
+     */
+    @Override
+    public ResultData move(TreeNodeMoveParam moveParam) {
+        ResultData result = DefaultTreeController.super.move(moveParam);
+        if (result.failed()) {
+            return result;
+        }
+        // 清除当前用户的权限缓存
+        String userId = ContextUtil.getUserId();
+        asyncRunUtil.runAsync(() -> userService.clearUserAuthorizedCaches(userId));
+        return result;
     }
 }
