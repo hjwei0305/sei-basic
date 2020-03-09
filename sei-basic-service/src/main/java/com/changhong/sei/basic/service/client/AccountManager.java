@@ -2,6 +2,7 @@ package com.changhong.sei.basic.service.client;
 
 import com.changhong.sei.basic.service.client.dto.*;
 import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.core.util.JsonUtils;
 import com.changhong.sei.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,10 +40,10 @@ public class AccountManager {
         try {
             ResultData resultData = client.create(request);
             if (resultData.failed()) {
-                throw new ServiceException("创建新账户失败！"+resultData.getMessage());
+                throw new ServiceException("创建新账户失败！"+resultData.getMessage()+":"+ JsonUtils.toJson(request));
             }
         } catch (IllegalAccessException e) {
-            throw new ServiceException("创建新账户异常！"+e.getMessage());
+            throw new ServiceException("创建新账户异常！"+e.getMessage()+":"+ JsonUtils.toJson(request));
         }
     }
 

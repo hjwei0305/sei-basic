@@ -54,4 +54,13 @@ public class EmployeeControllerTest extends BaseUnitTest {
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }
+
+    @Test
+    public void save() {
+        String json = "{\"organizationName\":\"四川虹信软件股份有限公司\",\"code\":\"testid\",\"userName\":\"test\",\"frozen\":false,\"organizationId\":\"877035BF-A40C-11E7-A8B9-02420B99179E\"}";
+        EmployeeDto dto = JsonUtils.fromJson(json, EmployeeDto.class);
+        ResultData resultData = controller.save(dto);
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
 }
