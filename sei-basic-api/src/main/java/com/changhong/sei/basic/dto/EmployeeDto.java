@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -78,6 +79,13 @@ public class EmployeeDto extends BaseEntityDto {
      */
     @ApiModelProperty(value = "是否为创建租户管理员")
     private Boolean createAdmin = Boolean.FALSE;
+
+    /**
+     * 是否冻结
+     */
+    @NotNull
+    @ApiModelProperty(value = "是否冻结", required = true)
+    private Boolean frozen = Boolean.FALSE;
 
     /**
      * 邮箱,创建租户管理员时发送邮件
@@ -160,6 +168,14 @@ public class EmployeeDto extends BaseEntityDto {
 
     public void setCreateAdmin(Boolean createAdmin) {
         this.createAdmin = createAdmin;
+    }
+
+    public Boolean getFrozen() {
+        return frozen;
+    }
+
+    public void setFrozen(Boolean frozen) {
+        this.frozen = frozen;
     }
 
     public String getEmail() {

@@ -120,6 +120,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
             user.setUserName(entity.getUserName());
             user.setUserType(entity.getUserType());
             user.setUserAuthorityPolicy(entity.getUserAuthorityPolicy());
+            user.setFrozen(entity.isFrozen());
             OperateResultWithData<User> userResult = userService.save(user);
             if (userResult.notSuccessful()){
                 return OperateResultWithData.operationFailureWithData(userResult);
@@ -144,11 +145,13 @@ public class EmployeeService extends BaseEntityService<Employee> {
             accountRequest.setAccountType(UserType.Employee.name());
             accountRequest.setUserId(userId);
             accountRequest.setSystemCode("sei-basic");
+            accountRequest.setFrozen(entity.isFrozen());
             accountManager.create(accountRequest);
         } else {
             //修改用户
             User user = userService.findById(entity.getId());
-            boolean isChangeAccount = !user.getUserName().equals(entity.getUserName());
+            boolean isChangeAccount = !user.getUserName().equals(entity.getUserName())
+                    || user.getFrozen()!=entity.isFrozen();
             user.setUserName(entity.getUserName());
             user.setFrozen(entity.isFrozen());
             userService.save(user);
@@ -167,6 +170,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
                 accountRequest.setTenant(user.getTenantCode());
                 accountRequest.setAccount(entity.getCode());
                 accountRequest.setName(entity.getUserName());
+                accountRequest.setFrozen(entity.isFrozen());
                 accountManager.update(accountRequest);
             }
         }
