@@ -38,4 +38,16 @@ public interface FeatureRoleFeatureApi extends BaseRelationApi<FeatureRoleFeatur
     @GetMapping(path = "getFeatureTree")
     @ApiOperation(notes = "获取角色的功能项树", value = "获取角色的功能项树(应用模块-页面-功能项)")
     ResultData<List<FeatureNode>> getFeatureTree(@RequestParam("featureRoleId") String featureRoleId);
+
+    /**
+     * 获取未分配的功能项树
+     *
+     * @param appModuleId 应用模块id
+     * @param featureRoleId 角色id
+     * @return 功能项树清单
+     */
+    @GetMapping(path = "getUnassignedFeatureTree")
+    @ApiOperation(notes = "获取角色的功能项树", value = "获取角色的功能项树(应用模块-页面-功能项)")
+    ResultData<List<FeatureNode>> getUnassignedFeatureTree(@RequestParam("appModuleId") String appModuleId,
+                                                           @RequestParam("featureRoleId") String featureRoleId);
 }

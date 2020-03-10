@@ -42,4 +42,13 @@ public class FeatureRoleFeatureControllerTest extends BaseUnitTest {
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }
+
+    @Test
+    public void getUnassignedFeatureTree() {
+        String appModuleId = "997D47A9-53BD-11EA-AFBB-0242C0A84605";
+        String featureRoleId = "D6FF7A66-5DF1-11EA-8202-0242C0A84605";
+        ResultData resultData = controller.getUnassignedFeatureTree(appModuleId, featureRoleId);
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
 }

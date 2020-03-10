@@ -37,8 +37,9 @@ import java.util.stream.Collectors;
 public class FeatureRoleFeatureService extends BaseRelationService<FeatureRoleFeature, FeatureRole, Feature> {
     @Autowired
     private FeatureRoleFeatureDao dao;
+
     @Override
-    protected BaseRelationDao<FeatureRoleFeature,FeatureRole,Feature> getDao() {
+    protected BaseRelationDao<FeatureRoleFeature, FeatureRole, Feature> getDao() {
         return dao;
     }
 
@@ -51,12 +52,33 @@ public class FeatureRoleFeatureService extends BaseRelationService<FeatureRoleFe
 
     /**
      * 获取可以分配的子实体清单
+     *
      * @return 子实体清单
      */
     @Override
-    protected List<Feature> getCanAssignedChildren(String parentId){
+    protected List<Feature> getCanAssignedChildren(String parentId) {
         String userId = ContextUtil.getUserId();
         return userService.getUserCanAssignFeatures(userId);
+    }
+
+    /**
+     * 获取未分配的功能项树
+     *
+     * @param appModuleId   应用模块id
+     * @param featureRoleId 角色id
+     * @return 功能项树清单
+     */
+    public List<FeatureNode> getUnassignedFeatureTree(String appModuleId, String featureRoleId) {
+        List<FeatureNode> pageNodes = new LinkedList<>();
+        // 获取所有未分配的功能项
+        List<Feature> unassignedFeatures = getUnassignedChildren(featureRoleId);
+        // 限制应用模块
+        List<Feature> features = unassignedFeatures.stream().filter(f -> StringUtils.equals(appModuleId, f.getFeatureGroup().getAppModuleId())).collect(Collectors.toList());
+        // 获取所有页面
+        List<Feature> menuFeatures = features.stream().filter(feature -> feature.getFeatureType().equals(FeatureType.Page)).collect(Collectors.toList());
+        // 定义所有页面节点
+        menuFeatures.forEach(feature -> buildFeatureTree(pageNodes, features, feature));
+        return pageNodes;
     }
 
     /**
@@ -68,8 +90,8 @@ public class FeatureRoleFeatureService extends BaseRelationService<FeatureRoleFe
      */
     @Override
     public OperateResult insertRelations(String parentId, List<String> childIds) {
-        UserFeatureRole userFeatureRole = userFeatureRoleService.getRelation(ContextUtil.getUserId(),parentId);
-        if(userFeatureRole!=null){
+        UserFeatureRole userFeatureRole = userFeatureRoleService.getRelation(ContextUtil.getUserId(), parentId);
+        if (userFeatureRole != null) {
             //00037 = 不能给当前用户的功能角色分配功能项！
             return OperateResult.operationFailure("00037");
         }
@@ -88,8 +110,8 @@ public class FeatureRoleFeatureService extends BaseRelationService<FeatureRoleFe
      */
     @Override
     public OperateResult removeRelations(String parentId, List<String> childIds) {
-        UserFeatureRole userFeatureRole = userFeatureRoleService.getRelation(ContextUtil.getUserId(),parentId);
-        if(userFeatureRole!=null){
+        UserFeatureRole userFeatureRole = userFeatureRoleService.getRelation(ContextUtil.getUserId(), parentId);
+        if (userFeatureRole != null) {
             //00038 = 不能给当前用户的功能角色移除功能项！
             return OperateResult.operationFailure("00038");
         }
@@ -212,30 +234,41 @@ public class FeatureRoleFeatureService extends BaseRelationService<FeatureRoleFe
         menuFeatures.forEach(feature -> {
             // 获取应用模块
             AppModule appModule = feature.getFeatureGroup().getAppModule();
-            Optional<FeatureNode> appNodeOptional = appNodes.stream().filter(f->StringUtils.equals(appModule.getId(), f.getId())).findAny();
+            Optional<FeatureNode> appNodeOptional = appNodes.stream().filter(f -> StringUtils.equals(appModule.getId(), f.getId())).findAny();
             if (!appNodeOptional.isPresent()) {
-                throw new ServiceException("应用模块没有定义！"+appModule.getCode());
+                throw new ServiceException("应用模块没有定义！" + appModule.getCode());
             }
             FeatureNode appNode = appNodeOptional.get();
-            // 判断页面是否存在
             List<FeatureNode> pageNodes = appNode.getChildren();
-            FeatureNode pageNode = constructNode(feature);
-            pageNodes.add(pageNode);
-            // 获取所有非页面的功能项
-            String pageCode = feature.getGroupCode();
-            List<Feature> otherFeatures = features.stream().filter(f -> !StringUtils.equals(f.getId(), feature.getId())
-                    && StringUtils.equals(pageCode, f.getGroupCode()))
-                    .collect(Collectors.toList());
-            otherFeatures.forEach(f -> {
-                FeatureNode node = constructNode(f);
-                pageNode.getChildren().add(node);
-            });
+            // 构造页面的功能项树
+            buildFeatureTree(pageNodes, features, feature);
         });
         return appNodes;
     }
 
     /**
+     * 构造页面的功能项树
+     *
+     * @param pageNodes 要构造的页面节点清单
+     * @param features  使用的功能项清单
+     */
+    private void buildFeatureTree(List<FeatureNode> pageNodes, List<Feature> features, Feature pageFeature) {
+        FeatureNode pageNode = constructNode(pageFeature);
+        pageNodes.add(pageNode);
+        // 获取所有非页面的功能项
+        String pageCode = pageFeature.getGroupCode();
+        List<Feature> otherFeatures = features.stream().filter(f -> !StringUtils.equals(f.getId(), pageFeature.getId())
+                && StringUtils.equals(pageCode, f.getGroupCode()))
+                .collect(Collectors.toList());
+        otherFeatures.forEach(f -> {
+            FeatureNode node = constructNode(f);
+            pageNode.getChildren().add(node);
+        });
+    }
+
+    /**
      * 构造树节点
+     *
      * @param appModule 应用模块
      * @return 功能项节点
      */
@@ -251,6 +284,7 @@ public class FeatureRoleFeatureService extends BaseRelationService<FeatureRoleFe
 
     /**
      * 构造树节点
+     *
      * @param feature 功能项
      * @return 功能项节点
      */

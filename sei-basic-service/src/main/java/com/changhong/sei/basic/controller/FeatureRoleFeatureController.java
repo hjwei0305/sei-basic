@@ -54,6 +54,18 @@ public class FeatureRoleFeatureController implements DefaultRelationController<F
         return ResultData.success(service.getFeatureTree(featureRoleId));
     }
 
+    /**
+     * 获取未分配的功能项树
+     *
+     * @param appModuleId   应用模块id
+     * @param featureRoleId 角色id
+     * @return 功能项树清单
+     */
+    @Override
+    public ResultData<List<FeatureNode>> getUnassignedFeatureTree(String appModuleId, String featureRoleId) {
+        return ResultData.success(service.getUnassignedFeatureTree(appModuleId, featureRoleId));
+    }
+
     @Override
     public BaseRelationService<FeatureRoleFeature, FeatureRole, Feature> getService() {
         return service;
