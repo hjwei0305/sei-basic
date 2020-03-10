@@ -1,20 +1,21 @@
 package com.changhong.sei.basic.service;
 
+import com.changhong.sei.basic.controller.FeatureController;
 import com.changhong.sei.basic.dao.FeatureRoleFeatureDao;
 import com.changhong.sei.basic.dto.AuthTreeVo;
 import com.changhong.sei.basic.dto.FeatureDto;
+import com.changhong.sei.basic.dto.FeatureNode;
 import com.changhong.sei.basic.dto.FeatureType;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.service.util.AuthorityUtil;
-import com.changhong.sei.basic.controller.FeatureController;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseRelationDao;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseRelationService;
 import com.changhong.sei.core.service.bo.OperateResult;
+import com.changhong.sei.exception.ServiceException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -187,5 +188,79 @@ public class FeatureRoleFeatureService extends BaseRelationService<FeatureRoleFe
             }
         }
         return new ArrayList<>(authTreeVos.values());
+    }
+
+    /**
+     * 获取角色的功能项树
+     *
+     * @param featureRoleId 角色id
+     * @return 功能项树清单
+     */
+    public List<FeatureNode> getFeatureTree(String featureRoleId) {
+        List<FeatureNode> appNodes = new LinkedList<>();
+        // 获取所有已分配的功能项
+        List<Feature> features = getChildrenFromParentId(featureRoleId);
+        // 获取所有应用模块
+        List<AppModule> appModules = features.stream().map(feature -> feature.getFeatureGroup().getAppModule()).distinct().collect(Collectors.toList());
+        appModules.forEach(appModule -> {
+            FeatureNode appNode = constructAppNode(appModule);
+            appNodes.add(appNode);
+        });
+        // 获取所有页面
+        List<Feature> menuFeatures = features.stream().filter(feature -> feature.getFeatureType().equals(FeatureType.Page)).collect(Collectors.toList());
+        // 定义所有页面节点
+        menuFeatures.forEach(feature -> {
+            // 获取应用模块
+            AppModule appModule = feature.getFeatureGroup().getAppModule();
+            Optional<FeatureNode> appNodeOptional = appNodes.stream().filter(f->StringUtils.equals(appModule.getId(), f.getId())).findAny();
+            if (!appNodeOptional.isPresent()) {
+                throw new ServiceException("应用模块没有定义！"+appModule.getCode());
+            }
+            FeatureNode appNode = appNodeOptional.get();
+            // 判断页面是否存在
+            List<FeatureNode> pageNodes = appNode.getChildren();
+            FeatureNode pageNode = constructNode(feature);
+            pageNodes.add(pageNode);
+            // 获取所有非页面的功能项
+            String pageCode = feature.getGroupCode();
+            List<Feature> otherFeatures = features.stream().filter(f -> !StringUtils.equals(f.getId(), feature.getId())
+                    && StringUtils.equals(pageCode, f.getGroupCode()))
+                    .collect(Collectors.toList());
+            otherFeatures.forEach(f -> {
+                FeatureNode node = constructNode(f);
+                pageNode.getChildren().add(node);
+            });
+        });
+        return appNodes;
+    }
+
+    /**
+     * 构造树节点
+     * @param appModule 应用模块
+     * @return 功能项节点
+     */
+    private FeatureNode constructAppNode(AppModule appModule) {
+        FeatureNode node = new FeatureNode();
+        node.setId(appModule.getId());
+        node.setCode(appModule.getCode());
+        node.setName(appModule.getName());
+        node.setFeatureType(null);
+        node.setChildren(new LinkedList<>());
+        return node;
+    }
+
+    /**
+     * 构造树节点
+     * @param feature 功能项
+     * @return 功能项节点
+     */
+    private FeatureNode constructNode(Feature feature) {
+        FeatureNode node = new FeatureNode();
+        node.setId(feature.getId());
+        node.setCode(feature.getCode());
+        node.setName(feature.getName());
+        node.setFeatureType(feature.getFeatureType());
+        node.setChildren(new LinkedList<>());
+        return node;
     }
 }

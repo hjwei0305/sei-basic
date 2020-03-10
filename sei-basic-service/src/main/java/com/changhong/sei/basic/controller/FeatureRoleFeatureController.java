@@ -1,10 +1,7 @@
 package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.FeatureRoleFeatureApi;
-import com.changhong.sei.basic.dto.AuthTreeVo;
-import com.changhong.sei.basic.dto.FeatureDto;
-import com.changhong.sei.basic.dto.FeatureRoleDto;
-import com.changhong.sei.basic.dto.FeatureRoleFeatureDto;
+import com.changhong.sei.basic.dto.*;
 import com.changhong.sei.basic.entity.Feature;
 import com.changhong.sei.basic.entity.FeatureRole;
 import com.changhong.sei.basic.entity.FeatureRoleFeature;
@@ -44,6 +41,17 @@ public class FeatureRoleFeatureController implements DefaultRelationController<F
     @Override
     public ResultData<List<AuthTreeVo>> getAuthTree(String appModuleId, String featureRoleId) {
         return service.getAuthTree(appModuleId, featureRoleId);
+    }
+
+    /**
+     * 获取角色的功能项树
+     *
+     * @param featureRoleId 角色id
+     * @return 功能项树清单
+     */
+    @Override
+    public ResultData<List<FeatureNode>> getFeatureTree(String featureRoleId) {
+        return ResultData.success(service.getFeatureTree(featureRoleId));
     }
 
     @Override
