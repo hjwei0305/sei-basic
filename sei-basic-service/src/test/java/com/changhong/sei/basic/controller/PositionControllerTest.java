@@ -32,8 +32,9 @@ public class PositionControllerTest extends BaseUnitTest {
     @Test
     public void copyToOrgNodes() {
         PositionCopyParam copyParam = new PositionCopyParam();
-        copyParam.setPositionId("282648C6-4881-11EA-B817-0242C0A84603");
-        copyParam.setTargetOrgIds(Arrays.asList("678FB334-469A-11EA-911F-0242C0A84604"));
+        copyParam.setPositionId("946F71E0-514B-11EA-8018-0242C0A84607");
+        copyParam.setTargetOrgIds(Arrays.asList("4227A5ED-5DE5-11EA-B7CF-0242C0A84605"));
+        copyParam.setCopyFeatureRole(true);
         ResultData resultData = controller.copyToOrgNodes(copyParam);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());

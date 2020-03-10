@@ -257,7 +257,6 @@ public class PositionService extends BaseEntityService<Position> {
      * @param copyParam 复制参数
      * @return 操作结果
      */
-    @Transactional(rollbackFor = Exception.class)
     public OperateResult copyToOrgNodes(PositionCopyParam copyParam) {
         // 获取源岗位
         Position position = positionDao.findOne(copyParam.getPositionId());
