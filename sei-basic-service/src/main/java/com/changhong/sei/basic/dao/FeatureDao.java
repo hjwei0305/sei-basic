@@ -53,4 +53,12 @@ public interface FeatureDao extends BaseEntityDao<Feature> {
      * @return 功能项
      */
     Feature findFirstByGroupCodeAndFeatureType(String groupCode, FeatureType featureType);
+
+    /**
+     * 通过页面代码获取所有下级功能项Id清单
+     * @param groupCode 页面代码
+     * @return 功能项Id清单
+     */
+    @Query("select f.id from Feature f where f.groupCode=?1 and f.featureType<>2")
+    List<String> getFeatureIdsByGroupCode(String groupCode);
 }

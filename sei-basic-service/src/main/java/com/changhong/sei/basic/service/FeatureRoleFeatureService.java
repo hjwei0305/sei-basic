@@ -15,6 +15,7 @@ import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseRelationService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.exception.ServiceException;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -120,7 +121,21 @@ public class FeatureRoleFeatureService extends BaseRelationService<FeatureRoleFe
             //00038 = 不能给当前用户的功能角色移除功能项！
             return OperateResult.operationFailure("00038");
         }
-        OperateResult result = super.removeRelations(parentId, childIds);
+        // 清理移除的功能项，如果存在页面项，则移除所有子项
+        Set<String> childIdSet = new HashSet<>(childIds);
+        childIds.forEach(id-> {
+            Feature feature = featureDao.findOne(id);
+            if (Objects.nonNull(feature) && feature.getFeatureType()==FeatureType.Page) {
+                List<String> featureIds = featureDao.getFeatureIdsByGroupCode(feature.getGroupCode());
+                if (CollectionUtils.isNotEmpty(featureIds)) {
+                    childIdSet.addAll(featureIds);
+                }
+            }
+        });
+        OperateResult result = super.removeRelations(parentId, new ArrayList<>(childIdSet));
+        if (result.notSuccessful()) {
+            return result;
+        }
         // 清除用户权限缓存
         AuthorityUtil.cleanAuthorizedCachesByFeatureRoleId(parentId);
         return result;
