@@ -126,8 +126,9 @@ public class FeatureRoleFeatureService extends BaseRelationService<FeatureRoleFe
         childIds.forEach(id-> {
             Feature feature = featureDao.findOne(id);
             if (Objects.nonNull(feature) && feature.getFeatureType()==FeatureType.Page) {
-                List<String> featureIds = featureDao.getFeatureIdsByGroupCode(feature.getGroupCode());
-                if (CollectionUtils.isNotEmpty(featureIds)) {
+                List<Feature> childFeatures = featureDao.getChildrenByGroupCode(feature.getGroupCode());
+                if (CollectionUtils.isNotEmpty(childFeatures)) {
+                    List<String> featureIds = childFeatures.stream().map(Feature::getId).collect(Collectors.toList());
                     childIdSet.addAll(featureIds);
                 }
             }

@@ -18,7 +18,6 @@ import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,11 +65,23 @@ public class FeatureService extends BaseEntityService<Feature> {
      * @return
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public OperateResultWithData<Feature> save(Feature entity) {
         String url = entity.getUrl();
         entity.setUrl(StringUtils.strip(url, "/"));
-        // 对功能项的groupCode不做特殊处理
+        // 对功能项的groupCode做特殊处理,级联修改所有子项的页面代码
+        if (!entity.isNew() && entity.getFeatureType()==FeatureType.Page) {
+            Feature origin = featureDao.findOne(entity.getId());
+            String originGroupCode = origin.getGroupCode();
+            String groupCode = entity.getGroupCode();
+            if (!StringUtils.equals(originGroupCode, groupCode)) {
+                List<Feature> childFeatures = featureDao.getChildrenByGroupCode(originGroupCode);
+                for (Feature childFeature: childFeatures) {
+                    childFeature.setGroupCode(groupCode);
+                    featureDao.save(childFeature);
+                }
+            }
+        }
         return super.save(entity);
     }
 
