@@ -1,6 +1,7 @@
 package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.controller.FeatureController;
+import com.changhong.sei.basic.dao.FeatureDao;
 import com.changhong.sei.basic.dao.FeatureRoleFeatureDao;
 import com.changhong.sei.basic.dto.AuthTreeVo;
 import com.changhong.sei.basic.dto.FeatureDto;
@@ -37,6 +38,8 @@ import java.util.stream.Collectors;
 public class FeatureRoleFeatureService extends BaseRelationService<FeatureRoleFeature, FeatureRole, Feature> {
     @Autowired
     private FeatureRoleFeatureDao dao;
+    @Autowired
+    private FeatureDao featureDao;
 
     @Override
     protected BaseRelationDao<FeatureRoleFeature, FeatureRole, Feature> getDao() {
@@ -76,6 +79,8 @@ public class FeatureRoleFeatureService extends BaseRelationService<FeatureRoleFe
         List<Feature> features = unassignedFeatures.stream().filter(f -> StringUtils.equals(appModuleId, f.getFeatureGroup().getAppModuleId())).collect(Collectors.toList());
         // 获取所有页面
         List<Feature> menuFeatures = features.stream().filter(feature -> feature.getFeatureType().equals(FeatureType.Page)).collect(Collectors.toList());
+        // 检查并生成页面功能项清单
+        buildPageFeatures(menuFeatures, features);
         // 定义所有页面节点
         menuFeatures.forEach(feature -> buildFeatureTree(pageNodes, features, feature));
         return pageNodes;
@@ -244,6 +249,25 @@ public class FeatureRoleFeatureService extends BaseRelationService<FeatureRoleFe
             buildFeatureTree(pageNodes, features, feature);
         });
         return appNodes;
+    }
+
+    /**
+     * 检查并生成页面功能项清单
+     * @param menuFeatures 菜单功能项
+     * @param features 需要展示的功能项
+     */
+    private void buildPageFeatures(List<Feature> menuFeatures, List<Feature> features) {
+        features.forEach(feature -> {
+            Optional<Feature> featureOptional = menuFeatures.stream().filter(f -> f.getGroupCode().equals(feature.getGroupCode())).findAny();
+            if (!featureOptional.isPresent()) {
+                // 获取菜单项，并追加到页面清单中
+                Feature pageFeature = featureDao.findFirstByGroupCodeAndFeatureType(feature.getGroupCode(), FeatureType.Page);
+                if (Objects.isNull(pageFeature)) {
+                    throw new ServiceException("功能项【"+feature.getCode()+"-"+feature.getName()+"】"+"没有配置对应的页面："+feature.getGroupCode());
+                }
+                menuFeatures.add(pageFeature);
+            }
+        });
     }
 
     /**
