@@ -191,15 +191,30 @@ public class FeatureService extends BaseEntityService<Feature> {
     /**
      * 删除数据保存数据之前额外操作回调方法 子类根据需要覆写添加逻辑即可
      *
-     * @param s 待删除数据对象主键
+     * @param id 待删除数据对象主键
      */
     @Override
-    protected OperateResult preDelete(String s) {
-        List<Menu> menus = menuDao.findByFeatureId(s);
+    protected OperateResult preDelete(String id) {
+        List<Menu> menus = menuDao.findByFeatureId(id);
         if (menus != null && menus.size() > 0) {
             //该功能项存在菜单，禁止删除！
             return OperateResult.operationFailure("00015");
         }
-        return super.preDelete(s);
+        // 检查是否存在下级功能项，如果存在禁止删除
+        Feature feature = featureDao.findOne(id);
+        if (Objects.isNull(feature)) {
+            // 需要删除的业务实体不存在！id=【{0}】
+            return OperateResult.operationFailure("00104", id);
+        }
+        if (feature.getFeatureType()==FeatureType.Page) {
+            String pageCode = feature.getGroupCode();
+            // 获取下级功能项
+            List<Feature> childFeatures = featureDao.getChildrenByGroupCode(pageCode);
+            if (CollectionUtils.isNotEmpty(childFeatures)) {
+                // 页面【{0}】存在下级功能项，禁止删除！
+                return OperateResult.operationFailure("00105", feature.getName());
+            }
+        }
+        return super.preDelete(id);
     }
 }

@@ -33,6 +33,7 @@ import java.util.Objects;
 @RestController
 @Api(value = "UserProfileService", tags = "用户配置API服务实现")
 @RequestMapping(path = "userProfile", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@SuppressWarnings("unchecked")
 public class UserProfileController implements DefaultBaseEntityController<UserProfile, UserProfileDto>,
         UserProfileApi {
     @Autowired
