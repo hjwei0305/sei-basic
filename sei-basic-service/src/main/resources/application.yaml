@@ -9,8 +9,8 @@ basic:
 
 # spring 环境配置
 spring:
-  main: # 支持服务名相同的Feign Client
-    allow-bean-definition-overriding: true
+#  main: # 支持服务名相同的Feign Client(SEI6.0已经默认配置为: true)
+#    allow-bean-definition-overriding: true
   datasource: # mysql 数据源配置
     url: jdbc:mysql://10.4.208.134:3306/sei_basic?characterEncoding=utf8&useSSL=false
     username: sei
