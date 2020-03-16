@@ -18,7 +18,6 @@ import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,11 +65,23 @@ public class FeatureService extends BaseEntityService<Feature> {
      * @return
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public OperateResultWithData<Feature> save(Feature entity) {
         String url = entity.getUrl();
         entity.setUrl(StringUtils.strip(url, "/"));
-        // 对功能项的groupCode不做特殊处理
+        // 对功能项的groupCode做特殊处理,级联修改所有子项的页面代码
+        if (!entity.isNew() && entity.getFeatureType()==FeatureType.Page) {
+            Feature origin = featureDao.findOne(entity.getId());
+            String originGroupCode = origin.getGroupCode();
+            String groupCode = entity.getGroupCode();
+            if (!StringUtils.equals(originGroupCode, groupCode)) {
+                List<Feature> childFeatures = featureDao.getChildrenByGroupCode(originGroupCode);
+                for (Feature childFeature: childFeatures) {
+                    childFeature.setGroupCode(groupCode);
+                    featureDao.save(childFeature);
+                }
+            }
+        }
         return super.save(entity);
     }
 
@@ -180,15 +191,30 @@ public class FeatureService extends BaseEntityService<Feature> {
     /**
      * 删除数据保存数据之前额外操作回调方法 子类根据需要覆写添加逻辑即可
      *
-     * @param s 待删除数据对象主键
+     * @param id 待删除数据对象主键
      */
     @Override
-    protected OperateResult preDelete(String s) {
-        List<Menu> menus = menuDao.findByFeatureId(s);
+    protected OperateResult preDelete(String id) {
+        List<Menu> menus = menuDao.findByFeatureId(id);
         if (menus != null && menus.size() > 0) {
             //该功能项存在菜单，禁止删除！
             return OperateResult.operationFailure("00015");
         }
-        return super.preDelete(s);
+        // 检查是否存在下级功能项，如果存在禁止删除
+        Feature feature = featureDao.findOne(id);
+        if (Objects.isNull(feature)) {
+            // 需要删除的业务实体不存在！id=【{0}】
+            return OperateResult.operationFailure("00104", id);
+        }
+        if (feature.getFeatureType()==FeatureType.Page) {
+            String pageCode = feature.getGroupCode();
+            // 获取下级功能项
+            List<Feature> childFeatures = featureDao.getChildrenByGroupCode(pageCode);
+            if (CollectionUtils.isNotEmpty(childFeatures)) {
+                // 页面【{0}】存在下级功能项，禁止删除！
+                return OperateResult.operationFailure("00105", feature.getName());
+            }
+        }
+        return super.preDelete(id);
     }
 }

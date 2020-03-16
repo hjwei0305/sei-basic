@@ -1,9 +1,6 @@
 package com.changhong.sei.basic.api;
 
-import com.changhong.sei.basic.dto.AuthTreeVo;
-import com.changhong.sei.basic.dto.FeatureDto;
-import com.changhong.sei.basic.dto.FeatureRoleDto;
-import com.changhong.sei.basic.dto.FeatureRoleFeatureDto;
+import com.changhong.sei.basic.dto.*;
 import com.changhong.sei.core.api.BaseRelationApi;
 import com.changhong.sei.core.dto.ResultData;
 import io.swagger.annotations.ApiOperation;
@@ -31,4 +28,26 @@ public interface FeatureRoleFeatureApi extends BaseRelationApi<FeatureRoleFeatur
     @GetMapping(path = "getAuthTree")
     @ApiOperation(notes = "根据模块，获取指定角色授权树", value = "根据模块，获取指定角色授权树")
     ResultData<List<AuthTreeVo>> getAuthTree(@RequestParam("appModuleId") String appModuleId, @RequestParam("featureRoleId") String featureRoleId);
+
+    /**
+     * 获取角色的功能项树
+     *
+     * @param featureRoleId 角色id
+     * @return 功能项树清单
+     */
+    @GetMapping(path = "getFeatureTree")
+    @ApiOperation(notes = "获取角色的功能项树", value = "获取角色的功能项树(应用模块-页面-功能项)")
+    ResultData<List<FeatureNode>> getFeatureTree(@RequestParam("featureRoleId") String featureRoleId);
+
+    /**
+     * 获取未分配的功能项树
+     *
+     * @param appModuleId 应用模块id
+     * @param featureRoleId 角色id
+     * @return 功能项树清单
+     */
+    @GetMapping(path = "getUnassignedFeatureTree")
+    @ApiOperation(notes = "获取未分配的功能项树", value = "获取未分配的功能项树(页面-功能项)")
+    ResultData<List<FeatureNode>> getUnassignedFeatureTree(@RequestParam("appModuleId") String appModuleId,
+                                                           @RequestParam("featureRoleId") String featureRoleId);
 }

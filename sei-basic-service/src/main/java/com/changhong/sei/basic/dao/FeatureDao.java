@@ -1,5 +1,6 @@
 package com.changhong.sei.basic.dao;
 
+import com.changhong.sei.basic.dto.FeatureType;
 import com.changhong.sei.basic.entity.Feature;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import org.springframework.data.jpa.repository.Modifying;
@@ -44,4 +45,20 @@ public interface FeatureDao extends BaseEntityDao<Feature> {
     @Query("update Feature f set f.groupCode=:groupCode where f.groupCode = :originGroupCode")
     @Modifying
     void updateGroup(@Param("originGroupCode") String originGroupCode, @Param("groupCode") String groupCode);
+
+    /**
+     * 获取指定代码的菜单功能项
+     * @param groupCode 页面代码
+     * @param featureType 功能项类型
+     * @return 功能项
+     */
+    Feature findFirstByGroupCodeAndFeatureType(String groupCode, FeatureType featureType);
+
+    /**
+     * 通过页面代码获取所有下级功能项清单
+     * @param groupCode 页面代码
+     * @return 功能项清单
+     */
+    @Query("select f from Feature f where f.groupCode=?1 and f.featureType<>2")
+    List<Feature> getChildrenByGroupCode(String groupCode);
 }

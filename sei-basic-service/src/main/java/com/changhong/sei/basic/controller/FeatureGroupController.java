@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -126,7 +127,10 @@ public class FeatureGroupController implements DefaultBaseEntityController<Featu
      */
     @Override
     public ResultData<List<FeatureGroupDto>> findAll() {
-        return ResultData.success(convertToDtos(service.findAll()));
+        List<FeatureGroupDto> dtos = convertToDtos(service.findAll());
+        // 排序:应用模块代码+组代码
+        dtos.sort(Comparator.comparing(FeatureGroupDto::getAppModuleCode).thenComparing(FeatureGroupDto::getCode));
+        return ResultData.success(dtos);
     }
 
     /**

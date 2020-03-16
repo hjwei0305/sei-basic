@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture;
  * @author 马超(Vision.Mac)
  * @version 1.0.00  2019-11-28 23:16
  */
+@SuppressWarnings("unchecked")
 public class AuthorityUtil {
 
     /**

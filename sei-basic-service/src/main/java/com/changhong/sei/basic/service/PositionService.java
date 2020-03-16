@@ -70,6 +70,16 @@ public class PositionService extends BaseEntityService<Position> {
      */
     @Override
     public OperateResultWithData<Position> save(Position entity) {
+        // 检查组织机构是否已经冻结
+        Organization organization = organizationDao.findOne(entity.getOrganizationId());
+        if (Objects.isNull(organization)) {
+            // 岗位的组织机构Id【{0}】不存在！
+            return OperateResultWithData.operationFailure("00102", entity.getOrganizationId());
+        }
+        if (organization.getFrozen()) {
+            // 岗位的组织机构【{0}-{1}】已经被冻结！
+            return OperateResultWithData.operationFailure("00103", organization.getCode(), organization.getName());
+        }
         //检查同一部门下的岗位名称是否存在
         if (positionDao.isOrgAndNameExist(entity.getOrganizationId(), entity.getName(), entity.getId())) {
             //00048= 该组织机构下的岗位【{0}】已存在，请重新输入！
@@ -247,7 +257,6 @@ public class PositionService extends BaseEntityService<Position> {
      * @param copyParam 复制参数
      * @return 操作结果
      */
-    @Transactional(rollbackFor = Exception.class)
     public OperateResult copyToOrgNodes(PositionCopyParam copyParam) {
         // 获取源岗位
         Position position = positionDao.findOne(copyParam.getPositionId());
