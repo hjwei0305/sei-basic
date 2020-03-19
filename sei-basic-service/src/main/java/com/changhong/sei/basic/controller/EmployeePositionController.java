@@ -8,7 +8,7 @@ import com.changhong.sei.basic.entity.Employee;
 import com.changhong.sei.basic.entity.EmployeePosition;
 import com.changhong.sei.basic.entity.Position;
 import com.changhong.sei.basic.service.EmployeePositionService;
-import com.changhong.sei.core.controller.DefaultRelationController;
+import com.changhong.sei.core.controller.BaseRelationController;
 import com.changhong.sei.core.service.BaseRelationService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,74 +25,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Api(value = "EmployeePositionApi", tags = "企业员工用户分配岗位的API服务实现")
 @RequestMapping(path = "employeePosition", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class EmployeePositionController implements DefaultRelationController<EmployeePosition, Employee, Position, EmployeePositionDto, EmployeeDto, PositionDto>,
-        EmployeePositionApi {
+public class EmployeePositionController extends BaseRelationController<EmployeePosition, Employee, Position, EmployeePositionDto, EmployeeDto, PositionDto>
+        implements EmployeePositionApi {
     @Autowired
     private EmployeePositionService service;
 
     @Override
     public BaseRelationService<EmployeePosition, Employee, Position> getService() {
         return service;
-    }
-
-    /**
-     * 获取关系型数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<EmployeePosition> getRelationEntityClass() {
-        return EmployeePosition.class;
-    }
-
-    /**
-     * 获取关系型传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<EmployeePositionDto> getRelationDtoClass() {
-        return EmployeePositionDto.class;
-    }
-
-    /**
-     * 获取父数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<Employee> getParentEntityClass() {
-        return Employee.class;
-    }
-
-    /**
-     * 获取父传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<EmployeeDto> getParentDtoClass() {
-        return EmployeeDto.class;
-    }
-
-    /**
-     * 获取子数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<Position> getChildEntityClass() {
-        return Position.class;
-    }
-
-    /**
-     * 获取子传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<PositionDto> getChildDtoClass() {
-        return PositionDto.class;
     }
 
     /**
