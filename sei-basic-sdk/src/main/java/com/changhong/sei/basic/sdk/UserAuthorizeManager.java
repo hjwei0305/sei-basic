@@ -1,10 +1,15 @@
 package com.changhong.sei.basic.sdk;
 
+import com.changhong.sei.apitemplate.ApiTemplate;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.exception.ServiceException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 实现功能: 提供基础应用的用户权限管理API调用
@@ -14,11 +19,8 @@ import java.util.List;
  */
 @Component
 public class UserAuthorizeManager {
-    private final BasicUserClient userClient;
-
-    public UserAuthorizeManager(BasicUserClient userClient) {
-        this.userClient = userClient;
-    }
+    @Autowired
+    private ApiTemplate apiTemplate;
 
     /**
      * 从平台基础应用获取一般用户有权限的数据实体Id清单
@@ -28,8 +30,15 @@ public class UserAuthorizeManager {
      * @param userId 用户Id
      * @return 数据实体Id清单
      */
-    public List<String> getNormalUserAuthorizedEntitiesFromBasic(String entityClassName, String featureCode, String userId) {
-        ResultData<List<String>> resultData = userClient.getNormalUserAuthorizedEntities(entityClassName, featureCode, userId);
+    public List<String> getNormalUserAuthorizedEntities(String entityClassName, String featureCode, String userId) {
+        String appCode = "sei-basic";
+        String path = "user/getNormalUserAuthorizedEntities";
+        Map<String, String> params = new HashMap<>();
+        params.put("entityClassName", entityClassName);
+        params.put("featureCode", featureCode);
+        params.put("userId", userId);
+        ResultData<List<String>> resultData = apiTemplate.getByAppModuleCode(appCode, path, new ParameterizedTypeReference<ResultData<List<String>>>() {
+        }, params);
         if (resultData.failed()) {
             throw new ServiceException("从平台基础应用获取一般用户有权限的数据实体Id清单失败！"+resultData.getMessage());
         }
