@@ -82,7 +82,9 @@ public interface UserApi extends BaseEntityApi<UserDto>,
      */
     @GetMapping(path = "getNormalUserAuthorizedEntities")
     @ApiOperation(value = "获取一般用户有权限的业务实体Id清单",notes = "通过权限对象类名和功能项代码获取一般用户有权限的业务实体Id清单")
-    ResultData<List<String>> getNormalUserAuthorizedEntities(@RequestParam("entityClassName") String entityClassName,@RequestParam("featureCode") String featureCode,@RequestParam("userId") String userId);
+    ResultData<List<String>> getNormalUserAuthorizedEntities(@RequestParam("entityClassName") String entityClassName,
+                                                             @RequestParam(value = "featureCode", required = false, defaultValue = "") String featureCode,
+                                                             @RequestParam("userId") String userId);
 
     /**
      * 获取用户可以分配的数据权限树形业务实体清单
