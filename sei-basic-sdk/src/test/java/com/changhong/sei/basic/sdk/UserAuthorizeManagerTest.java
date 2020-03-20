@@ -23,9 +23,9 @@ public class UserAuthorizeManagerTest extends BaseUnitTest {
     @Test
     public void getNormalUserAuthorizedEntitiesFromBasic() {
         String entityClassName = "com.changhong.sei.basic.entity.Corporation";
-        String featureCode = "";
+        String featureCode = null;
         String userId = "02620F45-5EAF-11EA-A2E3-0242C0A84605";
-        List<String> result = manager.getNormalUserAuthorizedEntitiesFromBasic(entityClassName, featureCode, userId);
+        List<String> result = manager.getNormalUserAuthorizedEntitiesFromBasic(null, featureCode, userId);
         Assert.assertNotNull(result);
         System.out.println(JsonUtils.toJson(result));
     }
