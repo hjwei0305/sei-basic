@@ -1,6 +1,7 @@
 package com.changhong.sei.basic.dto;
 
 import com.changhong.sei.core.dto.BaseEntityDto;
+import com.changhong.sei.core.dto.TreeEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -17,7 +18,7 @@ import java.util.List;
  * @version 2020-01-19 21:57
  */
 @ApiModel(description = "系统菜单DTO")
-public class MenuDto extends BaseEntityDto{
+public class MenuDto extends BaseEntityDto implements TreeEntity<MenuDto> {
     /**
      * 菜单代码
      */

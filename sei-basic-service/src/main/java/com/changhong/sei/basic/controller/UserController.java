@@ -11,6 +11,7 @@ import com.changhong.sei.basic.service.UserProfileService;
 import com.changhong.sei.basic.service.UserService;
 import com.changhong.sei.basic.service.client.AccountManager;
 import com.changhong.sei.basic.service.client.dto.SessionUserResponse;
+import com.changhong.sei.commondata.sdk.annotation.MultilingualEnable;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
@@ -65,12 +66,13 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
     }
 
     /**
-     * 获取用户有权限的操作菜单树(VO)
+     * 获取用户有权限的操作菜单树(DTO)
      *
      * @param userId 用户Id
      * @return 操作菜单树
      */
     @Override
+    @MultilingualEnable
     public ResultData<List<MenuDto>> getUserAuthorizedMenus(String userId) {
         List<Menu> menus = service.getUserAuthorizedMenus(userId);
         List<MenuDto> menuDtos = menus.stream().map(MenuController::custConvertToDto).collect(Collectors.toList());
