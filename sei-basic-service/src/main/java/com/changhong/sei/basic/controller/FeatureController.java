@@ -7,13 +7,12 @@ import com.changhong.sei.basic.entity.Feature;
 import com.changhong.sei.basic.service.FeatureService;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.core.dto.annotation.QueryFieldMapping;
+import com.changhong.sei.core.dto.annotation.QueryFieldMappingUtil;
 import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.dto.serach.Search;
-import com.changhong.sei.core.dto.serach.SearchOrder;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -177,20 +175,7 @@ public class FeatureController implements DefaultBaseEntityController<Feature, F
     @Override
     public ResultData<PageResult<FeatureDto>> findByPage(Search search) {
         // 如果存在排序，需要更新排序属性为数据实体的属性名
-        List<SearchOrder> sortOrders = search.getSortOrders();
-        List<SearchOrder> searchOrders = new LinkedList<>();
-        if (CollectionUtils.isNotEmpty(sortOrders)) {
-            sortOrders.forEach(order -> {
-                String propertyName = order.getProperty();
-                if (StringUtils.equals("appModuleName", propertyName)) {
-                    searchOrders.add(new SearchOrder("featureGroup.appModule.name", order.getDirection()));
-                } else {
-                    searchOrders.add(order);
-                }
-            });
-        }
-        // 重置排序
-        search.setSortOrders(searchOrders);
+        QueryFieldMappingUtil.mappingSearchOrders(search, FeatureDto.class);
         return convertToDtoPageResult(service.findByPage(search));
     }
 }
