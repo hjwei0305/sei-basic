@@ -1,6 +1,7 @@
 package com.changhong.sei.basic.dto;
 
 import com.changhong.sei.core.dto.BaseEntityDto;
+import com.changhong.sei.core.dto.annotation.QueryFieldMapping;
 import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
@@ -79,17 +80,20 @@ public class FeatureDto extends BaseEntityDto {
      * 应用模块名称
      */
     @ApiModelProperty(value = "应用模块名称")
+    @QueryFieldMapping("featureGroup.appModule.name")
     private String appModuleName;
 
     /**
      * 功能项组代码
      */
     @ApiModelProperty(value = "功能项组代码")
+    @QueryFieldMapping("featureGroup.code")
     private String featureGroupCode;
     /**
      * 功能项组名称
      */
     @ApiModelProperty(value = "功能项组名称")
+    @QueryFieldMapping("featureGroup.name")
     private String featureGroupName;
 
     public String getCode() {

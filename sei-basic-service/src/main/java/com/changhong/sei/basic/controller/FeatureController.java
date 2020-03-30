@@ -7,6 +7,8 @@ import com.changhong.sei.basic.entity.Feature;
 import com.changhong.sei.basic.service.FeatureService;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.core.dto.annotation.QueryFieldMapping;
+import com.changhong.sei.core.dto.annotation.QueryFieldMappingUtil;
 import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.service.BaseEntityService;
@@ -172,6 +174,8 @@ public class FeatureController implements DefaultBaseEntityController<Feature, F
      */
     @Override
     public ResultData<PageResult<FeatureDto>> findByPage(Search search) {
+        // 如果存在排序，需要更新排序属性为数据实体的属性名
+        QueryFieldMappingUtil.mappingSearchOrders(search, FeatureDto.class);
         return convertToDtoPageResult(service.findByPage(search));
     }
 }

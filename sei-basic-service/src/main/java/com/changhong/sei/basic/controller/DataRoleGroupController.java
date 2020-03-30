@@ -4,6 +4,7 @@ import com.changhong.sei.basic.api.DataRoleGroupApi;
 import com.changhong.sei.basic.dto.DataRoleGroupDto;
 import com.changhong.sei.basic.entity.DataRoleGroup;
 import com.changhong.sei.basic.service.DataRoleGroupService;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
@@ -24,33 +25,13 @@ import java.util.List;
 @RestController
 @Api(value = "DataRoleGroupApi", tags = "数据角色组API服务")
 @RequestMapping(path = "dataRoleGroup", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class DataRoleGroupController implements DefaultBaseEntityController<DataRoleGroup, DataRoleGroupDto>,
-        DataRoleGroupApi {
+public class DataRoleGroupController extends BaseEntityController<DataRoleGroup, DataRoleGroupDto>
+        implements DataRoleGroupApi {
     @Autowired
     private DataRoleGroupService service;
     @Override
     public BaseEntityService<DataRoleGroup> getService() {
         return service;
-    }
-
-    /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<DataRoleGroup> getEntityClass() {
-        return DataRoleGroup.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<DataRoleGroupDto> getDtoClass() {
-        return DataRoleGroupDto.class;
     }
 
     /**

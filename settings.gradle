@@ -1,4 +1,5 @@
 rootProject.name = 'sei-basic'
 include 'sei-basic-api'
 include 'sei-basic-service'
+include 'sei-basic-sdk'
 
