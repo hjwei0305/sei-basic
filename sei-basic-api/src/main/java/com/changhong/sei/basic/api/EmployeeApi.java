@@ -1,6 +1,7 @@
 package com.changhong.sei.basic.api;
 
 import com.changhong.sei.basic.dto.*;
+import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.core.api.BaseEntityApi;
 import com.changhong.sei.core.api.FindByPageApi;
 import com.changhong.sei.core.dto.ResultData;
@@ -35,6 +36,16 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
     @PostMapping(path = "findByEmployeeParam")
     @ApiOperation(value = "根据查询参数获取企业员工", notes = "根据查询参数获取企业员工")
     ResultData<PageResult<EmployeeDto>> findByEmployeeParam(@RequestBody EmployeeQueryParam employeeQueryParam);
+
+    /**
+     * 分页查询企业用户
+     *
+     * @param queryParam 查询参数
+     * @return 企业用户
+     */
+    @PostMapping(path = "queryEmployees", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "分页查询企业用户", notes = "通过快速查询参数，分页查询企业用户")
+    ResultData<PageResult<EmployeeDto>> queryEmployees(@RequestBody EmployeeQuickQueryParam queryParam);
 
     /**
      * 根据员工的id列表获取员工

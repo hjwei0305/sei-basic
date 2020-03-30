@@ -2,6 +2,7 @@ package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.EmployeeApi;
 import com.changhong.sei.basic.dto.*;
+import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.service.EmployeePositionService;
 import com.changhong.sei.basic.service.EmployeeService;
@@ -17,15 +18,11 @@ import com.changhong.sei.core.utils.ResultDataUtil;
 import com.changhong.sei.enums.UserAuthorityPolicy;
 import com.changhong.sei.enums.UserType;
 import io.swagger.annotations.Api;
-import javafx.geometry.Pos;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
-import org.modelmapper.TypeMap;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -61,6 +58,17 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
     public ResultData<PageResult<EmployeeDto>> findByEmployeeParam(EmployeeQueryParam employeeQueryParam) {
         PageResult<Employee> result = service.findByEmployeeParam(employeeQueryParam);
         return convertToDtoPageResult(result);
+    }
+
+    /**
+     * 分页查询企业用户
+     *
+     * @param queryParam 查询参数
+     * @return 企业用户
+     */
+    @Override
+    public ResultData<PageResult<EmployeeDto>> queryEmployees(EmployeeQuickQueryParam queryParam) {
+        return convertToDtoPageResult(service.queryEmployees(queryParam));
     }
 
     /**

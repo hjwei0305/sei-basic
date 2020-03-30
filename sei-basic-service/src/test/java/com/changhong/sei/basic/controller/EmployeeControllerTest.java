@@ -1,7 +1,10 @@
 package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.dto.EmployeeDto;
+import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.core.dto.serach.PageInfo;
+import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.util.JsonUtils;
 import org.junit.Assert;
@@ -61,6 +64,19 @@ public class EmployeeControllerTest extends BaseUnitTest {
         EmployeeDto dto = JsonUtils.fromJson(json, EmployeeDto.class);
         dto.setFrozen(true);
         ResultData resultData = controller.save(dto);
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
+
+    @Test
+    public void queryEmployees() {
+        EmployeeQuickQueryParam queryParam = new EmployeeQuickQueryParam();
+        queryParam.setOrganizationId("877035BF-A40C-11E7-A8B9-02420B99179E");
+        queryParam.setIncludeSubNode(true);
+        queryParam.setExcludePositionId("459FB69E-4664-11EA-983E-0242C0A84604");
+        queryParam.setQuickSearchValue("测试");
+        queryParam.setPageInfo(new PageInfo());
+        ResultData<PageResult<EmployeeDto>> resultData = controller.queryEmployees(queryParam);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }

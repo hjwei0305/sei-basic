@@ -1,8 +1,12 @@
 package com.changhong.sei.basic.dao;
 
 import com.changhong.sei.basic.dto.EmployeeQueryParam;
+import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.basic.entity.Employee;
+import com.changhong.sei.basic.entity.Organization;
 import com.changhong.sei.core.dto.serach.PageResult;
+
+import java.util.List;
 
 /**
  * *************************************************************************************************
@@ -42,4 +46,16 @@ public interface EmployeeExtDao {
      * @return 是否存在
      */
     Boolean isCodeExist(String code, String id);
+
+    /**
+     * 分页查询企业用户
+     *
+     * @param queryParam 查询参数
+     * @param organization 查询的组织节点
+     * @param excludeEmployeeIds 需要排数的用户Id清单
+     * @return 企业用户
+     */
+    PageResult<Employee> queryEmployees(EmployeeQuickQueryParam queryParam,
+                                        Organization organization,
+                                        List<String> excludeEmployeeIds);
 }

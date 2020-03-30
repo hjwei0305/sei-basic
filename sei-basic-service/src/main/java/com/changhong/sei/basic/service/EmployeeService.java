@@ -1,11 +1,10 @@
 package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.EmployeeDao;
+import com.changhong.sei.basic.dao.EmployeePositionDao;
 import com.changhong.sei.basic.dao.OrganizationDao;
-import com.changhong.sei.basic.dto.EmployeeCopyParam;
-import com.changhong.sei.basic.dto.EmployeeQueryParam;
-import com.changhong.sei.basic.dto.Executor;
-import com.changhong.sei.basic.dto.UserQueryParam;
+import com.changhong.sei.basic.dto.*;
+import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.service.client.AccountManager;
 import com.changhong.sei.basic.service.client.dto.*;
@@ -19,6 +18,7 @@ import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.service.bo.OperateResultWithData;
 import com.changhong.sei.enums.UserAuthorityPolicy;
 import com.changhong.sei.enums.UserType;
+import com.changhong.sei.exception.ServiceException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +53,8 @@ public class EmployeeService extends BaseEntityService<Employee> {
     private OrganizationDao organizationDao;
     @Autowired
     private EmployeePositionService employeePositionService;
+    @Autowired
+    private EmployeePositionDao employeePositionDao;
     @Autowired
     private UserProfileService userProfileService;
     @Autowired
@@ -593,8 +595,9 @@ public class EmployeeService extends BaseEntityService<Employee> {
      * @param featureRoleIds   功能角色Id清单
      * @param dataRoleIds      数据角色Id清单
      */
-    private boolean copyEmployeeRoles(String
-                                              targetEmployeeId, List<String> featureRoleIds, List<String> dataRoleIds) {
+    private boolean copyEmployeeRoles(String targetEmployeeId,
+                                      List<String> featureRoleIds,
+                                      List<String> dataRoleIds) {
         // 检查输入参数
         if (CollectionUtils.isEmpty(featureRoleIds) && CollectionUtils.isEmpty(dataRoleIds)) {
             return false;
@@ -613,5 +616,26 @@ public class EmployeeService extends BaseEntityService<Employee> {
             userDataRoleService.insertRelations(targetEmployeeId, dataRoleIds);
         }
         return true;
+    }
+
+    /**
+     * 分页查询企业用户
+     *
+     * @param queryParam 查询参数
+     * @return 企业用户
+     */
+    public PageResult<Employee> queryEmployees(EmployeeQuickQueryParam queryParam) {
+        // 获取查询的组织机构节点
+        Organization organization = organizationDao.findOne(queryParam.getOrganizationId());
+        if (Objects.isNull(organization)) {
+            throw new ServiceException("分页查询企业用户异常！查询参数的组织机构不存在！");
+        }
+        // 获取需要排除的用户Id清单
+        List<String> excludeEmployeeIds = new LinkedList<>();
+        if (StringUtils.isNotBlank(queryParam.getExcludePositionId())) {
+            List<Employee> employees = employeePositionDao.getParentsFromChildId(queryParam.getExcludePositionId());
+            excludeEmployeeIds.addAll(employees.stream().map(Employee::getId).collect(Collectors.toList()));
+        }
+        return employeeDao.queryEmployees(queryParam, organization, excludeEmployeeIds);
     }
 }

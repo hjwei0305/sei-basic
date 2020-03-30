@@ -2,20 +2,22 @@ package com.changhong.sei.basic.dao.impl;
 
 import com.changhong.sei.basic.dao.EmployeeExtDao;
 import com.changhong.sei.basic.dto.EmployeeQueryParam;
+import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.basic.entity.Employee;
+import com.changhong.sei.basic.entity.Organization;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.impl.BaseEntityDaoImpl;
+import com.changhong.sei.core.dao.impl.PageResultUtil;
 import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.entity.ITenant;
+import com.changhong.sei.core.entity.search.QuerySql;
 import com.changhong.sei.util.IdGenerator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.CollectionUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * *************************************************************************************************
@@ -136,6 +138,48 @@ public class EmployeeDaoImpl extends BaseEntityDaoImpl<Employee> implements Empl
         query.setParameter("tenantCode",ContextUtil.getTenantCode());
         List results = query.getResultList();
         return !results.isEmpty();
+    }
+
+    /**
+     * 分页查询企业用户
+     *
+     * @param queryParam 查询参数
+     * @param organization 查询的组织节点
+     * @param excludeEmployeeIds 需要排数的用户Id清单
+     * @return 企业用户
+     */
+    @Override
+    public PageResult<Employee> queryEmployees(EmployeeQuickQueryParam queryParam,
+                                               Organization organization,
+                                               List<String> excludeEmployeeIds) {
+        String select = "select e ";
+        String fromAndWhere = "from Employee e inner join Organization o " +
+                "on e.organizationId = o.id ";
+        Map<String, Object> sqlParams = new HashMap<>();
+        String quickSearchValue = queryParam.getQuickSearchValue();
+        // 判断是否包含子节点
+        if (queryParam.getIncludeSubNode()) {
+            String startWithCode = organization.getCodePath();
+            fromAndWhere += "where o.codePath like :startWithCode ";
+            sqlParams.put("startWithCode", startWithCode+"%");
+        } else {
+            fromAndWhere += "where o.id = :orgId ";
+            sqlParams.put("orgId", organization.getId());
+        }
+        // 限制排除的企业用户
+        if (CollectionUtils.isNotEmpty(excludeEmployeeIds)) {
+            fromAndWhere += "and (e.id not in :excludeIds) ";
+            sqlParams.put("excludeIds", excludeEmployeeIds);
+        }
+        // 限制关键字
+        if (!StringUtils.isBlank(quickSearchValue)){
+            fromAndWhere += "and (e.code like :quickSearchValue or e.user.userName like :quickSearchValue) ";
+            sqlParams.put("quickSearchValue", "%"+quickSearchValue+"%");
+        }
+        QuerySql querySql = new QuerySql(select,fromAndWhere);
+        // 排序
+        querySql.setOrderBy("order by e.code");
+        return PageResultUtil.getResult(entityManager,querySql,sqlParams, queryParam);
     }
 }
 
