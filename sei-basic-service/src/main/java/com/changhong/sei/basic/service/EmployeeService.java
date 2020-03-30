@@ -21,7 +21,6 @@ import com.changhong.sei.enums.UserAuthorityPolicy;
 import com.changhong.sei.enums.UserType;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -508,9 +507,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
         Set<String> assignedEmployeeIds = assignedEmployees.stream().map(Employee::getId).collect(Collectors.toSet());
         //是否包含子节点
         Search search = new Search(param);
-        //2020年3月16日17点22分更新子节点逻辑
-        //采用后台判断是否有搜索关键字：有则查询指定组织机构以及子节点的数据，这样数据量少很多 没有则只查询指定组织的
-        if (StringUtils.isNotEmpty(param.getQuickSearchValue())) {
+        if (param.getIncludeSubNode()) {
             List<Organization> orgs = organizationDao.getChildrenNodes4Unfrozen(param.getOrganizationId());
             List<String> orgIds = new ArrayList<>();
             //添加当前节点组织id，避免没有子节点下查询全部组织的id
