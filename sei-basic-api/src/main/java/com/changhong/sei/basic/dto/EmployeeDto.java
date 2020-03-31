@@ -75,6 +75,18 @@ public class EmployeeDto extends BaseEntityDto {
     private String organizationName;
 
     /**
+     * 组织机构代码路径
+     */
+    @ApiModelProperty(value = "组织机构代码路径")
+    private String organizationCodePath;
+
+    /**
+     * 组织机构名称路径
+     */
+    @ApiModelProperty(value = "组织机构名称路径")
+    private String organizationNamePath;
+
+    /**
      * 是否是创建租户管理员
      */
     @ApiModelProperty(value = "是否为创建租户管理员")
@@ -164,6 +176,22 @@ public class EmployeeDto extends BaseEntityDto {
 
     public Boolean getCreateAdmin() {
         return createAdmin;
+    }
+
+    public String getOrganizationCodePath() {
+        return organizationCodePath;
+    }
+
+    public void setOrganizationCodePath(String organizationCodePath) {
+        this.organizationCodePath = organizationCodePath;
+    }
+
+    public String getOrganizationNamePath() {
+        return organizationNamePath;
+    }
+
+    public void setOrganizationNamePath(String organizationNamePath) {
+        this.organizationNamePath = organizationNamePath;
     }
 
     public void setCreateAdmin(Boolean createAdmin) {
