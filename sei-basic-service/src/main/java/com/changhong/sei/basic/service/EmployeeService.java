@@ -164,6 +164,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
             if (Objects.nonNull(userProfile)) {
                 userProfile.setEmail(entity.getEmail());
                 userProfile.setMobile(entity.getMobile());
+                userProfile.setGender(entity.getGender());
                 userProfileService.save(userProfile);
             }
             // 保存企业用户
