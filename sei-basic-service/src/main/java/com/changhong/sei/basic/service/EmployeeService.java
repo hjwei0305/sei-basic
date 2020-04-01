@@ -85,7 +85,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
     public OperateResultWithData<Employee> save(Employee entity) {
         entity.setPassword(DigestUtils.md5Hex("123456"));   //默认为：123456
         entity.setUserType(UserType.Employee);
-        if (Objects.isNull(entity.getUserAuthorityPolicy())){
+        if (Objects.isNull(entity.getUserAuthorityPolicy())) {
             entity.setUserAuthorityPolicy(UserAuthorityPolicy.NormalUser);
         }
         return saveEmployee(entity);
@@ -125,7 +125,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
             user.setUserAuthorityPolicy(entity.getUserAuthorityPolicy());
             user.setFrozen(entity.isFrozen());
             OperateResultWithData<User> userResult = userService.save(user);
-            if (userResult.notSuccessful()){
+            if (userResult.notSuccessful()) {
                 return OperateResultWithData.operationFailureWithData(userResult);
             }
             String userId = userResult.getData().getId();
@@ -136,6 +136,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
             userProfile.setUserId(userId);
             userProfile.setEmail(entity.getEmail());
             userProfile.setMobile(entity.getMobile());
+            userProfile.setGender(entity.getGender());
             userProfileService.save(userProfile);
             // 保存企业用户
             employeeDao.save(entity, true);
@@ -154,7 +155,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
             //修改用户
             User user = userService.findById(entity.getId());
             boolean isChangeAccount = !user.getUserName().equals(entity.getUserName())
-                    || user.getFrozen()!=entity.isFrozen();
+                    || user.getFrozen() != entity.isFrozen();
             user.setUserName(entity.getUserName());
             user.setFrozen(entity.isFrozen());
             userService.save(user);
@@ -266,13 +267,13 @@ public class EmployeeService extends BaseEntityService<Employee> {
             //去除管理员显示
             if (!UserAuthorityPolicy.NormalUser.equals(employee.getUser().getUserAuthorityPolicy())) {
                 iterator.remove();
-                removeCount+=1;
+                removeCount += 1;
             }
             employee.setUserName(employee.getUser().getUserName());
             employee.setFrozen(employee.getUser().getFrozen());
         }
         // 调整总记录数
-        employees.setRecords(employees.getRecords()-removeCount);
+        employees.setRecords(employees.getRecords() - removeCount);
         return employees;
     }
 

@@ -105,10 +105,15 @@ public class EmployeeDto extends BaseEntityDto {
     @ApiModelProperty(value = "邮箱")
     private String email;
     /**
-     * 手机号,创建租户管理员时发送邮件
+     * 手机号
      */
-    @ApiModelProperty(value = "邮箱")
+    @ApiModelProperty(value = "手机号")
     private String mobile;
+    /**
+     * 性别 ，true表示男，false表示女
+     */
+    @ApiModelProperty(value = "性别")
+    private Boolean gender = Boolean.FALSE;
 
     public String getCode() {
         return code;
@@ -220,5 +225,13 @@ public class EmployeeDto extends BaseEntityDto {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public Boolean getGender() {
+        return gender;
+    }
+
+    public void setGender(Boolean gender) {
+        this.gender = gender;
     }
 }

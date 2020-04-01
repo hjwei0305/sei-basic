@@ -108,6 +108,12 @@ public class Employee extends BaseAuditableEntity implements ITenant {
     private String password;
 
     /**
+     * 性别 ，true表示男，false表示女
+     */
+    @Transient
+    private Boolean gender = Boolean.FALSE;
+
+    /**
      * 是否冻结
      */
     @Transient
@@ -239,5 +245,13 @@ public class Employee extends BaseAuditableEntity implements ITenant {
 
     public void setUserAuthorityPolicy(UserAuthorityPolicy userAuthorityPolicy) {
         this.userAuthorityPolicy = userAuthorityPolicy;
+    }
+
+    public Boolean getGender() {
+        return gender;
+    }
+
+    public void setGender(Boolean gender) {
+        this.gender = gender;
     }
 }
