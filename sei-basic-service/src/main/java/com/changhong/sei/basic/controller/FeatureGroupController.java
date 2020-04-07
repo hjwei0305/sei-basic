@@ -4,6 +4,7 @@ import com.changhong.sei.basic.api.FeatureGroupApi;
 import com.changhong.sei.basic.dto.FeatureGroupDto;
 import com.changhong.sei.basic.entity.FeatureGroup;
 import com.changhong.sei.basic.service.FeatureGroupService;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
@@ -29,10 +30,15 @@ import java.util.stream.Collectors;
 @RestController
 @Api(value = "FeatureGroupApi", tags = "功能项组API服务")
 @RequestMapping(path = "featureGroup", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class FeatureGroupController implements DefaultBaseEntityController<FeatureGroup, FeatureGroupDto>,
-        FeatureGroupApi {
+public class FeatureGroupController extends BaseEntityController<FeatureGroup, FeatureGroupDto>
+        implements FeatureGroupApi {
     @Autowired
     private FeatureGroupService service;
+    @Override
+    public BaseEntityService<FeatureGroup> getService() {
+        return service;
+    }
+
     /**
      * 模糊查询
      *
@@ -57,31 +63,6 @@ public class FeatureGroupController implements DefaultBaseEntityController<Featu
         List<FeatureGroup> featureGroups = service.findByAppModuleId(appModuleId);
         List<FeatureGroupDto> dtos = featureGroups.stream().map(this::convertToDto).collect(Collectors.toList());
         return ResultData.success(dtos);
-    }
-
-    @Override
-    public BaseEntityService<FeatureGroup> getService() {
-        return service;
-    }
-
-    /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<FeatureGroup> getEntityClass() {
-        return FeatureGroup.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<FeatureGroupDto> getDtoClass() {
-        return FeatureGroupDto.class;
     }
 
     /**
@@ -141,5 +122,20 @@ public class FeatureGroupController implements DefaultBaseEntityController<Featu
     @Override
     public ResultData<List<FeatureGroupDto>> findAllUnfrozen() {
         return ResultData.success(convertToDtos(service.findAllUnfrozen()));
+    }
+
+    /**
+     * 保存业务实体
+     *
+     * @param dto 业务实体DTO
+     * @return 操作结果
+     */
+    @Override
+    public ResultData<FeatureGroupDto> save(FeatureGroupDto dto) {
+        ResultData<FeatureGroupDto> resultData = super.save(dto);
+        if (resultData.failed()) {
+            return resultData;
+        }
+        return findOne(resultData.getData().getId());
     }
 }
