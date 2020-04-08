@@ -132,10 +132,11 @@ public class FeatureGroupController extends BaseEntityController<FeatureGroup, F
      */
     @Override
     public ResultData<FeatureGroupDto> save(FeatureGroupDto dto) {
-        ResultData<FeatureGroupDto> resultData = super.save(dto);
-        if (resultData.failed()) {
-            return resultData;
-        }
-        return findOne(resultData.getData().getId());
+        return ResultData.fail("测试保存功能项组失败！");
+//        ResultData<FeatureGroupDto> resultData = super.save(dto);
+//        if (resultData.failed()) {
+//            return resultData;
+//        }
+//        return findOne(resultData.getData().getId());
     }
 }
