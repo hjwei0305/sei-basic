@@ -1,7 +1,7 @@
 package com.changhong.sei.basic.entity;
 
+import com.changhong.sei.basic.entity.cust.UserCust;
 import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
-import com.changhong.sei.core.entity.BaseEntity;
 import com.changhong.sei.core.entity.IFrozen;
 import com.changhong.sei.core.entity.ITenant;
 import com.changhong.sei.enums.UserAuthorityPolicy;
@@ -29,7 +29,7 @@ import javax.persistence.*;
 @Table(name = "user_")
 @DynamicInsert
 @DynamicUpdate
-public class User extends BaseEntity implements ITenant, IFrozen {
+public class User extends UserCust implements ITenant, IFrozen {
 
     /**
      * 用户姓名
