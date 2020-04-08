@@ -1,12 +1,9 @@
 package com.changhong.sei.basic.entity;
 
-import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
-import com.changhong.sei.core.entity.BaseAuditableEntity;
+import com.changhong.sei.basic.entity.cust.EmployeeCust;
 import com.changhong.sei.core.entity.ITenant;
 import com.changhong.sei.enums.UserAuthorityPolicy;
 import com.changhong.sei.enums.UserType;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -29,7 +26,7 @@ import javax.persistence.*;
 @Table(name = "employee")
 @DynamicUpdate
 @DynamicInsert
-public class Employee extends BaseAuditableEntity implements ITenant {
+public class Employee extends EmployeeCust implements ITenant {
     /**
      * 员工编号
      */
