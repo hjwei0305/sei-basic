@@ -2,10 +2,13 @@ package com.changhong.sei.basic.entity;
 
 import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.RelationEntity;
+import com.changhong.sei.util.DateUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * *************************************************************************************************
@@ -37,6 +40,20 @@ public class PositionDataRole extends BaseAuditableEntity implements RelationEnt
     @ManyToOne
     @JoinColumn(name = "data_role_id",nullable = false)
     private DataRole child;
+    /**
+     * 有效起始日期
+     */
+    @JsonFormat(timezone = DateUtils.DEFAULT_TIMEZONE, pattern = DateUtils.DEFAULT_DATE_FORMAT)
+    @Temporal(TemporalType.DATE)
+    @Column(name = "effective_from")
+    private Date effectiveFrom;
+    /**
+     * 有效截至日期
+     */
+    @JsonFormat(timezone = DateUtils.DEFAULT_TIMEZONE, pattern = DateUtils.DEFAULT_DATE_FORMAT)
+    @Temporal(TemporalType.DATE)
+    @Column(name = "effective_to")
+    private Date effectiveTo;
 
     /**
      * 父实体
@@ -66,5 +83,21 @@ public class PositionDataRole extends BaseAuditableEntity implements RelationEnt
     @Override
     public void setChild(DataRole child) {
         this.child = child;
+    }
+
+    public Date getEffectiveFrom() {
+        return effectiveFrom;
+    }
+
+    public void setEffectiveFrom(Date effectiveFrom) {
+        this.effectiveFrom = effectiveFrom;
+    }
+
+    public Date getEffectiveTo() {
+        return effectiveTo;
+    }
+
+    public void setEffectiveTo(Date effectiveTo) {
+        this.effectiveTo = effectiveTo;
     }
 }
