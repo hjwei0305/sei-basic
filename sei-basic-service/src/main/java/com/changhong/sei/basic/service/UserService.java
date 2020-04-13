@@ -14,10 +14,8 @@ import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
 import com.changhong.sei.core.dto.serach.SearchFilter;
-import com.changhong.sei.core.local.LocalUtil;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
-import com.changhong.sei.core.util.JsonUtils;
 import com.changhong.sei.enums.UserAuthorityPolicy;
 import com.changhong.sei.enums.UserType;
 import com.changhong.sei.exception.ServiceException;
@@ -26,6 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -87,6 +86,8 @@ public class UserService extends BaseEntityService<User> {
     private UserService userService;
     @Autowired
     private ApiTemplate apiTemplate;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     protected BaseEntityDao<User> getDao() {
@@ -214,8 +215,6 @@ public class UserService extends BaseEntityService<User> {
                 });
             }
         }
-        // 菜单多语言
-        LocalUtil.localSet(ContextUtil.getAppCode(), Menu.class, userMenus);
         //通过菜单生成展示对象
         userMenus.forEach((m) -> {
             //环境格式化

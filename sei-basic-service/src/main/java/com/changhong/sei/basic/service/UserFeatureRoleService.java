@@ -9,10 +9,15 @@ import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseRelationDao;
 import com.changhong.sei.core.service.BaseRelationService;
 import com.changhong.sei.core.service.bo.OperateResult;
+import com.changhong.sei.util.DateUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * *************************************************************************************************
@@ -86,5 +91,53 @@ public class UserFeatureRoleService extends BaseRelationService<UserFeatureRole,
         // 清除用户权限缓存
         AuthorityUtil.cleanUserAuthorizedCaches(parentId);
         return result;
+    }
+
+    /**
+     * 通过父实体Id获取子实体清单
+     *
+     * @param parentId 父实体Id
+     * @return 子实体清单
+     */
+    @Override
+    public List<FeatureRole> getChildrenFromParentId(String parentId) {
+        // 获取分配关系
+        List<UserFeatureRole> userFeatureRoles = getRelationsByParentId(parentId);
+        // 设置授权有效期
+        List<FeatureRole> featureRoles = new LinkedList<>();
+        userFeatureRoles.forEach(r-> {
+            FeatureRole featureRole = r.getChild();
+            featureRole.setEffectiveFrom(r.getEffectiveFrom());
+            featureRole.setEffectiveTo(r.getEffectiveTo());
+            featureRoles.add(featureRole);
+        });
+        return featureRoles;
+    }
+
+    /**
+     * 获取当前有效的授权功能角色清单
+     * @param parentId 用户Id
+     * @return 有效的授权功能角色清单
+     */
+    public List<FeatureRole> getEffectiveChildren(String parentId) {
+        List<FeatureRole> featureRoles = new LinkedList<>();
+        // 获取分配的功能项
+        List<FeatureRole> children = getChildrenFromParentId(parentId);
+        if (CollectionUtils.isEmpty(children)) {
+            return children;
+        }
+        // 判断有效期
+        children.forEach(c-> {
+            if (Objects.isNull(c.getEffectiveTo())) {
+                featureRoles.add(c);
+            } else {
+                Date currentDte = DateUtils.getCurrentDate();
+                if (currentDte.after(c.getEffectiveFrom())
+                        && currentDte.before(c.getEffectiveTo())) {
+                    featureRoles.add(c);
+                }
+            }
+        });
+        return featureRoles;
     }
 }

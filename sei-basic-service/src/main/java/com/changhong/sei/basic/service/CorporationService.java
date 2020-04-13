@@ -5,7 +5,6 @@ import com.changhong.sei.basic.entity.Corporation;
 import com.changhong.sei.basic.service.cust.CorporationServiceCust;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
-import com.changhong.sei.core.local.LocalUtil;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.DataAuthEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +52,6 @@ public class CorporationService extends BaseEntityService<Corporation> implement
      */
     public Corporation findByCode(String code) {
         Corporation corporation = corporationDao.findByCode(code);
-        // 多语言
-        LocalUtil.local(ContextUtil.getAppCode(), Corporation.class, corporation);
         // 执行扩展业务逻辑
         return serviceCust.afterFindByCode(corporation);
     }
@@ -66,10 +63,7 @@ public class CorporationService extends BaseEntityService<Corporation> implement
      * @return 公司
      */
     public List<Corporation> findByErpCode(String erpCode) {
-        List<Corporation> corporations = corporationDao.findAllByErpCode(erpCode);
-        // 多语言
-        LocalUtil.localList(ContextUtil.getAppCode(), Corporation.class, corporations);
-        return corporations;
+        return corporationDao.findAllByErpCode(erpCode);
     }
 
     /**
