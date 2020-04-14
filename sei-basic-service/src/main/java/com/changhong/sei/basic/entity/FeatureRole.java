@@ -86,6 +86,11 @@ public class FeatureRole extends BaseAuditableEntity implements ITenant, ICodeUn
     private Organization publicOrg;
 
     /**
+     * 授权分配关系Id
+     */
+    @Transient
+    private String relationId;
+    /**
      * 分配授权的有效起始日期(传输属性)
      */
     @Transient
@@ -172,6 +177,14 @@ public class FeatureRole extends BaseAuditableEntity implements ITenant, ICodeUn
 
     public void setPublicOrg(Organization publicOrg) {
         this.publicOrg = publicOrg;
+    }
+
+    public String getRelationId() {
+        return relationId;
+    }
+
+    public void setRelationId(String relationId) {
+        this.relationId = relationId;
     }
 
     public Date getEffectiveFrom() {

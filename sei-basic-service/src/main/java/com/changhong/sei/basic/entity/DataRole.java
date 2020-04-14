@@ -76,6 +76,12 @@ public class DataRole extends BaseAuditableEntity implements ITenant, ICodeUniqu
     @ManyToOne
     @JoinColumn(name = "public_org_id", insertable = false, updatable = false)
     private Organization publicOrg;
+
+    /**
+     * 授权分配关系Id
+     */
+    @Transient
+    private String relationId;
     /**
      * 分配授权的有效起始日期(传输属性)
      */
@@ -156,6 +162,14 @@ public class DataRole extends BaseAuditableEntity implements ITenant, ICodeUniqu
 
     public void setPublicOrg(Organization publicOrg) {
         this.publicOrg = publicOrg;
+    }
+
+    public String getRelationId() {
+        return relationId;
+    }
+
+    public void setRelationId(String relationId) {
+        this.relationId = relationId;
     }
 
     public Date getEffectiveFrom() {

@@ -1,18 +1,23 @@
 package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.UserFeatureRoleDao;
+import com.changhong.sei.basic.dto.RelationEffective;
 import com.changhong.sei.basic.entity.FeatureRole;
 import com.changhong.sei.basic.entity.User;
+import com.changhong.sei.basic.entity.UserDataRole;
 import com.changhong.sei.basic.entity.UserFeatureRole;
 import com.changhong.sei.basic.service.util.AuthorityUtil;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseRelationDao;
+import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseRelationService;
 import com.changhong.sei.core.service.bo.OperateResult;
+import com.changhong.sei.core.utils.ResultDataUtil;
 import com.changhong.sei.util.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -107,6 +112,7 @@ public class UserFeatureRoleService extends BaseRelationService<UserFeatureRole,
         List<FeatureRole> featureRoles = new LinkedList<>();
         userFeatureRoles.forEach(r-> {
             FeatureRole featureRole = r.getChild();
+            featureRole.setRelationId(r.getId());
             featureRole.setEffectiveFrom(r.getEffectiveFrom());
             featureRole.setEffectiveTo(r.getEffectiveTo());
             featureRoles.add(featureRole);
@@ -140,5 +146,26 @@ public class UserFeatureRoleService extends BaseRelationService<UserFeatureRole,
             }
         });
         return featureRoles;
+    }
+
+    /**
+     * 保存授权有效期
+     *
+     * @param effective 授权有效期
+     * @return 操作结果
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public ResultData<String> saveEffective(RelationEffective effective) {
+        // 获取分配关系
+        UserFeatureRole relation = dao.findOne(effective.getId());
+        if (Objects.isNull(relation)) {
+            // 保存有效期的授权分配关系不存在！
+            return ResultDataUtil.fail("00106");
+        }
+        // 设置有效期
+        relation.setEffectiveFrom(effective.getEffectiveFrom());
+        relation.setEffectiveTo(effective.getEffectiveTo());
+        dao.save(relation);
+        return ResultData.success(effective.getId());
     }
 }

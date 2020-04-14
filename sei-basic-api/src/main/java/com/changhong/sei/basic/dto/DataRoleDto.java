@@ -80,6 +80,12 @@ public class DataRoleDto extends BaseEntityDto {
      */
     @ApiModelProperty(value = "公共角色的组织机构名称")
     private String publicOrgName;
+
+    /**
+     * 授权分配关系Id
+     */
+    @ApiModelProperty("授权分配关系Id")
+    private String relationId;
     /**
      * 分配授权的有效起始日期(传输属性)
      */
@@ -171,6 +177,14 @@ public class DataRoleDto extends BaseEntityDto {
 
     public void setPublicOrgName(String publicOrgName) {
         this.publicOrgName = publicOrgName;
+    }
+
+    public String getRelationId() {
+        return relationId;
+    }
+
+    public void setRelationId(String relationId) {
+        this.relationId = relationId;
     }
 
     public Date getEffectiveFrom() {
