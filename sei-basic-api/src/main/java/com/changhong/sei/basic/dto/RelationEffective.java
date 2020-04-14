@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -20,14 +19,12 @@ public class RelationEffective extends BaseEntityDto {
     /**
      * 分配授权的有效起始日期(传输属性)
      */
-    @NotNull
     @ApiModelProperty(value = "分配授权的有效起始日期", required = true)
     @JsonFormat(timezone = DateUtils.DEFAULT_TIMEZONE, pattern = DateUtils.DEFAULT_DATE_FORMAT)
     private Date effectiveFrom;
     /**
      * 分配授权的有效截至日期(传输属性)
      */
-    @NotNull
     @ApiModelProperty(value = "分配授权的有效截至日期", required = true)
     @JsonFormat(timezone = DateUtils.DEFAULT_TIMEZONE, pattern = DateUtils.DEFAULT_DATE_FORMAT)
     private Date effectiveTo;
