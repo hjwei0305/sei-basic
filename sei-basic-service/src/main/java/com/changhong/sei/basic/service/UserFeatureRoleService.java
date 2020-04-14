@@ -128,7 +128,8 @@ public class UserFeatureRoleService extends BaseRelationService<UserFeatureRole,
         }
         // 判断有效期
         children.forEach(c-> {
-            if (Objects.isNull(c.getEffectiveTo())) {
+            if (Objects.isNull(c.getEffectiveFrom())
+                    || Objects.isNull(c.getEffectiveTo())) {
                 featureRoles.add(c);
             } else {
                 Date currentDte = DateUtils.getCurrentDate();

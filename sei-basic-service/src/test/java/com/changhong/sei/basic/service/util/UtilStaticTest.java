@@ -2,12 +2,11 @@ package com.changhong.sei.basic.service.util;
 
 import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.util.JsonUtils;
+import com.changhong.sei.util.DateUtils;
+import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 实现功能:
@@ -34,5 +33,12 @@ public class UtilStaticTest {
         dataSet.addAll(canAssigned);
         dataSet.removeAll(assigned);
         System.out.println(JsonUtils.toJson(dataSet));
+    }
+
+    @Test
+    public void dateTest() {
+        Date currentDte = DateUtils.getCurrentDate();
+        boolean after = currentDte.after(null);
+        Assert.assertTrue(after);
     }
 }

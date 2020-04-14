@@ -150,7 +150,7 @@ public class UserService extends BaseEntityService<User> {
         List<FeatureRole> publicRoles = featureRoleService.getPublicFeatureRoles(user);
         userRoles.addAll(publicRoles);
         //获取用户授权的角色
-        List<FeatureRole> authRoles = userFeatureRoleService.getChildrenFromParentId(user.getId());
+        List<FeatureRole> authRoles = userFeatureRoleService.getEffectiveChildren(user.getId());
         //添加可以使用的角色
         authRoles.forEach((r) -> {
             if (r.getRoleType() == RoleType.CanUse) {
@@ -257,7 +257,7 @@ public class UserService extends BaseEntityService<User> {
         }
         //一般用户的可分配功能角色
         Set<FeatureRole> userRoles = new HashSet<>();
-        List<FeatureRole> authRoles = userFeatureRoleService.getChildrenFromParentId(user.getId());
+        List<FeatureRole> authRoles = userFeatureRoleService.getEffectiveChildren(user.getId());
         //添加可以分配的角色
         authRoles.forEach((r) -> {
             if (r.getRoleType() == RoleType.CanAssign) {
@@ -494,7 +494,7 @@ public class UserService extends BaseEntityService<User> {
         List<DataRole> publicRoles = dataRoleService.getPublicDataRoles(user);
         userRoles.addAll(publicRoles);
         //一般用户的角色
-        List<DataRole> authRoles = userDataRoleService.getChildrenFromParentId(user.getId());
+        List<DataRole> authRoles = userDataRoleService.getEffectiveChildren(user.getId());
         userRoles.addAll(authRoles);
         //获取用户的岗位
         if (user.getUserType() == UserType.Employee) {

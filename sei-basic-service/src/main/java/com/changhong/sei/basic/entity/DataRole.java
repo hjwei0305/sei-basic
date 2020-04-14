@@ -5,11 +5,14 @@ import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.ICodeUnique;
 import com.changhong.sei.core.entity.ITenant;
 import com.changhong.sei.enums.UserType;
+import com.changhong.sei.util.DateUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * *************************************************************************************************
@@ -74,10 +77,18 @@ public class DataRole extends BaseAuditableEntity implements ITenant, ICodeUniqu
     @JoinColumn(name = "public_org_id", insertable = false, updatable = false)
     private Organization publicOrg;
     /**
-     * 用户类型描述
+     * 分配授权的有效起始日期(传输属性)
      */
     @Transient
-    private String publicUserTypeRemark;
+    @JsonFormat(timezone = DateUtils.DEFAULT_TIMEZONE, pattern = DateUtils.DEFAULT_DATE_FORMAT)
+    private Date effectiveFrom;
+    /**
+     * 分配授权的有效截至日期(传输属性)
+     */
+    @Transient
+    @JsonFormat(timezone = DateUtils.DEFAULT_TIMEZONE, pattern = DateUtils.DEFAULT_DATE_FORMAT)
+    private Date effectiveTo;
+
 
     @Override
     public String getTenantCode() {
@@ -147,12 +158,19 @@ public class DataRole extends BaseAuditableEntity implements ITenant, ICodeUniqu
         this.publicOrg = publicOrg;
     }
 
-    public String getPublicUserTypeRemark() {
-        return publicUserTypeRemark;
+    public Date getEffectiveFrom() {
+        return effectiveFrom;
     }
 
-    public void setPublicUserTypeRemark(String publicUserTypeRemark) {
-        this.publicUserTypeRemark = publicUserTypeRemark;
+    public void setEffectiveFrom(Date effectiveFrom) {
+        this.effectiveFrom = effectiveFrom;
     }
 
+    public Date getEffectiveTo() {
+        return effectiveTo;
+    }
+
+    public void setEffectiveTo(Date effectiveTo) {
+        this.effectiveTo = effectiveTo;
+    }
 }
