@@ -38,7 +38,9 @@ public class UtilStaticTest {
     @Test
     public void dateTest() {
         Date currentDte = DateUtils.getCurrentDate();
-        boolean after = currentDte.after(null);
-        Assert.assertTrue(after);
+        Date startDate = DateUtils.nDaysAfter(-1, DateUtils.parseDate("2020-04-15"));
+        Date endDate = DateUtils.nDaysAfter(1, DateUtils.parseDate("2020-04-15"));
+        boolean canUse = currentDte.after(startDate) && currentDte.before(endDate);
+        Assert.assertTrue(canUse);
     }
 }

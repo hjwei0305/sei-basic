@@ -138,9 +138,11 @@ public class UserFeatureRoleService extends BaseRelationService<UserFeatureRole,
                     || Objects.isNull(c.getEffectiveTo())) {
                 featureRoles.add(c);
             } else {
-                Date currentDte = DateUtils.getCurrentDate();
-                if (currentDte.after(c.getEffectiveFrom())
-                        && currentDte.before(c.getEffectiveTo())) {
+                Date currentDate = DateUtils.getCurrentDate();
+                Date fromDate = DateUtils.nDaysAfter(-1, c.getEffectiveFrom());
+                Date toDate = DateUtils.nDaysAfter(1, c.getEffectiveTo());
+                if (currentDate.after(fromDate)
+                        && currentDate.before(toDate)) {
                     featureRoles.add(c);
                 }
             }

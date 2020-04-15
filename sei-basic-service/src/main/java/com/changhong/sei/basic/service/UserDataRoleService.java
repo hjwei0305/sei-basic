@@ -134,9 +134,11 @@ public class UserDataRoleService extends BaseRelationService<UserDataRole, User,
                     || Objects.isNull(c.getEffectiveTo())) {
                 dataRoles.add(c);
             } else {
-                Date currentDte = DateUtils.getCurrentDate();
-                if (currentDte.after(c.getEffectiveFrom())
-                        && currentDte.before(c.getEffectiveTo())) {
+                Date currentDate = DateUtils.getCurrentDate();
+                Date fromDate = DateUtils.nDaysAfter(-1, c.getEffectiveFrom());
+                Date toDate = DateUtils.nDaysAfter(1, c.getEffectiveTo());
+                if (currentDate.after(fromDate)
+                        && currentDate.before(toDate)) {
                     dataRoles.add(c);
                 }
             }
