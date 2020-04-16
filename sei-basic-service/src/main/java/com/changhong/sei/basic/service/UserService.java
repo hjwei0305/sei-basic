@@ -223,10 +223,10 @@ public class UserService extends BaseEntityService<User> {
             if (Objects.nonNull(feature)) {
                 String baseAddress = feature.getFeatureGroup().getAppModule().getWebBaseAddress();
                 StringBuilder url = new StringBuilder(64);
-                if (Objects.isNull(ContextUtil.getGlobalProperty(baseAddress))) {
+                if (Objects.isNull(ContextUtil.getProperty(baseAddress))) {
                     url.append(feature.getUrl());
                 } else {
-                    url.append(ContextUtil.getGlobalProperty(baseAddress)).append(feature.getUrl());
+                    url.append(ContextUtil.getProperty(baseAddress)).append(feature.getUrl());
                 }
                 m.setMenuUrl(url.toString());
             }
