@@ -2,7 +2,9 @@ package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.FeatureGroupApi;
 import com.changhong.sei.basic.dto.FeatureGroupDto;
+import com.changhong.sei.basic.entity.AppModule;
 import com.changhong.sei.basic.entity.FeatureGroup;
+import com.changhong.sei.basic.service.AppModuleService;
 import com.changhong.sei.basic.service.FeatureGroupService;
 import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
@@ -34,6 +36,8 @@ public class FeatureGroupController extends BaseEntityController<FeatureGroup, F
         implements FeatureGroupApi {
     @Autowired
     private FeatureGroupService service;
+    @Autowired
+    private AppModuleService appModuleService;
     @Override
     public BaseEntityService<FeatureGroup> getService() {
         return service;
@@ -136,6 +140,11 @@ public class FeatureGroupController extends BaseEntityController<FeatureGroup, F
         if (resultData.failed()) {
             return resultData;
         }
-        return findOne(resultData.getData().getId());
+        FeatureGroupDto groupDto = resultData.getData();
+        // 获取应用模块
+        AppModule appModule = appModuleService.findOne(groupDto.getAppModuleId());
+        groupDto.setAppModuleCode(appModule.getCode());
+        groupDto.setAppModuleName(appModule.getName());
+        return ResultData.success(groupDto);
     }
 }

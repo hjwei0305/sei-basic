@@ -35,7 +35,8 @@ import java.util.stream.Collectors;
  * *************************************************************************************************
  */
 @Service
-public class OrganizationService extends BaseTreeService<Organization> implements DataAuthEntityService {
+public class OrganizationService extends BaseTreeService<Organization>
+        implements DataAuthEntityService {
     @Autowired
     private OrganizationDao organizationDao;
     @Autowired

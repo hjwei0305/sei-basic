@@ -40,9 +40,10 @@ public class FeatureGroupControllerTest extends BaseUnitTest {
     @Test
     public void save() {
         FeatureGroupDto dto = new FeatureGroupDto();
-        dto.setCode("BASIC-TEST");
-        dto.setName("基础应用-测试");
-        dto.setAppModuleId("BDC7B155-4498-11EA-8468-0242C0A84604");
+        dto.setId("FAADC9C0-4796-11E8-870E-0A580A8101B0");
+        dto.setCode("AMS-DAGL");
+        dto.setName("档案管理");
+        dto.setAppModuleId("E8A0C687-4F71-11E9-B419-0242C0A8440C");
         ResultData<FeatureGroupDto> resultData = controller.save(dto);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());

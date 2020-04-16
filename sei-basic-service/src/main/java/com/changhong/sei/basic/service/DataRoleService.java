@@ -60,13 +60,7 @@ public class DataRoleService extends BaseEntityService<DataRole> {
 
     public List<DataRole> findByDataRoleGroup(String roleGroupId) {
         SearchFilter filter = new SearchFilter("dataRoleGroup.id",roleGroupId, SearchFilter.Operator.EQ);
-        List<DataRole> results =  findByFilter(filter);
-        for (DataRole data : results) {
-            if (data.getPublicUserType() != null) {
-                data.setPublicUserTypeRemark(EnumUtils.getEnumItemRemark(UserType.class, data.getPublicUserType().ordinal()));
-            }
-        }
-        return results;
+        return findByFilter(filter);
     }
 
     /**

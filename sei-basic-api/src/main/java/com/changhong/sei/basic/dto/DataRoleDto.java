@@ -3,12 +3,15 @@ package com.changhong.sei.basic.dto;
 import com.changhong.sei.core.dto.BaseEntityDto;
 import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
 import com.changhong.sei.enums.UserType;
+import com.changhong.sei.util.DateUtils;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 /**
  * 实现功能: 数据角色DTO
@@ -77,6 +80,24 @@ public class DataRoleDto extends BaseEntityDto {
      */
     @ApiModelProperty(value = "公共角色的组织机构名称")
     private String publicOrgName;
+
+    /**
+     * 授权分配关系Id
+     */
+    @ApiModelProperty("授权分配关系Id")
+    private String relationId;
+    /**
+     * 分配授权的有效起始日期(传输属性)
+     */
+    @ApiModelProperty("分配授权的有效起始日期")
+    @JsonFormat(timezone = DateUtils.DEFAULT_TIMEZONE, pattern = DateUtils.DEFAULT_DATE_FORMAT)
+    private Date effectiveFrom;
+    /**
+     * 分配授权的有效截至日期(传输属性)
+     */
+    @ApiModelProperty("分配授权的有效截至日期")
+    @JsonFormat(timezone = DateUtils.DEFAULT_TIMEZONE, pattern = DateUtils.DEFAULT_DATE_FORMAT)
+    private Date effectiveTo;
 
     public String getTenantCode() {
         return tenantCode;
@@ -156,5 +177,29 @@ public class DataRoleDto extends BaseEntityDto {
 
     public void setPublicOrgName(String publicOrgName) {
         this.publicOrgName = publicOrgName;
+    }
+
+    public String getRelationId() {
+        return relationId;
+    }
+
+    public void setRelationId(String relationId) {
+        this.relationId = relationId;
+    }
+
+    public Date getEffectiveFrom() {
+        return effectiveFrom;
+    }
+
+    public void setEffectiveFrom(Date effectiveFrom) {
+        this.effectiveFrom = effectiveFrom;
+    }
+
+    public Date getEffectiveTo() {
+        return effectiveTo;
+    }
+
+    public void setEffectiveTo(Date effectiveTo) {
+        this.effectiveTo = effectiveTo;
     }
 }

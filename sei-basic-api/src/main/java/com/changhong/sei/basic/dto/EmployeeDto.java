@@ -1,6 +1,6 @@
 package com.changhong.sei.basic.dto;
 
-import com.changhong.sei.core.dto.BaseEntityDto;
+import com.changhong.sei.basic.dto.cust.EmployeeCustDto;
 import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
 import com.changhong.sei.enums.UserAuthorityPolicy;
 import com.changhong.sei.enums.UserType;
@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
  * @version 2020-01-27 15:35
  */
 @ApiModel(description = "企业用户DTO")
-public class EmployeeDto extends BaseEntityDto {
+public class EmployeeDto extends EmployeeCustDto {
     /**
      * 员工编号
      */
