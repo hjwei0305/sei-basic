@@ -1,31 +1,31 @@
 package com.changhong.sei.basic.dao;
 
+import com.changhong.sei.basic.dto.search.UserQuickQueryParam;
 import com.changhong.sei.basic.entity.User;
-import com.changhong.sei.core.dao.BaseEntityDao;
-import org.springframework.stereotype.Repository;
+import com.changhong.sei.core.dto.serach.PageResult;
+
+import java.util.List;
 
 /**
  * *************************************************************************************************
  * <p/>
- * 实现功能：用户数据访问接口
+ * 实现功能：用户扩展接口
  * <p>
  * ------------------------------------------------------------------------------------------------
  * 版本          变更时间             变更人                     变更原因
  * ------------------------------------------------------------------------------------------------
- * 1.0.00      2017/4/14 9:40        秦有宝                      新建
+ * 1.0.00      2017/5/26 13:59      秦有宝                     新建
  * <p/>
  * *************************************************************************************************
  */
-
-@Repository
-public interface UserDao extends BaseEntityDao<User>, UserExtDao {
-
+public interface UserExtDao {
     /**
-     * 根据用户id查询用户
+     * 分页查询用户
      *
-     * @param id 用户id
+     * @param queryParam 查询参数
+     * @param excludeUserIds 排除的用户Id清单
+     * @param tenantCode 租户代码
      * @return 用户
      */
-    User getById(String id);
+    PageResult<User> queryUsers(UserQuickQueryParam queryParam, List<String> excludeUserIds, String tenantCode);
 }
-

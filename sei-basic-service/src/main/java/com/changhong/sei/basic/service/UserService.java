@@ -7,12 +7,15 @@ import com.changhong.sei.basic.dao.UserDao;
 import com.changhong.sei.basic.dto.Executor;
 import com.changhong.sei.basic.dto.FeatureType;
 import com.changhong.sei.basic.dto.RoleType;
+import com.changhong.sei.basic.dto.UserDto;
+import com.changhong.sei.basic.dto.search.UserQuickQueryParam;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
+import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.dto.serach.SearchFilter;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
@@ -26,6 +29,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import sun.nio.cs.US_ASCII;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -80,7 +84,7 @@ public class UserService extends BaseEntityService<User> {
     @Autowired
     private PositionService positionService;
     @Autowired
-    private EmployeeDao employeeDao;
+    private EmployeeService employeeService;
     //注入，以便服务之间调用能够缓存
     @Autowired
     private UserService userService;
@@ -793,7 +797,7 @@ public class UserService extends BaseEntityService<User> {
         executor.setId(user.getId());
         executor.setName(user.getUserName());
 
-        Employee employee = employeeDao.findOne(user.getId());
+        Employee employee = employeeService.findOne(user.getId());
         if (employee != null) {
             executor.setCode(employee.getCode());
             //设置组织机构
@@ -867,5 +871,39 @@ public class UserService extends BaseEntityService<User> {
             executor.setRemark(position.getOrganization().getName() + "-" + position.getName());
         }
         return executor;
+    }
+
+    /**
+     * 分页查询平台用户
+     *
+     * @param queryParam 查询参数
+     * @param tenantCode 租户代码
+     * @return 用户
+     */
+    public PageResult<User> queryUsers(UserQuickQueryParam queryParam, String tenantCode) {
+        // 获取需要排除的用户Id清单
+        Set<String> excludeIds = new LinkedHashSet<>();
+        // 通过功能角色排除
+        if (StringUtils.isNotBlank(queryParam.getExcludeFeatureRoleId())) {
+            String roleId = queryParam.getExcludeFeatureRoleId();
+            List<User> users = userFeatureRoleService.getParentsFromChildId(roleId);
+            excludeIds.addAll(users.stream().map(User::getId).collect(Collectors.toList()));
+        }
+        // 通过数据角色排数
+        if (StringUtils.isNotBlank(queryParam.getExcludeDataRoleId())) {
+            String roleId = queryParam.getExcludeDataRoleId();
+            List<User> users = userDataRoleService.getParentsFromChildId(roleId);
+            excludeIds.addAll(users.stream().map(User::getId).collect(Collectors.toList()));
+        }
+        PageResult<User> result = userDao.queryUsers(queryParam, new ArrayList<>(excludeIds), tenantCode);
+        if (CollectionUtils.isNotEmpty(result.getRows())) {
+            // 设置企业用户的备注说明
+            if (queryParam.getUserType() == UserType.Employee) {
+                result.getRows().forEach(user -> {
+                    user.setUserRemark(employeeService.getUserRemark(user.getId()));
+                });
+            }
+        }
+        return result;
     }
 }

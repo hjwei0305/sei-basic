@@ -1,10 +1,8 @@
 package com.changhong.sei.basic.service.client;
 
-import com.changhong.sei.basic.entity.Menu;
-import com.changhong.sei.basic.entity.Organization;
 import com.changhong.sei.basic.entity.Position;
-import com.changhong.sei.basic.entity.PositionCategory;
 import com.changhong.sei.core.test.BaseUnitTest;
+import com.changhong.sei.serial.sdk.SerialService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,11 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class NumberGeneratorTest extends BaseUnitTest {
     @Autowired
-    private NumberGenerator generator;
+    private SerialService serialService;
 
     @Test
     public void getNumberByClassName() {
-        String number = generator.getNumber(Menu.class);
+        String number = serialService.getNumber(Position.class);
         System.out.println("number："+number);
     }
 }

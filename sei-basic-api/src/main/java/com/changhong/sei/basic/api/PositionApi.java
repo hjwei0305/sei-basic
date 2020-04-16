@@ -1,6 +1,7 @@
 package com.changhong.sei.basic.api;
 
 import com.changhong.sei.basic.dto.*;
+import com.changhong.sei.basic.dto.search.PositionQuickQueryParam;
 import com.changhong.sei.core.api.BaseEntityApi;
 import com.changhong.sei.core.api.FindByPageApi;
 import com.changhong.sei.core.dto.ResultData;
@@ -179,5 +180,15 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
      */
     @PostMapping(path = "copyToOrgNodes", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "把一个岗位复制到多个组织机构节点上", notes = "实现快速配置岗位，把一个岗位复制到多个组织机构节点上，可以复制功能角色")
-    ResultData copyToOrgNodes(@RequestBody PositionCopyParam copyParam);
+    ResultData<?> copyToOrgNodes(@RequestBody PositionCopyParam copyParam);
+
+    /**
+     * 分页查询岗位
+     *
+     * @param queryParam 查询参数
+     * @return 岗位DTO
+     */
+    @PostMapping(path = "queryPositions", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "分页查询岗位", notes = "通过快速查询参数，分页查询岗位")
+    ResultData<PageResult<PositionDto>> queryPositions(@RequestBody PositionQuickQueryParam queryParam);
 }

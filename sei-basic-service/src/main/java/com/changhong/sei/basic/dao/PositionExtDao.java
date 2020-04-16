@@ -1,5 +1,15 @@
 package com.changhong.sei.basic.dao;
 
+import com.changhong.sei.basic.dto.search.PositionQuickQueryParam;
+import com.changhong.sei.basic.dto.search.UserQuickQueryParam;
+import com.changhong.sei.basic.entity.Organization;
+import com.changhong.sei.basic.entity.Position;
+import com.changhong.sei.basic.entity.User;
+import com.changhong.sei.core.dto.serach.PageResult;
+import com.changhong.sei.core.dto.serach.QuickQueryParam;
+
+import java.util.List;
+
 /**
  * *************************************************************************************************
  * <p/>
@@ -22,4 +32,15 @@ public interface PositionExtDao {
      * @return 是否存在
      */
     Boolean isOrgAndNameExist(String organizationId, String name, String id);
+
+    /**
+     * 分页查询岗位
+     *
+     * @param queryParam 查询参数
+     * @param excludeIds 排除的岗位Id清单
+     * @param tenantCode 租户代码
+     * @param organization 组织机构
+     * @return 岗位
+     */
+    PageResult<Position> queryPositions(PositionQuickQueryParam queryParam, List<String> excludeIds, String tenantCode, Organization organization);
 }

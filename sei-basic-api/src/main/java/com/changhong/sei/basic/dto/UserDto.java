@@ -57,6 +57,12 @@ public class UserDto extends UserCustDto {
     @JsonSerialize(using = EnumJsonSerializer.class)
     private UserAuthorityPolicy userAuthorityPolicy;
 
+    /**
+     * 备注说明
+     */
+    @ApiModelProperty("备注说明")
+    private String UserRemark;
+
     public String getUserName() {
         return userName;
     }
@@ -95,5 +101,13 @@ public class UserDto extends UserCustDto {
 
     public void setUserAuthorityPolicy(UserAuthorityPolicy userAuthorityPolicy) {
         this.userAuthorityPolicy = userAuthorityPolicy;
+    }
+
+    public String getUserRemark() {
+        return UserRemark;
+    }
+
+    public void setUserRemark(String userRemark) {
+        UserRemark = userRemark;
     }
 }

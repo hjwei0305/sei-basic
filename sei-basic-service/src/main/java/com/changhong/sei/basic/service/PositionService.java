@@ -4,10 +4,13 @@ import com.changhong.sei.basic.dao.OrganizationDao;
 import com.changhong.sei.basic.dao.PositionDao;
 import com.changhong.sei.basic.dto.Executor;
 import com.changhong.sei.basic.dto.PositionCopyParam;
+import com.changhong.sei.basic.dto.PositionDto;
 import com.changhong.sei.basic.dto.PositionQueryParam;
+import com.changhong.sei.basic.dto.search.PositionQuickQueryParam;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.service.client.NumberGenerator;
 import com.changhong.sei.core.dao.BaseEntityDao;
+import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.dto.serach.SearchFilter;
@@ -15,6 +18,7 @@ import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.service.bo.OperateResultWithData;
 import com.changhong.sei.core.util.JsonUtils;
+import com.changhong.sei.exception.ServiceException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -545,5 +549,35 @@ public class PositionService extends BaseEntityService<Position> {
             executors.add(executor);
         }
         return executors;
+    }
+
+    /**
+     * 分页查询岗位
+     *
+     * @param queryParam 查询参数
+     * @param tenantCode 租户代码
+     * @return 岗位
+     */
+    public PageResult<Position> queryPositions(PositionQuickQueryParam queryParam, String tenantCode) {
+        // 获取需要排除的岗位Id清单
+        Set<String> excludeIds = new LinkedHashSet<>();
+        // 通过功能角色排除
+        if (StringUtils.isNotBlank(queryParam.getExcludeFeatureRoleId())) {
+            String roleId = queryParam.getExcludeFeatureRoleId();
+            List<Position> positions = positionFeatureRoleService.getParentsFromChildId(roleId);
+            excludeIds.addAll(positions.stream().map(Position::getId).collect(Collectors.toList()));
+        }
+        // 通过数据角色排数
+        if (StringUtils.isNotBlank(queryParam.getExcludeDataRoleId())) {
+            String roleId = queryParam.getExcludeDataRoleId();
+            List<Position> positions = positionDataRoleService.getParentsFromChildId(roleId);
+            excludeIds.addAll(positions.stream().map(Position::getId).collect(Collectors.toList()));
+        }
+        // 限定组织机构
+        Organization organization = null;
+        if (StringUtils.isNotBlank(queryParam.getOrganizationId())) {
+            organization = organizationDao.findOne(queryParam.getOrganizationId());
+        }
+        return positionDao.queryPositions(queryParam, new ArrayList<>(excludeIds), tenantCode, organization);
     }
 }

@@ -2,6 +2,7 @@ package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.UserApi;
 import com.changhong.sei.basic.dto.*;
+import com.changhong.sei.basic.dto.search.UserQuickQueryParam;
 import com.changhong.sei.basic.entity.DataRole;
 import com.changhong.sei.basic.entity.Menu;
 import com.changhong.sei.basic.entity.User;
@@ -233,6 +234,17 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
         Set<DataRole> roles = service.getNormalUserDataRoles(user);
         List<DataRoleDto> roleDtos = roles.stream().map(DataRoleController::custConvertToDto).collect(Collectors.toList());
         return ResultData.success(roleDtos);
+    }
+
+    /**
+     * 分页查询平台用户
+     *
+     * @param queryParam 查询参数
+     * @return 用户DTO
+     */
+    @Override
+    public ResultData<PageResult<UserDto>> queryUsers(UserQuickQueryParam queryParam) {
+        return convertToDtoPageResult(service.queryUsers(queryParam, ContextUtil.getTenantCode()));
     }
 
     /**

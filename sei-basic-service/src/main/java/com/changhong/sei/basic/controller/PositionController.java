@@ -2,11 +2,13 @@ package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.PositionApi;
 import com.changhong.sei.basic.dto.*;
+import com.changhong.sei.basic.dto.search.PositionQuickQueryParam;
 import com.changhong.sei.basic.entity.DataRole;
 import com.changhong.sei.basic.entity.Employee;
 import com.changhong.sei.basic.entity.FeatureRole;
 import com.changhong.sei.basic.entity.Position;
 import com.changhong.sei.basic.service.PositionService;
+import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageResult;
@@ -243,8 +245,19 @@ public class PositionController implements DefaultBaseEntityController<Position,
      * @return 操作结果
      */
     @Override
-    public ResultData copyToOrgNodes(PositionCopyParam copyParam) {
+    public ResultData<?> copyToOrgNodes(PositionCopyParam copyParam) {
         return ResultDataUtil.convertFromOperateResult(service.copyToOrgNodes(copyParam));
+    }
+
+    /**
+     * 分页查询岗位
+     *
+     * @param queryParam 查询参数
+     * @return 岗位DTO
+     */
+    @Override
+    public ResultData<PageResult<PositionDto>> queryPositions(PositionQuickQueryParam queryParam) {
+        return convertToDtoPageResult(service.queryPositions(queryParam, ContextUtil.getTenantCode()));
     }
 
     /**

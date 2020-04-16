@@ -24,7 +24,7 @@ public class EmployeeControllerTest extends BaseUnitTest {
     @Test
     public void findByCode() {
         String code = "1100116";
-        ResultData resultData = controller.findByCode(code);
+        ResultData<EmployeeDto> resultData = controller.findByCode(code);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }

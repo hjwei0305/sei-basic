@@ -133,28 +133,4 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
         });
         return result;
     }
-
-    /**
-     * 根据岗位的id获取已分配的员工
-     *
-     * @param positionId 岗位的id
-     * @return 员工清单
-     */
-    public List<Employee> listAllAssignedEmployeesByPositionId(String positionId) {
-        List<Employee> employees = this.getParentsFromChildId(positionId);
-        for (Employee employee : employees) {
-            employee.setUserName(employee.getUser().getUserName());
-        }
-        return employees;
-    }
-
-    /**
-     * 通过企业员工Id获取已分配岗位清单
-     *
-     * @param employeeId 企业员工Id
-     * @return 岗位清单
-     */
-    public List<Position> listAllAssignedPositionsByEmployeeId(String employeeId) {
-        return this.getChildrenFromParentId(employeeId);
-    }
 }

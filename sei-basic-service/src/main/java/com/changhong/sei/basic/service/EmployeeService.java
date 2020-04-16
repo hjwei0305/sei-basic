@@ -245,6 +245,26 @@ public class EmployeeService extends BaseEntityService<Employee> {
     }
 
     /**
+     * 获取一个用户的备注说明
+     * @param userId 用户Id
+     * @return 备注说明
+     */
+    public String getUserRemark(String userId) {
+        Employee employee = employeeDao.findOne(userId);
+        if (Objects.isNull(employee)) {
+            return null;
+        }
+        String remark = employee.getOrganization().getName();
+        // 获取第一岗位
+        List<Position> positions = employeePositionService.getChildrenFromParentId(employee.getId());
+        if (Objects.nonNull(positions) && !positions.isEmpty()) {
+            Position position = positions.get(0);
+            remark += "-" + position.getName();
+        }
+        return remark;
+    }
+
+    /**
      * 获取企业员工用户
      *
      * @param param 企业员工用户查询参数
@@ -635,6 +655,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
         }
         // 获取需要排除的用户Id清单
         List<String> excludeEmployeeIds = new LinkedList<>();
+        // 通过岗位排除
         if (StringUtils.isNotBlank(queryParam.getExcludePositionId())) {
             List<Employee> employees = employeePositionDao.getParentsFromChildId(queryParam.getExcludePositionId());
             excludeEmployeeIds.addAll(employees.stream().map(Employee::getId).collect(Collectors.toList()));

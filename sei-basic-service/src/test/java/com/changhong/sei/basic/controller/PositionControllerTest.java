@@ -2,9 +2,15 @@ package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.dto.PositionCopyParam;
 import com.changhong.sei.basic.dto.PositionDto;
+import com.changhong.sei.basic.dto.UserDto;
+import com.changhong.sei.basic.dto.search.PositionQuickQueryParam;
+import com.changhong.sei.basic.dto.search.UserQuickQueryParam;
 import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.core.dto.serach.PageInfo;
+import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.util.JsonUtils;
+import com.changhong.sei.enums.UserType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +51,20 @@ public class PositionControllerTest extends BaseUnitTest {
         String json = "{\"organizationName\":\"共享服务事业部\",\"positionCategoryName\":\"测试岗\",\"name\":\"123444\",\"organizationId\":\"4227A5ED-5DE5-11EA-B7CF-0242C0A84605\",\"organizationCode\":\"00011\",\"positionCategoryId\":\"8C4B6638-514B-11EA-8018-0242C0A84607\",\"positionCategoryCode\":\"测试岗\"}";
         PositionDto dto = JsonUtils.fromJson(json, PositionDto.class);
         ResultData resultData = controller.save(dto);
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
+
+    @Test
+    public void queryPositions() {
+        PositionQuickQueryParam queryParam = new PositionQuickQueryParam();
+        queryParam.setOrganizationId("877035BF-A40C-11E7-A8B9-02420B99179E");
+        queryParam.setIncludeSubNode(true);
+        queryParam.setExcludeFeatureRoleId("49AB6A05-7272-11EA-9AB3-0242C0A84603");
+        queryParam.setExcludeDataRoleId("3B5121E6-727E-11EA-9AB3-0242C0A84603");
+        queryParam.setQuickSearchValue("测试");
+        queryParam.setPageInfo(new PageInfo());
+        ResultData<PageResult<PositionDto>> resultData = controller.queryPositions(queryParam);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }

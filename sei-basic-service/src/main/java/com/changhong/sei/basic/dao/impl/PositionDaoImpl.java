@@ -1,15 +1,24 @@
 package com.changhong.sei.basic.dao.impl;
 
 import com.changhong.sei.basic.dao.PositionExtDao;
+import com.changhong.sei.basic.dto.search.PositionQuickQueryParam;
+import com.changhong.sei.basic.entity.Organization;
 import com.changhong.sei.basic.entity.Position;
 import com.changhong.sei.core.dao.impl.BaseEntityDaoImpl;
+import com.changhong.sei.core.dao.impl.PageResultUtil;
+import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.dto.serach.SearchFilter;
+import com.changhong.sei.core.entity.search.QuerySql;
 import com.changhong.sei.util.IdGenerator;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.EntityManager;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * *************************************************************************************************
@@ -48,5 +57,48 @@ public class PositionDaoImpl extends BaseEntityDaoImpl<Position> implements Posi
         search.addFilter(new SearchFilter("id", id, SearchFilter.Operator.NE));
         List results = findByFilters(search);
         return !results.isEmpty();
+    }
+
+    /**
+     * 分页查询岗位
+     *
+     * @param queryParam 查询参数
+     * @param excludeIds 排除的岗位Id清单
+     * @param tenantCode 租户代码
+     * @param organization 组织机构
+     * @return 岗位
+     */
+    @Override
+    public PageResult<Position> queryPositions(PositionQuickQueryParam queryParam, List<String> excludeIds, String tenantCode, Organization organization) {
+        String select = "select p ";
+        String fromAndWhere = "from Position p where p.tenantCode=:tenantCode ";
+        Map<String, Object> sqlParams = new HashMap<>();
+        sqlParams.put("tenantCode", tenantCode);
+        String quickSearchValue = queryParam.getQuickSearchValue();
+        // 判断组织机构是否包含子节点
+        if (Objects.nonNull(organization)) {
+            if (queryParam.getIncludeSubNode()) {
+                String startWithCode = organization.getCodePath();
+                fromAndWhere += "and p.organization.codePath like :startWithCode ";
+                sqlParams.put("startWithCode", startWithCode+"%");
+            } else {
+                fromAndWhere += "and p.organizationId = :orgId ";
+                sqlParams.put("orgId", organization.getId());
+            }
+        }
+        // 限制排除的岗位
+        if (CollectionUtils.isNotEmpty(excludeIds)) {
+            fromAndWhere += "and (p.id not in :excludeIds) ";
+            sqlParams.put("excludeIds", excludeIds);
+        }
+        // 限制关键字
+        if (!StringUtils.isBlank(quickSearchValue)){
+            fromAndWhere += "and (p.code like :quickSearchValue or p.name like :quickSearchValue) ";
+            sqlParams.put("quickSearchValue", "%"+quickSearchValue+"%");
+        }
+        QuerySql querySql = new QuerySql(select,fromAndWhere);
+        // 排序
+        querySql.setOrderBy("order by p.code");
+        return PageResultUtil.getResult(entityManager,querySql,sqlParams, queryParam);
     }
 }

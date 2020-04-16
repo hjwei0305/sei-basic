@@ -7,6 +7,7 @@ import com.changhong.sei.core.entity.ITenant;
 import com.changhong.sei.enums.UserAuthorityPolicy;
 import com.changhong.sei.enums.UserType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -65,6 +66,12 @@ public class User extends UserCust implements ITenant, IFrozen {
     @Column(name = "user_authority_policy", nullable = false)
     private UserAuthorityPolicy userAuthorityPolicy;
 
+    /**
+     * 备注说明(传输属性)
+     */
+    @Transient
+    private String UserRemark;
+
     public String getUserName() {
         return userName;
     }
@@ -106,5 +113,13 @@ public class User extends UserCust implements ITenant, IFrozen {
 
     public void setFrozen(Boolean frozen) {
         this.frozen = frozen;
+    }
+
+    public String getUserRemark() {
+        return UserRemark;
+    }
+
+    public void setUserRemark(String userRemark) {
+        UserRemark = userRemark;
     }
 }

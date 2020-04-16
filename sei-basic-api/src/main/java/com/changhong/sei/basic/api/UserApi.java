@@ -1,11 +1,15 @@
 package com.changhong.sei.basic.api;
 
 import com.changhong.sei.basic.dto.*;
+import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
+import com.changhong.sei.basic.dto.search.UserQuickQueryParam;
 import com.changhong.sei.core.api.BaseEntityApi;
 import com.changhong.sei.core.api.FindByPageApi;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
+import com.changhong.sei.core.dto.serach.PageResult;
+import com.changhong.sei.core.dto.serach.QuickQueryParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -153,4 +157,14 @@ public interface UserApi extends BaseEntityApi<UserDto>,
     @GetMapping(path = "getDataRolesByAccount")
     @ApiOperation(value = "通过用户账户获取用户的数据角色", notes = "通过用户账户获取当前租户下用户的数据角色")
     ResultData<List<DataRoleDto>> getDataRolesByAccount(String account);
+
+    /**
+     * 分页查询平台用户
+     *
+     * @param queryParam 查询参数
+     * @return 用户DTO
+     */
+    @PostMapping(path = "queryUsers", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "分页查询平台用户", notes = "通过快速查询参数，分页查询未冻结的用户")
+    ResultData<PageResult<UserDto>> queryUsers(@RequestBody UserQuickQueryParam queryParam);
 }

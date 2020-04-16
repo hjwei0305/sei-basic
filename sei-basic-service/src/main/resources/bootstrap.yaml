@@ -14,7 +14,7 @@ sei: # 应用全局配置
     user:
       tenant-code: 10044
       account: admin
-      locale: en_US
+      #locale: en_US
 
 spring:
   application:
