@@ -1,13 +1,11 @@
 package com.changhong.sei.basic.service;
 
 import com.changhong.sei.apitemplate.ApiTemplate;
-import com.changhong.sei.basic.dao.EmployeeDao;
 import com.changhong.sei.basic.dao.TenantDao;
 import com.changhong.sei.basic.dao.UserDao;
 import com.changhong.sei.basic.dto.Executor;
 import com.changhong.sei.basic.dto.FeatureType;
 import com.changhong.sei.basic.dto.RoleType;
-import com.changhong.sei.basic.dto.UserDto;
 import com.changhong.sei.basic.dto.search.UserQuickQueryParam;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.core.context.ContextUtil;
@@ -29,7 +27,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import sun.nio.cs.US_ASCII;
 
 import java.util.*;
 import java.util.stream.Collectors;
