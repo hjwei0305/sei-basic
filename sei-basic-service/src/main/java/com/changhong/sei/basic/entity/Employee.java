@@ -197,6 +197,9 @@ public class Employee extends EmployeeCust implements ITenant {
     }
 
     public boolean isFrozen() {
+        if (getUser() != null) {
+            return getUser().getFrozen();
+        }
         return frozen;
     }
 
@@ -229,6 +232,9 @@ public class Employee extends EmployeeCust implements ITenant {
     }
 
     public UserType getUserType() {
+        if (getUser() != null) {
+            return getUser().getUserType();
+        }
         return userType;
     }
 
@@ -237,6 +243,9 @@ public class Employee extends EmployeeCust implements ITenant {
     }
 
     public UserAuthorityPolicy getUserAuthorityPolicy() {
+        if (getUser() != null) {
+            return getUser().getUserAuthorityPolicy();
+        }
         return userAuthorityPolicy;
     }
 

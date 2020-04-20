@@ -361,6 +361,7 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
                 // 使用自定义转换规则
                 map().setId(source.getId());
                 map().setOrganizationId(source.getOrganizationId());
+                map().setFrozen(source.isFrozen());
             }
         };
         // 添加映射器
