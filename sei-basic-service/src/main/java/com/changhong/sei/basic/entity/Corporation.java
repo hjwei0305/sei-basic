@@ -2,6 +2,8 @@ package com.changhong.sei.basic.entity;
 
 import com.changhong.sei.basic.entity.cust.CorporationCust;
 import com.changhong.sei.core.dto.IRank;
+import com.changhong.sei.core.dto.annotation.DataHistory;
+import com.changhong.sei.core.dto.annotation.EnableDataHistory;
 import com.changhong.sei.core.dto.auth.IDataAuthEntity;
 import com.changhong.sei.core.entity.ICodeUnique;
 import com.changhong.sei.core.entity.IFrozen;
@@ -31,12 +33,14 @@ import javax.persistence.*;
 @Table(name = "corporation")
 @DynamicUpdate
 @DynamicInsert
+@EnableDataHistory(name = "公司")
 public class Corporation extends CorporationCust
         implements ITenant, ICodeUnique, IRank, IFrozen, IDataAuthEntity {
 
     /**
      * 名称
      */
+    @DataHistory(name = "名称")
     @Column(length = 100, nullable = false)
     private String name;
 

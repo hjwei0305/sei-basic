@@ -1,9 +1,10 @@
 package com.changhong.sei.basic.entity;
 
 import com.changhong.sei.core.dto.IRank;
+import com.changhong.sei.core.dto.annotation.DataHistory;
+import com.changhong.sei.core.dto.annotation.EnableDataHistory;
 import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.ICodeUnique;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -29,24 +30,28 @@ import javax.persistence.*;
 @Table(name = "app_module")
 @DynamicInsert
 @DynamicUpdate
+@EnableDataHistory(name = "应用模块")
 public class AppModule extends BaseAuditableEntity
         implements ICodeUnique, IRank {
 
     /**
      * 名称
      */
+    @DataHistory(name = "名称")
     @Column(name = "name", length = 30, nullable = false)
     private String name;
 
     /**
      * 代码
      */
+    @DataHistory(name = "代码")
     @Column(name = "code", length = 20, nullable = false, unique = true)
     private String code;
 
     /**
      * 备注
      */
+    @DataHistory(name = "备注")
     @Column(name = "remark")
     private String remark;
 

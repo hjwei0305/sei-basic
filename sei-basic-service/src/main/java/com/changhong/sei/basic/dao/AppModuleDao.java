@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository;
  * *************************************************************************************************
  */
 @Repository
-public interface AppModuleDao extends BaseEntityDao<AppModule> {
+public interface AppModuleDao extends BaseEntityDao<AppModule>, AppModuleExtDao {
     /**
      * 通过代码查询应用模块
      *

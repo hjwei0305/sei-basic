@@ -8,6 +8,7 @@ dependencies {
     compile("com.changhong.sei:sei-service-starter:$sei_version")
     compile("com.changhong.sei:sei-serial-sdk:$sei_version")
     compile("com.changhong.sei:sei-commons-data-sdk:$sei_version")
+    compile("com.changhong.sei:sei-mq-starter:$sei_version")
     // 第三方组件包
     compile("mysql:mysql-connector-java:$mysqlVersion")
 

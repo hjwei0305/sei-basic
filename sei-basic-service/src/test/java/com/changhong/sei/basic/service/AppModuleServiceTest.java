@@ -1,6 +1,8 @@
 package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.entity.AppModule;
+import com.changhong.sei.core.service.bo.OperateResult;
+import com.changhong.sei.core.service.bo.OperateResultWithData;
 import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.util.JsonUtils;
 import org.junit.Assert;
@@ -24,5 +26,26 @@ public class AppModuleServiceTest extends BaseUnitTest {
         AppModule appModule = service.findByCode(code);
         Assert.assertNotNull(appModule);
         System.out.println(JsonUtils.toJson(appModule));
+    }
+
+    @Test
+    public void save() {
+        AppModule appModule = new AppModule();
+        appModule.setId("B5B00596-8632-11EA-8342-48E244F5A3DB");
+        appModule.setCode("TEST");
+        appModule.setName("测试-new");
+        appModule.setRemark("临时创建的测试数据");
+        appModule.setRank(100);
+        OperateResultWithData<AppModule> result = service.save(appModule);
+        LOG.debug(JsonUtils.toJson(result));
+        Assert.assertTrue(result.successful());
+    }
+
+    @Test
+    public void delete() {
+        String id = "B5B00596-8632-11EA-8342-48E244F5A3DB";
+        OperateResult result = service.delete(id);
+        LOG.debug(JsonUtils.toJson(result));
+        Assert.assertTrue(result.successful());
     }
 }

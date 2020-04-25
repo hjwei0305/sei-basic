@@ -1,5 +1,7 @@
 package com.changhong.sei.basic.entity;
 
+import com.changhong.sei.core.dto.annotation.DataHistory;
+import com.changhong.sei.core.dto.annotation.EnableDataHistory;
 import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.ICodeUnique;
 import com.changhong.sei.core.entity.ITenant;
@@ -26,6 +28,7 @@ import javax.persistence.*;
 @Table(name = "position_")
 @DynamicInsert
 @DynamicUpdate
+@EnableDataHistory(name = "岗位")
 public class Position extends BaseAuditableEntity
         implements ITenant, ICodeUnique {
     public static final String POSITION_CATEGORY_ID = "positionCategory.id";
@@ -37,6 +40,7 @@ public class Position extends BaseAuditableEntity
     /**
      * 名称
      */
+    @DataHistory(name = "名称")
     @Column(name = "name", length = 50, nullable = false)
     private String name;
 
@@ -63,6 +67,7 @@ public class Position extends BaseAuditableEntity
      * 岗位类别Id
      */
     @Column(name = "category_id", length = 36, nullable = false)
+    @DataHistory(name = "岗位类别Id")
     private String positionCategoryId;
 
     /**
@@ -70,6 +75,7 @@ public class Position extends BaseAuditableEntity
      */
     @ManyToOne
     @JoinColumn(name = "category_id",nullable = false, insertable = false, updatable = false)
+    @DataHistory(name = "岗位类别")
     private PositionCategory positionCategory;
 
     public String getCode() {
