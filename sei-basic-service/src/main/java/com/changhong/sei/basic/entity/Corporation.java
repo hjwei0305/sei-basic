@@ -77,6 +77,7 @@ public class Corporation extends CorporationCust
     /**
      * 冻结标志
      */
+    @DataHistory(name = "冻结标志")
     @Column(name = "frozen",nullable = false)
     private Boolean frozen = Boolean.FALSE;
 

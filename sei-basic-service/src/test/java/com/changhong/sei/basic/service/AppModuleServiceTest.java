@@ -31,9 +31,9 @@ public class AppModuleServiceTest extends BaseUnitTest {
     @Test
     public void save() {
         AppModule appModule = new AppModule();
-        appModule.setId("B5B00596-8632-11EA-8342-48E244F5A3DB");
+        appModule.setId("43F295AA-8756-11EA-BDC9-48E244F5A3DB");
         appModule.setCode("TEST");
-        appModule.setName("测试-new");
+        appModule.setName("测试");
         appModule.setRemark("临时创建的测试数据");
         appModule.setRank(100);
         OperateResultWithData<AppModule> result = service.save(appModule);
@@ -43,7 +43,7 @@ public class AppModuleServiceTest extends BaseUnitTest {
 
     @Test
     public void delete() {
-        String id = "B5B00596-8632-11EA-8342-48E244F5A3DB";
+        String id = "43F295AA-8756-11EA-BDC9-48E244F5A3DB";
         OperateResult result = service.delete(id);
         LOG.debug(JsonUtils.toJson(result));
         Assert.assertTrue(result.successful());
