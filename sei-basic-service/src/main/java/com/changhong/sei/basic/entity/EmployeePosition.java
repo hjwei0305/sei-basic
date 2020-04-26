@@ -1,5 +1,7 @@
 package com.changhong.sei.basic.entity;
 
+import com.changhong.sei.core.dto.annotation.DataHistory;
+import com.changhong.sei.core.dto.annotation.EnableDataHistory;
 import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.RelationEntity;
 import org.hibernate.annotations.DynamicInsert;
@@ -24,16 +26,19 @@ import javax.persistence.*;
 @Table(name = "employee_position")
 @DynamicUpdate
 @DynamicInsert
+@EnableDataHistory(name = "企业用户分配岗位")
 public class EmployeePosition extends BaseAuditableEntity implements RelationEntity<Employee, Position> {
     /**
-     * 员工
+     * 企业用户
      */
+    @DataHistory(name = "企业用户")
     @ManyToOne
     @JoinColumn(name = "employee_id",nullable = false)
     private Employee parent;
     /**
      * 岗位
      */
+    @DataHistory(name = "岗位")
     @ManyToOne
     @JoinColumn(name = "position_id",nullable = false)
     private Position child;

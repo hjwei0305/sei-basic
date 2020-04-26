@@ -2,6 +2,8 @@ package com.changhong.sei.basic.entity;
 
 import com.changhong.sei.basic.entity.cust.OrganizationCust;
 import com.changhong.sei.core.dto.TreeEntity;
+import com.changhong.sei.core.dto.annotation.DataHistory;
+import com.changhong.sei.core.dto.annotation.EnableDataHistory;
 import com.changhong.sei.core.dto.auth.IDataAuthTreeEntity;
 import com.changhong.sei.core.entity.IFrozen;
 import com.changhong.sei.core.entity.ITenant;
@@ -29,6 +31,7 @@ import java.util.List;
 @Table(name = "organization")
 @DynamicInsert
 @DynamicUpdate
+@EnableDataHistory(name = "组织机构")
 public class Organization extends OrganizationCust
         implements TreeEntity<Organization>, ITenant, IFrozen, IDataAuthTreeEntity {
     /**
@@ -40,6 +43,7 @@ public class Organization extends OrganizationCust
     /**
      * 组织机构名称
      */
+    @DataHistory(name = "名称")
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
@@ -76,6 +80,7 @@ public class Organization extends OrganizationCust
     /**
      * 父节点Id
      */
+    @DataHistory(name = "父节点Id")
     @Column(name = "parent_id", length = 36)
     private String parentId;
 
@@ -94,6 +99,7 @@ public class Organization extends OrganizationCust
     /**
      * 是否冻结
      */
+    @DataHistory(name = "是否冻结")
     @Column(name = "frozen", nullable = false)
     private Boolean frozen = Boolean.FALSE;
 
