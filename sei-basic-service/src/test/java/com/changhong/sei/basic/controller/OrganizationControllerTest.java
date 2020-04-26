@@ -1,6 +1,7 @@
 package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.apitemplate.ApiTemplate;
+import com.changhong.sei.basic.dto.OrganizationDto;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
 import com.changhong.sei.core.test.BaseUnitTest;
@@ -40,6 +41,19 @@ public class OrganizationControllerTest extends BaseUnitTest {
         ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>>() {};
         ResultData<List<AuthTreeEntityData>> resultData = apiTemplate.getByAppModuleCode("sei-basic", path, typeReference);
         //List<AuthTreeEntityData> data = JsonUtils.fromJson2List(JsonUtils.toJson(resultData.getData()), AuthTreeEntityData.class);
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
+
+    @Test
+    public void save() {
+        String code = "10926";
+        ResultData<OrganizationDto> findResult = controller.findByCode(code);
+        Assert.assertTrue(findResult.successful());
+        OrganizationDto dto = findResult.getData();
+        dto.setName("阿斯顿撒-new");
+        dto.setFrozen(false);
+        ResultData<?> resultData = controller.save(dto);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }

@@ -31,10 +31,10 @@ public class AppModuleServiceTest extends BaseUnitTest {
     @Test
     public void save() {
         AppModule appModule = new AppModule();
-        appModule.setId("43F295AA-8756-11EA-BDC9-48E244F5A3DB");
+        appModule.setId("EE358C7C-8788-11EA-9693-48E244F5A3DB");
         appModule.setCode("TEST");
-        appModule.setName("测试");
-        appModule.setRemark("临时创建的测试数据");
+        appModule.setName("测试-new");
+        appModule.setRemark("临时创建的测试数据-new");
         appModule.setRank(100);
         OperateResultWithData<AppModule> result = service.save(appModule);
         LOG.debug(JsonUtils.toJson(result));
