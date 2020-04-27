@@ -10,6 +10,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import sun.rmi.runtime.Log;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -55,6 +56,14 @@ public class OrganizationControllerTest extends BaseUnitTest {
         dto.setFrozen(false);
         ResultData<?> resultData = controller.save(dto);
         System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
+
+    @Test
+    public void getUserAuthorizedTreeNodeCodes() {
+        String featureCode = null;
+        ResultData<List<String>> resultData = controller.getUserAuthorizedTreeNodeCodes(featureCode);
+        LOG.debug(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }
 }

@@ -108,4 +108,14 @@ public interface OrganizationApi extends BaseTreeApi<OrganizationDto>,
     @PostMapping(path = "findOrganizationByIds")
     @ApiOperation(value = "通过id集合获取组织机构清单", notes = "通过id集合获取组织机构清单")
     ResultData<List<OrganizationDto>> findOrganizationByIds(@RequestBody Collection<String> orgIds);
+
+    /**
+     * 获取当前用户有权限的树形节点代码清单
+     *
+     * @param featureCode 功能项代码
+     * @return 树形节点代码清单
+     */
+    @GetMapping(path = "getUserAuthorizedTreeNodeCodes")
+    @ApiOperation(value = "获取当前用户有权限的树形节点代码清单", notes = "获取当前用户有权限的树形业务实体中的所有节点代码清单")
+    ResultData<List<String>> getUserAuthorizedTreeNodeCodes(@RequestParam(value = "featureCode", required = false, defaultValue = "") String featureCode);
 }

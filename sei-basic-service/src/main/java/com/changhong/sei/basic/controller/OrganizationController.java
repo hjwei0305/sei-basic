@@ -140,6 +140,17 @@ public class OrganizationController implements DefaultTreeController<Organizatio
     }
 
     /**
+     * 获取当前用户有权限的树形节点代码清单
+     *
+     * @param featureCode 功能项代码
+     * @return 树形节点代码清单
+     */
+    @Override
+    public ResultData<List<String>> getUserAuthorizedTreeNodeCodes(String featureCode) {
+        return ResultData.success(service.getUserAuthorizedTreeNodeCodes(featureCode));
+    }
+
+    /**
      * 通过业务实体Id清单获取数据权限树形实体清单
      *
      * @param ids 业务实体Id清单
