@@ -262,8 +262,8 @@ public class OrganizationService extends BaseTreeService<Organization>
         // 获取企业用户的组织机构
         Employee employee = employeeService.findOne(userId);
         if (Objects.nonNull(employee) && Objects.nonNull(employee.getOrganization())){
-            // 获取所有子节点清单
-            List<Organization> children = organizationDao.getChildrenNodes4Unfrozen(employee.getOrganization().getId());
+            // 获取所有子节点清单(包含冻结的节点)
+            List<Organization> children = organizationDao.getChildrenNodes(employee.getOrganization().getId());
             List<String> childIds = children.stream().map(BaseEntity::getId).collect(Collectors.toList());
             authorizedEntityIds.addAll(childIds);
         }
