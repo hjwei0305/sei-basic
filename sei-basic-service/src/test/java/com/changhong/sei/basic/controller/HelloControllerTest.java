@@ -1,5 +1,6 @@
 package com.changhong.sei.basic.controller;
 
+import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.util.JsonUtils;
@@ -26,8 +27,9 @@ public class HelloControllerTest extends BaseUnitTest {
     @Test
     public void sayHello() {
         String name = "王锦光";
-        ResultData result = controller.sayHello(name);
+        ResultData<String> result = controller.sayHello(name);
         System.out.println(JsonUtils.toJson(result));
+        LOG.debug(ContextUtil.getUserId());
     }
 
     @Test

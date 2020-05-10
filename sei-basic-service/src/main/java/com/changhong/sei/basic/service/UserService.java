@@ -8,6 +8,7 @@ import com.changhong.sei.basic.dto.FeatureType;
 import com.changhong.sei.basic.dto.RoleType;
 import com.changhong.sei.basic.dto.search.UserQuickQueryParam;
 import com.changhong.sei.basic.entity.*;
+import com.changhong.sei.basic.service.client.DataAuthManager;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.dto.ResultData;
@@ -24,16 +25,11 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static com.changhong.sei.basic.service.DataRoleAuthTypeValueService.FIND_ALL_AUTH_TREE_ENTITY_DATA_METHOD;
-import static com.changhong.sei.basic.service.DataRoleAuthTypeValueService.GET_AUTH_TREE_ENTITY_DATA_METHOD;
-
 /**
  * *************************************************************************************************
  * <p/>
@@ -86,7 +82,7 @@ public class UserService extends BaseEntityService<User> {
     @Autowired
     private UserService userService;
     @Autowired
-    private ApiTemplate apiTemplate;
+    private DataAuthManager dataAuthManager;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
@@ -462,14 +458,8 @@ public class UserService extends BaseEntityService<User> {
         if (authorityPolicy == UserAuthorityPolicy.TenantAdmin) {
             //调用API服务，获取业务实体
             String appModuleCode = authorizeType.getAuthorizeEntityType().getAppModule().getApiBaseAddress();
-            String path = String.format("%s/%s", authorizeType.getAuthorizeEntityType().getApiPath(), DataRoleAuthTypeValueService.FIND_ALL_AUTH_ENTITY_DATA_METHOD);
-            ParameterizedTypeReference<ResultData<List<AuthEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthEntityData>>>() {
-            };
-            ResultData<List<AuthEntityData>> resultData = apiTemplate.getByAppModuleCode(appModuleCode, path, typeReference);
-            if (resultData.failed()) {
-                return new ArrayList<>();
-            }
-            return resultData.getData();
+            String apiPath = authorizeType.getAuthorizeEntityType().getApiPath();
+            return dataAuthManager.findAllAuthEntityData(appModuleCode, apiPath);
         }
         //一般用户，通过数据角色获取业务实体清单
         Set<AuthEntityData> entities = new HashSet<>();
@@ -578,14 +568,8 @@ public class UserService extends BaseEntityService<User> {
         if (authorityPolicy == UserAuthorityPolicy.TenantAdmin) {
             //调用API服务，获取业务实体
             String appModuleCode = authorizeType.getAuthorizeEntityType().getAppModule().getApiBaseAddress();
-            String path = String.format("%s/%s", authorizeType.getAuthorizeEntityType().getApiPath(), FIND_ALL_AUTH_TREE_ENTITY_DATA_METHOD);
-            ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>>() {
-            };
-            ResultData<List<AuthTreeEntityData>> resultData = apiTemplate.getByAppModuleCode(appModuleCode, path, typeReference);
-            if (resultData.failed()) {
-                return new ArrayList<>();
-            }
-            return resultData.getData();
+            String apiPath = authorizeType.getAuthorizeEntityType().getApiPath();
+            return dataAuthManager.findAllAuthTreeEntityData(appModuleCode, apiPath);
         }
         //一般用户，通过数据角色获取业务实体清单
         Set<String> entityIds = new HashSet<>();
@@ -598,17 +582,10 @@ public class UserService extends BaseEntityService<User> {
             List<String> ids = dataRoleAuthTypeValueService.getAssignedEntityIds(r.getId(), dataAuthTypeId);
             entityIds.addAll(ids);
         });
-        //通过业务实体Id清单获取树形业务实体
         //调用API服务，获取业务实体
         String appModuleCode = authorizeType.getAuthorizeEntityType().getAppModule().getApiBaseAddress();
-        String path = String.format("%s/%s", authorizeType.getAuthorizeEntityType().getApiPath(), GET_AUTH_TREE_ENTITY_DATA_METHOD);
-        ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>>() {
-        };
-        ResultData<List<AuthTreeEntityData>> resultData = apiTemplate.postByAppModuleCode(appModuleCode, path, typeReference, entityIds);
-        if (resultData.failed()) {
-            return new ArrayList<>();
-        }
-        return resultData.getData();
+        String apiPath = authorizeType.getAuthorizeEntityType().getApiPath();
+        return dataAuthManager.getAuthTreeEntityDataByIds(appModuleCode, apiPath, new LinkedList<>(entityIds));
     }
 
     /**

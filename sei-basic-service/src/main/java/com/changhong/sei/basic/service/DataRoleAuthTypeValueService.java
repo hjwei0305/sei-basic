@@ -5,6 +5,7 @@ import com.changhong.sei.basic.dao.DataRoleAuthTypeValueDao;
 import com.changhong.sei.basic.dto.DataRoleRelation;
 import com.changhong.sei.basic.entity.DataAuthorizeType;
 import com.changhong.sei.basic.entity.DataRoleAuthTypeValue;
+import com.changhong.sei.basic.service.client.DataAuthManager;
 import com.changhong.sei.basic.service.util.AuthorityUtil;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.context.SessionUser;
@@ -30,10 +31,6 @@ import java.util.*;
  */
 @Service
 public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuthTypeValue> {
-    static final String GET_AUTH_ENTITY_DATA_METHOD = "getAuthEntityDataByIds";
-    static final String GET_AUTH_TREE_ENTITY_DATA_METHOD = "getAuthTreeEntityDataByIds";
-    static final String FIND_ALL_AUTH_ENTITY_DATA_METHOD = "findAllAuthEntityData";
-    static final String FIND_ALL_AUTH_TREE_ENTITY_DATA_METHOD = "findAllAuthTreeEntityData";
     @Autowired
     private DataRoleAuthTypeValueDao dao;
     @Autowired
@@ -41,7 +38,7 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
     @Autowired
     private UserService userService;
     @Autowired
-    private ApiTemplate apiTemplate;
+    private DataAuthManager dataAuthManager;
 
     @Override
     protected BaseEntityDao<DataRoleAuthTypeValue> getDao() {
@@ -120,13 +117,8 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
         }
         //调用API服务，获取业务实体
         String appModuleCode = authorizeType.getAuthorizeEntityType().getAppModule().getApiBaseAddress();
-        String path = String.format("%s/%s", authorizeType.getAuthorizeEntityType().getApiPath(), GET_AUTH_ENTITY_DATA_METHOD);
-        ParameterizedTypeReference<ResultData<List<AuthEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthEntityData>>>() {};
-        ResultData<List<AuthEntityData>> resultData = apiTemplate.postByAppModuleCode(appModuleCode, path, typeReference, entityIds);
-        if (resultData.failed()){
-            return new ArrayList<>();
-        }
-        return resultData.getData();
+        String apiPath = authorizeType.getAuthorizeEntityType().getApiPath();
+        return dataAuthManager.getAuthEntityDataByIds(appModuleCode, apiPath, entityIds);
     }
 
     /**
@@ -167,13 +159,8 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
         }
         //调用API服务，获取业务实体
         String appModuleCode = authorizeType.getAuthorizeEntityType().getAppModule().getApiBaseAddress();
-        String path = String.format("%s/%s", authorizeType.getAuthorizeEntityType().getApiPath(), GET_AUTH_TREE_ENTITY_DATA_METHOD);
-        ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>> typeReference = new ParameterizedTypeReference<ResultData<List<AuthTreeEntityData>>>() {};
-        ResultData<List<AuthTreeEntityData>> resultData = apiTemplate.postByAppModuleCode(appModuleCode, path, typeReference, entityIds);
-        if (resultData.failed()){
-            return new ArrayList<>();
-        }
-        return resultData.getData();
+        String apiPath =  authorizeType.getAuthorizeEntityType().getApiPath();
+        return dataAuthManager.getAuthTreeEntityDataByIds(appModuleCode, apiPath, entityIds);
     }
 
     /**
