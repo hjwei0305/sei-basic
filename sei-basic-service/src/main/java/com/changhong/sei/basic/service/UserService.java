@@ -195,21 +195,21 @@ public class UserService extends BaseEntityService<User> {
 
         Set<Menu> userMenus = new HashSet<>();
         UserAuthorityPolicy authorityPolicy = user.getUserAuthorityPolicy();
+        // 获取所有菜单
+        List<Menu> allMenus = menuService.findAll();
         //判断全局管理员
         if (authorityPolicy == UserAuthorityPolicy.GlobalAdmin) {
-            userMenus.addAll(menuService.findAll());
+            userMenus.addAll(allMenus);
         } else {
             //判断租户管理员和一般用户
             //--获取用户有权限的功能项清单
             List<Feature> userFeatures = userService.getUserAuthorizedFeatures(userId);
             //通过功能项清单获取菜单节点
-            List<Menu> memuNodes = menuService.findByFeatures(userFeatures);
+            List<Menu> memuNodes = MenuService.getMenusByFeatures(userFeatures, allMenus);
             if (CollectionUtils.isNotEmpty(memuNodes)) {
+                userMenus.addAll(memuNodes);
                 //拼接菜单关联的父节点
-                memuNodes.forEach((m) -> {
-                    List<Menu> parents = menuService.getParentNodes(m, true);
-                    userMenus.addAll(parents);
-                });
+                MenuService.generateUserMenuNodes(userMenus, memuNodes, allMenus);
             }
         }
         //通过菜单生成展示对象

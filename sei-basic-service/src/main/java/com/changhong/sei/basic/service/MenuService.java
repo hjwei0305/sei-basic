@@ -10,14 +10,13 @@ import com.changhong.sei.core.dao.BaseTreeDao;
 import com.changhong.sei.core.dto.serach.SearchFilter;
 import com.changhong.sei.core.service.BaseTreeService;
 import com.changhong.sei.core.service.bo.OperateResultWithData;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * *************************************************************************************************
@@ -149,5 +148,57 @@ public class MenuService extends BaseTreeService<Menu> {
         //通过功能项获取菜单项
         SearchFilter filter = new SearchFilter("feature.id", menuFeatureIds, SearchFilter.Operator.IN);
         return findByFilter(filter);
+    }
+
+    /**
+     * 通过功能项清单获取菜单
+     * @param features 功能项清单
+     * @param allMenus 所有菜单项
+     * @return 菜单
+     */
+    public static List<Menu> getMenusByFeatures(List<Feature> features, List<Menu> allMenus) {
+        if (CollectionUtils.isEmpty(features) || CollectionUtils.isEmpty(allMenus)) {
+            return Collections.emptyList();
+        }
+        Set<Menu> featureMenus = new LinkedHashSet<>();
+        features.forEach((f) -> {
+            if (f.getCanMenu()) {
+                Optional<Menu> menuOptional = allMenus.stream().filter(m-> StringUtils.equals(f.getId(), m.getFeatureId())).findAny();
+                menuOptional.ifPresent(featureMenus::add);
+            }
+        });
+        return new LinkedList<>(featureMenus);
+    }
+
+    /**
+     * 生成所有菜单节点
+     * @param userMenus 用户的功能项菜单节点
+     * @param nodes 功能项菜单节点
+     * @param allMenus 所有菜单项
+     * @return 菜单
+     */
+    public static void generateUserMenuNodes(Set<Menu> userMenus, List<Menu> nodes, List<Menu> allMenus) {
+        nodes.forEach(node-> {
+            // 获取父节点
+            getParentMenu(userMenus, node, allMenus);
+        });
+    }
+
+    private static void getParentMenu(Set<Menu> userMenus, Menu node, List<Menu> allMenus) {
+        // 获取父节点
+        String parentId = node.getParentId();
+        if (StringUtils.isNotBlank(parentId)) {
+            // 判断是否已经包含在结果中
+            Predicate<Menu> predicate = menu -> StringUtils.equals(parentId, menu.getId());
+            if (userMenus.stream().anyMatch(predicate)) {
+                return;
+            }
+            Optional<Menu> menuOptional = allMenus.stream().filter(m-> StringUtils.equals(parentId, m.getId())).findAny();
+            if (menuOptional.isPresent()) {
+                Menu parentNode = menuOptional.get();
+                userMenus.add(parentNode);
+                getParentMenu(userMenus, parentNode, allMenus);
+            }
+        }
     }
 }
