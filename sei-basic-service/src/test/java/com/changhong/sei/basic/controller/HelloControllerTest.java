@@ -6,9 +6,12 @@ import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.util.JsonUtils;
 import com.changhong.sei.utils.AsyncRunUtil;
 import com.changhong.sei.util.thread.ThreadLocalHolder;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.print.DocFlavor;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -59,5 +62,15 @@ public class HelloControllerTest extends BaseUnitTest {
         }, "global", "sei");
         System.out.println("异步方法执行结束！");
         Thread.sleep(10*1000);
+    }
+
+    /**
+     * 测试获取系统应用配置的值
+     * @return MQ Topic
+     */
+    @Test
+    public void getTopic() {
+        String topic = ContextUtil.getProperty("sei.datachange.topic");
+        Assert.assertTrue(StringUtils.isNotBlank(topic));
     }
 }

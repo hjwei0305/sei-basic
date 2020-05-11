@@ -43,7 +43,7 @@ public class AppModuleServiceTest extends BaseUnitTest {
 
     @Test
     public void delete() {
-        String id = "43F295AA-8756-11EA-BDC9-48E244F5A3DB";
+        String id = "EE358C7C-8788-11EA-9693-48E244F5A3DB";
         OperateResult result = service.delete(id);
         LOG.debug(JsonUtils.toJson(result));
         Assert.assertTrue(result.successful());
