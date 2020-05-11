@@ -23,6 +23,7 @@ import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import com.changhong.sei.enums.UserAuthorityPolicy;
+import com.changhong.sei.utils.AsyncRunUtil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -55,6 +56,8 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
     private AccountManager accountManager;
     @Autowired
     private DataRoleService dataRoleService;
+    @Autowired
+    private AsyncRunUtil asyncRunUtil;
     /**
      * 根据用户id查询用户
      *
@@ -206,7 +209,10 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
      */
     @Override
     public void clearUserAuthorizedCaches(String userId) {
+        // 清除用户权限相关的缓存
         service.clearUserAuthorizedCaches(userId);
+        // 异步加载用户的应用菜单
+        asyncRunUtil.runAsync(()-> service.getUserAuthorizedMenus(userId));
     }
 
     /**
