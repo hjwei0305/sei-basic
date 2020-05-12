@@ -9,10 +9,14 @@ import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseTreeDao;
 import com.changhong.sei.core.dto.serach.SearchFilter;
 import com.changhong.sei.core.service.BaseTreeService;
+import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.service.bo.OperateResultWithData;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -35,6 +39,7 @@ import java.util.function.Predicate;
  * *************************************************************************************************<br>
  */
 @Service
+@CacheConfig(cacheNames = "menu-cache")
 public class MenuService extends BaseTreeService<Menu> {
 
     @Autowired
@@ -48,17 +53,52 @@ public class MenuService extends BaseTreeService<Menu> {
     }
 
     /**
+     * 基于主键集合查询集合数据对象
+     */
+    @Override
+    @Cacheable
+    public List<Menu> findAll() {
+        return super.findAll();
+    }
+
+    /**
      * 保存菜单项
      *
      * @param menu 要保存的菜单
      * @return 操作后的结果
      */
     @Override
+    @CacheEvict(allEntries = true)
     public OperateResultWithData<Menu> save(Menu menu) {
         if (StringUtils.isBlank(menu.getCode())) {
             menu.setCode(numberGenerator.getNumber(Menu.class));
         }
         return super.save(menu);
+    }
+
+    /**
+     * 通过Id标识删除一个树节点
+     *
+     * @param id 主键
+     * @return 操作结果
+     */
+    @Override
+    @CacheEvict(allEntries = true)
+    public OperateResult delete(String id) {
+        return super.delete(id);
+    }
+
+    /**
+     * 移动节点
+     *
+     * @param nodeId         当前节点ID
+     * @param targetParentId 目标父节点ID
+     * @return 返回操作结果对象
+     */
+    @Override
+    @CacheEvict(allEntries = true)
+    public OperateResult move(String nodeId, String targetParentId) {
+        return super.move(nodeId, targetParentId);
     }
 
     /**

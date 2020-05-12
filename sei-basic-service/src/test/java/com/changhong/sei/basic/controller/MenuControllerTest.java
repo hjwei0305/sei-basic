@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class MenuControllerTest extends BaseUnitTest {
     @Autowired
-    private MenuController service;
+    private MenuController controller;
 
     @Test
     public void convertToDto() {
@@ -51,13 +51,13 @@ public class MenuControllerTest extends BaseUnitTest {
         children.add(menu2);
         menu.setChildren(children);
 
-        MenuDto menuDto = service.convertToDto(menu);
+        MenuDto menuDto = controller.convertToDto(menu);
         System.out.println(JsonUtils.toJson(menuDto));
     }
 
     @Test
     public void getMenuTree(){
-        ResultData resultData = service.getMenuTree();
+        ResultData<List<MenuDto>> resultData = controller.getMenuTree();
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }
