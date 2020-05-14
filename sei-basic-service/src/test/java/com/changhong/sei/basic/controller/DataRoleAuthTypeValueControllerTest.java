@@ -3,6 +3,7 @@ package com.changhong.sei.basic.controller;
 import com.changhong.sei.basic.dto.DataRoleRelation;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthEntityData;
+import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
 import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.util.JsonUtils;
 import org.junit.Assert;
@@ -48,9 +49,9 @@ public class DataRoleAuthTypeValueControllerTest extends BaseUnitTest {
 
     @Test
     public void getUnassignedAuthTreeDataList() {
-        String roleId = "72FA053A-4A23-11EA-8AF0-0242C0A84607";
+        String roleId = "0AF65EDD-6734-11EA-8764-0242C0A8460C";
         String authTypeId = "02808BCB-4A27-11EA-8AF0-0242C0A84607";
-        ResultData resultData = controller.getUnassignedAuthTreeDataList(roleId, authTypeId);
+        ResultData<List<AuthTreeEntityData>> resultData = controller.getUnassignedAuthTreeDataList(roleId, authTypeId);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }

@@ -15,6 +15,7 @@ import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.core.ParameterizedTypeReference;
@@ -180,7 +181,7 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
         }
         //获取已经分配的数据
         List<String> assignedIds = getAssignedEntityIds(roleId, authTypeId);
-        if (Objects.isNull(assignedIds) || assignedIds.isEmpty()) {
+        if (CollectionUtils.isEmpty(assignedIds)) {
             return dataSet;
         }
         //删除已分配的数据
@@ -196,7 +197,7 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
      * @return
      */
     private void removeAssigned(List<AuthTreeEntityData> allAuthData, List<String> assignedIds) {
-        allAuthData.removeIf(authTreeEntityData -> Objects.isNull(authTreeEntityData.getChildren()) && assignedIds.contains(authTreeEntityData.getId()));
+        allAuthData.removeIf(data -> assignedIds.contains(data.getId()));
         //获取子级的列表
         for (AuthTreeEntityData tree : allAuthData) {
             List<AuthTreeEntityData> child = tree.getChildren();
