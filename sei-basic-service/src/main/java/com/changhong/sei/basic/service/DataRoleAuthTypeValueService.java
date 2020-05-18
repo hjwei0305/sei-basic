@@ -14,6 +14,7 @@ import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
 import com.changhong.sei.core.service.BaseEntityService;
+import com.changhong.sei.core.service.BaseTreeService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -185,8 +186,7 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
             return dataSet;
         }
         //删除已分配的数据
-        removeAssigned(dataSet, assignedIds);
-        return new ArrayList<>(dataSet);
+        return removeAssigned(dataSet, assignedIds);
     }
 
     /**
@@ -196,15 +196,13 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
      * @param assignedIds 已分配id
      * @return
      */
-    private void removeAssigned(List<AuthTreeEntityData> allAuthData, List<String> assignedIds) {
-        allAuthData.removeIf(data -> assignedIds.contains(data.getId()));
-        //获取子级的列表
-        for (AuthTreeEntityData tree : allAuthData) {
-            List<AuthTreeEntityData> child = tree.getChildren();
-            if (Objects.nonNull(child) && !child.isEmpty()) {
-                removeAssigned(child, assignedIds);
-            }
-        }
+    private List<AuthTreeEntityData> removeAssigned(List<AuthTreeEntityData> allAuthData, List<String> assignedIds) {
+        // 获取所有子节点清单
+        List<AuthTreeEntityData> nodes = BaseTreeService.unBuildTree(allAuthData);
+        // 排除已经分配的Id
+        nodes.removeIf(node-> assignedIds.contains(node.getId()));
+        // 重新组装成树
+        return BaseTreeService.buildTree(nodes);
     }
 
     /**

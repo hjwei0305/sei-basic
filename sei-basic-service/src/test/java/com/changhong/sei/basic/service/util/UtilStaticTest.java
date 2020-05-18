@@ -1,6 +1,8 @@
 package com.changhong.sei.basic.service.util;
 
 import com.changhong.sei.core.dto.auth.AuthEntityData;
+import com.changhong.sei.core.dto.serach.PageInfo;
+import com.changhong.sei.core.dto.serach.QueryParam;
 import com.changhong.sei.core.util.JsonUtils;
 import com.changhong.sei.util.DateUtils;
 import org.junit.Assert;
@@ -42,5 +44,14 @@ public class UtilStaticTest {
         Date endDate = DateUtils.nDaysAfter(1, DateUtils.parseDate("2020-04-15"));
         boolean canUse = currentDte.after(startDate) && currentDte.before(endDate);
         Assert.assertTrue(canUse);
+    }
+
+    @Test
+    public void testQueryParam() {
+        QueryParam queryParam = new QueryParam();
+        System.out.println(JsonUtils.toJson(queryParam));
+        String json = "{\"pageInfo\":{\"page\":1,\"rows\":15}}";
+        QueryParam jsonQueryParam = JsonUtils.fromJson(json, QueryParam.class);
+        Assert.assertNotNull(jsonQueryParam.getSortOrders());
     }
 }
