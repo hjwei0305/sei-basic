@@ -8,8 +8,11 @@ import com.changhong.sei.basic.entity.FeatureRole;
 import com.changhong.sei.basic.entity.Position;
 import com.changhong.sei.basic.entity.PositionFeatureRole;
 import com.changhong.sei.basic.service.PositionFeatureRoleService;
-import com.changhong.sei.core.controller.DefaultRelationController;
+import com.changhong.sei.core.controller.BaseRelationController;
+import com.changhong.sei.core.dto.ParentRelationParam;
+import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseRelationService;
+import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,73 +28,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Api(value = "PositionFeatureRoleApi", tags = "岗位分配的功能角色API服务实现")
 @RequestMapping(path = "positionFeatureRole", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class PositionFeatureRoleController implements DefaultRelationController<PositionFeatureRole, Position, FeatureRole, PositionFeatureRoleDto, PositionDto, FeatureRoleDto>,
-        PositionFeatureRoleApi {
+public class PositionFeatureRoleController extends BaseRelationController<PositionFeatureRole, Position, FeatureRole, PositionFeatureRoleDto, PositionDto, FeatureRoleDto>
+        implements PositionFeatureRoleApi {
     @Autowired
     private PositionFeatureRoleService service;
     @Override
     public BaseRelationService<PositionFeatureRole, Position, FeatureRole> getService() {
         return service;
-    }
-
-    /**
-     * 获取关系型数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<PositionFeatureRole> getRelationEntityClass() {
-        return PositionFeatureRole.class;
-    }
-
-    /**
-     * 获取关系型传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<PositionFeatureRoleDto> getRelationDtoClass() {
-        return PositionFeatureRoleDto.class;
-    }
-
-    /**
-     * 获取父数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<Position> getParentEntityClass() {
-        return Position.class;
-    }
-
-    /**
-     * 获取父传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<PositionDto> getParentDtoClass() {
-        return PositionDto.class;
-    }
-
-    /**
-     * 获取子数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<FeatureRole> getChildEntityClass() {
-        return FeatureRole.class;
-    }
-
-    /**
-     * 获取子传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<FeatureRoleDto> getChildDtoClass() {
-        return FeatureRoleDto.class;
     }
 
     /**
@@ -114,5 +57,16 @@ public class PositionFeatureRoleController implements DefaultRelationController<
     @Override
     public PositionDto convertParentToDto(Position entity) {
         return PositionController.custConvertToDto(entity);
+    }
+
+    /**
+     * 通过父实体清单保存分配关系
+     *
+     * @param relationParam 父实体Id清单的分配参数
+     * @return 操作结果
+     */
+    @Override
+    public ResultData<?> saveRelationsByParents(ParentRelationParam relationParam) {
+        return ResultDataUtil.convertFromOperateResult(service.saveRelationsByParents(relationParam));
     }
 }

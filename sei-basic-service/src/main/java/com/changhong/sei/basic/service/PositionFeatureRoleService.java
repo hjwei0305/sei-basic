@@ -8,6 +8,8 @@ import com.changhong.sei.basic.entity.PositionFeatureRole;
 import com.changhong.sei.basic.service.util.AuthorityUtil;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseRelationDao;
+import com.changhong.sei.core.dto.ParentRelationParam;
+import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseRelationService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +95,21 @@ public class PositionFeatureRoleService extends BaseRelationService<PositionFeat
         // 清除用户权限缓存
         AuthorityUtil.cleanAuthorizedCachesByPositionId(parentId);
         return result;
+    }
+
+    /**
+     * 通过父实体清单保存分配关系
+     *
+     * @param relationParam 父实体Id清单的分配参数
+     * @return 操作结果
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public OperateResult saveRelationsByParents(ParentRelationParam relationParam) {
+        // 先删除现有分配关系
+        removeRelationsByParents(relationParam.getChildId(), relationParam.getParentIds());
+        // 在插入输入的分配关系
+        insertRelationsByParents(relationParam.getChildId(), relationParam.getParentIds());
+        // 通过岗位Id清单保存分配关系成功！
+        return OperateResult.operationSuccess("00107");
     }
 }
