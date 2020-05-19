@@ -64,7 +64,7 @@ public class UserControllerTest extends BaseUnitTest {
     @Test
     public void queryUsers() {
         UserQuickQueryParam queryParam = new UserQuickQueryParam();
-        queryParam.setUserType(UserType.Employee);
+        //queryParam.setUserType(UserType.Employee);
         queryParam.setExcludeFeatureRoleId("1E3816FF-8AB4-11EA-ADD6-0242C0A84603");
         //queryParam.setExcludeDataRoleId("3B5121E6-727E-11EA-9AB3-0242C0A84603");
         queryParam.setQuickSearchValue("测试");

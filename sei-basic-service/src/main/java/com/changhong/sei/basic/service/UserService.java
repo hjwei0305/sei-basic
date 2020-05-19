@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
 /**
  * *************************************************************************************************
  * <p/>
@@ -872,11 +873,11 @@ public class UserService extends BaseEntityService<User> {
         PageResult<User> result = userDao.queryUsers(queryParam, new ArrayList<>(excludeIds), tenantCode);
         if (CollectionUtils.isNotEmpty(result.getRows())) {
             // 设置企业用户的备注说明
-            if (queryParam.getUserType() == UserType.Employee) {
-                result.getRows().forEach(user -> {
+            result.getRows().forEach(user -> {
+                if (user.getUserType()==UserType.Employee) {
                     user.setRemark(employeeService.getUserRemark(user.getId()));
-                });
-            }
+                }
+            });
         }
         return result;
     }
