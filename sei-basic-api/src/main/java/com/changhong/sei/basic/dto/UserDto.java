@@ -61,7 +61,7 @@ public class UserDto extends UserCustDto {
      * 备注说明
      */
     @ApiModelProperty("备注说明")
-    private String UserRemark;
+    private String userRemark;
 
     public String getUserName() {
         return userName;
@@ -104,10 +104,10 @@ public class UserDto extends UserCustDto {
     }
 
     public String getUserRemark() {
-        return UserRemark;
+        return userRemark;
     }
 
     public void setUserRemark(String userRemark) {
-        UserRemark = userRemark;
+        this.userRemark = userRemark;
     }
 }

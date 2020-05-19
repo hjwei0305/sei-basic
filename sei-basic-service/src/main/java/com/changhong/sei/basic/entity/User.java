@@ -7,7 +7,6 @@ import com.changhong.sei.core.entity.ITenant;
 import com.changhong.sei.enums.UserAuthorityPolicy;
 import com.changhong.sei.enums.UserType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -70,7 +69,7 @@ public class User extends UserCust implements ITenant, IFrozen {
      * 备注说明(传输属性)
      */
     @Transient
-    private String UserRemark;
+    private String userRemark;
 
     public String getUserName() {
         return userName;
@@ -116,10 +115,10 @@ public class User extends UserCust implements ITenant, IFrozen {
     }
 
     public String getUserRemark() {
-        return UserRemark;
+        return userRemark;
     }
 
     public void setUserRemark(String userRemark) {
-        UserRemark = userRemark;
+        this.userRemark = userRemark;
     }
 }
