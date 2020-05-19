@@ -13,16 +13,14 @@ import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseRelationService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.utils.ResultDataUtil;
+import com.changhong.sei.enums.UserType;
 import com.changhong.sei.util.DateUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * *************************************************************************************************
@@ -48,6 +46,8 @@ public class UserFeatureRoleService extends BaseRelationService<UserFeatureRole,
 
     @Autowired
     private FeatureRoleService featureRoleService;
+    @Autowired
+    private EmployeeService employeeService;
 
     /**
      * 获取可以分配的子实体清单
@@ -169,5 +169,26 @@ public class UserFeatureRoleService extends BaseRelationService<UserFeatureRole,
         relation.setEffectiveTo(effective.getEffectiveTo());
         dao.save(relation);
         return ResultData.success(effective.getId());
+    }
+
+    /**
+     * 通过子实体Id获取父实体清单
+     *
+     * @param childId 子实体Id
+     * @return 父实体清单
+     */
+    @Override
+    public List<User> getParentsFromChildId(String childId) {
+        List<User> users = super.getParentsFromChildId(childId);
+        if (CollectionUtils.isEmpty(users)) {
+            return new ArrayList<>();
+        }
+        // 设置企业用户的备注说明
+        users.forEach(user -> {
+            if (user.getUserType()== UserType.Employee) {
+                user.setRemark(employeeService.getUserRemark(user.getId()));
+            }
+        });
+        return users;
     }
 }
