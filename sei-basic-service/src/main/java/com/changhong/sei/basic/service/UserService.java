@@ -874,7 +874,7 @@ public class UserService extends BaseEntityService<User> {
             // 设置企业用户的备注说明
             if (queryParam.getUserType() == UserType.Employee) {
                 result.getRows().forEach(user -> {
-                    user.setUserRemark(employeeService.getUserRemark(user.getId()));
+                    user.setRemark(employeeService.getUserRemark(user.getId()));
                 });
             }
         }

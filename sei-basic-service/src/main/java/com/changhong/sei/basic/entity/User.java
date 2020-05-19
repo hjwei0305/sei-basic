@@ -69,7 +69,7 @@ public class User extends UserCust implements ITenant, IFrozen {
      * 备注说明(传输属性)
      */
     @Transient
-    private String userRemark;
+    private String remark;
 
     public String getUserName() {
         return userName;
@@ -114,11 +114,11 @@ public class User extends UserCust implements ITenant, IFrozen {
         this.frozen = frozen;
     }
 
-    public String getUserRemark() {
-        return userRemark;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setUserRemark(String userRemark) {
-        this.userRemark = userRemark;
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

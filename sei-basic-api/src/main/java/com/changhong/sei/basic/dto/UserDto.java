@@ -20,6 +20,7 @@ import javax.validation.constraints.Size;
  */
 @ApiModel(description = "用户DTO")
 public class UserDto extends UserCustDto {
+    private static final long serialVersionUID = -9183643846946111766L;
     /**
      * 用户姓名
      */
@@ -60,8 +61,8 @@ public class UserDto extends UserCustDto {
     /**
      * 备注说明
      */
-    @ApiModelProperty("备注说明")
-    private String userRemark;
+    @ApiModelProperty(value = "备注说明")
+    private String remark;
 
     public String getUserName() {
         return userName;
@@ -103,11 +104,11 @@ public class UserDto extends UserCustDto {
         this.userAuthorityPolicy = userAuthorityPolicy;
     }
 
-    public String getUserRemark() {
-        return userRemark;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setUserRemark(String userRemark) {
-        this.userRemark = userRemark;
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }
