@@ -488,7 +488,9 @@ public class UserService extends BaseEntityService<User> {
         Set<DataRole> userRoles = new HashSet<>();
         //获取用户的公共角色
         List<DataRole> publicRoles = dataRoleService.getPublicDataRoles(user);
-        userRoles.addAll(publicRoles);
+        if (CollectionUtils.isNotEmpty(publicRoles)) {
+            userRoles.addAll(publicRoles);
+        }
         //一般用户的角色
         List<DataRole> authRoles = userDataRoleService.getEffectiveChildren(user.getId());
         userRoles.addAll(authRoles);
@@ -498,8 +500,36 @@ public class UserService extends BaseEntityService<User> {
             List<String> positionIds = new ArrayList<>();
             positions.forEach((p) -> positionIds.add(p.getId()));
             //获取岗位对应的角色
-            List<DataRole> positionRoles = positionDataRoleService.getChildrenFromParentIds(positionIds);
-            userRoles.addAll(positionRoles);
+            List<DataRole> roles = positionDataRoleService.getChildrenFromParentIds(positionIds);
+            userRoles.addAll(roles);
+        }
+        return userRoles;
+    }
+    /**
+     * 获取一般用户的功能角色清单
+     *
+     * @param user 用户
+     * @return 功能角色清单
+     */
+    public Set<FeatureRole> getNormalUserFeatureRoles(User user) {
+        //一般用户的数据角色
+        Set<FeatureRole> userRoles = new HashSet<>();
+        //获取用户的公共角色
+        List<FeatureRole> publicRoles = featureRoleService.getPublicFeatureRoles(user);
+        if (CollectionUtils.isNotEmpty(publicRoles)) {
+            userRoles.addAll(publicRoles);
+        }
+        //一般用户的角色
+        List<FeatureRole> authRoles = userFeatureRoleService.getEffectiveChildren(user.getId());
+        userRoles.addAll(authRoles);
+        //获取用户的岗位
+        if (user.getUserType() == UserType.Employee) {
+            List<Position> positions = employeePositionService.getChildrenFromParentId(user.getId());
+            List<String> positionIds = new ArrayList<>();
+            positions.forEach((p) -> positionIds.add(p.getId()));
+            //获取岗位对应的角色
+            List<FeatureRole> roles = positionFeatureRoleService.getChildrenFromParentIds(positionIds);
+            userRoles.addAll(roles);
         }
         return userRoles;
     }

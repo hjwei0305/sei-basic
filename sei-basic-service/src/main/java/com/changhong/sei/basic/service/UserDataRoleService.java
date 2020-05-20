@@ -2,6 +2,7 @@ package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.UserDataRoleDao;
 import com.changhong.sei.basic.dto.RelationEffective;
+import com.changhong.sei.basic.dto.RoleSourceType;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.service.util.AuthorityUtil;
 import com.changhong.sei.core.context.ContextUtil;
@@ -126,20 +127,22 @@ public class UserDataRoleService extends BaseRelationService<UserDataRole, User,
         // 获取分配的功能项
         List<DataRole> children = getChildrenFromParentId(parentId);
         if (CollectionUtils.isEmpty(children)) {
-            return children;
+            return dataRoles;
         }
         // 判断有效期
-        children.forEach(c-> {
-            if (Objects.isNull(c.getEffectiveFrom())
-                    || Objects.isNull(c.getEffectiveTo())) {
-                dataRoles.add(c);
+        children.forEach(role -> {
+            if (Objects.isNull(role.getEffectiveFrom())
+                    || Objects.isNull(role.getEffectiveTo())) {
+                role.setRoleSourceType(RoleSourceType.USER);
+                dataRoles.add(role);
             } else {
                 Date currentDate = DateUtils.getCurrentDate();
-                Date fromDate = DateUtils.nDaysAfter(-1, c.getEffectiveFrom());
-                Date toDate = DateUtils.nDaysAfter(1, c.getEffectiveTo());
+                Date fromDate = DateUtils.nDaysAfter(-1, role.getEffectiveFrom());
+                Date toDate = DateUtils.nDaysAfter(1, role.getEffectiveTo());
                 if (currentDate.after(fromDate)
                         && currentDate.before(toDate)) {
-                    dataRoles.add(c);
+                    role.setRoleSourceType(RoleSourceType.USER);
+                    dataRoles.add(role);
                 }
             }
         });

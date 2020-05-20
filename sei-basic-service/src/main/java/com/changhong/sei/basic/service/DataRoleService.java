@@ -1,6 +1,7 @@
 package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.DataRoleDao;
+import com.changhong.sei.basic.dto.RoleSourceType;
 import com.changhong.sei.basic.entity.DataRole;
 import com.changhong.sei.basic.entity.Employee;
 import com.changhong.sei.basic.entity.Organization;
@@ -14,11 +15,13 @@ import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.enums.UserAuthorityPolicy;
 import com.changhong.sei.enums.UserType;
 import com.changhong.sei.util.EnumUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * *************************************************************************************************
@@ -92,10 +95,12 @@ public class DataRoleService extends BaseEntityService<DataRole> {
      * @return 公共功能角色清单
      */
     List<DataRole> getPublicDataRoles(User user){
-        List<DataRole> result = new ArrayList<>();
+        if (Objects.isNull(user) || StringUtils.isBlank(user.getId())) {
+            return new ArrayList<>();
+        }
         //获取用户类型匹配的全局公共角色
         List<DataRole> publicRoles = dao.getPublicRoles(user);
-        result.addAll(publicRoles);
+        List<DataRole> result = new ArrayList<>(publicRoles);
         //获取用户的组织机构
         if (user.getUserType()== UserType.Employee){
             Employee employee = employeeService.findOne(user.getId());
@@ -106,6 +111,8 @@ public class DataRoleService extends BaseEntityService<DataRole> {
                 result.addAll(orgPubRoles);
             }
         }
+        // 设置来源类型
+        result.forEach(role-> role.setRoleSourceType(RoleSourceType.PUBLIC));
         return result;
     }
 

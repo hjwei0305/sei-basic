@@ -1,6 +1,7 @@
 package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.PositionDataRoleDao;
+import com.changhong.sei.basic.dto.RoleSourceType;
 import com.changhong.sei.basic.entity.DataRole;
 import com.changhong.sei.basic.entity.EmployeePosition;
 import com.changhong.sei.basic.entity.Position;
@@ -92,5 +93,19 @@ public class PositionDataRoleService extends BaseRelationService<PositionDataRol
         // 清除用户权限缓存
         AuthorityUtil.cleanAuthorizedCachesByPositionId(parentId);
         return result;
+    }
+
+    /**
+     * 通过父实体Id清单获取子实体清单
+     *
+     * @param parentIds 父实体Id清单
+     * @return 子实体清单
+     */
+    @Override
+    public List<DataRole> getChildrenFromParentIds(List<String> parentIds) {
+        List<DataRole> roles = super.getChildrenFromParentIds(parentIds);
+        // 设置来源类型
+        roles.forEach(role-> role.setRoleSourceType(RoleSourceType.POSITION));
+        return roles;
     }
 }

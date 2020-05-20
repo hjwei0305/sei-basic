@@ -1,6 +1,7 @@
 package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.PositionFeatureRoleDao;
+import com.changhong.sei.basic.dto.RoleSourceType;
 import com.changhong.sei.basic.entity.EmployeePosition;
 import com.changhong.sei.basic.entity.FeatureRole;
 import com.changhong.sei.basic.entity.Position;
@@ -111,5 +112,19 @@ public class PositionFeatureRoleService extends BaseRelationService<PositionFeat
         insertRelationsByParents(relationParam.getChildId(), relationParam.getParentIds());
         // 通过岗位Id清单保存分配关系成功！
         return OperateResult.operationSuccess("00107");
+    }
+
+    /**
+     * 通过父实体Id清单获取子实体清单
+     *
+     * @param parentIds 父实体Id清单
+     * @return 子实体清单
+     */
+    @Override
+    public List<FeatureRole> getChildrenFromParentIds(List<String> parentIds) {
+        List<FeatureRole> roles = super.getChildrenFromParentIds(parentIds);
+        // 设置来源类型
+        roles.forEach(role-> role.setRoleSourceType(RoleSourceType.POSITION));
+        return roles;
     }
 }

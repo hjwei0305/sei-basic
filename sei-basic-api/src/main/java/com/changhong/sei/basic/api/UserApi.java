@@ -155,8 +155,17 @@ public interface UserApi extends BaseEntityApi<UserDto>,
      * @return 数据角色清单
      */
     @GetMapping(path = "getDataRolesByAccount")
-    @ApiOperation(value = "通过用户账户获取用户的数据角色", notes = "通过用户账户获取当前租户下用户的数据角色")
-    ResultData<List<DataRoleDto>> getDataRolesByAccount(String account);
+    @ApiOperation(value = "通过用户账户获取用户的数据角色", notes = "通过用户账户获取当前租户下作为一般用户的数据角色")
+    ResultData<List<DataRoleDto>> getDataRolesByAccount(@RequestParam("account") String account);
+
+    /**
+     * 通过用户账户获取用户的功能角色
+     * @param account 用户账户
+     * @return 功能角色清单
+     */
+    @GetMapping(path = "getFeatureRolesByAccount")
+    @ApiOperation(value = "通过用户账户获取用户的功能角色", notes = "通过用户账户获取当前租户下作为一般用户的功能角色")
+    ResultData<List<FeatureRoleDto>> getFeatureRolesByAccount(@RequestParam("account") String account);
 
     /**
      * 分页查询平台用户

@@ -3,10 +3,7 @@ package com.changhong.sei.basic.controller;
 import com.changhong.sei.basic.api.UserApi;
 import com.changhong.sei.basic.dto.*;
 import com.changhong.sei.basic.dto.search.UserQuickQueryParam;
-import com.changhong.sei.basic.entity.DataRole;
-import com.changhong.sei.basic.entity.Menu;
-import com.changhong.sei.basic.entity.User;
-import com.changhong.sei.basic.entity.UserProfile;
+import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.service.DataRoleService;
 import com.changhong.sei.basic.service.UserProfileService;
 import com.changhong.sei.basic.service.UserService;
@@ -224,21 +221,60 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
     @Override
     public ResultData<List<DataRoleDto>> getDataRolesByAccount(String account) {
         // 获取用户信息
-        SessionUserResponse userResponse = accountManager.getSessionUser(ContextUtil.getTenantCode(), account);
-        // 判断用户是否为租户的系统管理员
-        if (userResponse.getAuthorityPolicy() == UserAuthorityPolicy.TenantAdmin) {
-            // 返回所有数据角色
-            List<DataRole> dataRoles = dataRoleService.findAllUnfrozen();
-            List<DataRoleDto> roleDtos = dataRoles.stream().map(DataRoleController::custConvertToDto).collect(Collectors.toList());
-            return ResultData.success(roleDtos);
+        ResultData<User> userResultData = getNormalUserByAccount(account);
+        if (userResultData.failed()) {
+            return ResultData.fail(userResultData.getMessage());
+        }
+        Set<DataRole> roles = service.getNormalUserDataRoles(userResultData.getData());
+        List<DataRoleDto> roleDtos = roles.stream().map(DataRoleController::custConvertToDto).collect(Collectors.toList());
+        return ResultData.success(roleDtos);
+    }
+
+    /**
+     * 通过用户账号获取平台的一般用户
+     * @param account 用户账号
+     * @return 操作结果
+     */
+    private ResultData<User> getNormalUserByAccount(String account) {
+        // 获取用户信息
+        String tenantCode = ContextUtil.getTenantCode();
+        SessionUserResponse userResponse = accountManager.getSessionUser(tenantCode, account);
+        if (Objects.isNull(userResponse)) {
+            // 用户账号【{0}】不存在！
+            return ResultDataUtil.fail("00108", account);
+        }
+        UserAuthorityPolicy authorityPolicy = userResponse.getAuthorityPolicy();
+        if (authorityPolicy == UserAuthorityPolicy.GlobalAdmin) {
+            // 用户账号【{0}】是全局管理员！
+            return ResultDataUtil.fail("00109", account);
+        }
+        if (authorityPolicy == UserAuthorityPolicy.TenantAdmin) {
+            // 用户账号【{0}】是租户【{1}】的系统管理员！
+            return ResultDataUtil.fail("00110", account, tenantCode);
         }
         User user = service.findOne(userResponse.getUserId());
         if (Objects.isNull(user)) {
-            // 账户【{0}】不存在对应的系统用户！
+            // 用户账号【【{0}】不存在对应的系统用户！
             return ResultDataUtil.fail("00098", account);
         }
-        Set<DataRole> roles = service.getNormalUserDataRoles(user);
-        List<DataRoleDto> roleDtos = roles.stream().map(DataRoleController::custConvertToDto).collect(Collectors.toList());
+        return ResultData.success(user);
+    }
+
+    /**
+     * 通过用户账户获取用户的功能角色
+     *
+     * @param account 用户账户
+     * @return 功能角色清单
+     */
+    @Override
+    public ResultData<List<FeatureRoleDto>> getFeatureRolesByAccount(String account) {
+        // 获取用户信息
+        ResultData<User> userResultData = getNormalUserByAccount(account);
+        if (userResultData.failed()) {
+            return ResultData.fail(userResultData.getMessage());
+        }
+        Set<FeatureRole> roles = service.getNormalUserFeatureRoles(userResultData.getData());
+        List<FeatureRoleDto> roleDtos = roles.stream().map(FeatureRoleController::custConvertToDto).collect(Collectors.toList());
         return ResultData.success(roleDtos);
     }
 

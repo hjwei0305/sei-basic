@@ -1,6 +1,7 @@
 package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.FeatureRoleDao;
+import com.changhong.sei.basic.dto.RoleSourceType;
 import com.changhong.sei.basic.dto.RoleType;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.core.context.ContextUtil;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * *************************************************************************************************
@@ -127,13 +129,16 @@ public class FeatureRoleService extends BaseEntityService<FeatureRole> {
      * @return 公共功能角色清单
      */
     List<FeatureRole> getPublicFeatureRoles(User user){
-        List<FeatureRole> result = new ArrayList<>();
+        if (Objects.isNull(user) || StringUtils.isBlank(user.getId())) {
+            return new ArrayList<>();
+        }
         //获取用户类型匹配的全局公共角色
         List<FeatureRole> publicRoles = dao.getPublicRoles(user);
-        result.addAll(publicRoles);
+        List<FeatureRole> result = new ArrayList<>(publicRoles);
+        String userId = user.getId();
         //获取用户的组织机构
         if (user.getUserType()== UserType.Employee){
-            Employee employee = employeeService.findOne(user.getId());
+            Employee employee = employeeService.findOne(userId);
             if (employee!=null){
                 //获取企业用户的组织机构
                 List<Organization> orgs = organizationService.getParentNodes(employee.getOrganization().getId(),true);
@@ -141,6 +146,8 @@ public class FeatureRoleService extends BaseEntityService<FeatureRole> {
                 result.addAll(orgPubRoles);
             }
         }
+        // 设置来源类型
+        result.forEach(role-> role.setRoleSourceType(RoleSourceType.PUBLIC));
         return result;
     }
 

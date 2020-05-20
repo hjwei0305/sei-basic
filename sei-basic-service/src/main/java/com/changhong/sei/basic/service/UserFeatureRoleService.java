@@ -2,6 +2,7 @@ package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.UserFeatureRoleDao;
 import com.changhong.sei.basic.dto.RelationEffective;
+import com.changhong.sei.basic.dto.RoleSourceType;
 import com.changhong.sei.basic.entity.FeatureRole;
 import com.changhong.sei.basic.entity.User;
 import com.changhong.sei.basic.entity.UserDataRole;
@@ -128,22 +129,24 @@ public class UserFeatureRoleService extends BaseRelationService<UserFeatureRole,
     public List<FeatureRole> getEffectiveChildren(String parentId) {
         List<FeatureRole> featureRoles = new LinkedList<>();
         // 获取分配的功能项
-        List<FeatureRole> children = getChildrenFromParentId(parentId);
-        if (CollectionUtils.isEmpty(children)) {
-            return children;
+        List<FeatureRole> roles = getChildrenFromParentId(parentId);
+        if (CollectionUtils.isEmpty(roles)) {
+            return featureRoles;
         }
         // 判断有效期
-        children.forEach(c-> {
-            if (Objects.isNull(c.getEffectiveFrom())
-                    || Objects.isNull(c.getEffectiveTo())) {
-                featureRoles.add(c);
+        roles.forEach(role -> {
+            if (Objects.isNull(role.getEffectiveFrom())
+                    || Objects.isNull(role.getEffectiveTo())) {
+                role.setRoleSourceType(RoleSourceType.USER);
+                featureRoles.add(role);
             } else {
                 Date currentDate = DateUtils.getCurrentDate();
-                Date fromDate = DateUtils.nDaysAfter(-1, c.getEffectiveFrom());
-                Date toDate = DateUtils.nDaysAfter(1, c.getEffectiveTo());
+                Date fromDate = DateUtils.nDaysAfter(-1, role.getEffectiveFrom());
+                Date toDate = DateUtils.nDaysAfter(1, role.getEffectiveTo());
                 if (currentDate.after(fromDate)
                         && currentDate.before(toDate)) {
-                    featureRoles.add(c);
+                    role.setRoleSourceType(RoleSourceType.USER);
+                    featureRoles.add(role);
                 }
             }
         });

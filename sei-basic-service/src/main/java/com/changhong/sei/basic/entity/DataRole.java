@@ -1,5 +1,6 @@
 package com.changhong.sei.basic.entity;
 
+import com.changhong.sei.basic.dto.RoleSourceType;
 import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
 import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.ICodeUnique;
@@ -94,7 +95,12 @@ public class DataRole extends BaseAuditableEntity implements ITenant, ICodeUniqu
     @Transient
     @JsonFormat(timezone = DateUtils.DEFAULT_TIMEZONE, pattern = DateUtils.DEFAULT_DATE_FORMAT)
     private Date effectiveTo;
-
+    /**
+     * 角色来源类型
+     */
+    @Transient
+    @JsonSerialize(using = EnumJsonSerializer.class)
+    private RoleSourceType roleSourceType;
 
     @Override
     public String getTenantCode() {
@@ -186,5 +192,13 @@ public class DataRole extends BaseAuditableEntity implements ITenant, ICodeUniqu
 
     public void setEffectiveTo(Date effectiveTo) {
         this.effectiveTo = effectiveTo;
+    }
+
+    public RoleSourceType getRoleSourceType() {
+        return roleSourceType;
+    }
+
+    public void setRoleSourceType(RoleSourceType roleSourceType) {
+        this.roleSourceType = roleSourceType;
     }
 }

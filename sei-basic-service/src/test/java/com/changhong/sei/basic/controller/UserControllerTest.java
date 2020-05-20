@@ -1,10 +1,9 @@
 package com.changhong.sei.basic.controller;
 
-import com.changhong.sei.basic.dto.EmployeeDto;
-import com.changhong.sei.basic.dto.MenuDto;
-import com.changhong.sei.basic.dto.UserDto;
+import com.changhong.sei.basic.dto.*;
 import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.basic.dto.search.UserQuickQueryParam;
+import com.changhong.sei.basic.entity.DataRole;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageInfo;
 import com.changhong.sei.core.dto.serach.PageResult;
@@ -47,8 +46,8 @@ public class UserControllerTest extends BaseUnitTest {
 
     @Test
     public void getDataRolesByAccount() {
-        String account = "admin";
-        ResultData resultData = controller.getDataRolesByAccount(account);
+        String account = "12332111";
+        ResultData<List<DataRoleDto>> resultData = controller.getDataRolesByAccount(account);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }
@@ -70,6 +69,14 @@ public class UserControllerTest extends BaseUnitTest {
         queryParam.setQuickSearchValue("测试");
         queryParam.setPageInfo(new PageInfo());
         ResultData<PageResult<UserDto>> resultData = controller.queryUsers(queryParam);
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
+
+    @Test
+    public void getFeatureRolesByAccount() {
+        String account = "12332111";
+        ResultData<List<FeatureRoleDto>> resultData = controller.getFeatureRolesByAccount(account);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }

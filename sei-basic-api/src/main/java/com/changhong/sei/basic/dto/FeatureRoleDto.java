@@ -103,6 +103,12 @@ public class FeatureRoleDto extends BaseEntityDto {
     @ApiModelProperty("分配授权的有效截至日期")
     @JsonFormat(timezone = DateUtils.DEFAULT_TIMEZONE, pattern = DateUtils.DEFAULT_DATE_FORMAT)
     private Date effectiveTo;
+    /**
+     * 角色来源类型
+     */
+    @ApiModelProperty("角色来源类型")
+    @JsonSerialize(using = EnumJsonSerializer.class)
+    private RoleSourceType roleSourceType;
 
     public String getTenantCode() {
         return tenantCode;
@@ -214,5 +220,13 @@ public class FeatureRoleDto extends BaseEntityDto {
 
     public void setEffectiveTo(Date effectiveTo) {
         this.effectiveTo = effectiveTo;
+    }
+
+    public RoleSourceType getRoleSourceType() {
+        return roleSourceType;
+    }
+
+    public void setRoleSourceType(RoleSourceType roleSourceType) {
+        this.roleSourceType = roleSourceType;
     }
 }
