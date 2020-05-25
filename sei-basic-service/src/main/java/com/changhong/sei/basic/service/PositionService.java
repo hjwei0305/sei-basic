@@ -198,9 +198,9 @@ public class PositionService extends BaseEntityService<Position> {
      */
     public List<FeatureRole> getCanAssignedFeatureRoles(String featureRoleGroupId, String positionId) {
         Set<FeatureRole> result = new HashSet<>();
-        //获取可分配的功能角色
-        List<FeatureRole> canAssigned = featureRoleService.findByFeatureRoleGroup(featureRoleGroupId);
-        //获取已经分配的功能角色
+        // 获取当前用户可分配的功能角色
+        List<FeatureRole> canAssigned = featureRoleService.getCanAssignedRoles(featureRoleGroupId);
+        // 获取已经分配的功能角色
         List<FeatureRole> assigned = positionFeatureRoleService.getChildrenFromParentId(positionId);
         result.addAll(canAssigned);
         result.removeAll(assigned);
@@ -216,9 +216,9 @@ public class PositionService extends BaseEntityService<Position> {
      */
     public List<DataRole> getCanAssignedDataRoles(String dataRoleGroupId, String positionId) {
         Set<DataRole> dataRoles = new HashSet<>();
-        //获取可分配的数据角色
-        List<DataRole> canAssigned = dataRoleService.findByDataRoleGroup(dataRoleGroupId);
-        //获取已经分配的数据角色
+        // 获取当前用户可分配的数据角色
+        List<DataRole> canAssigned = dataRoleService.getCanAssignedRoles(dataRoleGroupId);
+        // 获取已经分配的数据角色
         List<DataRole> assigned = positionDataRoleService.getChildrenFromParentId(positionId);
         dataRoles.addAll(canAssigned);
         dataRoles.removeAll(assigned);
