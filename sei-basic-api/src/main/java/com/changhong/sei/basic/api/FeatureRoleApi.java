@@ -4,6 +4,7 @@ import com.changhong.sei.basic.dto.FeatureRoleDto;
 import com.changhong.sei.basic.dto.PositionDto;
 import com.changhong.sei.basic.dto.UserDto;
 import com.changhong.sei.core.api.BaseEntityApi;
+import com.changhong.sei.core.api.FindByPageApi;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.util.EnumUtils;
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +21,7 @@ import java.util.List;
  * @version 2020-01-28 10:56
  */
 @FeignClient(name = "sei-basic", path = "featureRole")
-public interface FeatureRoleApi extends BaseEntityApi<FeatureRoleDto> {
+public interface FeatureRoleApi extends BaseEntityApi<FeatureRoleDto>, FindByPageApi<FeatureRoleDto> {
     /**
      * 通过角色组Id获取角色清单
      * @param roleGroupId 角色组Id
@@ -39,6 +40,16 @@ public interface FeatureRoleApi extends BaseEntityApi<FeatureRoleDto> {
     @GetMapping(path = "getAssignedEmployeesByFeatureRole")
     @ApiOperation(value = "根据功能角色的id获取已分配的用户", notes = "根据功能角色的id获取已分配的用户")
     ResultData<List<UserDto>> getAssignedEmployeesByFeatureRole(@RequestParam("featureRoleId") String featureRoleId);
+
+    /**
+     * 根据功能角色的code获取已分配的用户id
+     *
+     * @param featureRoleCode 功能角色的code
+     * @return 用户id清单
+     */
+    @GetMapping(path = "getUserIdsByFeatureRole")
+    @ApiOperation(value = "根据功能角色的code获取已分配的用户id", notes = "根据功能角色的code获取已分配的用户id")
+    ResultData<List<String>> getUserIdsByFeatureRole(@RequestParam("featureRoleCode") String featureRoleCode);
 
     /**
      * 根据功能角色的id获取已分配的岗位

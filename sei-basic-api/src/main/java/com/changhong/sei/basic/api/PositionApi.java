@@ -133,6 +133,15 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
     ResultData<List<EmployeeDto>> listAllAssignedEmployeesByPositionId(@RequestParam("positionId") String positionId);
 
     /**
+     * 根据岗位的code获取已分配的员工Id
+     * @param positionCode 岗位code
+     * @return  userId列表
+     */
+    @GetMapping(path = "getUserIdsByPositionCode")
+    @ApiOperation(value = "根据岗位的code获取已分配的员工Id", notes = "根据岗位的code获取已分配的员工Id")
+    ResultData<List<String>> getUserIdsByPositionCode(@RequestParam("positionCode") String positionCode);
+
+    /**
      * 查询可分配的功能角色
      *
      * @param featureRoleGroupId 功能角色组id

@@ -31,6 +31,7 @@ import javax.persistence.*;
 @EnableDataHistory(name = "岗位")
 public class Position extends BaseAuditableEntity
         implements ITenant, ICodeUnique {
+    public static final String POSITION_CODE = "code";
     public static final String POSITION_CATEGORY_ID = "positionCategory.id";
     /**
      * 代码

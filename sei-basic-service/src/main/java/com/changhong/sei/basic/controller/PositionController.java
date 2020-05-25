@@ -189,6 +189,25 @@ public class PositionController implements DefaultBaseEntityController<Position,
     }
 
     /**
+     * 根据岗位的code获取已分配的员工Id
+     *
+     * @param positionCode 岗位code
+     * @return userId列表
+     */
+    @Override
+    public ResultData<List<String>> getUserIdsByPositionCode(String positionCode) {
+        Position position = service.findByProperty(Position.POSITION_CODE, positionCode);
+        if (Objects.nonNull(position)) {
+            List<Employee> employees = service.listAllAssignedEmployeesByPositionId(position.getId());
+            List<String> dtos = employees.stream().map(Employee::getId).collect(Collectors.toList());
+            return ResultData.success(dtos);
+        } else {
+            // 未找到[{}]对应的岗位
+            return ResultData.fail(ContextUtil.getMessage("00111", positionCode));
+        }
+    }
+
+    /**
      * 查询可分配的功能角色
      *
      * @param featureRoleGroupId 功能角色组id

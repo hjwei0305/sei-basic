@@ -9,8 +9,11 @@ import com.changhong.sei.basic.entity.FeatureRole;
 import com.changhong.sei.basic.entity.Position;
 import com.changhong.sei.basic.entity.User;
 import com.changhong.sei.basic.service.FeatureRoleService;
+import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.core.dto.serach.PageResult;
+import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import com.changhong.sei.enums.UserType;
@@ -101,6 +104,25 @@ public class FeatureRoleController implements DefaultBaseEntityController<Featur
         List<User> users = service.getAssignedEmployeesByFeatureRole(featureRoleId);
         List<UserDto> dtos = users.stream().map(FeatureRoleController::custConvertToDto).collect(Collectors.toList());
         return ResultData.success(dtos);
+    }
+
+    /**
+     * 根据功能角色的code获取已分配的用户id
+     *
+     * @param featureRoleCode 功能角色的code
+     * @return 用户id清单
+     */
+    @Override
+    public ResultData<List<String>> getUserIdsByFeatureRole(String featureRoleCode) {
+        FeatureRole featureRole = service.findByCode(featureRoleCode);
+        if (Objects.nonNull(featureRole)) {
+            List<User> users = service.getAssignedEmployeesByFeatureRole(featureRole.getId());
+            List<String> dtos = users.stream().map(User::getId).collect(Collectors.toList());
+            return ResultData.success(dtos);
+        } else {
+            // 未找到【{0}】对应的角色!
+            return ResultData.fail(ContextUtil.getMessage("00112", featureRoleCode));
+        }
     }
 
     /**
@@ -218,5 +240,16 @@ public class FeatureRoleController implements DefaultBaseEntityController<Featur
         custMapper.addMappings(propertyMap);
         // 转换
         return custMapper.map(entity, FeatureRoleDto.class);
+    }
+
+    /**
+     * 分页查询业务实体
+     *
+     * @param search 查询参数
+     * @return 分页查询结果
+     */
+    @Override
+    public ResultData<PageResult<FeatureRoleDto>> findByPage(Search search) {
+        return convertToDtoPageResult(service.findByPage(search));
     }
 }
