@@ -66,8 +66,9 @@ public class UserDaoImpl extends BaseEntityDaoImpl<User> implements UserExtDao {
             sqlParams.put("quickSearchValue", "%"+quickSearchValue+"%");
         }
         QuerySql querySql = new QuerySql(select,fromAndWhere);
-        // 排序
-        querySql.setOrderBy("order by u.userName");
+        if (CollectionUtils.isEmpty(queryParam.getSortOrders())) {
+            querySql.setOrderBy("order by u.userName");
+        }
         return PageResultUtil.getResult(entityManager,querySql,sqlParams, queryParam);
     }
 }

@@ -97,8 +97,10 @@ public class PositionDaoImpl extends BaseEntityDaoImpl<Position> implements Posi
             sqlParams.put("quickSearchValue", "%"+quickSearchValue+"%");
         }
         QuerySql querySql = new QuerySql(select,fromAndWhere);
-        // 排序
-        querySql.setOrderBy("order by p.code");
+        // 默认排序
+        if (CollectionUtils.isEmpty(queryParam.getSortOrders())) {
+            querySql.setOrderBy("order by e.code");
+        }
         return PageResultUtil.getResult(entityManager,querySql,sqlParams, queryParam);
     }
 }
