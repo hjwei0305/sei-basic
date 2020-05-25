@@ -59,6 +59,12 @@ public class UserDto extends UserCustDto {
     private UserAuthorityPolicy userAuthorityPolicy;
 
     /**
+     * 用户主账号
+     */
+    @ApiModelProperty("用户主账号")
+    private String account;
+
+    /**
      * 备注说明
      */
     @ApiModelProperty(value = "备注说明")
@@ -102,6 +108,14 @@ public class UserDto extends UserCustDto {
 
     public void setUserAuthorityPolicy(UserAuthorityPolicy userAuthorityPolicy) {
         this.userAuthorityPolicy = userAuthorityPolicy;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getRemark() {

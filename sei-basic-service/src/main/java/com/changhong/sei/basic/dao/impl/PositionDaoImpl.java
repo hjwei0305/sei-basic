@@ -99,7 +99,7 @@ public class PositionDaoImpl extends BaseEntityDaoImpl<Position> implements Posi
         QuerySql querySql = new QuerySql(select,fromAndWhere);
         // 默认排序
         if (CollectionUtils.isEmpty(queryParam.getSortOrders())) {
-            querySql.setOrderBy("order by e.code");
+            querySql.setOrderBy("order by p.code");
         }
         return PageResultUtil.getResult(entityManager,querySql,sqlParams, queryParam);
     }

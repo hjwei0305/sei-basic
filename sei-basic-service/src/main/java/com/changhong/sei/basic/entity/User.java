@@ -65,6 +65,12 @@ public class User extends UserCust implements ITenant, IFrozen {
     @Column(name = "user_authority_policy", nullable = false)
     private UserAuthorityPolicy userAuthorityPolicy;
 
+//    /**
+//     * 用户主账号
+//     */
+//    @Column(name = "account", length = 50)
+//    private String account;
+
     /**
      * 备注说明(传输属性)
      */
@@ -113,6 +119,14 @@ public class User extends UserCust implements ITenant, IFrozen {
     public void setFrozen(Boolean frozen) {
         this.frozen = frozen;
     }
+
+//    public String getAccount() {
+//        return account;
+//    }
+//
+//    public void setAccount(String account) {
+//        this.account = account;
+//    }
 
     public String getRemark() {
         return remark;

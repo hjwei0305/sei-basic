@@ -5,11 +5,15 @@ import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageInfo;
 import com.changhong.sei.core.dto.serach.PageResult;
+import com.changhong.sei.core.dto.serach.SearchOrder;
 import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.util.JsonUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 实现功能:
@@ -76,6 +80,9 @@ public class EmployeeControllerTest extends BaseUnitTest {
         queryParam.setExcludePositionId("459FB69E-4664-11EA-983E-0242C0A84604");
         queryParam.setQuickSearchValue("测试");
         queryParam.setPageInfo(new PageInfo());
+        List<SearchOrder> orders = new ArrayList<>();
+        orders.add(new SearchOrder("e.code", SearchOrder.Direction.ASC));
+        queryParam.setSortOrders(orders);
         ResultData<PageResult<EmployeeDto>> resultData = controller.queryEmployees(queryParam);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
