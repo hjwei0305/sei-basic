@@ -134,12 +134,12 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
 
     /**
      * 根据岗位的code获取已分配的员工Id
-     * @param positionCode 岗位code
+     * @param positionCodes 岗位code
      * @return  userId列表
      */
     @GetMapping(path = "getUserIdsByPositionCode")
     @ApiOperation(value = "根据岗位的code获取已分配的员工Id", notes = "根据岗位的code获取已分配的员工Id")
-    ResultData<List<String>> getUserIdsByPositionCode(@RequestParam("positionCode") String positionCode);
+    ResultData<List<String>> getUserIdsByPositionCode(@RequestParam("positionCodes") String[] positionCodes);
 
     /**
      * 查询可分配的功能角色

@@ -44,12 +44,12 @@ public interface FeatureRoleApi extends BaseEntityApi<FeatureRoleDto>, FindByPag
     /**
      * 根据功能角色的code获取已分配的用户id
      *
-     * @param featureRoleCode 功能角色的code
+     * @param featureRoleCodes 功能角色的code
      * @return 用户id清单
      */
     @GetMapping(path = "getUserIdsByFeatureRole")
     @ApiOperation(value = "根据功能角色的code获取已分配的用户id", notes = "根据功能角色的code获取已分配的用户id")
-    ResultData<List<String>> getUserIdsByFeatureRole(@RequestParam("featureRoleCode") String featureRoleCode);
+    ResultData<List<String>> getUserIdsByFeatureRole(@RequestParam("featureRoleCodes") String[] featureRoleCodes);
 
     /**
      * 根据功能角色的id获取已分配的岗位

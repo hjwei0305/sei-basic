@@ -16,6 +16,7 @@ import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
+import org.apache.commons.collections.CollectionUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -41,6 +43,7 @@ public class PositionController implements DefaultBaseEntityController<Position,
         PositionApi {
     @Autowired
     private PositionService service;
+
     @Override
     public BaseEntityService<Position> getService() {
         return service;
@@ -191,20 +194,26 @@ public class PositionController implements DefaultBaseEntityController<Position,
     /**
      * 根据岗位的code获取已分配的员工Id
      *
-     * @param positionCode 岗位code
+     * @param positionCodes 岗位code
      * @return userId列表
      */
     @Override
-    public ResultData<List<String>> getUserIdsByPositionCode(String positionCode) {
-        Position position = service.findByProperty(Position.POSITION_CODE, positionCode);
-        if (Objects.nonNull(position)) {
-            List<Employee> employees = service.listAllAssignedEmployeesByPositionId(position.getId());
-            List<String> dtos = employees.stream().map(Employee::getId).collect(Collectors.toList());
-            return ResultData.success(dtos);
-        } else {
+    public ResultData<List<String>> getUserIdsByPositionCode(String[] positionCodes) {
+        List<String> result = new ArrayList<>();
+        for (String positionCode : positionCodes) {
+            Position position = service.findByProperty(Position.POSITION_CODE, positionCode);
+            if (Objects.nonNull(position)) {
+                List<Employee> employees = service.listAllAssignedEmployeesByPositionId(position.getId());
+                List<String> dtos = employees.stream().map(Employee::getId).collect(Collectors.toList());
+                if (CollectionUtils.isNotEmpty(dtos)) {
+                    result.addAll(dtos);
+                }
+            }/* else {
             // 未找到[{}]对应的岗位
             return ResultData.fail(ContextUtil.getMessage("00111", positionCode));
+        }*/
         }
+        return ResultData.success(result);
     }
 
     /**
@@ -296,8 +305,8 @@ public class PositionController implements DefaultBaseEntityController<Position,
      * @param entity 业务实体
      * @return DTO
      */
-    static PositionDto custConvertToDto(Position entity){
-        if (Objects.isNull(entity)){
+    static PositionDto custConvertToDto(Position entity) {
+        if (Objects.isNull(entity)) {
             return null;
         }
         ModelMapper custMapper = new ModelMapper();
