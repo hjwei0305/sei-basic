@@ -10,8 +10,11 @@ import com.changhong.sei.util.EnumUtils;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -47,9 +50,9 @@ public interface FeatureRoleApi extends BaseEntityApi<FeatureRoleDto>, FindByPag
      * @param featureRoleCodes 功能角色的code
      * @return 用户id清单
      */
-    @GetMapping(path = "getUserIdsByFeatureRole")
+    @PostMapping(path = "getUserIdsByFeatureRole")
     @ApiOperation(value = "根据功能角色的code获取已分配的用户id", notes = "根据功能角色的code获取已分配的用户id")
-    ResultData<List<String>> getUserIdsByFeatureRole(@RequestParam("featureRoleCodes") String[] featureRoleCodes);
+    ResultData<List<String>> getUserIdsByFeatureRole(@RequestBody Collection<String> featureRoleCodes);
 
     /**
      * 根据功能角色的id获取已分配的岗位
