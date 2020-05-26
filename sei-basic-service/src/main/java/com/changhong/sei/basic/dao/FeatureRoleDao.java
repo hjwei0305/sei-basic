@@ -20,6 +20,22 @@ import java.util.List;
  * *************************************************************************************************
  */
 public interface FeatureRoleDao extends BaseEntityDao<FeatureRole>, FeatureRoleExtDao {
+
+    /**
+     * 通过代码获取角色
+     * @param code 代码
+     * @param tenantCode 租户代码
+     * @return 角色
+     */
+    FeatureRole findFirstByCodeAndTenantCode(String code, String tenantCode);
+
+    /**
+     * 通过角色组Id获取角色清单
+     * @param featureRoleGroupId 角色组Id
+     * @return 角色清单
+     */
+    List<FeatureRole> findByFeatureRoleGroupId(String featureRoleGroupId);
+
     /**
      * 获取用户本人创建的角色
      * @param account 用户账号
@@ -35,6 +51,6 @@ public interface FeatureRoleDao extends BaseEntityDao<FeatureRole>, FeatureRoleE
      * @param tenantCode 租户代码
      * @return 角色清单
      */
-    @Query("select r from FeatureRole r where r.featureRoleGroup.id=:groupId and r.creatorAccount=:account and r.tenantCode=:tenantCode")
+    @Query("select r from FeatureRole r where r.featureRoleGroupId=:groupId and r.creatorAccount=:account and r.tenantCode=:tenantCode")
     List<FeatureRole> findByCreator(@Param("groupId") String groupId, @Param("account") String account, @Param("tenantCode") String tenantCode);
 }

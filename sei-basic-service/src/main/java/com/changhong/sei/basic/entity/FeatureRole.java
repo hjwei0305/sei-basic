@@ -2,6 +2,7 @@ package com.changhong.sei.basic.entity;
 
 import com.changhong.sei.basic.dto.RoleSourceType;
 import com.changhong.sei.basic.dto.RoleType;
+import com.changhong.sei.core.dto.auth.IDataAuthEntity;
 import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
 import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.ICodeUnique;
@@ -33,7 +34,7 @@ import java.util.Date;
 @Table(name = "feature_role")
 @DynamicInsert
 @DynamicUpdate
-public class FeatureRole extends BaseAuditableEntity implements ITenant, ICodeUnique {
+public class FeatureRole extends BaseAuditableEntity implements ITenant, ICodeUnique, IDataAuthEntity {
     /**
      * 租户代码
      */
@@ -53,7 +54,7 @@ public class FeatureRole extends BaseAuditableEntity implements ITenant, ICodeUn
      * 功能角色组Id
      */
     @Column(name = "feature_role_group_id", length = 36, nullable = false)
-    private String featureGroupId;
+    private String featureRoleGroupId;
     /**
      * 功能角色组
      */
@@ -138,12 +139,12 @@ public class FeatureRole extends BaseAuditableEntity implements ITenant, ICodeUn
         this.name = name;
     }
 
-    public String getFeatureGroupId() {
-        return featureGroupId;
+    public String getFeatureRoleGroupId() {
+        return featureRoleGroupId;
     }
 
-    public void setFeatureGroupId(String featureGroupId) {
-        this.featureGroupId = featureGroupId;
+    public void setFeatureRoleGroupId(String featureGroupId) {
+        this.featureRoleGroupId = featureGroupId;
     }
 
     public FeatureRoleGroup getFeatureRoleGroup() {

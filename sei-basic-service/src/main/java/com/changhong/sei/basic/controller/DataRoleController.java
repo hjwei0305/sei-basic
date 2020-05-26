@@ -6,6 +6,7 @@ import com.changhong.sei.basic.entity.DataRole;
 import com.changhong.sei.basic.service.DataRoleService;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
@@ -65,9 +66,7 @@ public class DataRoleController implements DefaultBaseEntityController<DataRole,
      */
     @Override
     public ResultData<List<DataRoleDto>> findByDataRoleGroup(String roleGroupId) {
-        List<DataRole> roles = service.findByDataRoleGroup(roleGroupId);
-        List<DataRoleDto> dtos = roles.stream().map(this::convertToDto).collect(Collectors.toList());
-        return ResultData.success(dtos);
+        return ResultData.success(convertToDtos(service.getCanAssignedRoles(roleGroupId)));
     }
 
     /**
@@ -117,5 +116,37 @@ public class DataRoleController implements DefaultBaseEntityController<DataRole,
         custMapper.addMappings(propertyMap);
         // 转换
         return custMapper.map(entity, DataRoleDto.class);
+    }
+
+    /**
+     * 通过业务实体Id清单获取数据权限实体清单
+     *
+     * @param ids 业务实体Id清单
+     * @return 数据权限实体清单
+     */
+    @Override
+    public ResultData<List<AuthEntityData>> getAuthEntityDataByIds(List<String> ids) {
+        return ResultData.success(service.getAuthEntityDataByIds(ids));
+    }
+
+    /**
+     * 获取所有数据权限实体清单
+     *
+     * @return 数据权限实体清单
+     */
+    @Override
+    public ResultData<List<AuthEntityData>> findAllAuthEntityData() {
+        return ResultData.success(service.findAllAuthEntityData());
+    }
+
+    /**
+     * 获取当前用户有权限的业务实体清单
+     *
+     * @param featureCode 功能项代码
+     * @return 有权限的业务实体清单
+     */
+    @Override
+    public ResultData<List<DataRoleDto>> getUserAuthorizedEntities(String featureCode) {
+        return ResultData.success(convertToDtos(service.getUserAuthorizedEntities(featureCode)));
     }
 }

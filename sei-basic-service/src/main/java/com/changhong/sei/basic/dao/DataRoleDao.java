@@ -1,6 +1,7 @@
 package com.changhong.sei.basic.dao;
 
 import com.changhong.sei.basic.entity.DataRole;
+import com.changhong.sei.basic.entity.FeatureRole;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,6 +22,21 @@ import java.util.List;
  */
 public interface DataRoleDao extends BaseEntityDao<DataRole>,DataRoleExtDao {
     /**
+     * 通过代码获取角色
+     * @param code 代码
+     * @param tenantCode 租户代码
+     * @return 角色
+     */
+    DataRole findFirstByCodeAndTenantCode(String code, String tenantCode);
+
+    /**
+     * 通过角色组Id获取角色清单
+     * @param dataRoleGroupId 角色组Id
+     * @return 角色清单
+     */
+    List<DataRole> findByDataRoleGroupId(String dataRoleGroupId);
+
+    /**
      * 获取用户本人创建的角色
      * @param account 用户账号
      * @param tenantCode 租户代码
@@ -35,6 +51,6 @@ public interface DataRoleDao extends BaseEntityDao<DataRole>,DataRoleExtDao {
      * @param tenantCode 租户代码
      * @return 角色清单
      */
-    @Query("select r from DataRole r where r.dataRoleGroup.id=:groupId and r.creatorAccount=:account and r.tenantCode=:tenantCode")
+    @Query("select r from DataRole r where r.dataRoleGroupId=:groupId and r.creatorAccount=:account and r.tenantCode=:tenantCode")
     List<DataRole> findByCreator(@Param("groupId") String groupId, @Param("account") String account, @Param("tenantCode") String tenantCode);
 }

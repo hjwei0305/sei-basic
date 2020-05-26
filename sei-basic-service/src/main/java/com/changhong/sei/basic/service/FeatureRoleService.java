@@ -2,26 +2,24 @@ package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.FeatureRoleDao;
 import com.changhong.sei.basic.dto.RoleSourceType;
-import com.changhong.sei.basic.dto.RoleType;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.context.SessionUser;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.dto.serach.SearchFilter;
+import com.changhong.sei.core.entity.ICodeUnique;
 import com.changhong.sei.core.service.BaseEntityService;
+import com.changhong.sei.core.service.DataAuthEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
-import com.changhong.sei.core.service.bo.OperateResultWithData;
 import com.changhong.sei.enums.UserAuthorityPolicy;
 import com.changhong.sei.enums.UserType;
-import com.changhong.sei.util.EnumUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * *************************************************************************************************
@@ -36,7 +34,7 @@ import java.util.Objects;
  * *************************************************************************************************
  */
 @Service
-public class FeatureRoleService extends BaseEntityService<FeatureRole> {
+public class FeatureRoleService extends BaseEntityService<FeatureRole> implements DataAuthEntityService {
 
     @Autowired
     private FeatureRoleDao dao;
@@ -54,17 +52,8 @@ public class FeatureRoleService extends BaseEntityService<FeatureRole> {
     private EmployeeService employeeService;
     @Autowired
     private OrganizationService organizationService;
-
-    /**
-     * 通过角色组Id获取角色清单
-     *
-     * @param roleGroupId 角色组Id
-     * @return 角色清单
-     */
-    public List<FeatureRole> findByFeatureRoleGroup(String roleGroupId) {
-        SearchFilter filter = new SearchFilter("featureRoleGroup.id",roleGroupId, SearchFilter.Operator.EQ);
-        return findByFilter(filter);
-    }
+    @Autowired
+    private UserService userService;
 
     /**
      * 删除数据保存数据之前额外操作回调方法 子类根据需要覆写添加逻辑即可
@@ -117,10 +106,7 @@ public class FeatureRoleService extends BaseEntityService<FeatureRole> {
      * @return 实体
      */
     public FeatureRole findByCode(String code) {
-        if (StringUtils.isNotBlank(code)) {
-            return super.findByProperty(FeatureRole.CODE_FIELD, code);
-        }
-        return null;
+        return dao.findFirstByCodeAndTenantCode(code, ContextUtil.getTenantCode());
     }
 
     /**
@@ -152,21 +138,11 @@ public class FeatureRoleService extends BaseEntityService<FeatureRole> {
     }
 
     /**
-     * 获取用户本人创建的角色
+     * 获取用户本人可以分配的角色清单
      * @return 角色清单
      */
-    List<FeatureRole> findByCreator(){
-        // 判断用户权限
-        SessionUser sessionUser = ContextUtil.getSessionUser();
-        if (sessionUser.isAnonymous()){
-            return new ArrayList<>();
-        }
-        // 如果是租户管理员，返回所有
-        if (sessionUser.getAuthorityPolicy() == UserAuthorityPolicy.TenantAdmin){
-            return findAll();
-        }
-        // 如果是一般分级授权用户，返回本人创建的角色
-        return dao.findByCreatorAccountAndTenantCode(sessionUser.getAccount(), sessionUser.getTenantCode());
+    List<FeatureRole> getCanAssignedRoles(){
+        return getCanAssignedRoles(null);
     }
 
     /**
@@ -177,32 +153,47 @@ public class FeatureRoleService extends BaseEntityService<FeatureRole> {
     public List<FeatureRole> getCanAssignedRoles(String roleGroupId){
         // 判断用户权限
         SessionUser sessionUser = ContextUtil.getSessionUser();
-        if (sessionUser.isAnonymous()){
+        if (sessionUser.isAnonymous() || sessionUser.getAuthorityPolicy() == UserAuthorityPolicy.GlobalAdmin){
             return new ArrayList<>();
         }
         // 如果是租户管理员，返回所有
         if (sessionUser.getAuthorityPolicy() == UserAuthorityPolicy.TenantAdmin){
-            return findByFeatureRoleGroup(roleGroupId);
+            if (StringUtils.isBlank(roleGroupId)) {
+                return findAll();
+            } else {
+                return dao.findByFeatureRoleGroupId(roleGroupId);
+            }
         }
-        // 如果是一般分级授权用户，返回本人创建的角色
-        return dao.findByCreator(roleGroupId, sessionUser.getAccount(), sessionUser.getTenantCode());
+        // 如果是一般分级授权用户，获取有数据权限的角色+本人创建的角色
+        Set<FeatureRole> roles = new LinkedHashSet<>();
+        List<FeatureRole> authRoles = getUserAuthorizedEntities(null);
+        if (CollectionUtils.isNotEmpty(authRoles)) {
+            if (StringUtils.isBlank(roleGroupId)) {
+                roles.addAll(authRoles);
+            } else {
+                // 过滤角色组
+                roles.addAll(authRoles.stream().filter(r-> StringUtils.equals(r.getFeatureRoleGroupId(), roleGroupId)).collect(Collectors.toList()));
+            }
+        }
+        if (StringUtils.isBlank(roleGroupId)) {
+            roles.addAll(dao.findByCreatorAccountAndTenantCode(sessionUser.getAccount(), sessionUser.getTenantCode()));
+        } else {
+            roles.addAll(dao.findByCreator(roleGroupId, sessionUser.getAccount(), sessionUser.getTenantCode()));
+        }
+        return new ArrayList<>(roles);
     }
 
     /**
-     * 获取角色类型
-     * @return 用户角色类型列表
+     * 从平台基础应用获取一般用户有权限的数据实体Id清单
+     * 对于数据权限对象的业务实体，需要override，使用BASIC提供的通用工具来获取
+     *
+     * @param entityClassName 权限对象实体类型
+     * @param featureCode     功能项代码
+     * @param userId          用户Id
+     * @return 数据实体Id清单
      */
-    public OperateResultWithData getRoleTypeList() {
-        return OperateResultWithData.operationSuccessWithData(EnumUtils.getEnumDataList(RoleType.class), "ecmp_context_00001");
+    @Override
+    public List<String> getNormalUserAuthorizedEntitiesFromBasic(String entityClassName, String featureCode, String userId) {
+        return userService.getNormalUserAuthorizedEntities(entityClassName, featureCode, userId);
     }
-
-    /**
-     * 获取用户类型
-     * @return 用户类型列表
-     */
-    public OperateResultWithData listAllUserType() {
-        return OperateResultWithData.operationSuccessWithData(EnumUtils.getEnumDataList(UserType.class), "ecmp_context_00001");
-
-    }
-
 }

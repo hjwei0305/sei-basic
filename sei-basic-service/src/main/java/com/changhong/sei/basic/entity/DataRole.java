@@ -1,6 +1,7 @@
 package com.changhong.sei.basic.entity;
 
 import com.changhong.sei.basic.dto.RoleSourceType;
+import com.changhong.sei.core.dto.auth.IDataAuthEntity;
 import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
 import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.ICodeUnique;
@@ -32,7 +33,7 @@ import java.util.Date;
 @Table(name = "data_role")
 @DynamicUpdate
 @DynamicInsert
-public class DataRole extends BaseAuditableEntity implements ITenant, ICodeUnique {
+public class DataRole extends BaseAuditableEntity implements ITenant, ICodeUnique, IDataAuthEntity {
     /**
      * 租户代码
      */

@@ -47,7 +47,7 @@ public class FeatureRoleDto extends BaseEntityDto {
     @NotBlank
     @Size(max = 36)
     @ApiModelProperty(value = "功能角色组Id(max = 36)", required = true)
-    private String featureGroupId;
+    private String featureRoleGroupId;
     /**
      * 功能角色组代码
      */
@@ -134,12 +134,12 @@ public class FeatureRoleDto extends BaseEntityDto {
         this.name = name;
     }
 
-    public String getFeatureGroupId() {
-        return featureGroupId;
+    public String getFeatureRoleGroupId() {
+        return featureRoleGroupId;
     }
 
-    public void setFeatureGroupId(String featureGroupId) {
-        this.featureGroupId = featureGroupId;
+    public void setFeatureRoleGroupId(String featureRoleGroupId) {
+        this.featureRoleGroupId = featureRoleGroupId;
     }
 
     public String getFeatureRoleGroupCode() {

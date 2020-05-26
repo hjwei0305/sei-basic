@@ -2,6 +2,7 @@ package com.changhong.sei.basic.api;
 
 import com.changhong.sei.basic.dto.DataRoleDto;
 import com.changhong.sei.core.api.BaseEntityApi;
+import com.changhong.sei.core.api.DataAuthEntityApi;
 import com.changhong.sei.core.dto.ResultData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -17,7 +18,7 @@ import java.util.List;
  * @version 2020-01-21 8:40
  */
 @FeignClient(name = "sei-basic", path = "dataRole")
-public interface DataRoleApi extends BaseEntityApi<DataRoleDto> {
+public interface DataRoleApi extends BaseEntityApi<DataRoleDto>, DataAuthEntityApi<DataRoleDto> {
     /**
      * 通过角色组Id获取角色清单
      * @param roleGroupId 角色组Id

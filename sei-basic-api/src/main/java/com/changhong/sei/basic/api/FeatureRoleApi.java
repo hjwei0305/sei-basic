@@ -4,6 +4,7 @@ import com.changhong.sei.basic.dto.FeatureRoleDto;
 import com.changhong.sei.basic.dto.PositionDto;
 import com.changhong.sei.basic.dto.UserDto;
 import com.changhong.sei.core.api.BaseEntityApi;
+import com.changhong.sei.core.api.DataAuthEntityApi;
 import com.changhong.sei.core.api.FindByPageApi;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.util.EnumUtils;
@@ -24,7 +25,9 @@ import java.util.List;
  * @version 2020-01-28 10:56
  */
 @FeignClient(name = "sei-basic", path = "featureRole")
-public interface FeatureRoleApi extends BaseEntityApi<FeatureRoleDto>, FindByPageApi<FeatureRoleDto> {
+public interface FeatureRoleApi extends BaseEntityApi<FeatureRoleDto>,
+        FindByPageApi<FeatureRoleDto>,
+        DataAuthEntityApi<FeatureRoleDto> {
     /**
      * 通过角色组Id获取角色清单
      * @param roleGroupId 角色组Id

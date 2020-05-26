@@ -10,6 +10,7 @@ import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.dto.serach.Search;
+import com.changhong.sei.core.entity.ICodeUnique;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.service.bo.OperateResultWithData;
@@ -311,7 +312,7 @@ public class SupplierUserService extends BaseEntityService<SupplierUser> {
             SupplierUserVo savedSupplierVo = resultWithData.getData();
             supplierUserId = savedSupplierVo.getId();
             //如果角色有问题，未能成功分配角色，则需要管理员手动分配角色
-            FeatureRole featureRole = featureRoleService.findByProperty(FeatureRole.CODE_FIELD, roleCode);
+            FeatureRole featureRole = featureRoleService.findByProperty(ICodeUnique.CODE_FIELD, roleCode);
             if (Objects.isNull(featureRole)) {
                 //00056 = 供应商用户未配置功能角色，请联系管理员！
                 return OperateResultWithData.operationFailure("00056");
@@ -387,7 +388,7 @@ public class SupplierUserService extends BaseEntityService<SupplierUser> {
             //00056 = 供应商用户未配置功能角色，请联系管理员！
             return OperateResult.operationFailure("00056");
         }
-        FeatureRole featureRole = featureRoleService.findByProperty(FeatureRole.CODE_FIELD, featureRoleCode);
+        FeatureRole featureRole = featureRoleService.findByProperty(ICodeUnique.CODE_FIELD, featureRoleCode);
         if (Objects.isNull(featureRole)) {
             //00056 = 供应商用户未配置功能角色，请联系管理员！
             return OperateResult.operationFailure("00056");

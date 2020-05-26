@@ -54,7 +54,7 @@ public class UserDataRoleService extends BaseRelationService<UserDataRole, User,
     @Override
     protected List<DataRole> getCanAssignedChildren(String parentId){
         // 判断用户权限
-        return dataRoleService.findByCreator();
+        return dataRoleService.getCanAssignedRoles();
     }
 
     /**
