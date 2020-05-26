@@ -124,6 +124,8 @@ public class EmployeeService extends BaseEntityService<Employee> {
             user.setUserType(entity.getUserType());
             user.setUserAuthorityPolicy(entity.getUserAuthorityPolicy());
             user.setFrozen(entity.isFrozen());
+            // 设置主账号=员工编号
+            user.setAccount(entity.getCode());
             OperateResultWithData<User> userResult = userService.save(user);
             if (userResult.notSuccessful()) {
                 return OperateResultWithData.operationFailureWithData(userResult);
