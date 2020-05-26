@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -115,7 +116,7 @@ public class FeatureRoleController implements DefaultBaseEntityController<Featur
      * @return 用户id清单
      */
     @Override
-    public ResultData<List<String>> getUserIdsByFeatureRole(String[] featureRoleCodes) {
+    public ResultData<List<String>> getUserIdsByFeatureRole(Collection<String> featureRoleCodes) {
         List<String> result = new ArrayList<>();
         for (String featureRoleCode : featureRoleCodes) {
             FeatureRole featureRole = service.findByCode(featureRoleCode);

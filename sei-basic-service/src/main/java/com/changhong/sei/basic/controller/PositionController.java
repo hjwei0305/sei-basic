@@ -198,7 +198,7 @@ public class PositionController implements DefaultBaseEntityController<Position,
      * @return userId列表
      */
     @Override
-    public ResultData<List<String>> getUserIdsByPositionCode(String[] positionCodes) {
+    public ResultData<List<String>> getUserIdsByPositionCode(Collection<String> positionCodes) {
         List<String> result = new ArrayList<>();
         for (String positionCode : positionCodes) {
             Position position = service.findByProperty(Position.POSITION_CODE, positionCode);
