@@ -113,24 +113,19 @@ public class FeatureRoleController implements DefaultBaseEntityController<Featur
     /**
      * 根据功能角色的code获取已分配的用户id
      *
-     * @param featureRoleCodes 功能角色的code
+     * @param featureRoleCode 功能角色的code
      * @return 用户id清单
      */
     @Override
-    public ResultData<List<String>> getUserIdsByFeatureRole(Collection<String> featureRoleCodes) {
+    public ResultData<List<String>> getUserIdsByFeatureRole(String featureRoleCode) {
         List<String> result = new ArrayList<>();
-        for (String featureRoleCode : featureRoleCodes) {
-            FeatureRole featureRole = service.findByCode(featureRoleCode);
-            if (Objects.nonNull(featureRole)) {
-                List<User> users = service.getAssignedEmployeesByFeatureRole(featureRole.getId());
-                List<String> dtos = users.stream().map(User::getId).collect(Collectors.toList());
-                if (CollectionUtils.isNotEmpty(dtos)) {
-                    result.addAll(dtos);
-                }
-            }/* else {
-            // 未找到【{0}】对应的角色!
-            return ResultData.fail(ContextUtil.getMessage("00112", featureRoleCode));
-        }*/
+        FeatureRole featureRole = service.findByCode(featureRoleCode);
+        if (Objects.nonNull(featureRole)) {
+            List<User> users = service.getAssignedEmployeesByFeatureRole(featureRole.getId());
+            List<String> dtos = users.stream().map(User::getId).collect(Collectors.toList());
+            if (CollectionUtils.isNotEmpty(dtos)) {
+                result.addAll(dtos);
+            }
         }
         return ResultData.success(result);
     }
