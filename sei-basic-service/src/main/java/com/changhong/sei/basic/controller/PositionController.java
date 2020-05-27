@@ -201,18 +201,15 @@ public class PositionController implements DefaultBaseEntityController<Position,
     @Override
     public ResultData<List<String>> getUserIdsByPositionCode(Collection<String> positionCodes) {
         List<String> result = new ArrayList<>();
-        for (String positionCode : positionCodes) {
-            Position position = service.findByProperty(Position.POSITION_CODE, positionCode);
-            if (Objects.nonNull(position)) {
-                List<Employee> employees = service.listAllAssignedEmployeesByPositionId(position.getId());
-                List<String> dtos = employees.stream().map(Employee::getId).collect(Collectors.toList());
-                if (CollectionUtils.isNotEmpty(dtos)) {
-                    result.addAll(dtos);
-                }
-            }/* else {
-            // 未找到[{}]对应的岗位
-            return ResultData.fail(ContextUtil.getMessage("00111", positionCode));
-        }*/
+        Search search = Search.createSearch();
+        search.addFilter(new SearchFilter(Position.POSITION_CODE, positionCodes, SearchFilter.Operator.IN));
+        List<Position> positions = service.findByFilters(search);
+        for (Position position : positions) {
+            List<Employee> employees = service.listAllAssignedEmployeesByPositionId(position.getId());
+            List<String> dtos = employees.stream().map(Employee::getId).collect(Collectors.toList());
+            if (CollectionUtils.isNotEmpty(dtos)) {
+                result.addAll(dtos);
+            }
         }
         return ResultData.success(result);
     }
