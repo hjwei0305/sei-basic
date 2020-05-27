@@ -9,6 +9,7 @@ import com.changhong.sei.basic.dto.PositionQueryParam;
 import com.changhong.sei.basic.dto.search.PositionQuickQueryParam;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.service.client.NumberGenerator;
+import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageResult;
@@ -190,6 +191,31 @@ public class PositionService extends BaseEntityService<Position> {
     }
 
     /**
+     * 根据岗位的id获取已分配的员工
+     *
+     * @param positionId 岗位的id
+     * @return 员工清单
+     */
+    public ResultData<List<String>> getUserIdsByPositionCode(String orgCode, String positionId) {
+        Organization org = organizationDao.findByCodeAndTenantCode(orgCode, ContextUtil.getTenantCode());
+        if (Objects.nonNull(org)) {
+            final String orgId = org.getId();
+            List<Employee> employees = employeePositionService.getParentsFromChildId(positionId);
+            if (CollectionUtils.isNotEmpty(employees)) {
+                List<String> userIds = employees.stream().filter(e ->
+                        StringUtils.equals(orgId, e.getOrganizationId())
+                ).map(Employee::getId).collect(Collectors.toList());
+
+                return ResultData.success(userIds);
+            } else {
+                return ResultData.fail(positionId + " - 岗位不存在用户");
+            }
+        } else {
+            return ResultData.fail(orgCode + " - 组织不存在");
+        }
+    }
+
+    /**
      * 查询可分配的功能角色
      *
      * @param featureRoleGroupId 功能角色组id
@@ -264,20 +290,20 @@ public class PositionService extends BaseEntityService<Position> {
     public OperateResult copyToOrgNodes(PositionCopyParam copyParam) {
         // 获取源岗位
         Position position = positionDao.findOne(copyParam.getPositionId());
-        if (Objects.isNull(position)){
+        if (Objects.isNull(position)) {
             // 岗位【{0}】不存在！
             return OperateResult.operationFailure("00090", copyParam.getPositionId());
         }
         AtomicInteger atomicInteger = new AtomicInteger(0);
         List<String> orgIds = copyParam.getTargetOrgIds();
-        if (CollectionUtils.isEmpty(orgIds)){
+        if (CollectionUtils.isEmpty(orgIds)) {
             // 岗位【{0}-{1}】成功复制到【{2}】个组织机构节点！
             return OperateResult.operationSuccess("00091", position.getCode(), position.getName(), atomicInteger.intValue());
         }
         // 循环复制岗位
-        for (String orgId: orgIds){
+        for (String orgId : orgIds) {
             Position targetPosition = copyPosition(position, orgId, copyParam.getCopyFeatureRole());
-            if (Objects.nonNull(targetPosition)){
+            if (Objects.nonNull(targetPosition)) {
                 atomicInteger.incrementAndGet();
             }
         }
@@ -287,20 +313,21 @@ public class PositionService extends BaseEntityService<Position> {
 
     /**
      * 复制一个组织机构到指定的组织机构节点
-     * @param position 源岗位
-     * @param orgId 组织结构节点Id
+     *
+     * @param position        源岗位
+     * @param orgId           组织结构节点Id
      * @param copyFeatureRole 需要复制功能角色
      * @return 复制的目标岗位
      */
-    private Position copyPosition(Position position, String orgId, boolean copyFeatureRole){
+    private Position copyPosition(Position position, String orgId, boolean copyFeatureRole) {
         // 如果组织机构Id相同，直接跳过
         String sourceOrgId = position.getOrganization().getId();
-        if (StringUtils.equals(orgId, sourceOrgId)){
+        if (StringUtils.equals(orgId, sourceOrgId)) {
             return null;
         }
         // 通过名称获取组织机构已经存在的岗位
         List<Position> samePositions = positionDao.findByOrganizationIdAndName(orgId, position.getName());
-        if (CollectionUtils.isNotEmpty(samePositions)){
+        if (CollectionUtils.isNotEmpty(samePositions)) {
             return null;
         }
         // 克隆一个岗位,并初始Id
@@ -310,14 +337,14 @@ public class PositionService extends BaseEntityService<Position> {
         copyPosition.setOrganizationId(orgId);
         copyPosition.setOrganization(null);
         OperateResultWithData<Position> saveResult = save(copyPosition);
-        if (saveResult.notSuccessful()){
+        if (saveResult.notSuccessful()) {
             return null;
         }
         Position targetPosition = saveResult.getData();
         // 复制功能角色
-        if (copyFeatureRole){
+        if (copyFeatureRole) {
             List<FeatureRole> roles = positionFeatureRoleService.getChildrenFromParentId(position.getId());
-            if (CollectionUtils.isNotEmpty(roles)){
+            if (CollectionUtils.isNotEmpty(roles)) {
                 List<String> roleIds = roles.stream().map(FeatureRole::getId).collect(Collectors.toList());
                 positionFeatureRoleService.insertRelations(targetPosition.getId(), roleIds);
             }

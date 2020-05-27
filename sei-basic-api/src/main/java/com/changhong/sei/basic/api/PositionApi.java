@@ -125,8 +125,9 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
 
     /**
      * 根据岗位的id获取已分配的员工
+     *
      * @param positionId 岗位id
-     * @return  员工列表
+     * @return 员工列表
      */
     @GetMapping(path = "listAllAssignedEmployeesByPositionId")
     @ApiOperation(value = "根据岗位的id获取已分配的员工", notes = "根据岗位的id获取已分配的员工")
@@ -134,18 +135,20 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
 
     /**
      * 根据岗位的code获取已分配的员工Id
+     *
+     * @param orgCode      组织code
      * @param positionCode 岗位code
-     * @return  userId列表
+     * @return userId列表
      */
     @GetMapping(path = "getUserIdsByPositionCode")
     @ApiOperation(value = "根据岗位的code获取已分配的员工Id", notes = "根据岗位的code获取已分配的员工Id")
-    ResultData<List<String>> getUserIdsByPositionCode(@RequestParam("positionCode") String positionCode);
+    ResultData<List<String>> getUserIdsByPositionCode(@RequestParam("orgCode") String orgCode, @RequestParam("positionCode") String positionCode);
 
     /**
      * 查询可分配的功能角色
      *
      * @param featureRoleGroupId 功能角色组id
-     * @param positionId 岗位id
+     * @param positionId         岗位id
      * @return 功能角色清单
      */
     @GetMapping(path = "getCanAssignedFeatureRoles")
@@ -156,7 +159,7 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
      * 查询可分配的数据角色
      *
      * @param dataRoleGroupId 数据角色组id
-     * @param positionId 岗位id
+     * @param positionId      岗位id
      * @return 数据角色清单
      */
     @GetMapping(path = "getCanAssignedDataRoles")
@@ -164,13 +167,14 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
     ResultData<List<DataRoleDto>> getCanAssignedDataRoles(@RequestParam("dataRoleGroupId") String dataRoleGroupId, @RequestParam("positionId") String positionId);
 
     /**
-     *  根据组织获取所有的岗位 根据岗位code排序
+     * 根据组织获取所有的岗位 根据岗位code排序
+     *
      * @param orgId 组织Id
      * @return 岗位列表
      */
     @GetMapping(path = "findAllByOrganizationIdOrderByCode")
     @ApiOperation(notes = "根据组织获取所有的岗位 根据岗位code排序", value = "根据组织获取所有的岗位 根据岗位code排序")
-    ResultData<List<PositionDto>> findAllByOrganizationIdOrderByCode(@RequestParam("orgId")String orgId);
+    ResultData<List<PositionDto>> findAllByOrganizationIdOrderByCode(@RequestParam("orgId") String orgId);
 
     /**
      * 根据用户获取所有可分配岗位
@@ -184,6 +188,7 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
 
     /**
      * 把一个岗位复制到多个组织机构节点上
+     *
      * @param copyParam 复制参数
      * @return 操作结果
      */
