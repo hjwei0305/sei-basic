@@ -590,10 +590,11 @@ public class EmployeeService extends BaseEntityService<Employee> {
      */
     public OperateResult copyToEmployees(EmployeeCopyParam copyParam) {
         // 获取源用户
-        Employee employee = findOne(copyParam.getEmployeeId());
+        String sourceEmployeeId = copyParam.getEmployeeId();
+        Employee employee = findOne(sourceEmployeeId);
         if (Objects.isNull(employee) || Objects.isNull(employee.getUser())) {
             // 企业用户【{0}】不存在！
-            return OperateResult.operationFailure("00092", copyParam.getEmployeeId());
+            return OperateResult.operationFailure("00092", sourceEmployeeId);
         }
         User user = employee.getUser();
         AtomicInteger atomicInteger = new AtomicInteger(0);
@@ -604,6 +605,10 @@ public class EmployeeService extends BaseEntityService<Employee> {
         }
         // 循环复制角色
         for (String targetEmployeeId : targetEmployeeIds) {
+            // 排除和源相同的目标用户
+            if (StringUtils.equals(sourceEmployeeId, targetEmployeeId)) {
+                continue;
+            }
             boolean isCopied = copyEmployeeRoles(targetEmployeeId, copyParam.getFeatureRoleIds(), copyParam.getDataRoleIds());
             if (isCopied) {
                 atomicInteger.incrementAndGet();
