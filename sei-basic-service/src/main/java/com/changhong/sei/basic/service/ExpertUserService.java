@@ -109,7 +109,7 @@ public class ExpertUserService extends BaseEntityService<ExpertUser> {
             expertUserProfessionalDomainService.saveRelations(expertUser.getId(), expertUserVo.getProfessionalDomainIds());
 
             //返回
-            return OperateResult.operationSuccess("core_00001");
+            return OperateResult.operationSuccess("core_service_00026");
         } else {
             //修改用户
             user = userDao.getById(expertUserId);
@@ -139,7 +139,7 @@ public class ExpertUserService extends BaseEntityService<ExpertUser> {
             //修改专家的领域
             expertUserProfessionalDomainService.saveRelations(expertUserFromDb.getId(), expertUserVo.getProfessionalDomainIds());
             //返回
-            return OperateResult.operationSuccess("core_00002");
+            return OperateResult.operationSuccess("core_service_00027");
         }
 
     }

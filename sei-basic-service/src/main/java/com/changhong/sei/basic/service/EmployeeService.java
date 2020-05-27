@@ -184,9 +184,9 @@ public class EmployeeService extends BaseEntityService<Employee> {
 
         OperateResultWithData<Employee> operateResultWithData;
         if (isNew) {
-            operateResultWithData = OperateResultWithData.operationSuccess("core_00001");
+            operateResultWithData = OperateResultWithData.operationSuccess("core_service_00026");
         } else {
-            operateResultWithData = OperateResultWithData.operationSuccess("core_00002");
+            operateResultWithData = OperateResultWithData.operationSuccess("core_service_00027");
         }
         operateResultWithData.setData(entity);
         if (isNew && entity.isCreateAdmin() && operateResultWithData.successful()) {

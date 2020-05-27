@@ -153,7 +153,7 @@ public class SupplierUserService extends BaseEntityService<SupplierUser> {
             } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new RuntimeException("数据处理错误");
             }
-            return OperateResultWithData.operationSuccessWithData(vo, "core_00001");
+            return OperateResultWithData.operationSuccessWithData(vo, "core_service_00026");
         } else {
             //修改用户
             user = userDao.getById(supplierUserId);
@@ -184,7 +184,7 @@ public class SupplierUserService extends BaseEntityService<SupplierUser> {
             } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new RuntimeException("数据处理错误");
             }
-            return OperateResultWithData.operationSuccessWithData(vo, "core_00002");
+            return OperateResultWithData.operationSuccessWithData(vo, "core_service_00027");
         }
     }
 
