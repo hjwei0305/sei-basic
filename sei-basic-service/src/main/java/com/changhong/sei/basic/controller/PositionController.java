@@ -13,6 +13,7 @@ import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.dto.serach.Search;
+import com.changhong.sei.core.dto.serach.SearchFilter;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
@@ -198,17 +199,8 @@ public class PositionController implements DefaultBaseEntityController<Position,
      * @return userId列表
      */
     @Override
-    public ResultData<List<String>> getUserIdsByPositionCode(String positionCode) {
-        List<String> result = new ArrayList<>();
-        Position position = service.findByProperty(Position.POSITION_CODE, positionCode);
-        if (Objects.nonNull(position)) {
-            List<Employee> employees = service.listAllAssignedEmployeesByPositionId(position.getId());
-            List<String> dtos = employees.stream().map(Employee::getId).collect(Collectors.toList());
-            if (CollectionUtils.isNotEmpty(dtos)) {
-                result.addAll(dtos);
-            }
-        }
-        return ResultData.success(result);
+    public ResultData<List<String>> getUserIdsByPositionCode(String orgCode, String positionCode) {
+        return service.getUserIdsByPositionCode(orgCode, positionCode);
     }
 
     /**
