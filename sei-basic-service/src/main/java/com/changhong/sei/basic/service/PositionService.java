@@ -193,22 +193,27 @@ public class PositionService extends BaseEntityService<Position> {
     /**
      * 根据岗位的id获取已分配的员工
      *
-     * @param positionId 岗位的id
+     * @param positionCode 岗位的code
      * @return 员工清单
      */
-    public ResultData<List<String>> getUserIdsByPositionCode(String orgCode, String positionId) {
+    public ResultData<List<String>> getUserIdsByPositionCode(String orgCode, String positionCode) {
         Organization org = organizationDao.findByCodeAndTenantCode(orgCode, ContextUtil.getTenantCode());
         if (Objects.nonNull(org)) {
             final String orgId = org.getId();
-            List<Employee> employees = employeePositionService.getParentsFromChildId(positionId);
-            if (CollectionUtils.isNotEmpty(employees)) {
-                List<String> userIds = employees.stream().filter(e ->
-                        StringUtils.equals(orgId, e.getOrganizationId())
-                ).map(Employee::getId).collect(Collectors.toList());
+            Position position = positionDao.findByProperty(Position.POSITION_CODE, positionCode);
+            if (Objects.nonNull(position)) {
+                List<Employee> employees = employeePositionService.getParentsFromChildId(position.getId());
+                if (CollectionUtils.isNotEmpty(employees)) {
+                    List<String> userIds = employees.stream().filter(e ->
+                            StringUtils.equals(orgId, e.getOrganizationId())
+                    ).map(Employee::getId).collect(Collectors.toList());
 
-                return ResultData.success(userIds);
+                    return ResultData.success(userIds);
+                } else {
+                    return ResultData.fail(positionCode + " - 岗位不存在用户");
+                }
             } else {
-                return ResultData.fail(positionId + " - 岗位不存在用户");
+                return ResultData.fail(positionCode + " - 岗位不存在");
             }
         } else {
             return ResultData.fail(orgCode + " - 组织不存在");
