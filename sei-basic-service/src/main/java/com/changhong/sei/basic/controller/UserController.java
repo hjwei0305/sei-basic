@@ -27,10 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -225,6 +222,9 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
         if (userResultData.failed()) {
             return ResultData.fail(userResultData.getMessage());
         }
+        if (Objects.isNull(userResultData.getData())) {
+            return ResultData.success(userResultData.getMessage(), new ArrayList<>());
+        }
         Set<DataRole> roles = service.getNormalUserDataRoles(userResultData.getData());
         List<DataRoleDto> roleDtos = roles.stream().map(DataRoleController::custConvertToDto).collect(Collectors.toList());
         return ResultData.success(roleDtos);
@@ -246,11 +246,13 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
         UserAuthorityPolicy authorityPolicy = userResponse.getAuthorityPolicy();
         if (authorityPolicy == UserAuthorityPolicy.GlobalAdmin) {
             // 用户账号【{0}】是全局管理员！
-            return ResultDataUtil.fail("00109", account);
+            String message = ContextUtil.getMessage("00109", account);
+            return ResultData.success(message, null);
         }
         if (authorityPolicy == UserAuthorityPolicy.TenantAdmin) {
             // 用户账号【{0}】是租户【{1}】的系统管理员！
-            return ResultDataUtil.fail("00110", account, tenantCode);
+            String message = ContextUtil.getMessage("00110", account, tenantCode);
+            return ResultData.success(message, null);
         }
         User user = service.findOne(userResponse.getUserId());
         if (Objects.isNull(user)) {
@@ -272,6 +274,9 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
         ResultData<User> userResultData = getNormalUserByAccount(account);
         if (userResultData.failed()) {
             return ResultData.fail(userResultData.getMessage());
+        }
+        if (Objects.isNull(userResultData.getData())) {
+            return ResultData.success(userResultData.getMessage(), new ArrayList<>());
         }
         Set<FeatureRole> roles = service.getNormalUserFeatureRoles(userResultData.getData());
         List<FeatureRoleDto> roleDtos = roles.stream().map(FeatureRoleController::custConvertToDto).collect(Collectors.toList());
