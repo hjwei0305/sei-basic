@@ -2,7 +2,7 @@ package com.changhong.sei.basic.service.util;
 
 import com.changhong.sei.basic.entity.Employee;
 import com.changhong.sei.core.log.LogUtil;
-import com.changhong.sei.notify.api.EmailNotifyApi;
+import com.changhong.sei.notify.api.NotifyApi;
 import com.changhong.sei.notify.dto.EmailAccount;
 import com.changhong.sei.notify.dto.EmailMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.Map;
 public class EmailUtil {
     // 注入发送邮件的API服务
     @Autowired
-    private EmailNotifyApi emailNotifyApi;
+    private NotifyApi notifyApi;
     /**
      * 构造注册成功后发送的邮件
      *
@@ -54,7 +54,7 @@ public class EmailUtil {
     public void sendEmailNotifyUser(EmailMessage message) {
         try {
             // 执行邮件发送
-            emailNotifyApi.sendEmail(message);
+            notifyApi.sendEmail(message);
         } catch (Exception e) {
             LogUtil.error("发送邮件异常.", e);
         }
