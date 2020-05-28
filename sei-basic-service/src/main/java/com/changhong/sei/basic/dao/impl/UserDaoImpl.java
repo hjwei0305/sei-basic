@@ -62,7 +62,7 @@ public class UserDaoImpl extends BaseEntityDaoImpl<User> implements UserExtDao {
         }
         // 限制关键字
         if (!StringUtils.isBlank(quickSearchValue)){
-            fromAndWhere += "and (u.userName like :quickSearchValue) ";
+            fromAndWhere += "and (u.userName like :quickSearchValue or u.account like :quickSearchValue) ";
             sqlParams.put("quickSearchValue", "%"+quickSearchValue+"%");
         }
         QuerySql querySql = new QuerySql(select,fromAndWhere);
