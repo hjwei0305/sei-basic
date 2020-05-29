@@ -222,9 +222,6 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
         if (userResultData.failed()) {
             return ResultData.fail(userResultData.getMessage());
         }
-        if (Objects.isNull(userResultData.getData())) {
-            return ResultData.success(userResultData.getMessage(), new ArrayList<>());
-        }
         Set<DataRole> roles = service.getNormalUserDataRoles(userResultData.getData());
         List<DataRoleDto> roleDtos = roles.stream().map(DataRoleController::custConvertToDto).collect(Collectors.toList());
         return ResultData.success(roleDtos);
@@ -246,13 +243,11 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
         UserAuthorityPolicy authorityPolicy = userResponse.getAuthorityPolicy();
         if (authorityPolicy == UserAuthorityPolicy.GlobalAdmin) {
             // 用户账号【{0}】是全局管理员！
-            String message = ContextUtil.getMessage("00109", account);
-            return ResultData.success(message, null);
+            return ResultDataUtil.fail("00109", account);
         }
         if (authorityPolicy == UserAuthorityPolicy.TenantAdmin) {
             // 用户账号【{0}】是租户【{1}】的系统管理员！
-            String message = ContextUtil.getMessage("00110", account, tenantCode);
-            return ResultData.success(message, null);
+            return ResultDataUtil.fail("00110", account, tenantCode);
         }
         User user = service.findOne(userResponse.getUserId());
         if (Objects.isNull(user)) {
@@ -274,9 +269,6 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
         ResultData<User> userResultData = getNormalUserByAccount(account);
         if (userResultData.failed()) {
             return ResultData.fail(userResultData.getMessage());
-        }
-        if (Objects.isNull(userResultData.getData())) {
-            return ResultData.success(userResultData.getMessage(), new ArrayList<>());
         }
         Set<FeatureRole> roles = service.getNormalUserFeatureRoles(userResultData.getData());
         List<FeatureRoleDto> roleDtos = roles.stream().map(FeatureRoleController::custConvertToDto).collect(Collectors.toList());

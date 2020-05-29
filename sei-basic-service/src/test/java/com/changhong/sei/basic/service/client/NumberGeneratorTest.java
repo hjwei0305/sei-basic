@@ -1,5 +1,6 @@
 package com.changhong.sei.basic.service.client;
 
+import com.changhong.sei.basic.entity.Menu;
 import com.changhong.sei.basic.entity.Position;
 import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.serial.sdk.SerialService;
@@ -18,7 +19,7 @@ public class NumberGeneratorTest extends BaseUnitTest {
 
     @Test
     public void getNumberByClassName() {
-        String number = serialService.getNumber(Position.class);
+        String number = serialService.getNumber(Menu.class);
         System.out.println("number："+number);
     }
 }
