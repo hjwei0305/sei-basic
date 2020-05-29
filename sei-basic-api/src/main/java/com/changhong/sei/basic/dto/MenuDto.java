@@ -90,6 +90,12 @@ public class MenuDto extends BaseEntityDto implements TreeEntity<MenuDto> {
     private String iconCls;
 
     /**
+     * 图标文件数据
+     */
+    @ApiModelProperty(value = "图标文件数据")
+    private String iconFileData;
+
+    /**
      * 子节点列表
      */
     @ApiModelProperty(value = "子节点列表")
@@ -187,6 +193,14 @@ public class MenuDto extends BaseEntityDto implements TreeEntity<MenuDto> {
 
     public void setIconCls(String iconCls) {
         this.iconCls = iconCls;
+    }
+
+    public String getIconFileData() {
+        return iconFileData;
+    }
+
+    public void setIconFileData(String iconFileData) {
+        this.iconFileData = iconFileData;
     }
 
     public List<MenuDto> getChildren() {

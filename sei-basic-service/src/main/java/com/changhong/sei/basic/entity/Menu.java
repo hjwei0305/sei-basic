@@ -87,6 +87,14 @@ public class Menu extends BaseAuditableEntity implements TreeEntity<Menu> {
     private String iconCls;
 
     /**
+     * 图标文件数据
+     */
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "icon_file_data")
+    private String iconFileData;
+
+    /**
      * 子节点列表
      */
     @Transient
@@ -187,6 +195,14 @@ public class Menu extends BaseAuditableEntity implements TreeEntity<Menu> {
 
     public void setIconCls(String iconCls) {
         this.iconCls = iconCls;
+    }
+
+    public String getIconFileData() {
+        return iconFileData;
+    }
+
+    public void setIconFileData(String iconFileData) {
+        this.iconFileData = iconFileData;
     }
 
     @Override
