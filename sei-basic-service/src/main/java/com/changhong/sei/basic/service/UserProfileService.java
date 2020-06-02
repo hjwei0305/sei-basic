@@ -8,10 +8,12 @@ import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.notify.dto.UserNotifyInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * *************************************************************************************************
@@ -60,6 +62,12 @@ public class UserProfileService extends BaseEntityService<UserProfile> {
             userNotifyInfo.setUserName(r.getUser().getUserName());
             userNotifyInfo.setEmail(r.getEmail());
             userNotifyInfo.setMobile(r.getMobile());
+            //TODO 获取用户的微信用户和小程序用户openid
+//            List<UserAccount> userAccounts = userAccountDao.findByUserId(r.getUser().getId());
+//            Set<String> weChatOpenId = userAccounts.stream().map(UserAccount::getWechatOpenId).filter(StringUtils::isNotEmpty).collect(Collectors.toSet());
+//            userNotifyInfo.setWeChatOpenId(weChatOpenId);
+//            Set<String> miniProgramOpenId = userAccounts.stream().map(UserAccount::getMiniProgramOpenId).filter(StringUtils::isNotEmpty).collect(Collectors.toSet());
+//            userNotifyInfo.setMiniProgramOpenId(miniProgramOpenId);
             userNotifyInfos.add(userNotifyInfo);
         });
         return userNotifyInfos;
