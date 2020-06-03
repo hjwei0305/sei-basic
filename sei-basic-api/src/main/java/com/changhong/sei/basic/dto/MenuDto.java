@@ -19,6 +19,7 @@ import java.util.List;
  */
 @ApiModel(description = "系统菜单DTO")
 public class MenuDto extends BaseEntityDto implements TreeEntity<MenuDto> {
+    private static final long serialVersionUID = 891649039705760108L;
     /**
      * 菜单代码
      */

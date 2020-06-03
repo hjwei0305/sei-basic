@@ -27,6 +27,7 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 public class Menu extends BaseAuditableEntity implements TreeEntity<Menu> {
+    private static final long serialVersionUID = 5921201068332944127L;
     /**
      * 菜单代码
      */
