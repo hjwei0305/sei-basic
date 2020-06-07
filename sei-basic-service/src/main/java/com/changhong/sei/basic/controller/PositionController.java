@@ -143,7 +143,8 @@ public class PositionController implements DefaultBaseEntityController<Position,
      */
     @Override
     public ResultData<List<Executor>> getExecutors(FindExecutorByPositionParam findParam) {
-        return ResultData.success(service.getExecutors(findParam.getPositionIds(), findParam.getOrgId()));
+        // 工作流中获取指定岗位的执行人，不过滤人员所在的组织机构
+        return ResultData.success(service.getExecutorsByPositionIds(findParam.getPositionIds()));
     }
 
     /**
