@@ -17,6 +17,7 @@ import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.BaseTreeService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.core.ParameterizedTypeReference;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * 实现功能：数据角色分配权限类型的值业务逻辑实现
@@ -107,6 +109,7 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
      * @param authTypeId 权限类型Id
      * @return 业务实体数据
      */
+    @Transactional(rollbackFor = Exception.class)
     public List<AuthEntityData> getAssignedAuthDataList(String roleId, String authTypeId) {
         //获取数据权限类型
         DataAuthorizeType authorizeType = dataAuthorizeTypeService.findOne(authTypeId);
@@ -120,7 +123,23 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
         //调用API服务，获取业务实体
         String appModuleCode = authorizeType.getAuthorizeEntityType().getAppModule().getApiBaseAddress();
         String apiPath = authorizeType.getAuthorizeEntityType().getApiPath();
-        return dataAuthManager.getAuthEntityDataByIds(appModuleCode, apiPath, entityIds);
+        List<AuthEntityData> authEntityDatas = dataAuthManager.getAuthEntityDataByIds(appModuleCode, apiPath, entityIds);
+        // 清理并删除未定义的数据权限配置值
+        Set<String> undefinedIds = new HashSet<>();
+        entityIds.forEach(id-> {
+            Predicate<AuthEntityData> predicate = data -> StringUtils.equals(id, data.getId());
+            if (authEntityDatas.stream().noneMatch(predicate)) {
+                undefinedIds.add(id);
+            }
+        });
+        if (CollectionUtils.isNotEmpty(undefinedIds)) {
+            DataRoleRelation removeRelations = new DataRoleRelation();
+            removeRelations.setDataAuthorizeTypeId(authTypeId);
+            removeRelations.setDataRoleId(roleId);
+            removeRelations.setEntityIds(new ArrayList<>(undefinedIds));
+            removeRelations(removeRelations);
+        }
+        return authEntityDatas;
     }
 
     /**
