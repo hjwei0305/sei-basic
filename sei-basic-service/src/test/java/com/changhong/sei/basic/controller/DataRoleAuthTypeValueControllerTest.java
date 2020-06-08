@@ -63,4 +63,13 @@ public class DataRoleAuthTypeValueControllerTest extends BaseUnitTest {
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }
+
+    @Test
+    public void getAssignedAuthTreeDataList() {
+        String roleId = "0AF65EDD-6734-11EA-8764-0242C0A8460C";
+        String authTypeId = "02808BCB-4A27-11EA-8AF0-0242C0A84607";
+        ResultData<List<AuthTreeEntityData>> resultData = controller.getAssignedAuthTreeDataList(roleId, authTypeId);
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
 }

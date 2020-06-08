@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * 实现功能：数据角色分配权限类型的值业务逻辑实现
@@ -126,7 +127,7 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
         String apiPath = authorizeType.getAuthorizeEntityType().getApiPath();
         List<AuthEntityData> authEntityDatas = dataAuthManager.getAuthEntityDataByIds(appModuleCode, apiPath, entityIds);
         // 清理并删除未定义的数据权限配置值
-        removeUndefinedRelations(roleId, authTypeId, entityIds, authEntityDatas);
+        removeUndefinedRelations(roleId, authTypeId, entityIds, authEntityDatas.stream().map(AuthEntityData::getId).collect(Collectors.toList()));
         return authEntityDatas;
     }
 
@@ -170,10 +171,10 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
         String appModuleCode = authorizeType.getAuthorizeEntityType().getAppModule().getApiBaseAddress();
         String apiPath =  authorizeType.getAuthorizeEntityType().getApiPath();
         List<AuthTreeEntityData> authTreeEntityDatas = dataAuthManager.getAuthTreeEntityDataByIds(appModuleCode, apiPath, entityIds);
-//        // 获取树形权限对象的所有节点清单
-//        List<AuthEntityData> authTreeEntityNodes = new ArrayList<>(BaseTreeService.unBuildTree(authTreeEntityDatas));
-//        // 清理并删除未定义的数据权限配置值
-//        removeUndefinedRelations(roleId, authTypeId, entityIds, authTreeEntityNodes);
+        // 获取树形权限对象的所有节点清单
+        List<String> authTreeEntityIds = new ArrayList<>(BaseTreeService.unBuildTreeIds(authTreeEntityDatas));
+        // 清理并删除未定义的数据权限配置值
+        removeUndefinedRelations(roleId, authTypeId, entityIds, authTreeEntityIds);
         return authTreeEntityDatas;
     }
 
@@ -182,14 +183,13 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
      * @param roleId     数据角色Id
      * @param authTypeId 权限类型Id
      * @param entityIds 已配置的业务实体Id清单
-     * @param authEntityDatas 已配置已定义的业务实体权限数据
+     * @param authEntityIds 已配置已定义的业务实体权限数据值
      */
-    private void removeUndefinedRelations(String roleId, String authTypeId, List<String> entityIds, List<AuthEntityData> authEntityDatas) {
+    private void removeUndefinedRelations(String roleId, String authTypeId, List<String> entityIds, List<String> authEntityIds) {
         // 清理并删除未定义的数据权限配置值
         Set<String> undefinedIds = new HashSet<>();
         entityIds.forEach(id-> {
-            Predicate<AuthEntityData> predicate = data -> StringUtils.equals(id, data.getId());
-            if (authEntityDatas.stream().noneMatch(predicate)) {
+            if (!authEntityIds.contains(id)) {
                 undefinedIds.add(id);
             }
         });
