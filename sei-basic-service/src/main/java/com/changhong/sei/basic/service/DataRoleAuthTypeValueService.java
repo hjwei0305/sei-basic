@@ -170,10 +170,10 @@ public class DataRoleAuthTypeValueService extends BaseEntityService<DataRoleAuth
         String appModuleCode = authorizeType.getAuthorizeEntityType().getAppModule().getApiBaseAddress();
         String apiPath =  authorizeType.getAuthorizeEntityType().getApiPath();
         List<AuthTreeEntityData> authTreeEntityDatas = dataAuthManager.getAuthTreeEntityDataByIds(appModuleCode, apiPath, entityIds);
-        // 获取树形权限对象的所有节点清单
-        List<AuthEntityData> authTreeEntityNodes = new ArrayList<>(BaseTreeService.unBuildTree(authTreeEntityDatas));
-        // 清理并删除未定义的数据权限配置值
-        removeUndefinedRelations(roleId, authTypeId, entityIds, authTreeEntityNodes);
+//        // 获取树形权限对象的所有节点清单
+//        List<AuthEntityData> authTreeEntityNodes = new ArrayList<>(BaseTreeService.unBuildTree(authTreeEntityDatas));
+//        // 清理并删除未定义的数据权限配置值
+//        removeUndefinedRelations(roleId, authTypeId, entityIds, authTreeEntityNodes);
         return authTreeEntityDatas;
     }
 
