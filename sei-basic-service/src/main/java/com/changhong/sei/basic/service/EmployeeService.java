@@ -108,8 +108,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
      * @param entity 实体
      * @return 返回操作对象
      */
-    @Transactional(rollbackFor = Exception.class)
-    protected OperateResultWithData<Employee> saveEmployee(Employee entity) {
+    private OperateResultWithData<Employee> saveEmployee(Employee entity) {
         boolean isNew = entity.isNew();
         //检查该租户下员工编号不能重复
         if (employeeDao.isCodeExist(entity.getCode(), entity.getId())) {
