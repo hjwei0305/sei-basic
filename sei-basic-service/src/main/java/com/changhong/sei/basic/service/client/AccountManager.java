@@ -38,11 +38,11 @@ public class AccountManager {
      */
     public void create(CreateAccountRequest request) {
         try {
-            ResultData resultData = client.create(request);
+            ResultData<String> resultData = client.create(request);
             if (resultData.failed()) {
                 throw new ServiceException("创建新账户失败！"+resultData.getMessage()+":"+ JsonUtils.toJson(request));
             }
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             throw new ServiceException("创建新账户异常！"+e.getMessage()+":"+ JsonUtils.toJson(request));
         }
     }
@@ -53,11 +53,11 @@ public class AccountManager {
      */
     public void update(UpdateAccountByAccountRequest request) {
         try {
-            ResultData resultData = client.updateByTenantAccount(request);
+            ResultData<String> resultData = client.updateByTenantAccount(request);
             if (resultData.failed()) {
                 throw new ServiceException("更改账户失败！"+resultData.getMessage());
             }
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             throw new ServiceException("更改账户异常！"+e.getMessage());
         }
     }
