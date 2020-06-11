@@ -124,16 +124,18 @@ public class DataRoleService extends BaseEntityService<DataRole> implements Data
         if (sessionUser.isAnonymous() || sessionUser.getAuthorityPolicy() == UserAuthorityPolicy.GlobalAdmin){
             return new ArrayList<>();
         }
+        Set<DataRole> roles = new LinkedHashSet<>();
         // 如果是租户管理员，返回所有
         if (sessionUser.getAuthorityPolicy() == UserAuthorityPolicy.TenantAdmin){
             if (StringUtils.isBlank(roleGroupId)) {
-                return findAll();
+                roles.addAll(findAll());
             } else {
-                return dao.findByDataRoleGroupId(roleGroupId);
+                roles.addAll(dao.findByDataRoleGroupId(roleGroupId));
             }
+            // 排除公共角色
+            return roles.stream().filter(role-> Objects.isNull(role.getPublicUserType())).collect(Collectors.toList());
         }
         // 如果是一般分级授权用户，获取有数据权限的角色+本人创建的角色
-        Set<DataRole> roles = new LinkedHashSet<>();
         List<DataRole> authRoles = getUserAuthorizedEntities(null);
         if (CollectionUtils.isNotEmpty(authRoles)) {
             if (StringUtils.isBlank(roleGroupId)) {
@@ -148,7 +150,8 @@ public class DataRoleService extends BaseEntityService<DataRole> implements Data
         } else {
             roles.addAll(dao.findByCreator(roleGroupId, sessionUser.getAccount(), sessionUser.getTenantCode()));
         }
-        return new ArrayList<>(roles);
+        // 排除公共角色
+        return roles.stream().filter(role-> Objects.isNull(role.getPublicUserType())).collect(Collectors.toList());
     }
 
     /**
