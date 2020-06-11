@@ -14,7 +14,7 @@ sei: # 应用全局配置
     user:
       tenant-code: 10044
       # tenant-code: global
-      account: admin
+      account: test02
 
 spring:
   application:
