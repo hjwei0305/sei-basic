@@ -108,6 +108,12 @@ public class MenuDto extends BaseEntityDto implements TreeEntity<MenuDto> {
     @ApiModelProperty(value = "菜单项资源")
     private String menuUrl;
 
+    /**
+     * 已收藏的菜单项
+     */
+    @ApiModelProperty(value = "已收藏的菜单项")
+    private Boolean favorite = Boolean.FALSE;
+
     public String getCode() {
         return code;
     }
@@ -218,5 +224,13 @@ public class MenuDto extends BaseEntityDto implements TreeEntity<MenuDto> {
 
     public void setMenuUrl(String menuUrl) {
         this.menuUrl = menuUrl;
+    }
+
+    public Boolean getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        this.favorite = favorite;
     }
 }

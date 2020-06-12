@@ -107,6 +107,12 @@ public class Menu extends BaseAuditableEntity implements TreeEntity<Menu> {
     @Transient
     private String menuUrl;
 
+    /**
+     * 已收藏的菜单项
+     */
+    @Transient
+    private Boolean favorite = Boolean.FALSE;
+
     @Override
     public String getCode() {
         return code;
@@ -222,5 +228,13 @@ public class Menu extends BaseAuditableEntity implements TreeEntity<Menu> {
 
     public void setMenuUrl(String menuUrl) {
         this.menuUrl = menuUrl;
+    }
+
+    public Boolean getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        this.favorite = favorite;
     }
 }
