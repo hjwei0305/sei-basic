@@ -80,7 +80,7 @@ public class FeatureRoleController implements DefaultBaseEntityController<Featur
      */
     @Override
     public ResultData<List<FeatureRoleDto>> findByFeatureRoleGroup(String roleGroupId) {
-        return ResultData.success(convertToDtos(service.getCanAssignedRoles(roleGroupId)));
+        return ResultData.success(convertToDtos(service.getCanAssignedRoles(roleGroupId, true)));
     }
 
     /**
@@ -188,7 +188,7 @@ public class FeatureRoleController implements DefaultBaseEntityController<Featur
      */
     @Override
     public ResultData<List<FeatureRoleDto>> getCanAssignedRoles(String roleGroupId) {
-        return ResultData.success(convertToDtos(service.getCanAssignedRoles(roleGroupId)));
+        return ResultData.success(convertToDtos(service.getCanAssignedRoles(roleGroupId, false)));
     }
 
     /**

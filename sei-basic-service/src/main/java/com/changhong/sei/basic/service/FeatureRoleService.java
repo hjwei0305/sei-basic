@@ -38,10 +38,12 @@ public class FeatureRoleService extends BaseEntityService<FeatureRole> implement
 
     @Autowired
     private FeatureRoleDao dao;
+
     @Override
     protected BaseEntityDao<FeatureRole> getDao() {
         return dao;
     }
+
     @Autowired
     private UserFeatureRoleService userFeatureRoleService;
     @Autowired
@@ -111,10 +113,11 @@ public class FeatureRoleService extends BaseEntityService<FeatureRole> implement
 
     /**
      * 获取用户的公共功能角色
+     *
      * @param user 用户
      * @return 公共功能角色清单
      */
-    List<FeatureRole> getPublicFeatureRoles(User user){
+    List<FeatureRole> getPublicFeatureRoles(User user) {
         if (Objects.isNull(user) || StringUtils.isBlank(user.getId())) {
             return new ArrayList<>();
         }
@@ -123,49 +126,56 @@ public class FeatureRoleService extends BaseEntityService<FeatureRole> implement
         List<FeatureRole> result = new ArrayList<>(publicRoles);
         String userId = user.getId();
         //获取用户的组织机构
-        if (user.getUserType()== UserType.Employee){
+        if (user.getUserType() == UserType.Employee) {
             Employee employee = employeeService.findOne(userId);
-            if (employee!=null){
+            if (employee != null) {
                 //获取企业用户的组织机构
-                List<Organization> orgs = organizationService.getParentNodes(employee.getOrganization().getId(),true);
-                List<FeatureRole> orgPubRoles = dao.getPublicRoles(user,orgs);
+                List<Organization> orgs = organizationService.getParentNodes(employee.getOrganization().getId(), true);
+                List<FeatureRole> orgPubRoles = dao.getPublicRoles(user, orgs);
                 result.addAll(orgPubRoles);
             }
         }
         // 设置来源类型
-        result.forEach(role-> role.setRoleSourceType(RoleSourceType.PUBLIC));
+        result.forEach(role -> role.setRoleSourceType(RoleSourceType.PUBLIC));
         return result;
     }
 
     /**
      * 获取用户本人可以分配的角色清单
+     *
+     * @param includePublic 是否包含公共角色
      * @return 角色清单
      */
-    List<FeatureRole> getCanAssignedRoles(){
-        return getCanAssignedRoles(null);
+    List<FeatureRole> getCanAssignedRoles(Boolean includePublic) {
+        return getCanAssignedRoles(null, includePublic);
     }
 
     /**
      * 获取用户本人可以分配的角色
-     * @param roleGroupId 角色组Id
+     *
+     * @param roleGroupId   角色组Id
+     * @param includePublic 是否包含公共角色
      * @return 可以分配的角色
      */
-    public List<FeatureRole> getCanAssignedRoles(String roleGroupId){
+    public List<FeatureRole> getCanAssignedRoles(String roleGroupId, Boolean includePublic) {
         // 判断用户权限
         SessionUser sessionUser = ContextUtil.getSessionUser();
-        if (sessionUser.isAnonymous() || sessionUser.getAuthorityPolicy() == UserAuthorityPolicy.GlobalAdmin){
+        if (sessionUser.isAnonymous() || sessionUser.getAuthorityPolicy() == UserAuthorityPolicy.GlobalAdmin) {
             return new ArrayList<>();
         }
         Set<FeatureRole> roles = new LinkedHashSet<>();
         // 如果是租户管理员，返回所有
-        if (sessionUser.getAuthorityPolicy() == UserAuthorityPolicy.TenantAdmin){
+        if (sessionUser.getAuthorityPolicy() == UserAuthorityPolicy.TenantAdmin) {
             if (StringUtils.isBlank(roleGroupId)) {
                 roles.addAll(findAll());
             } else {
                 roles.addAll(dao.findByFeatureRoleGroupId(roleGroupId));
             }
+            if (includePublic) {
+                return new ArrayList<>(roles);
+            }
             // 排除公共角色
-            return roles.stream().filter(role-> Objects.isNull(role.getPublicUserType())).collect(Collectors.toList());
+            return roles.stream().filter(role -> Objects.isNull(role.getPublicUserType())).collect(Collectors.toList());
         }
         // 如果是一般分级授权用户，获取有数据权限的角色+本人创建的角色
         List<FeatureRole> authRoles = getUserAuthorizedEntities(null);
@@ -174,7 +184,7 @@ public class FeatureRoleService extends BaseEntityService<FeatureRole> implement
                 roles.addAll(authRoles);
             } else {
                 // 过滤角色组
-                roles.addAll(authRoles.stream().filter(r-> StringUtils.equals(r.getFeatureRoleGroupId(), roleGroupId)).collect(Collectors.toList()));
+                roles.addAll(authRoles.stream().filter(r -> StringUtils.equals(r.getFeatureRoleGroupId(), roleGroupId)).collect(Collectors.toList()));
             }
         }
         if (StringUtils.isBlank(roleGroupId)) {
@@ -182,8 +192,11 @@ public class FeatureRoleService extends BaseEntityService<FeatureRole> implement
         } else {
             roles.addAll(dao.findByCreator(roleGroupId, sessionUser.getAccount(), sessionUser.getTenantCode()));
         }
+        if (includePublic) {
+            return new ArrayList<>(roles);
+        }
         // 排除公共角色
-        return roles.stream().filter(role-> Objects.isNull(role.getPublicUserType())).collect(Collectors.toList());
+        return roles.stream().filter(role -> Objects.isNull(role.getPublicUserType())).collect(Collectors.toList());
     }
 
     /**

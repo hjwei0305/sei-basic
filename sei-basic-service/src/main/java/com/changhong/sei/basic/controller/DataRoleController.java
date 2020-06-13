@@ -66,7 +66,7 @@ public class DataRoleController implements DefaultBaseEntityController<DataRole,
      */
     @Override
     public ResultData<List<DataRoleDto>> findByDataRoleGroup(String roleGroupId) {
-        return ResultData.success(convertToDtos(service.getCanAssignedRoles(roleGroupId)));
+        return ResultData.success(convertToDtos(service.getCanAssignedRoles(roleGroupId, true)));
     }
 
     /**
@@ -77,7 +77,7 @@ public class DataRoleController implements DefaultBaseEntityController<DataRole,
      */
     @Override
     public ResultData<List<DataRoleDto>> getCanAssignedRoles(String roleGroupId) {
-        List<DataRole> roles = service.getCanAssignedRoles(roleGroupId);
+        List<DataRole> roles = service.getCanAssignedRoles(roleGroupId, false);
         List<DataRoleDto> dtos = roles.stream().map(this::convertToDto).collect(Collectors.toList());
         return ResultData.success(dtos);
     }

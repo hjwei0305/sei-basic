@@ -109,16 +109,17 @@ public class DataRoleService extends BaseEntityService<DataRole> implements Data
      * 获取用户本人可以分配的角色清单
      * @return 角色清单
      */
-    List<DataRole> getCanAssignedRoles(){
-        return getCanAssignedRoles(null);
+    List<DataRole> getCanAssignedRoles(Boolean includePublic){
+        return getCanAssignedRoles(null, includePublic);
     }
 
     /**
      * 获取用户本人可以分配的角色
      * @param roleGroupId 角色组Id
+     * @param includePublic 是否包含公共角色
      * @return 可以分配的角色
      */
-    public List<DataRole> getCanAssignedRoles(String roleGroupId){
+    public List<DataRole> getCanAssignedRoles(String roleGroupId, Boolean includePublic){
         // 判断用户权限
         SessionUser sessionUser = ContextUtil.getSessionUser();
         if (sessionUser.isAnonymous() || sessionUser.getAuthorityPolicy() == UserAuthorityPolicy.GlobalAdmin){
@@ -131,6 +132,9 @@ public class DataRoleService extends BaseEntityService<DataRole> implements Data
                 roles.addAll(findAll());
             } else {
                 roles.addAll(dao.findByDataRoleGroupId(roleGroupId));
+            }
+            if (includePublic) {
+                return new ArrayList<>(roles);
             }
             // 排除公共角色
             return roles.stream().filter(role-> Objects.isNull(role.getPublicUserType())).collect(Collectors.toList());
@@ -149,6 +153,9 @@ public class DataRoleService extends BaseEntityService<DataRole> implements Data
             roles.addAll(dao.findByCreatorAccountAndTenantCode(sessionUser.getAccount(), sessionUser.getTenantCode()));
         } else {
             roles.addAll(dao.findByCreator(roleGroupId, sessionUser.getAccount(), sessionUser.getTenantCode()));
+        }
+        if (includePublic) {
+            return new ArrayList<>(roles);
         }
         // 排除公共角色
         return roles.stream().filter(role-> Objects.isNull(role.getPublicUserType())).collect(Collectors.toList());

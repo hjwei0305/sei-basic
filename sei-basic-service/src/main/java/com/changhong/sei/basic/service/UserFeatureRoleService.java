@@ -58,7 +58,7 @@ public class UserFeatureRoleService extends BaseRelationService<UserFeatureRole,
     @Override
     protected List<FeatureRole> getCanAssignedChildren(String parentId) {
         // 判断用户权限
-        return featureRoleService.getCanAssignedRoles();
+        return featureRoleService.getCanAssignedRoles(false);
     }
 
     /**

@@ -633,7 +633,7 @@ public class UserService extends BaseEntityService<User> {
     public List<FeatureRole> getCanAssignedFeatureRoles(String featureRoleGroupId, String userId) {
         Set<FeatureRole> result = new HashSet<>();
         //获取可分配的功能角色
-        List<FeatureRole> canAssigned = featureRoleService.getCanAssignedRoles(featureRoleGroupId);
+        List<FeatureRole> canAssigned = featureRoleService.getCanAssignedRoles(featureRoleGroupId, false);
         //获取已经分配的功能角色
         List<FeatureRole> assigned = userFeatureRoleService.getChildrenFromParentId(userId);
         result.addAll(canAssigned);
@@ -651,7 +651,7 @@ public class UserService extends BaseEntityService<User> {
     public List<DataRole> getCanAssignedDataRoles(String dataRoleGroupId, String userId) {
         Set<DataRole> result = new HashSet<>();
         //获取可分配的数据角色
-        List<DataRole> canAssigned = dataRoleService.getCanAssignedRoles(dataRoleGroupId);
+        List<DataRole> canAssigned = dataRoleService.getCanAssignedRoles(dataRoleGroupId, false);
         //获取已经分配的功能角色
         List<DataRole> assigned = userDataRoleService.getChildrenFromParentId(userId);
         result.addAll(canAssigned);
