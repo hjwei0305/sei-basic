@@ -43,7 +43,7 @@ public class UserMenuService extends BaseRelationService<UserMenu, User, Menu> {
      * @param menus 菜单清单
      * @param userId 用户Id
      */
-    public void fetchFavoriteMenus(Set<Menu> menus, String userId) {
+    public void fetchFavoriteMenus(List<Menu> menus, String userId) {
         if (CollectionUtils.isEmpty(menus)) {
             return;
         }

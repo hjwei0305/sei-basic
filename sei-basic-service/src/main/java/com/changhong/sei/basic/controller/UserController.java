@@ -4,9 +4,7 @@ import com.changhong.sei.basic.api.UserApi;
 import com.changhong.sei.basic.dto.*;
 import com.changhong.sei.basic.dto.search.UserQuickQueryParam;
 import com.changhong.sei.basic.entity.*;
-import com.changhong.sei.basic.service.DataRoleService;
-import com.changhong.sei.basic.service.UserProfileService;
-import com.changhong.sei.basic.service.UserService;
+import com.changhong.sei.basic.service.*;
 import com.changhong.sei.basic.service.client.AccountManager;
 import com.changhong.sei.basic.service.client.dto.SessionUserResponse;
 import com.changhong.sei.commondata.sdk.annotation.MultilingualEnable;
@@ -52,6 +50,8 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
     private DataRoleService dataRoleService;
     @Autowired
     private AsyncRunUtil asyncRunUtil;
+    @Autowired
+    private UserMenuService userMenuService;
     /**
      * 根据用户id查询用户
      *
@@ -72,8 +72,13 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
     @Override
     @MultilingualEnable
     public ResultData<List<MenuDto>> getUserAuthorizedMenus(String userId) {
+        // 获取用户有权限的菜单项清单
         List<Menu> menus = service.getUserAuthorizedMenus(userId);
-        List<MenuDto> menuDtos = menus.stream().map(MenuController::custConvertToDto).collect(Collectors.toList());
+        // 设置是否用户已经收藏
+        userMenuService.fetchFavoriteMenus(menus, userId);
+        // 构造菜单树
+        List<Menu> menusTrees = MenuService.buildTree(menus);
+        List<MenuDto> menuDtos = menusTrees.stream().map(MenuController::custConvertToDto).collect(Collectors.toList());
         return ResultData.success(menuDtos);
     }
 

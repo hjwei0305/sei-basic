@@ -86,8 +86,6 @@ public class UserService extends BaseEntityService<User> {
     private DataAuthManager dataAuthManager;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
-    @Autowired
-    private UserMenuService userMenuService;
 
     @Override
     protected BaseEntityDao<User> getDao() {
@@ -183,7 +181,7 @@ public class UserService extends BaseEntityService<User> {
     }
 
     /**
-     * 获取用户有权限的操作菜单树(VO)
+     * 获取用户有权限的操作菜单项清单(启用缓存)
      *
      * @param userId 用户Id
      * @return 操作菜单树
@@ -231,10 +229,7 @@ public class UserService extends BaseEntityService<User> {
                 m.setMenuUrl(url.toString());
             }
         });
-        // 设置是否用户已经收藏
-        userMenuService.fetchFavoriteMenus(userMenus, userId);
-        // 构造菜单树
-        return MenuService.buildTree(new ArrayList<>(userMenus));
+        return new ArrayList<>(userMenus);
     }
 
     /**
