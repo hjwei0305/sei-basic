@@ -3,6 +3,7 @@ package com.changhong.sei.basic.entity;
 import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.ICodeUnique;
 import com.changhong.sei.core.entity.ITenant;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -25,7 +26,9 @@ import javax.persistence.*;
 @Table(name = "feature_role_group")
 @DynamicInsert
 @DynamicUpdate
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class FeatureRoleGroup extends BaseAuditableEntity implements ITenant, ICodeUnique {
+    private static final long serialVersionUID = 3882109264158336055L;
     /**
      * 租户代码
      */

@@ -2,6 +2,7 @@ package com.changhong.sei.basic.entity;
 
 import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.ICodeUnique;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -24,7 +25,9 @@ import javax.persistence.*;
 @Table(name = "data_authorize_type")
 @DynamicUpdate
 @DynamicInsert
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DataAuthorizeType extends BaseAuditableEntity implements ICodeUnique {
+    private static final long serialVersionUID = -7300782337397315866L;
     /**
      * 代码
      */

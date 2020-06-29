@@ -3,6 +3,7 @@ package com.changhong.sei.basic.entity;
 import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.ICodeUnique;
 import com.changhong.sei.core.entity.IFrozen;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -19,8 +20,10 @@ import javax.persistence.*;
 @Table(name = "tenant")
 @DynamicInsert
 @DynamicUpdate
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Tenant extends BaseAuditableEntity
         implements ICodeUnique, IFrozen {
+    private static final long serialVersionUID = -3094139002145835657L;
     /**
      * 租户代码
      */
@@ -38,10 +41,12 @@ public class Tenant extends BaseAuditableEntity
     @Column(name = "frozen", nullable = false)
     private Boolean frozen = Boolean.FALSE;
 
+    @Override
     public String getCode() {
         return code;
     }
 
+    @Override
     public void setCode(String code) {
         this.code = code;
     }
@@ -59,6 +64,7 @@ public class Tenant extends BaseAuditableEntity
         return frozen;
     }
 
+    @Override
     public void setFrozen(Boolean frozen) {
         this.frozen = frozen;
     }

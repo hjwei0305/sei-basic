@@ -3,6 +3,7 @@ package com.changhong.sei.basic.entity;
 import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.ICodeUnique;
 import com.changhong.sei.core.entity.ITenant;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -25,9 +26,11 @@ import javax.persistence.*;
 @Table(name="position_category")
 @DynamicInsert
 @DynamicUpdate
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class PositionCategory extends BaseAuditableEntity
         implements ITenant, ICodeUnique {
 
+    private static final long serialVersionUID = -1854993768493915039L;
     /**
      * 代码
      */

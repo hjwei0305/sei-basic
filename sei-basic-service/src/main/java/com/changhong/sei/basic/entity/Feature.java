@@ -5,6 +5,7 @@ import com.changhong.sei.core.dto.serializer.EnumJsonSerializer;
 import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.ICodeUnique;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -31,6 +32,7 @@ import javax.persistence.*;
 @Table(name = "feature")
 @DynamicUpdate
 @DynamicInsert
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Feature extends BaseAuditableEntity implements ICodeUnique {
     private static final long serialVersionUID = -5524071809313339607L;
     /**

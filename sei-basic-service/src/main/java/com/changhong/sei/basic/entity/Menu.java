@@ -2,6 +2,7 @@ package com.changhong.sei.basic.entity;
 
 import com.changhong.sei.core.dto.TreeEntity;
 import com.changhong.sei.core.entity.BaseAuditableEntity;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -26,6 +27,7 @@ import java.util.List;
 @Table(name = "menu")
 @DynamicInsert
 @DynamicUpdate
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Menu extends BaseAuditableEntity implements TreeEntity<Menu> {
     private static final long serialVersionUID = 5921201068332944127L;
     /**

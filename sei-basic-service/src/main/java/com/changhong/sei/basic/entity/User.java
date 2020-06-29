@@ -7,6 +7,7 @@ import com.changhong.sei.core.entity.ITenant;
 import com.changhong.sei.enums.UserAuthorityPolicy;
 import com.changhong.sei.enums.UserType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -29,8 +30,10 @@ import javax.persistence.*;
 @Table(name = "user_")
 @DynamicInsert
 @DynamicUpdate
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User extends UserCust implements ITenant, IFrozen {
 
+    private static final long serialVersionUID = 1L;
     /**
      * 用户姓名
      */

@@ -8,6 +8,7 @@ import com.changhong.sei.core.dto.auth.IDataAuthTreeEntity;
 import com.changhong.sei.core.entity.IFrozen;
 import com.changhong.sei.core.entity.ITenant;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -32,8 +33,10 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 @EnableDataHistory(name = "组织机构")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Organization extends OrganizationCust
         implements TreeEntity<Organization>, ITenant, IFrozen, IDataAuthTreeEntity {
+    private static final long serialVersionUID = -6430528794914066825L;
     /**
      * 组织机构代码
      */

@@ -29,10 +29,12 @@ import javax.persistence.*;
 @DynamicInsert
 @DynamicUpdate
 @EnableDataHistory(name = "岗位")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Position extends BaseAuditableEntity
         implements ITenant, ICodeUnique {
     public static final String POSITION_CODE = "code";
     public static final String POSITION_CATEGORY_ID = "positionCategory.id";
+    private static final long serialVersionUID = -5509706339136699175L;
     /**
      * 代码
      */

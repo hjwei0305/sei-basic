@@ -5,6 +5,7 @@ import com.changhong.sei.core.dto.annotation.DataHistory;
 import com.changhong.sei.core.dto.annotation.EnableDataHistory;
 import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.ICodeUnique;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -31,9 +32,11 @@ import javax.persistence.*;
 @DynamicInsert
 @DynamicUpdate
 @EnableDataHistory(name = "应用模块")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AppModule extends BaseAuditableEntity
         implements ICodeUnique, IRank {
 
+    private static final long serialVersionUID = -2934390420466176047L;
     /**
      * 名称
      */

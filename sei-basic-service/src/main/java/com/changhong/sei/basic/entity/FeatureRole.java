@@ -11,6 +11,7 @@ import com.changhong.sei.enums.UserType;
 import com.changhong.sei.util.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -34,7 +35,9 @@ import java.util.Date;
 @Table(name = "feature_role")
 @DynamicInsert
 @DynamicUpdate
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class FeatureRole extends BaseAuditableEntity implements ITenant, ICodeUnique, IDataAuthEntity {
+    private static final long serialVersionUID = -3933323478287733793L;
     /**
      * 租户代码
      */

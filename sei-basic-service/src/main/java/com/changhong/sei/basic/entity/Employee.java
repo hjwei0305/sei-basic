@@ -4,6 +4,7 @@ import com.changhong.sei.basic.entity.cust.EmployeeCust;
 import com.changhong.sei.core.entity.ITenant;
 import com.changhong.sei.enums.UserAuthorityPolicy;
 import com.changhong.sei.enums.UserType;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -26,7 +27,9 @@ import javax.persistence.*;
 @Table(name = "employee")
 @DynamicUpdate
 @DynamicInsert
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Employee extends EmployeeCust implements ITenant {
+    private static final long serialVersionUID = -8140546611047494378L;
     /**
      * 员工编号
      */

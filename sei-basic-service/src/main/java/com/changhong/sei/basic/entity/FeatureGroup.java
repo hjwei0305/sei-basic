@@ -28,8 +28,10 @@ import javax.persistence.*;
 @Table(name = "feature_group")
 @DynamicInsert
 @DynamicUpdate
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class FeatureGroup extends BaseAuditableEntity implements ICodeUnique {
 
+    private static final long serialVersionUID = -8462032742317218930L;
     /**
      * 代码
      */
