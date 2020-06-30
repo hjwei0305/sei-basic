@@ -57,4 +57,13 @@ public interface UserProfileApi extends BaseEntityApi<UserProfileDto> {
     @GetMapping(path = "findAccountor")
     @ApiOperation(value = "获取当前用户的记账用户", notes = "获取当前用户的记账用户")
     ResultData<String> findAccountor();
+
+    /**
+     * 获取当前用户的头像
+     *
+     * @return 头像
+     */
+    @GetMapping(path = "findPortrait")
+    @ApiOperation(value = "获取当前用户的头像", notes = "获取当前用户的头像文件数据")
+    ResultData<String> findPortrait();
 }

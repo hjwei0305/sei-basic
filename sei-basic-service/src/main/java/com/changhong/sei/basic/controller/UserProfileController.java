@@ -7,6 +7,7 @@ import com.changhong.sei.basic.entity.Employee;
 import com.changhong.sei.basic.entity.UserProfile;
 import com.changhong.sei.basic.service.EmployeeService;
 import com.changhong.sei.basic.service.UserProfileService;
+import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
@@ -94,6 +95,16 @@ public class UserProfileController implements DefaultBaseEntityController<UserPr
     @Override
     public ResultData<String> findAccountor() {
         return ResultData.success(service.findAccountor());
+    }
+
+    /**
+     * 获取当前用户的头像
+     *
+     * @return 头像
+     */
+    @Override
+    public ResultData<String> findPortrait() {
+        return ResultData.success(service.findPortrait(ContextUtil.getUserId()));
     }
 
     @Override

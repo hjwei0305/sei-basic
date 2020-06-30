@@ -97,6 +97,19 @@ public class UserProfileService extends BaseEntityService<UserProfile> {
     }
 
     /**
+     * 获取用户的头像
+     *
+     * @return 头像文件数据
+     */
+    public String findPortrait(String userId) {
+        UserProfile userProfile = findByUserId(userId);
+        if (Objects.isNull(userProfile)) {
+            return null;
+        }
+        return userProfile.getPortrait();
+    }
+
+    /**
      * 获取8位数验证码
      * @return 验证码
      */
