@@ -29,11 +29,6 @@ private static final long serialVersionUID = -33069859473213493L;
     @Column(name = "code")
     private String code;
     /**
-     * 截止有效期
-     */
-    @Column(name = "expired")
-    private Date expired;
-    /**
      * logo图片base64
      */
     @Column(name = "logo")
@@ -54,15 +49,7 @@ private static final long serialVersionUID = -33069859473213493L;
     public void setCode(String code) {
         this.code = code;
     }
-        
-    public Date getExpired() {
-        return expired;
-    }
 
-    public void setExpired(Date expired) {
-        this.expired = expired;
-    }
-        
     public String getLogo() {
         return logo;
     }
