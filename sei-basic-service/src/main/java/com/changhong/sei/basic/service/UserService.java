@@ -213,20 +213,11 @@ public class UserService extends BaseEntityService<User> {
                 MenuService.generateUserMenuNodes(userMenus, memuNodes, allMenus);
             }
         }
-        //通过菜单生成展示对象
+        // 设置功能项的url到菜单
         userMenus.forEach((m) -> {
-            //环境格式化
-            //vo.setFeatureUrl(GlobalParam.environmentFormat(vo.getFeatureUrl()));
             Feature feature = m.getFeature();
             if (Objects.nonNull(feature)) {
-                String baseAddress = feature.getFeatureGroup().getAppModule().getWebBaseAddress();
-                StringBuilder url = new StringBuilder(64);
-                if (Objects.isNull(ContextUtil.getProperty(baseAddress))) {
-                    url.append(feature.getUrl());
-                } else {
-                    url.append(ContextUtil.getProperty(baseAddress)).append(feature.getUrl());
-                }
-                m.setMenuUrl(url.toString());
+                m.setMenuUrl(feature.getUrl());
             }
         });
         return new ArrayList<>(userMenus);
