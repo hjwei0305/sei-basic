@@ -54,7 +54,7 @@ public class UserControllerTest extends BaseUnitTest {
 
     @Test
     public void getUserAuthorizedMenus() {
-        String userId = "B54E8964-D14D-11E8-A64B-0242C0A8441B";
+        String userId = "989C3B6A-6758-11EA-B205-0242C0A8460C";
         ResultData<List<MenuDto>> resultData = controller.getUserAuthorizedMenus(userId);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());

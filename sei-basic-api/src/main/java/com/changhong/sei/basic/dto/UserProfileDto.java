@@ -95,6 +95,12 @@ public class UserProfileDto extends BaseEntityDto {
     @ApiModelProperty(value = "员工组织机构名称")
     private String organizationName;
 
+    /**
+     * 头像
+     */
+    @ApiModelProperty(value = "头像")
+    private String portrait;
+
     public String getEmail() {
         return email;
     }
@@ -189,5 +195,13 @@ public class UserProfileDto extends BaseEntityDto {
 
     public void setOrganizationName(String organizationName) {
         this.organizationName = organizationName;
+    }
+
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
     }
 }

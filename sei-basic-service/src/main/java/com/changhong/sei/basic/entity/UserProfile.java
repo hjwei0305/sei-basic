@@ -69,6 +69,14 @@ public class UserProfile extends BaseAuditableEntity {
     @JoinColumn(name = "user_id",nullable = false, insertable = false, updatable = false)
     private User user;
 
+    /**
+     * 头像
+     */
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "portrait")
+    private String portrait;
+
     public String getEmail() {
         return email;
     }
@@ -131,5 +139,13 @@ public class UserProfile extends BaseAuditableEntity {
 
     public void setAccountor(String accountor) {
         this.accountor = accountor;
+    }
+
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
     }
 }
