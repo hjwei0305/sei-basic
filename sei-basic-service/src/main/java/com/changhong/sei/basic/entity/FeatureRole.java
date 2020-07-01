@@ -11,7 +11,6 @@ import com.changhong.sei.enums.UserType;
 import com.changhong.sei.util.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -35,23 +34,22 @@ import java.util.Date;
 @Table(name = "feature_role")
 @DynamicInsert
 @DynamicUpdate
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class FeatureRole extends BaseAuditableEntity implements ITenant, ICodeUnique, IDataAuthEntity {
     private static final long serialVersionUID = -3933323478287733793L;
     /**
      * 租户代码
      */
-    @Column(name = "tenant_code",length = 10,nullable = false)
+    @Column(name = "tenant_code", length = 10, nullable = false)
     private String tenantCode;
     /**
      * 代码
      */
-    @Column(name = "code",unique = true,length = 50,nullable = false)
+    @Column(name = "code", unique = true, length = 50, nullable = false)
     private String code;
     /**
      * 名称
      */
-    @Column(name = "name",length = 50,nullable = false)
+    @Column(name = "name", length = 50, nullable = false)
     private String name;
     /**
      * 功能角色组Id
@@ -62,14 +60,14 @@ public class FeatureRole extends BaseAuditableEntity implements ITenant, ICodeUn
      * 功能角色组
      */
     @ManyToOne
-    @JoinColumn(name = "feature_role_group_id",nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "feature_role_group_id", nullable = false, insertable = false, updatable = false)
     private FeatureRoleGroup featureRoleGroup;
     /**
      * 角色类型(0-可使用，1-可分配)
      */
     @Enumerated
     @JsonSerialize(using = EnumJsonSerializer.class)
-    @Column(name = "role_type",nullable = false)
+    @Column(name = "role_type", nullable = false)
     private RoleType roleType;
     /**
      * 公共角色的用户类型

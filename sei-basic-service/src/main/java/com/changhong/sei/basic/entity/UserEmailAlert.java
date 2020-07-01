@@ -2,6 +2,7 @@ package com.changhong.sei.basic.entity;
 
 import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.ITenant;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -17,7 +18,9 @@ import java.util.Date;
 @Access(AccessType.FIELD)
 @DynamicInsert
 @DynamicUpdate
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class UserEmailAlert extends BaseAuditableEntity implements ITenant {
+    private static final long serialVersionUID = 7385304267196101647L;
     /**
      * 用户Id
      */

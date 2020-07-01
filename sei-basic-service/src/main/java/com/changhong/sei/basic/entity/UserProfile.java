@@ -1,6 +1,7 @@
 package com.changhong.sei.basic.entity;
 
 import com.changhong.sei.core.entity.BaseAuditableEntity;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -23,6 +24,7 @@ import javax.persistence.*;
 @Table(name = "user_profile")
 @DynamicInsert
 @DynamicUpdate
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class UserProfile extends BaseAuditableEntity {
     private static final long serialVersionUID = 2108920435312895964L;
     /**

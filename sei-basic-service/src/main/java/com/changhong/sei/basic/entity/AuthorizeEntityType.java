@@ -1,7 +1,6 @@
 package com.changhong.sei.basic.entity;
 
 import com.changhong.sei.core.entity.BaseAuditableEntity;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -24,7 +23,6 @@ import javax.persistence.*;
 @Table(name = "authorize_entity_type")
 @DynamicInsert
 @DynamicUpdate
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AuthorizeEntityType extends BaseAuditableEntity {
     private static final long serialVersionUID = -5599344109669640927L;
     /**

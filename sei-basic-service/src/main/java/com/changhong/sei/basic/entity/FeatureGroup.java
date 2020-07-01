@@ -2,7 +2,6 @@ package com.changhong.sei.basic.entity;
 
 import com.changhong.sei.core.entity.BaseAuditableEntity;
 import com.changhong.sei.core.entity.ICodeUnique;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -28,7 +27,6 @@ import javax.persistence.*;
 @Table(name = "feature_group")
 @DynamicInsert
 @DynamicUpdate
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class FeatureGroup extends BaseAuditableEntity implements ICodeUnique {
 
     private static final long serialVersionUID = -8462032742317218930L;

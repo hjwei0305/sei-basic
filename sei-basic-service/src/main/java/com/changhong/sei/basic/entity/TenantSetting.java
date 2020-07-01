@@ -6,9 +6,7 @@ import com.changhong.sei.core.entity.ICodeUnique;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -31,15 +29,18 @@ private static final long serialVersionUID = -33069859473213493L;
     /**
      * logo图片base64
      */
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "logo")
     private String logo;
     /**
      * 水印
      */
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "watermark")
     private String watermark;
 
-        
     @Override
     public String getCode() {
         return code;
