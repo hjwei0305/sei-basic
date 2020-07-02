@@ -32,7 +32,6 @@ import javax.persistence.*;
 @Table(name = "feature")
 @DynamicUpdate
 @DynamicInsert
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Feature extends BaseAuditableEntity implements ICodeUnique {
     private static final long serialVersionUID = -5524071809313339607L;
     /**
