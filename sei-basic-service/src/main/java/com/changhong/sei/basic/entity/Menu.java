@@ -27,7 +27,6 @@ import java.util.List;
 @Table(name = "menu")
 @DynamicInsert
 @DynamicUpdate
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Menu extends BaseAuditableEntity implements TreeEntity<Menu> {
     private static final long serialVersionUID = 5921201068332944127L;
     /**
