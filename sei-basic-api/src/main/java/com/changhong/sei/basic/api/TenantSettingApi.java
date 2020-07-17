@@ -30,7 +30,7 @@ public interface TenantSettingApi {
      */
     @PostMapping(path = "save", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "保存租户配置", notes = "保存租户配置")
-    ResultData<String> save(@RequestBody @Valid TenantSettingDto dto);
+    ResultData<TenantSettingDto> save(@RequestBody @Valid TenantSettingDto dto);
 
     /**
      * 通过Id获取一个业务实体

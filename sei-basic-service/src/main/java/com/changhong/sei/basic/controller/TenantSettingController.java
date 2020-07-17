@@ -41,11 +41,11 @@ public class TenantSettingController implements TenantSettingApi {
      * @return 操作结果
      */
     @Override
-    public ResultData<String> save(@Valid TenantSettingDto dto) {
+    public ResultData<TenantSettingDto> save(@Valid TenantSettingDto dto) {
         TenantSetting setting = modelMapper.map(dto, TenantSetting.class);
-        OperateResultWithData operateResultWithData = service.save(setting);
+        OperateResultWithData<TenantSetting> operateResultWithData = service.save(setting);
         if (operateResultWithData.successful()) {
-            return ResultData.success("OK");
+            return ResultData.success(modelMapper.map(operateResultWithData.getData(), TenantSettingDto.class));
         } else {
             return ResultData.fail(operateResultWithData.getMessage());
         }
