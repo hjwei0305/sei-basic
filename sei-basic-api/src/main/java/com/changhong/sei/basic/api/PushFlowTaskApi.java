@@ -1,5 +1,6 @@
 package com.changhong.sei.basic.api;
 
+import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.flow.FlowTask;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -31,7 +32,8 @@ public interface PushFlowTaskApi {
      */
     @PostMapping(path = "pushNewTask", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "推送流程模块待办", notes = "推送流程模块待办")
-    default void pushNewTask(@RequestBody List<FlowTask> taskList){
+    default ResultData pushNewTask(@RequestBody List<FlowTask> taskList){
+        return  ResultData.success("推送待办接口成功！");
     }
 
     /**
@@ -41,7 +43,8 @@ public interface PushFlowTaskApi {
      */
     @PostMapping(path = "pushOldTask", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "推送流程模块已办（待办转已办）", notes = "推送流程模块已办（待办转已办）")
-    default void pushOldTask(@RequestBody List<FlowTask> taskList){
+    default ResultData pushOldTask(@RequestBody List<FlowTask> taskList){
+        return  ResultData.success("推送已办接口成功！");
     }
 
     /**
@@ -51,7 +54,8 @@ public interface PushFlowTaskApi {
      */
     @PostMapping(path = "pushDelTask", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "推送流程模块需要删除的待办", notes = "推送流程模块需要删除的待办")
-    default void pushDelTask(@RequestBody List<FlowTask> taskList){
+    default ResultData pushDelTask(@RequestBody List<FlowTask> taskList){
+        return  ResultData.success("推送删除接口成功！");
     }
 
     /**
@@ -61,6 +65,7 @@ public interface PushFlowTaskApi {
      */
     @PostMapping(path = "pushEndTask", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "推送流程模块归档（正常结束）的待办", notes = "推送流程模块归档（正常结束）的待办")
-    default void pushEndTask(@RequestBody FlowTask task){
+    default ResultData pushEndTask(@RequestBody FlowTask task){
+        return  ResultData.success("推送归档接口成功！");
     }
 }
