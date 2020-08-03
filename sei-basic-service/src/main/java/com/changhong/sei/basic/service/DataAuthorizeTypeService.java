@@ -116,7 +116,7 @@ public class DataAuthorizeTypeService extends BaseEntityService<DataAuthorizeTyp
     DataAuthorizeType getByEntityClassNameAndFeature(String entityClassName, String featureCode) {
         //判断功能项代码是否为空
         List<DataAuthorizeType> result;
-        if (StringUtils.isNotBlank(featureCode)) {
+        if (StringUtils.isNotBlank(featureCode) && !StringUtils.equalsIgnoreCase("null", featureCode)) {
             result = dao.findByClassNameAndFeatureCode(entityClassName, featureCode);
         } else {
             result = dao.findByClassName(entityClassName);
