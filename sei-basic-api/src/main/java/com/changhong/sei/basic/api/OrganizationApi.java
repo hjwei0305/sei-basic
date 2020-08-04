@@ -4,6 +4,7 @@ import com.changhong.sei.basic.dto.OrganizationDimension;
 import com.changhong.sei.basic.dto.OrganizationDto;
 import com.changhong.sei.core.api.BaseTreeApi;
 import com.changhong.sei.core.api.DataAuthTreeEntityApi;
+import com.changhong.sei.core.api.DataAuthTreeEntityIncludeFrozenApi;
 import com.changhong.sei.core.dto.ResultData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -23,7 +24,8 @@ import java.util.List;
  */
 @FeignClient(name = "sei-basic", path = "organization")
 public interface OrganizationApi extends BaseTreeApi<OrganizationDto>,
-        DataAuthTreeEntityApi<OrganizationDto> {
+        DataAuthTreeEntityApi<OrganizationDto>,
+        DataAuthTreeEntityIncludeFrozenApi<OrganizationDto> {
     /**
      * 通过代码获取组织机构
      *

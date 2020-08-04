@@ -179,9 +179,7 @@ public class OrganizationController implements DefaultTreeController<Organizatio
      */
     @Override
     public ResultData<List<OrganizationDto>> getUserAuthorizedTreeEntities(String featureCode) {
-        List<Organization> organizations = service.getUserAuthorizedTreeEntities(featureCode);
-        List<OrganizationDto> dtos = organizations.stream().map(this::convertToDto).collect(Collectors.toList());
-        return ResultData.success(dtos);
+        return ResultData.success(convertToDtos(service.getUserAuthorizedTreeEntities(featureCode)));
     }
 
     @Override
@@ -207,5 +205,16 @@ public class OrganizationController implements DefaultTreeController<Organizatio
     @Override
     public Class<OrganizationDto> getDtoClass() {
         return OrganizationDto.class;
+    }
+
+    /**
+     * 获取当前用户有权限的树形业务实体清单(包含已冻结)
+     *
+     * @param featureCode 功能项代码
+     * @return 有权限的树形业务实体清单
+     */
+    @Override
+    public ResultData<List<OrganizationDto>> getUserAuthTreeEntitiesIncludeFrozen(String featureCode) {
+        return ResultData.success(convertToDtos(service.getUserAuthorizedTreeEntities(featureCode, Boolean.TRUE)));
     }
 }
