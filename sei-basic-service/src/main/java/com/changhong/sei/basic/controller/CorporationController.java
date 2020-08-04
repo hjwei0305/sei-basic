@@ -131,4 +131,15 @@ public class CorporationController implements DefaultBaseEntityController<Corpor
     public ResultData<List<CorporationDto>> findAllUnfrozen() {
         return ResultData.success(convertToDtos(service.findAllUnfrozen()));
     }
+
+    /**
+     * 获取当前用户有权限的业务实体清单(包含已冻结)
+     *
+     * @param featureCode 功能项代码
+     * @return 有权限的业务实体清单
+     */
+    @Override
+    public ResultData<List<CorporationDto>> getUserAuthEntitiesIncludeFrozen(String featureCode) {
+        return ResultData.success(convertToDtos(service.getUserAuthorizedEntities(featureCode, Boolean.TRUE)));
+    }
 }
