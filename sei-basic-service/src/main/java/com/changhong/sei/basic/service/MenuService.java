@@ -70,6 +70,11 @@ public class MenuService extends BaseTreeService<Menu> {
     @Override
     @CacheEvict(allEntries = true)
     public OperateResultWithData<Menu> save(Menu menu) {
+        // 检查父节点
+        OperateResult checkResult = checkParentNode(menu.getParentId());
+        if (checkResult.notSuccessful()) {
+            return OperateResult.converterWithData(checkResult, menu);
+        }
         if (StringUtils.isBlank(menu.getCode())) {
             menu.setCode(numberGenerator.getNumber(Menu.class));
         }
@@ -98,7 +103,31 @@ public class MenuService extends BaseTreeService<Menu> {
     @Override
     @CacheEvict(allEntries = true)
     public OperateResult move(String nodeId, String targetParentId) {
+        // 检查父节点
+        OperateResult checkResult = checkParentNode(targetParentId);
+        if (checkResult.notSuccessful()) {
+            return checkResult;
+        }
         return super.move(nodeId, targetParentId);
+    }
+
+    /**
+     * 检查菜单父节点
+     * @param parentId 父节点Id
+     * @return 检查结果
+     */
+    private OperateResult checkParentNode(String parentId) {
+        Menu parent = menuDao.findOne(parentId);
+        if (Objects.isNull(parent)) {
+            // 检查通过！
+            return OperateResult.operationSuccess("00113");
+        }
+        if (StringUtils.isNotBlank(parent.getFeatureId())) {
+            // 菜单【{0}】已经配置了功能项，禁止作为父级菜单！
+            return OperateResult.operationFailure("00114", parent.getName());
+        }
+        // 检查通过！
+        return OperateResult.operationSuccess("00113");
     }
 
     /**
