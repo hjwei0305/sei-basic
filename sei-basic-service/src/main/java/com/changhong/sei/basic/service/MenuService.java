@@ -117,6 +117,10 @@ public class MenuService extends BaseTreeService<Menu> {
      * @return 检查结果
      */
     private OperateResult checkParentNode(String parentId) {
+        if (StringUtils.isBlank(parentId)) {
+            // 检查通过！
+            return OperateResult.operationSuccess("00113");
+        }
         Menu parent = menuDao.findOne(parentId);
         if (Objects.isNull(parent)) {
             // 检查通过！
