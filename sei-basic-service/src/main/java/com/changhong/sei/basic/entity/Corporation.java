@@ -50,12 +50,14 @@ public class Corporation extends CorporationCust
     /**
      * 简称
      */
+    @DataHistory(name = "简称")
     @Column(name = "short_name", length = 100)
     private String shortName;
 
     /**
      * 代码
      */
+    @DataHistory(name = "代码")
     @Column(length = 20, nullable = false, unique = true)
     private String code;
 
@@ -68,6 +70,7 @@ public class Corporation extends CorporationCust
     /**
      * ERP公司代码
      */
+    @DataHistory(name = "ERP公司代码")
     @Column(name = "erp_code",length = 10, nullable = false)
     private String erpCode;
 
