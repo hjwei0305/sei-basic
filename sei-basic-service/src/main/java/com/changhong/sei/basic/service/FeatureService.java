@@ -2,12 +2,10 @@ package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.FeatureDao;
 import com.changhong.sei.basic.dao.FeatureGroupDao;
+import com.changhong.sei.basic.dao.FeatureRoleFeatureDao;
 import com.changhong.sei.basic.dao.MenuDao;
 import com.changhong.sei.basic.dto.FeatureType;
-import com.changhong.sei.basic.entity.Feature;
-import com.changhong.sei.basic.entity.FeatureGroup;
-import com.changhong.sei.basic.entity.Menu;
-import com.changhong.sei.basic.entity.Tenant;
+import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.dto.serach.SearchFilter;
@@ -51,6 +49,8 @@ public class FeatureService extends BaseEntityService<Feature> {
     private MenuDao menuDao;
     @Autowired
     private FeatureGroupDao featureGroupDao;
+    @Autowired
+    private FeatureRoleFeatureDao featureRoleFeatureDao;
 
     @Override
     protected BaseEntityDao<Feature> getDao() {
@@ -214,6 +214,11 @@ public class FeatureService extends BaseEntityService<Feature> {
                 // 页面【{0}】存在下级功能项，禁止删除！
                 return OperateResult.operationFailure("00105", feature.getName());
             }
+        }
+        List<FeatureRole> featureRoles = featureRoleFeatureDao.getParentsFromChildId(id);
+        if (featureRoles != null && !featureRoles.isEmpty()) {
+            //该功能项已分配功能角色，禁止删除！
+            return OperateResult.operationFailure("00115");
         }
         return super.preDelete(id);
     }
