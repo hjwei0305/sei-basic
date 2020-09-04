@@ -1,6 +1,8 @@
 package com.changhong.sei.basic.service.client.dto;
 
+import com.changhong.sei.annotation.Remark;
 import com.changhong.sei.core.dto.BaseEntityDto;
+import com.changhong.sei.util.DateUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -47,7 +49,7 @@ public class AccountResponse extends BaseEntityDto {
      */
     @ApiModelProperty(notes = "来源系统", required = true)
     @NotBlank
-    private String systemCode;
+    private ChannelEnum channel = ChannelEnum.SEI;
     /**
      * 账户类型
      */
@@ -68,13 +70,13 @@ public class AccountResponse extends BaseEntityDto {
      * 注册时间
      */
     @ApiModelProperty(notes = "注册时间", example = "2020-01-14 22:18:48")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone = DateUtils.DEFAULT_TIMEZONE, pattern = DateUtils.DEFAULT_TIME_FORMAT)
     private Date sinceDate;
     /**
      * 截止有效期
      */
     @ApiModelProperty(notes = "截止有效期", example = "2099-01-14")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(timezone = DateUtils.DEFAULT_TIMEZONE, pattern = DateUtils.DEFAULT_DATE_FORMAT)
     private Date accountExpired;
 
     public String getTenantCode() {
@@ -109,12 +111,12 @@ public class AccountResponse extends BaseEntityDto {
         this.name = name;
     }
 
-    public String getSystemCode() {
-        return systemCode;
+    public ChannelEnum getChannel() {
+        return channel;
     }
 
-    public void setSystemCode(String systemCode) {
-        this.systemCode = systemCode;
+    public void setChannel(ChannelEnum channel) {
+        this.channel = channel;
     }
 
     public String getAccountType() {
@@ -173,5 +175,14 @@ public class AccountResponse extends BaseEntityDto {
     @Override
     public int hashCode() {
         return Objects.hash(tenantCode, account);
+    }
+
+    enum ChannelEnum {
+
+        /**
+         * SEI
+         */
+        @Remark("SEI")
+        SEI
     }
 }

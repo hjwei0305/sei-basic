@@ -245,7 +245,12 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
             // 用户账号【{0}】不存在！
             return ResultDataUtil.fail("00108", account);
         }
-        UserAuthorityPolicy authorityPolicy = userResponse.getAuthorityPolicy();
+        User user = service.findOne(userResponse.getUserId());
+        if (Objects.isNull(user)) {
+            // 用户账号【【{0}】不存在对应的系统用户！
+            return ResultDataUtil.fail("00098", account);
+        }
+        UserAuthorityPolicy authorityPolicy = user.getUserAuthorityPolicy();
         if (authorityPolicy == UserAuthorityPolicy.GlobalAdmin) {
             // 用户账号【{0}】是全局管理员！
             return ResultDataUtil.fail("00109", account);
@@ -254,11 +259,7 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
             // 用户账号【{0}】是租户【{1}】的系统管理员！
             return ResultDataUtil.fail("00110", account, tenantCode);
         }
-        User user = service.findOne(userResponse.getUserId());
-        if (Objects.isNull(user)) {
-            // 用户账号【【{0}】不存在对应的系统用户！
-            return ResultDataUtil.fail("00098", account);
-        }
+
         return ResultData.success(user);
     }
 

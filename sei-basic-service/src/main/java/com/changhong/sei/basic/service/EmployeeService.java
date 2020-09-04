@@ -149,7 +149,6 @@ public class EmployeeService extends BaseEntityService<Employee> {
             accountRequest.setName(entity.getUserName());
             accountRequest.setAccountType(UserType.Employee.name());
             accountRequest.setUserId(userId);
-            accountRequest.setSystemCode("sei-basic");
             accountRequest.setFrozen(entity.isFrozen());
             accountManager.create(accountRequest);
         } else {
