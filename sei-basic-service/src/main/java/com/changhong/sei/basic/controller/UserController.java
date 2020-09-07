@@ -52,6 +52,7 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
     private AsyncRunUtil asyncRunUtil;
     @Autowired
     private UserMenuService userMenuService;
+
     /**
      * 根据用户id查询用户
      *
@@ -155,7 +156,7 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
     /**
      * 根据公司IDS与岗位分类IDS获取执行人
      *
-     * @param queryParam    执行人查询参数
+     * @param queryParam 执行人查询参数
      * @return 执行人清单
      */
     @Override
@@ -187,7 +188,7 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
         information.setUserId(userId);
         // 获取用户基本信息
         User user = service.findById(userId);
-        if (Objects.isNull(user)){
+        if (Objects.isNull(user)) {
             // 用户【{0}】不存在！
             return ResultData.fail(ContextUtil.getMessage("00092", userId));
         }
@@ -195,7 +196,10 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
         information.setUserAuthorityPolicy(user.getUserAuthorityPolicy());
         // 获取用户配置信息
         UserProfile profile = userProfileService.findByUserId(userId);
-        if (Objects.nonNull(profile)){
+        if (Objects.nonNull(profile)) {
+            information.setIdCard(profile.getIdCard());
+            information.setEmail(profile.getEmail());
+            information.setMobile(profile.getMobile());
             information.setLanguageCode(profile.getLanguageCode());
         }
         return ResultData.success(information);
@@ -211,7 +215,7 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
         // 清除用户权限相关的缓存
         service.clearUserAuthorizedCaches(userId);
         // 异步加载用户的应用菜单
-        asyncRunUtil.runAsync(()-> service.getUserAuthorizedMenus(userId));
+        asyncRunUtil.runAsync(() -> service.getUserAuthorizedMenus(userId));
     }
 
     /**
@@ -234,6 +238,7 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
 
     /**
      * 通过用户账号获取平台的一般用户
+     *
      * @param account 用户账号
      * @return 操作结果
      */

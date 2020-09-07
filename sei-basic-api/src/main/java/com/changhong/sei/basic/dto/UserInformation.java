@@ -14,12 +14,24 @@ import io.swagger.annotations.ApiModelProperty;
  * @version 2020-01-28 10:58
  */
 @ApiModel(description = "认证中心需要的用户信息")
-public class UserInformation{
+public class UserInformation {
     /**
      * 用户Id
      */
     @ApiModelProperty(value = "用户Id", required = true)
     private String userId;
+    /**
+     * 身份证号码
+     */
+    private String idCard;
+    /**
+     * 移动电话
+     */
+    private String mobile;
+    /**
+     * 邮箱
+     */
+    private String email;
 
     /**
      * 用户类型
@@ -47,6 +59,30 @@ public class UserInformation{
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public UserType getUserType() {
