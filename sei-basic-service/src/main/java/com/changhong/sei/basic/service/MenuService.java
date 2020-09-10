@@ -133,8 +133,8 @@ public class MenuService extends BaseTreeService<Menu> {
         }
         Menu otherMenu = menuDao.findFirstByFeatureIdAndIdNot(featureId, checkId);
         if (Objects.nonNull(otherMenu)) {
-            // 菜单【{0}】已经配置了此功能项，不能再次配置！
-            return OperateResult.operationFailure("00116", otherMenu.getName());
+            // 菜单【{0}】已经配置了功能项【{1}】，不能再次配置！
+            return OperateResult.operationFailure("00116", otherMenu.getName(), otherMenu.getFeature().getName());
         }
         // 检查通过！
         return OperateResult.operationSuccess("00113");
