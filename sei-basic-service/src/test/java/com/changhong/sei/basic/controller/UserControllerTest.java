@@ -4,6 +4,7 @@ import com.changhong.sei.basic.dto.*;
 import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.basic.dto.search.UserQuickQueryParam;
 import com.changhong.sei.basic.entity.DataRole;
+import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageInfo;
 import com.changhong.sei.core.dto.serach.PageResult;
@@ -54,7 +55,7 @@ public class UserControllerTest extends BaseUnitTest {
 
     @Test
     public void getUserAuthorizedMenus() {
-        String userId = "989C3B6A-6758-11EA-B205-0242C0A8460C";
+        String userId = ContextUtil.getUserId();
         ResultData<List<MenuDto>> resultData = controller.getUserAuthorizedMenus(userId);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
