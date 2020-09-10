@@ -35,4 +35,11 @@ public interface MenuDao extends BaseTreeDao<Menu> {
      * @return 查询结果集
      */
     List<Menu> findByFeatureId(String featureId);
+
+    /**
+     * 查询其他菜单配置的功能项
+     * @param featureId 查询关键字
+     * @return 查询结果集
+     */
+    Menu findFirstByFeatureIdAndIdNot(String featureId, String id);
 }

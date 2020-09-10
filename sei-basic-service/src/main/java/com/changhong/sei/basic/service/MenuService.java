@@ -75,6 +75,11 @@ public class MenuService extends BaseTreeService<Menu> {
         if (checkResult.notSuccessful()) {
             return OperateResult.converterWithData(checkResult, menu);
         }
+        // 检查功能项是否已经配置给其他菜单
+        OperateResult checkFeatureResult = checkFeature(menu.getId(), menu.getFeatureId());
+        if (checkFeatureResult.notSuccessful()) {
+            return OperateResult.converterWithData(checkFeatureResult, menu);
+        }
         if (StringUtils.isBlank(menu.getCode())) {
             menu.setCode(numberGenerator.getNumber(Menu.class));
         }
@@ -109,6 +114,30 @@ public class MenuService extends BaseTreeService<Menu> {
             return checkResult;
         }
         return super.move(nodeId, targetParentId);
+    }
+
+    /**
+     * 检查功能项是否已经配置给其他菜单
+     * @param id 菜单Id
+     * @param featureId 功能项Id
+     * @return 检查结果
+     */
+    private OperateResult checkFeature(String id, String featureId) {
+        if (StringUtils.isBlank(featureId)) {
+            // 检查通过！
+            return OperateResult.operationSuccess("00113");
+        }
+        String checkId = id;
+        if (StringUtils.isBlank(checkId)) {
+            checkId = "";
+        }
+        Menu otherMenu = menuDao.findFirstByFeatureIdAndIdNot(featureId, checkId);
+        if (Objects.nonNull(otherMenu)) {
+            // 菜单【{0}】已经配置了此功能项，不能再次配置！
+            return OperateResult.operationFailure("00116", otherMenu.getName());
+        }
+        // 检查通过！
+        return OperateResult.operationSuccess("00113");
     }
 
     /**
