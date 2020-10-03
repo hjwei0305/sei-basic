@@ -9,7 +9,7 @@ import com.changhong.sei.basic.service.client.AccountManager;
 import com.changhong.sei.basic.service.client.dto.SessionUserResponse;
 import com.changhong.sei.commondata.sdk.annotation.MultilingualEnable;
 import com.changhong.sei.core.context.ContextUtil;
-import com.changhong.sei.core.controller.DefaultBaseEntityController;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
@@ -38,16 +38,14 @@ import java.util.stream.Collectors;
 @Api(value = "UserApi", tags = "用户API服务实现")
 @RequestMapping(path = "user", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @SuppressWarnings("unchecked")
-public class UserController implements DefaultBaseEntityController<User, UserDto>,
-        UserApi {
+public class UserController extends BaseEntityController<User, UserDto>
+        implements UserApi {
     @Autowired
     private UserService service;
     @Autowired
     private UserProfileService userProfileService;
     @Autowired
     private AccountManager accountManager;
-    @Autowired
-    private DataRoleService dataRoleService;
     @Autowired
     private AsyncRunUtil asyncRunUtil;
     @Autowired
@@ -79,7 +77,7 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
         userMenuService.fetchFavoriteMenus(menus, userId);
         // 构造菜单树
         List<Menu> menusTrees = MenuService.buildTree(menus);
-        List<MenuDto> menuDtos = menusTrees.stream().map(MenuController::custConvertToDto).collect(Collectors.toList());
+        List<MenuDto> menuDtos = menusTrees.stream().map(MenuController::convertToDtoStatic).collect(Collectors.toList());
         return ResultData.success(menuDtos);
     }
 
@@ -232,7 +230,7 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
             return ResultData.fail(userResultData.getMessage());
         }
         Set<DataRole> roles = service.getNormalUserDataRoles(userResultData.getData());
-        List<DataRoleDto> roleDtos = roles.stream().map(DataRoleController::custConvertToDto).collect(Collectors.toList());
+        List<DataRoleDto> roleDtos = roles.stream().map(DataRoleController::convertToDtoStatic).collect(Collectors.toList());
         return ResultData.success(roleDtos);
     }
 
@@ -282,7 +280,7 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
             return ResultData.fail(userResultData.getMessage());
         }
         Set<FeatureRole> roles = service.getNormalUserFeatureRoles(userResultData.getData());
-        List<FeatureRoleDto> roleDtos = roles.stream().map(FeatureRoleController::custConvertToDto).collect(Collectors.toList());
+        List<FeatureRoleDto> roleDtos = roles.stream().map(FeatureRoleController::convertToDtoStatic).collect(Collectors.toList());
         return ResultData.success(roleDtos);
     }
 
@@ -314,22 +312,15 @@ public class UserController implements DefaultBaseEntityController<User, UserDto
     }
 
     /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
+     * 转换数据实体为DTO
+     * @param entity 数据实体
+     * @return DTO
      */
-    @Override
-    public Class<User> getEntityClass() {
-        return User.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<UserDto> getDtoClass() {
-        return UserDto.class;
+    static UserDto convertToDtoStatic(User entity) {
+        if (Objects.isNull(entity)){
+            return null;
+        }
+        // 转换
+        return dtoModelMapper.map(entity, UserDto.class);
     }
 }

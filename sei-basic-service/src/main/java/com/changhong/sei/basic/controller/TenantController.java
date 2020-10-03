@@ -6,7 +6,7 @@ import com.changhong.sei.basic.dto.OrganizationDto;
 import com.changhong.sei.basic.dto.TenantDto;
 import com.changhong.sei.basic.entity.Tenant;
 import com.changhong.sei.basic.service.TenantService;
-import com.changhong.sei.core.controller.DefaultBaseEntityController;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
@@ -27,8 +27,8 @@ import java.util.List;
 @RestController
 @Api(value = "TenantApi", tags = "租户的API服务")
 @RequestMapping(path = "tenant", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TenantController implements DefaultBaseEntityController<Tenant, TenantDto>,
-        TenantApi {
+public class TenantController extends BaseEntityController<Tenant, TenantDto>
+        implements TenantApi {
     @Autowired
     private TenantService service;
     @Autowired
@@ -38,26 +38,6 @@ public class TenantController implements DefaultBaseEntityController<Tenant, Ten
     @Override
     public BaseEntityService<Tenant> getService() {
         return service;
-    }
-
-    /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<Tenant> getEntityClass() {
-        return Tenant.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<TenantDto> getDtoClass() {
-        return TenantDto.class;
     }
 
     /**

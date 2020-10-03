@@ -5,7 +5,7 @@ import com.changhong.sei.basic.dto.OrganizationDimension;
 import com.changhong.sei.basic.dto.OrganizationDto;
 import com.changhong.sei.basic.entity.Organization;
 import com.changhong.sei.basic.service.OrganizationService;
-import com.changhong.sei.core.controller.DefaultTreeController;
+import com.changhong.sei.core.controller.BaseTreeController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
 import com.changhong.sei.core.service.BaseTreeService;
@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
 @RestController
 @Api(value = "OrganizationApi", tags = "组织机构API服务")
 @RequestMapping(path = "organization", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class OrganizationController implements DefaultTreeController<Organization, OrganizationDto>,
-        OrganizationApi {
+public class OrganizationController extends BaseTreeController<Organization, OrganizationDto>
+        implements OrganizationApi {
     @Autowired
     private OrganizationService service;
     /**
@@ -185,26 +185,6 @@ public class OrganizationController implements DefaultTreeController<Organizatio
     @Override
     public BaseTreeService<Organization> getService() {
         return service;
-    }
-
-    /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<Organization> getEntityClass() {
-        return Organization.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<OrganizationDto> getDtoClass() {
-        return OrganizationDto.class;
     }
 
     /**

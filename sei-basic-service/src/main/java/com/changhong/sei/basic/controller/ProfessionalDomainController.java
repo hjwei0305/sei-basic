@@ -4,7 +4,7 @@ import com.changhong.sei.basic.api.ProfessionalDomainApi;
 import com.changhong.sei.basic.dto.ProfessionalDomainDto;
 import com.changhong.sei.basic.entity.ProfessionalDomain;
 import com.changhong.sei.basic.service.ProfessionalDomainService;
-import com.changhong.sei.core.controller.DefaultTreeController;
+import com.changhong.sei.core.controller.BaseTreeController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseTreeService;
 import io.swagger.annotations.Api;
@@ -24,8 +24,8 @@ import java.util.List;
 @RestController
 @Api(value = "ProfessionalDomainApi", tags = "专业领域API服务")
 @RequestMapping(path = "professionalDomain", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class ProfessionalDomainController implements DefaultTreeController<ProfessionalDomain, ProfessionalDomainDto>,
-        ProfessionalDomainApi {
+public class ProfessionalDomainController extends BaseTreeController<ProfessionalDomain, ProfessionalDomainDto>
+        implements ProfessionalDomainApi {
     @Autowired
     private ProfessionalDomainService service;
     /**
@@ -41,25 +41,5 @@ public class ProfessionalDomainController implements DefaultTreeController<Profe
     @Override
     public BaseTreeService<ProfessionalDomain> getService() {
         return service;
-    }
-
-    /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<ProfessionalDomain> getEntityClass() {
-        return ProfessionalDomain.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<ProfessionalDomainDto> getDtoClass() {
-        return ProfessionalDomainDto.class;
     }
 }

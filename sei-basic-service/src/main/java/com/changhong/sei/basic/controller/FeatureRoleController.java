@@ -9,7 +9,7 @@ import com.changhong.sei.basic.entity.FeatureRole;
 import com.changhong.sei.basic.entity.Position;
 import com.changhong.sei.basic.entity.User;
 import com.changhong.sei.basic.service.FeatureRoleService;
-import com.changhong.sei.core.controller.DefaultBaseEntityController;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.dto.serach.PageResult;
@@ -20,7 +20,6 @@ import com.changhong.sei.enums.UserType;
 import com.changhong.sei.util.EnumUtils;
 import io.swagger.annotations.Api;
 import org.apache.commons.collections.CollectionUtils;
-import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -28,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -42,34 +40,14 @@ import java.util.stream.Collectors;
 @RestController
 @Api(value = "FeatureRoleApi", tags = "功能角色API服务实现")
 @RequestMapping(path = "featureRole", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class FeatureRoleController implements DefaultBaseEntityController<FeatureRole, FeatureRoleDto>,
-        FeatureRoleApi {
+public class FeatureRoleController extends BaseEntityController<FeatureRole, FeatureRoleDto>
+        implements FeatureRoleApi {
     @Autowired
     private FeatureRoleService service;
 
     @Override
     public BaseEntityService<FeatureRole> getService() {
         return service;
-    }
-
-    /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<FeatureRole> getEntityClass() {
-        return FeatureRole.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<FeatureRoleDto> getDtoClass() {
-        return FeatureRoleDto.class;
     }
 
     /**
@@ -84,20 +62,6 @@ public class FeatureRoleController implements DefaultBaseEntityController<Featur
     }
 
     /**
-     * 数据实体转换为DTO
-     *
-     * @param entity 数据实体
-     * @return DTO
-     */
-    static UserDto custConvertToDto(User entity) {
-        if (Objects.isNull(entity)) {
-            return null;
-        }
-        ModelMapper custMapper = new ModelMapper();
-        return custMapper.map(entity, UserDto.class);
-    }
-
-    /**
      * 根据功能角色的id获取已分配的用户
      *
      * @param featureRoleId 功能角色的id
@@ -106,7 +70,7 @@ public class FeatureRoleController implements DefaultBaseEntityController<Featur
     @Override
     public ResultData<List<UserDto>> getAssignedEmployeesByFeatureRole(String featureRoleId) {
         List<User> users = service.getAssignedEmployeesByFeatureRole(featureRoleId);
-        List<UserDto> dtos = users.stream().map(FeatureRoleController::custConvertToDto).collect(Collectors.toList());
+        List<UserDto> dtos = users.stream().map(UserController::convertToDtoStatic).collect(Collectors.toList());
         return ResultData.success(dtos);
     }
 
@@ -131,32 +95,6 @@ public class FeatureRoleController implements DefaultBaseEntityController<Featur
     }
 
     /**
-     * 自定义将数据实体转换成DTO
-     *
-     * @param entity 业务实体
-     * @return DTO
-     */
-    static PositionDto custConvertToDto(Position entity) {
-        if (Objects.isNull(entity)) {
-            return null;
-        }
-        ModelMapper custMapper = new ModelMapper();
-        // 创建自定义映射规则
-        PropertyMap<Position, PositionDto> propertyMap = new PropertyMap<Position, PositionDto>() {
-            @Override
-            protected void configure() {
-                // 使用自定义转换规则
-                map().setOrganizationId(source.getOrganizationId());
-                map().setPositionCategoryId(source.getPositionCategoryId());
-            }
-        };
-        // 添加映射器
-        custMapper.addMappings(propertyMap);
-        // 转换
-        return custMapper.map(entity, PositionDto.class);
-    }
-
-    /**
      * 根据功能角色的id获取已分配的岗位
      *
      * @param featureRoleId 功能角色的id
@@ -165,7 +103,7 @@ public class FeatureRoleController implements DefaultBaseEntityController<Featur
     @Override
     public ResultData<List<PositionDto>> getAssignedPositionsByFeatureRole(String featureRoleId) {
         List<Position> positions = service.getAssignedPositionsByFeatureRole(featureRoleId);
-        List<PositionDto> dtos = positions.stream().map(FeatureRoleController::custConvertToDto).collect(Collectors.toList());
+        List<PositionDto> dtos = positions.stream().map(PositionController::convertToDtoStatic).collect(Collectors.toList());
         return ResultData.success(dtos);
     }
 
@@ -212,27 +150,10 @@ public class FeatureRoleController implements DefaultBaseEntityController<Featur
     }
 
     /**
-     * 将数据实体转换成DTO
-     *
-     * @param entity 业务实体
-     * @return DTO
+     * 自定义设置Entity转换为DTO的转换器
      */
     @Override
-    public FeatureRoleDto convertToDto(FeatureRole entity) {
-        return FeatureRoleController.custConvertToDto(entity);
-    }
-
-    /**
-     * 转换功能角色数据实体为DTO
-     *
-     * @param entity 功能角色数据实体
-     * @return 功能角色DTO
-     */
-    static FeatureRoleDto custConvertToDto(FeatureRole entity) {
-        if (Objects.isNull(entity)) {
-            return null;
-        }
-        ModelMapper custMapper = new ModelMapper();
+    protected void customConvertToDtoMapper() {
         // 创建自定义映射规则
         PropertyMap<FeatureRole, FeatureRoleDto> propertyMap = new PropertyMap<FeatureRole, FeatureRoleDto>() {
             @Override
@@ -243,9 +164,21 @@ public class FeatureRoleController implements DefaultBaseEntityController<Featur
             }
         };
         // 添加映射器
-        custMapper.addMappings(propertyMap);
+        dtoModelMapper.addMappings(propertyMap);
+    }
+
+    /**
+     * 转换功能角色数据实体为DTO
+     *
+     * @param entity 功能角色数据实体
+     * @return 功能角色DTO
+     */
+    static FeatureRoleDto convertToDtoStatic(FeatureRole entity) {
+        if (Objects.isNull(entity)) {
+            return null;
+        }
         // 转换
-        return custMapper.map(entity, FeatureRoleDto.class);
+        return dtoModelMapper.map(entity, FeatureRoleDto.class);
     }
 
     /**

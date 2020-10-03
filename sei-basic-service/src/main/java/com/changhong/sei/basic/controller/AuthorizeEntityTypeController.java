@@ -4,11 +4,10 @@ import com.changhong.sei.basic.api.AuthorizeEntityTypeApi;
 import com.changhong.sei.basic.dto.AuthorizeEntityTypeDto;
 import com.changhong.sei.basic.entity.AuthorizeEntityType;
 import com.changhong.sei.basic.service.AuthorizeEntityTypeService;
-import com.changhong.sei.core.controller.DefaultBaseEntityController;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,8 +25,8 @@ import java.util.List;
 @RestController
 @Api(value = "AuthorizeEntityTypeApi", tags = "权限对象类型API服务")
 @RequestMapping(path = "authorizeEntityType", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class AuthorizeEntityTypeController implements DefaultBaseEntityController<AuthorizeEntityType, AuthorizeEntityTypeDto>,
-        AuthorizeEntityTypeApi {
+public class AuthorizeEntityTypeController extends BaseEntityController<AuthorizeEntityType, AuthorizeEntityTypeDto>
+        implements AuthorizeEntityTypeApi {
     @Autowired
     private AuthorizeEntityTypeService service;
     @Override
@@ -36,34 +35,10 @@ public class AuthorizeEntityTypeController implements DefaultBaseEntityControlle
     }
 
     /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
+     * 自定义设置Entity转换为DTO的转换器
      */
     @Override
-    public Class<AuthorizeEntityType> getEntityClass() {
-        return AuthorizeEntityType.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<AuthorizeEntityTypeDto> getDtoClass() {
-        return AuthorizeEntityTypeDto.class;
-    }
-
-    /**
-     * 将数据实体转换成DTO
-     *
-     * @param entity 业务实体
-     * @return DTO
-     */
-    @Override
-    public AuthorizeEntityTypeDto convertToDto(AuthorizeEntityType entity) {
-        ModelMapper custMapper = new ModelMapper();
+    protected void customConvertToDtoMapper() {
         // 创建自定义映射规则
         PropertyMap<AuthorizeEntityType,AuthorizeEntityTypeDto> propertyMap = new PropertyMap<AuthorizeEntityType, AuthorizeEntityTypeDto>() {
             @Override
@@ -73,9 +48,7 @@ public class AuthorizeEntityTypeController implements DefaultBaseEntityControlle
             }
         };
         // 添加映射器
-        custMapper.addMappings(propertyMap);
-        // 转换
-        return custMapper.map(entity,AuthorizeEntityTypeDto.class);
+        dtoModelMapper.addMappings(propertyMap);
     }
 
     /**

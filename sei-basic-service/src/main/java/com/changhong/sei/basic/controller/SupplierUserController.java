@@ -5,7 +5,7 @@ import com.changhong.sei.basic.dto.SupplierUserDto;
 import com.changhong.sei.basic.dto.SupplierUserVo;
 import com.changhong.sei.basic.entity.SupplierUser;
 import com.changhong.sei.basic.service.SupplierUserService;
-import com.changhong.sei.core.controller.DefaultBaseEntityController;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.dto.serach.Search;
@@ -29,8 +29,8 @@ import java.util.List;
 @RestController
 @Api(value = "SupplierUserApi", tags = "供应商用户API服务实现")
 @RequestMapping(path = "supplierUser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class SupplierUserController implements DefaultBaseEntityController<SupplierUser, SupplierUserDto>,
-        SupplierUserApi {
+public class SupplierUserController extends BaseEntityController<SupplierUser, SupplierUserDto>
+        implements SupplierUserApi {
     @Autowired
     private SupplierUserService service;
     /**
@@ -64,7 +64,7 @@ public class SupplierUserController implements DefaultBaseEntityController<Suppl
      * @return 操作结果
      */
     @Override
-    public ResultData saveSupplierManager(SupplierUserVo supplierUserVo, String roleCode) {
+    public ResultData<?> saveSupplierManager(SupplierUserVo supplierUserVo, String roleCode) {
         return ResultDataUtil.convertFromOperateResult(service.saveSupplierManager(supplierUserVo, roleCode));
     }
 
@@ -88,7 +88,7 @@ public class SupplierUserController implements DefaultBaseEntityController<Suppl
      * @return 操作结果
      */
     @Override
-    public ResultData addSupplierIdToSupUser(SupplierUserVo supplierUserVo) {
+    public ResultData<?> addSupplierIdToSupUser(SupplierUserVo supplierUserVo) {
         return ResultDataUtil.convertFromOperateResult(service.addSupplierIdToSupUser(supplierUserVo));
     }
 
@@ -118,25 +118,5 @@ public class SupplierUserController implements DefaultBaseEntityController<Suppl
     @Override
     public BaseEntityService<SupplierUser> getService() {
         return service;
-    }
-
-    /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<SupplierUser> getEntityClass() {
-        return SupplierUser.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<SupplierUserDto> getDtoClass() {
-        return SupplierUserDto.class;
     }
 }

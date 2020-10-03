@@ -6,13 +6,12 @@ import com.changhong.sei.basic.entity.Menu;
 import com.changhong.sei.basic.service.MenuService;
 import com.changhong.sei.basic.service.UserService;
 import com.changhong.sei.core.context.ContextUtil;
-import com.changhong.sei.core.controller.DefaultTreeController;
+import com.changhong.sei.core.controller.BaseTreeController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.TreeNodeMoveParam;
 import com.changhong.sei.core.service.BaseTreeService;
 import com.changhong.sei.utils.AsyncRunUtil;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -33,8 +32,8 @@ import java.util.stream.Collectors;
 @RestController
 @Api(value = "MenuApi", tags = "系统菜单API服务")
 @RequestMapping(path = "menu", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class MenuController implements DefaultTreeController<Menu, MenuDto>,
-        MenuApi {
+public class MenuController extends BaseTreeController<Menu, MenuDto>
+        implements MenuApi {
     @Autowired
     private MenuService menuService;
     @Autowired
@@ -73,47 +72,10 @@ public class MenuController implements DefaultTreeController<Menu, MenuDto>,
     }
 
     /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
+     * 自定义设置Entity转换为DTO的转换器
      */
     @Override
-    public Class<Menu> getEntityClass() {
-        return Menu.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<MenuDto> getDtoClass() {
-        return MenuDto.class;
-    }
-
-    /**
-     * 将数据实体转换成DTO
-     *
-     * @param entity 业务实体
-     * @return DTO
-     */
-    @Override
-    public MenuDto convertToDto(Menu entity) {
-        return MenuController.custConvertToDto(entity);
-    }
-
-    /**
-     * 自定义将数据实体转换成DTO
-     *
-     * @param entity 业务实体
-     * @return DTO
-     */
-    static MenuDto custConvertToDto(Menu entity) {
-        if (Objects.isNull(entity)){
-            return null;
-        }
-        ModelMapper custMapper = new ModelMapper();
+    protected void customConvertToDtoMapper() {
         // 创建自定义映射规则
         PropertyMap<Menu, MenuDto> propertyMap = new PropertyMap<Menu, MenuDto>() {
             @Override
@@ -124,9 +86,21 @@ public class MenuController implements DefaultTreeController<Menu, MenuDto>,
             }
         };
         // 添加映射器
-        custMapper.addMappings(propertyMap);
+        dtoModelMapper.addMappings(propertyMap);
+    }
+
+    /**
+     * 自定义将数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    static MenuDto convertToDtoStatic(Menu entity) {
+        if (Objects.isNull(entity)){
+            return null;
+        }
         // 转换
-        return custMapper.map(entity, MenuDto.class);
+        return dtoModelMapper.map(entity, MenuDto.class);
     }
 
     /**
@@ -137,7 +111,7 @@ public class MenuController implements DefaultTreeController<Menu, MenuDto>,
      */
     @Override
     public ResultData<MenuDto> save(@Valid MenuDto dto) {
-        ResultData<MenuDto> result = DefaultTreeController.super.save(dto);
+        ResultData<MenuDto> result = super.save(dto);
         if (result.failed()) {
             return result;
         }
@@ -154,8 +128,8 @@ public class MenuController implements DefaultTreeController<Menu, MenuDto>,
      * @return 操作结果
      */
     @Override
-    public ResultData delete(String id) {
-        ResultData result = DefaultTreeController.super.delete(id);
+    public ResultData<?> delete(String id) {
+        ResultData<?> result = super.delete(id);
         if (result.failed()) {
             return result;
         }
@@ -172,8 +146,8 @@ public class MenuController implements DefaultTreeController<Menu, MenuDto>,
      * @return 操作状态
      */
     @Override
-    public ResultData move(TreeNodeMoveParam moveParam) {
-        ResultData result = DefaultTreeController.super.move(moveParam);
+    public ResultData<?> move(TreeNodeMoveParam moveParam) {
+        ResultData<?> result = super.move(moveParam);
         if (result.failed()) {
             return result;
         }

@@ -5,12 +5,11 @@ import com.changhong.sei.basic.dto.DataAuthorizeTypeDto;
 import com.changhong.sei.basic.dto.DataAuthorizeTypeVo;
 import com.changhong.sei.basic.entity.DataAuthorizeType;
 import com.changhong.sei.basic.service.DataAuthorizeTypeService;
-import com.changhong.sei.core.controller.DefaultBaseEntityController;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
-import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -29,8 +28,8 @@ import java.util.Objects;
 @RestController
 @Api(value = "DataAuthorizeTypeApi", tags = "数据权限类型API服务")
 @RequestMapping(path = "dataAuthorizeType", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class DataAuthorizeTypeController implements DefaultBaseEntityController<DataAuthorizeType, DataAuthorizeTypeDto>,
-        DataAuthorizeTypeApi {
+public class DataAuthorizeTypeController extends BaseEntityController<DataAuthorizeType, DataAuthorizeTypeDto>
+        implements DataAuthorizeTypeApi {
     @Autowired
     private DataAuthorizeTypeService service;
     @Override
@@ -39,46 +38,10 @@ public class DataAuthorizeTypeController implements DefaultBaseEntityController<
     }
 
     /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
+     * 自定义设置Entity转换为DTO的转换器
      */
     @Override
-    public Class<DataAuthorizeType> getEntityClass() {
-        return DataAuthorizeType.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<DataAuthorizeTypeDto> getDtoClass() {
-        return DataAuthorizeTypeDto.class;
-    }
-
-    /**
-     * 将数据实体转换成DTO
-     *
-     * @param entity 业务实体
-     * @return DTO
-     */
-    @Override
-    public DataAuthorizeTypeDto convertToDto(DataAuthorizeType entity) {
-        return custConvertToDto(entity);
-    }
-
-    /**
-     * 自定义数据实体转换成DTO
-     * @param entity 业务实体
-     * @return DTO
-     */
-    public static DataAuthorizeTypeDto custConvertToDto(DataAuthorizeType entity) {
-        if (Objects.isNull(entity)) {
-            return null;
-        }
-        ModelMapper custMapper = new ModelMapper();
+    protected void customConvertToDtoMapper() {
         // 创建自定义映射规则
         PropertyMap<DataAuthorizeType,DataAuthorizeTypeDto> propertyMap = new PropertyMap<DataAuthorizeType,DataAuthorizeTypeDto>() {
             @Override
@@ -90,23 +53,27 @@ public class DataAuthorizeTypeController implements DefaultBaseEntityController<
             }
         };
         // 添加映射器
-        custMapper.addMappings(propertyMap);
-        // 转换
-        return custMapper.map(entity, DataAuthorizeTypeDto.class);
+        dtoModelMapper.addMappings(propertyMap);
     }
 
     /**
-     * 将DTO转换成数据实体
-     *
-     * @param dto 业务实体
-     * @return 数据实体
+     * 自定义数据实体转换成DTO
+     * @param entity 业务实体
+     * @return DTO
      */
-    @Override
-    public DataAuthorizeType convertToEntity(DataAuthorizeTypeDto dto) {
-        if (Objects.isNull(dto)){
+    public static DataAuthorizeTypeDto convertToDtoStatic(DataAuthorizeType entity) {
+        if (Objects.isNull(entity)) {
             return null;
         }
-        ModelMapper custMapper = new ModelMapper();
+        // 转换
+        return dtoModelMapper.map(entity, DataAuthorizeTypeDto.class);
+    }
+
+    /**
+     * 自定义设置DTO转换为Entity的转换器
+     */
+    @Override
+    protected void customerConvertToEntityMapper() {
         // 创建自定义映射规则
         PropertyMap<DataAuthorizeTypeDto,DataAuthorizeType> propertyMap = new PropertyMap<DataAuthorizeTypeDto,DataAuthorizeType>() {
             @Override
@@ -117,9 +84,7 @@ public class DataAuthorizeTypeController implements DefaultBaseEntityController<
             }
         };
         // 添加映射器
-        custMapper.addMappings(propertyMap);
-        // 转换
-        return custMapper.map(dto, DataAuthorizeType.class);
+        entityModelMapper.addMappings(propertyMap);
     }
 
     /**

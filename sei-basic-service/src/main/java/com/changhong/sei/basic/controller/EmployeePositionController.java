@@ -43,7 +43,7 @@ public class EmployeePositionController extends BaseRelationController<EmployeeP
      */
     @Override
     public EmployeeDto convertParentToDto(Employee entity) {
-        return EmployeeController.custConvertToDto(entity);
+        return EmployeeController.convertToDtoStatic(entity);
     }
 
     /**
@@ -54,6 +54,6 @@ public class EmployeePositionController extends BaseRelationController<EmployeeP
      */
     @Override
     public PositionDto convertChildToDto(Position entity) {
-        return PositionController.custConvertToDto(entity);
+        return PositionController.convertToDtoStatic(entity);
     }
 }

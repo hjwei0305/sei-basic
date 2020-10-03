@@ -8,7 +8,7 @@ import com.changhong.sei.basic.service.EmployeePositionService;
 import com.changhong.sei.basic.service.EmployeeService;
 import com.changhong.sei.basic.service.OrganizationService;
 import com.changhong.sei.core.context.ContextUtil;
-import com.changhong.sei.core.controller.DefaultBaseEntityController;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.dto.serach.QuickSearchParam;
@@ -19,7 +19,6 @@ import com.changhong.sei.enums.UserAuthorityPolicy;
 import com.changhong.sei.enums.UserType;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
-import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -40,8 +39,8 @@ import java.util.stream.Collectors;
 @RestController
 @Api(value = "EmployeeApi", tags = "企业用户API服务实现")
 @RequestMapping(path = "employee", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class EmployeeController implements DefaultBaseEntityController<Employee, EmployeeDto>,
-        EmployeeApi {
+public class EmployeeController extends BaseEntityController<Employee, EmployeeDto>
+        implements EmployeeApi {
     @Autowired
     private EmployeeService service;
     @Autowired
@@ -146,7 +145,7 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
     @Override
     public ResultData<List<FeatureRoleDto>> getCanAssignedFeatureRoles(String featureRoleGroupId, String userId) {
         List<FeatureRole> roles = service.getCanAssignedFeatureRoles(featureRoleGroupId, userId);
-        List<FeatureRoleDto> dtos = roles.stream().map(FeatureRoleController::custConvertToDto).collect(Collectors.toList());
+        List<FeatureRoleDto> dtos = roles.stream().map(FeatureRoleController::convertToDtoStatic).collect(Collectors.toList());
         return ResultData.success(dtos);
     }
 
@@ -160,7 +159,7 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
     @Override
     public ResultData<List<DataRoleDto>> getCanAssignedDataRoles(String dataRoleGroupId, String userId) {
         List<DataRole> roles = service.getCanAssignedDataRoles(dataRoleGroupId, userId);
-        List<DataRoleDto> dtos = roles.stream().map(DataRoleController::custConvertToDto).collect(Collectors.toList());
+        List<DataRoleDto> dtos = roles.stream().map(DataRoleController::convertToDtoStatic).collect(Collectors.toList());
         return ResultData.success(dtos);
     }
 
@@ -252,7 +251,7 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
      * @return 操作结果
      */
     @Override
-    public ResultData copyToEmployees(EmployeeCopyParam copyParam) {
+    public ResultData<?> copyToEmployees(EmployeeCopyParam copyParam) {
         return ResultDataUtil.convertFromOperateResult(service.copyToEmployees(copyParam));
     }
 
@@ -295,7 +294,7 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
      * @return 操作结果
      */
     @Override
-    public ResultData saveTenantAdmin(EmployeeDto employeeDto) {
+    public ResultData<?> saveTenantAdmin(EmployeeDto employeeDto) {
         // 检查租户代码
         if (StringUtils.isBlank(employeeDto.getTenantCode())){
             // 保存一个租户的系统管理员，需要确定租户代码！
@@ -305,7 +304,7 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
         employeeDto.setUserType(UserType.Employee);
         employeeDto.setUserAuthorityPolicy(UserAuthorityPolicy.TenantAdmin);
         employeeDto.setCreateAdmin(Boolean.TRUE);
-        return DefaultBaseEntityController.super.save(employeeDto);
+        return super.save(employeeDto);
     }
 
     @Override
@@ -314,46 +313,10 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
     }
 
     /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
+     * 自定义设置Entity转换为DTO的转换器
      */
     @Override
-    public Class<Employee> getEntityClass() {
-        return Employee.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<EmployeeDto> getDtoClass() {
-        return EmployeeDto.class;
-    }
-
-    /**
-     * 将数据实体转换成DTO
-     *
-     * @param entity 业务实体
-     * @return DTO
-     */
-    @Override
-    public EmployeeDto convertToDto(Employee entity) {
-        return EmployeeController.custConvertToDto(entity);
-    }
-
-    /**
-     * 将数据实体转换成DTO
-     * @param entity 数据实体
-     * @return DTO
-     */
-    static EmployeeDto custConvertToDto(Employee entity){
-        if (Objects.isNull(entity)){
-            return null;
-        }
-        ModelMapper custMapper = new ModelMapper();
+    protected void customConvertToDtoMapper() {
         // 创建自定义映射规则
         PropertyMap<Employee, EmployeeDto> propertyMap = new PropertyMap<Employee, EmployeeDto>() {
             @Override
@@ -365,9 +328,20 @@ public class EmployeeController implements DefaultBaseEntityController<Employee,
             }
         };
         // 添加映射器
-        custMapper.addMappings(propertyMap);
+        dtoModelMapper.addMappings(propertyMap);
+    }
+
+    /**
+     * 将数据实体转换成DTO
+     * @param entity 数据实体
+     * @return DTO
+     */
+    static EmployeeDto convertToDtoStatic(Employee entity){
+        if (Objects.isNull(entity)){
+            return null;
+        }
         // 转换
-        return custMapper.map(entity, EmployeeDto.class);
+        return dtoModelMapper.map(entity, EmployeeDto.class);
     }
 
     /**

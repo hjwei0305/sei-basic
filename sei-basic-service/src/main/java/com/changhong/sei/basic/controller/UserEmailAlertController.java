@@ -4,7 +4,7 @@ import com.changhong.sei.basic.api.UserEmailAlertApi;
 import com.changhong.sei.basic.dto.UserEmailAlertDto;
 import com.changhong.sei.basic.entity.UserEmailAlert;
 import com.changhong.sei.basic.service.UserEmailAlertService;
-import com.changhong.sei.core.controller.DefaultBaseEntityController;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
@@ -27,33 +27,13 @@ import java.util.stream.Collectors;
 @RestController
 @Api(value = "UserEmailAlertApi", tags = "用户邮件提醒API服务")
 @RequestMapping(path = "userEmailAlert", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class UserEmailAlertController implements DefaultBaseEntityController<UserEmailAlert, UserEmailAlertDto>,
-        UserEmailAlertApi {
+public class UserEmailAlertController extends BaseEntityController<UserEmailAlert, UserEmailAlertDto>
+        implements UserEmailAlertApi {
     @Autowired
     private UserEmailAlertService service;
     @Override
     public BaseEntityService<UserEmailAlert> getService() {
         return service;
-    }
-
-    /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<UserEmailAlert> getEntityClass() {
-        return UserEmailAlert.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<UserEmailAlertDto> getDtoClass() {
-        return UserEmailAlertDto.class;
     }
 
     /**
@@ -76,7 +56,7 @@ public class UserEmailAlertController implements DefaultBaseEntityController<Use
      * @return 操作结果
      */
     @Override
-    public ResultData updateLastTimes(List<String> userIds) {
+    public ResultData<?> updateLastTimes(List<String> userIds) {
         OperateResult result = service.updateLastTimes(userIds);
         return ResultDataUtil.convertFromOperateResult(result);
     }

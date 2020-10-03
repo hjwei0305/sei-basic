@@ -4,7 +4,7 @@ import com.changhong.sei.basic.api.PositionCategoryApi;
 import com.changhong.sei.basic.dto.PositionCategoryDto;
 import com.changhong.sei.basic.entity.PositionCategory;
 import com.changhong.sei.basic.service.PositionCategoryService;
-import com.changhong.sei.core.controller.DefaultBaseEntityController;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
@@ -24,8 +24,8 @@ import java.util.List;
 @RestController
 @Api(value = "PositionCategoryApi", tags = "岗位类别API服务实现")
 @RequestMapping(path = "positionCategory", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class PositionCategoryController implements DefaultBaseEntityController<PositionCategory, PositionCategoryDto>,
-        PositionCategoryApi {
+public class PositionCategoryController extends BaseEntityController<PositionCategory, PositionCategoryDto>
+        implements PositionCategoryApi {
     @Autowired
     private PositionCategoryService service;
 
@@ -42,26 +42,6 @@ public class PositionCategoryController implements DefaultBaseEntityController<P
     @Override
     public BaseEntityService<PositionCategory> getService() {
         return service;
-    }
-
-    /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<PositionCategory> getEntityClass() {
-        return PositionCategory.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<PositionCategoryDto> getDtoClass() {
-        return PositionCategoryDto.class;
     }
 
     /**

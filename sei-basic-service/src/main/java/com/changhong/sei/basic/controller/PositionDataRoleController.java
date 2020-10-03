@@ -8,7 +8,7 @@ import com.changhong.sei.basic.entity.DataRole;
 import com.changhong.sei.basic.entity.Position;
 import com.changhong.sei.basic.entity.PositionDataRole;
 import com.changhong.sei.basic.service.PositionDataRoleService;
-import com.changhong.sei.core.controller.DefaultRelationController;
+import com.changhong.sei.core.controller.BaseRelationController;
 import com.changhong.sei.core.service.BaseRelationService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,73 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Api(value = "PositionDataRoleApi", tags = "岗位分配的数据角色API服务实现")
 @RequestMapping(path = "positionDataRole", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class PositionDataRoleController implements DefaultRelationController<PositionDataRole, Position, DataRole, PositionDataRoleDto, PositionDto, DataRoleDto>,
-        PositionDataRoleApi {
+public class PositionDataRoleController extends BaseRelationController<PositionDataRole, Position, DataRole, PositionDataRoleDto, PositionDto, DataRoleDto>
+        implements PositionDataRoleApi {
     @Autowired
     private PositionDataRoleService service;
     @Override
     public BaseRelationService<PositionDataRole, Position, DataRole> getService() {
         return service;
-    }
-
-    /**
-     * 获取关系型数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<PositionDataRole> getRelationEntityClass() {
-        return PositionDataRole.class;
-    }
-
-    /**
-     * 获取关系型传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<PositionDataRoleDto> getRelationDtoClass() {
-        return PositionDataRoleDto.class;
-    }
-
-    /**
-     * 获取父数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<Position> getParentEntityClass() {
-        return Position.class;
-    }
-
-    /**
-     * 获取父传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<PositionDto> getParentDtoClass() {
-        return PositionDto.class;
-    }
-
-    /**
-     * 获取子数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<DataRole> getChildEntityClass() {
-        return DataRole.class;
-    }
-
-    /**
-     * 获取子传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<DataRoleDto> getChildDtoClass() {
-        return DataRoleDto.class;
     }
 
     /**
@@ -102,7 +42,7 @@ public class PositionDataRoleController implements DefaultRelationController<Pos
      */
     @Override
     public PositionDto convertParentToDto(Position entity) {
-        return PositionController.custConvertToDto(entity);
+        return PositionController.convertToDtoStatic(entity);
     }
 
     /**
@@ -113,6 +53,6 @@ public class PositionDataRoleController implements DefaultRelationController<Pos
      */
     @Override
     public DataRoleDto convertChildToDto(DataRole entity) {
-        return DataRoleController.custConvertToDto(entity);
+        return DataRoleController.convertToDtoStatic(entity);
     }
 }

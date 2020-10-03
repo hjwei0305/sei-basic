@@ -9,7 +9,7 @@ import com.changhong.sei.basic.entity.FeatureRole;
 import com.changhong.sei.basic.entity.Position;
 import com.changhong.sei.basic.service.PositionService;
 import com.changhong.sei.core.context.ContextUtil;
-import com.changhong.sei.core.controller.DefaultBaseEntityController;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.dto.serach.Search;
@@ -18,7 +18,6 @@ import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
 import org.apache.commons.collections.CollectionUtils;
-import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -40,34 +39,14 @@ import java.util.stream.Collectors;
 @RestController
 @Api(value = "PositionApi", tags = "岗位API服务实现")
 @RequestMapping(path = "position", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class PositionController implements DefaultBaseEntityController<Position, PositionDto>,
-        PositionApi {
+public class PositionController extends BaseEntityController<Position, PositionDto>
+        implements PositionApi {
     @Autowired
     private PositionService service;
 
     @Override
     public BaseEntityService<Position> getService() {
         return service;
-    }
-
-    /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<Position> getEntityClass() {
-        return Position.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<PositionDto> getDtoClass() {
-        return PositionDto.class;
     }
 
     /**
@@ -189,7 +168,7 @@ public class PositionController implements DefaultBaseEntityController<Position,
     @Override
     public ResultData<List<EmployeeDto>> listAllAssignedEmployeesByPositionId(String positionId) {
         List<Employee> employees = service.listAllAssignedEmployeesByPositionId(positionId);
-        List<EmployeeDto> dtos = employees.stream().map(EmployeeController::custConvertToDto).collect(Collectors.toList());
+        List<EmployeeDto> dtos = employees.stream().map(EmployeeController::convertToDtoStatic).collect(Collectors.toList());
         return ResultData.success(dtos);
     }
 
@@ -236,7 +215,7 @@ public class PositionController implements DefaultBaseEntityController<Position,
     @Override
     public ResultData<List<FeatureRoleDto>> getCanAssignedFeatureRoles(String featureRoleGroupId, String positionId) {
         List<FeatureRole> roles = service.getCanAssignedFeatureRoles(featureRoleGroupId, positionId);
-        List<FeatureRoleDto> dtos = roles.stream().map(FeatureRoleController::custConvertToDto).collect(Collectors.toList());
+        List<FeatureRoleDto> dtos = roles.stream().map(FeatureRoleController::convertToDtoStatic).collect(Collectors.toList());
         return ResultData.success(dtos);
     }
 
@@ -250,7 +229,7 @@ public class PositionController implements DefaultBaseEntityController<Position,
     @Override
     public ResultData<List<DataRoleDto>> getCanAssignedDataRoles(String dataRoleGroupId, String positionId) {
         List<DataRole> roles = service.getCanAssignedDataRoles(dataRoleGroupId, positionId);
-        List<DataRoleDto> dtos = roles.stream().map(DataRoleController::custConvertToDto).collect(Collectors.toList());
+        List<DataRoleDto> dtos = roles.stream().map(DataRoleController::convertToDtoStatic).collect(Collectors.toList());
         return ResultData.success(dtos);
     }
 
@@ -299,27 +278,10 @@ public class PositionController implements DefaultBaseEntityController<Position,
     }
 
     /**
-     * 将数据实体转换成DTO
-     *
-     * @param entity 业务实体
-     * @return DTO
+     * 自定义设置Entity转换为DTO的转换器
      */
     @Override
-    public PositionDto convertToDto(Position entity) {
-        return PositionController.custConvertToDto(entity);
-    }
-
-    /**
-     * 自定义将数据实体转换成DTO
-     *
-     * @param entity 业务实体
-     * @return DTO
-     */
-    static PositionDto custConvertToDto(Position entity) {
-        if (Objects.isNull(entity)) {
-            return null;
-        }
-        ModelMapper custMapper = new ModelMapper();
+    protected void customConvertToDtoMapper() {
         // 创建自定义映射规则
         PropertyMap<Position, PositionDto> propertyMap = new PropertyMap<Position, PositionDto>() {
             @Override
@@ -330,9 +292,21 @@ public class PositionController implements DefaultBaseEntityController<Position,
             }
         };
         // 添加映射器
-        custMapper.addMappings(propertyMap);
+        dtoModelMapper.addMappings(propertyMap);
+    }
+
+    /**
+     * 自定义将数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    static PositionDto convertToDtoStatic(Position entity) {
+        if (Objects.isNull(entity)) {
+            return null;
+        }
         // 转换
-        return custMapper.map(entity, PositionDto.class);
+        return dtoModelMapper.map(entity, PositionDto.class);
     }
 
     /**

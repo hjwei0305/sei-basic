@@ -19,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class UserMenuController extends BaseRelationController<UserMenu, User, M
      */
     @Override
     public MenuDto convertChildToDto(Menu entity) {
-        return MenuController.custConvertToDto(entity);
+        return MenuController.convertToDtoStatic(entity);
     }
 
     /**

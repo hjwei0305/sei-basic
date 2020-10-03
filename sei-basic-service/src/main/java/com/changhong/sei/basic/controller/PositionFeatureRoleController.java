@@ -45,7 +45,7 @@ public class PositionFeatureRoleController extends BaseRelationController<Positi
      */
     @Override
     public FeatureRoleDto convertChildToDto(FeatureRole entity) {
-        return FeatureRoleController.custConvertToDto(entity);
+        return FeatureRoleController.convertToDtoStatic(entity);
     }
 
     /**
@@ -56,7 +56,7 @@ public class PositionFeatureRoleController extends BaseRelationController<Positi
      */
     @Override
     public PositionDto convertParentToDto(Position entity) {
-        return PositionController.custConvertToDto(entity);
+        return PositionController.convertToDtoStatic(entity);
     }
 
     /**

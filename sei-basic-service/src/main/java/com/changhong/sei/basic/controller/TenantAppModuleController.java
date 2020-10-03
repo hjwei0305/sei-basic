@@ -8,7 +8,7 @@ import com.changhong.sei.basic.entity.AppModule;
 import com.changhong.sei.basic.entity.Tenant;
 import com.changhong.sei.basic.entity.TenantAppModule;
 import com.changhong.sei.basic.service.TenantAppModuleService;
-import com.changhong.sei.core.controller.DefaultRelationController;
+import com.changhong.sei.core.controller.BaseRelationController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseRelationService;
 import io.swagger.annotations.Api;
@@ -29,8 +29,8 @@ import java.util.stream.Collectors;
 @RestController
 @Api(value = "TenantAppModuleApi", tags = "租户分配应用模块API服务")
 @RequestMapping(path = "tenantAppModule", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TenantAppModuleController implements DefaultRelationController<TenantAppModule, Tenant, AppModule, TenantAppModuleDto, TenantDto, AppModuleDto>,
-        TenantAppModuleApi {
+public class TenantAppModuleController extends BaseRelationController<TenantAppModule, Tenant, AppModule, TenantAppModuleDto, TenantDto, AppModuleDto>
+        implements TenantAppModuleApi {
     @Autowired
     private TenantAppModuleService service;
     /**
@@ -59,65 +59,5 @@ public class TenantAppModuleController implements DefaultRelationController<Tena
     @Override
     public BaseRelationService<TenantAppModule, Tenant, AppModule> getService() {
         return service;
-    }
-
-    /**
-     * 获取关系型数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<TenantAppModule> getRelationEntityClass() {
-        return TenantAppModule.class;
-    }
-
-    /**
-     * 获取关系型传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<TenantAppModuleDto> getRelationDtoClass() {
-        return TenantAppModuleDto.class;
-    }
-
-    /**
-     * 获取父数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<Tenant> getParentEntityClass() {
-        return Tenant.class;
-    }
-
-    /**
-     * 获取父传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<TenantDto> getParentDtoClass() {
-        return TenantDto.class;
-    }
-
-    /**
-     * 获取子数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<AppModule> getChildEntityClass() {
-        return AppModule.class;
-    }
-
-    /**
-     * 获取子传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<AppModuleDto> getChildDtoClass() {
-        return AppModuleDto.class;
     }
 }

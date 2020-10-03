@@ -9,11 +9,10 @@ import com.changhong.sei.basic.entity.FeatureRole;
 import com.changhong.sei.basic.entity.User;
 import com.changhong.sei.basic.entity.UserFeatureRole;
 import com.changhong.sei.basic.service.UserFeatureRoleService;
-import com.changhong.sei.core.controller.DefaultRelationController;
+import com.changhong.sei.core.controller.BaseRelationController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseRelationService;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,74 +29,14 @@ import javax.validation.Valid;
 @RestController
 @Api(value = "UserFeatureRoleApi", tags = "用户分配的功能角色API服务实现")
 @RequestMapping(path = "userFeatureRole", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class UserFeatureRoleController implements DefaultRelationController<UserFeatureRole, User, FeatureRole, UserFeatureRoleDto, UserDto, FeatureRoleDto>,
-        UserFeatureRoleApi {
+public class UserFeatureRoleController extends BaseRelationController<UserFeatureRole, User, FeatureRole, UserFeatureRoleDto, UserDto, FeatureRoleDto>
+        implements UserFeatureRoleApi {
     @Autowired
     private UserFeatureRoleService service;
 
     @Override
     public BaseRelationService<UserFeatureRole, User, FeatureRole> getService() {
         return service;
-    }
-
-    /**
-     * 获取关系型数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<UserFeatureRole> getRelationEntityClass() {
-        return UserFeatureRole.class;
-    }
-
-    /**
-     * 获取关系型传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<UserFeatureRoleDto> getRelationDtoClass() {
-        return UserFeatureRoleDto.class;
-    }
-
-    /**
-     * 获取父数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<User> getParentEntityClass() {
-        return User.class;
-    }
-
-    /**
-     * 获取父传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<UserDto> getParentDtoClass() {
-        return UserDto.class;
-    }
-
-    /**
-     * 获取子数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<FeatureRole> getChildEntityClass() {
-        return FeatureRole.class;
-    }
-
-    /**
-     * 获取子传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<FeatureRoleDto> getChildDtoClass() {
-        return FeatureRoleDto.class;
     }
 
     /**
@@ -108,7 +47,7 @@ public class UserFeatureRoleController implements DefaultRelationController<User
      */
     @Override
     public FeatureRoleDto convertChildToDto(FeatureRole entity) {
-        return FeatureRoleController.custConvertToDto(entity);
+        return FeatureRoleController.convertToDtoStatic(entity);
     }
 
     /**

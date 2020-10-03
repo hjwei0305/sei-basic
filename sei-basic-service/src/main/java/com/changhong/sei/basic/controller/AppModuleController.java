@@ -4,7 +4,7 @@ import com.changhong.sei.basic.api.AppModuleApi;
 import com.changhong.sei.basic.dto.AppModuleDto;
 import com.changhong.sei.basic.entity.AppModule;
 import com.changhong.sei.basic.service.AppModuleService;
-import com.changhong.sei.core.controller.DefaultBaseEntityController;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
@@ -22,33 +22,13 @@ import java.util.List;
 @RestController
 @Api(value = "AppModuleApi", tags = "应用模块的API服务")
 @RequestMapping(path = "appModule", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class AppModuleController implements DefaultBaseEntityController<AppModule, AppModuleDto>,
-        AppModuleApi {
+public class AppModuleController extends BaseEntityController<AppModule, AppModuleDto>
+        implements AppModuleApi {
     @Autowired
     private AppModuleService service;
     @Override
     public BaseEntityService<AppModule> getService() {
         return service;
-    }
-
-    /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<AppModule> getEntityClass() {
-        return AppModule.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<AppModuleDto> getDtoClass() {
-        return AppModuleDto.class;
     }
 
     /**

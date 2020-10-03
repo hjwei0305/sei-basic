@@ -6,11 +6,10 @@ import com.changhong.sei.basic.entity.Feature;
 import com.changhong.sei.basic.entity.FeatureRole;
 import com.changhong.sei.basic.entity.FeatureRoleFeature;
 import com.changhong.sei.basic.service.FeatureRoleFeatureService;
-import com.changhong.sei.core.controller.DefaultRelationController;
+import com.changhong.sei.core.controller.BaseRelationController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseRelationService;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +26,8 @@ import java.util.List;
 @RestController
 @Api(value = "FeatureRoleFeatureApi", tags = "功能角色分配的功能项API服务实现")
 @RequestMapping(path = "featureRoleFeature", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class FeatureRoleFeatureController implements DefaultRelationController<FeatureRoleFeature, FeatureRole, Feature, FeatureRoleFeatureDto, FeatureRoleDto, FeatureDto>,
-        FeatureRoleFeatureApi {
+public class FeatureRoleFeatureController extends BaseRelationController<FeatureRoleFeature, FeatureRole, Feature, FeatureRoleFeatureDto, FeatureRoleDto, FeatureDto>
+        implements FeatureRoleFeatureApi {
     @Autowired
     private FeatureRoleFeatureService service;
     /**
@@ -72,66 +71,6 @@ public class FeatureRoleFeatureController implements DefaultRelationController<F
     }
 
     /**
-     * 获取关系型数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<FeatureRoleFeature> getRelationEntityClass() {
-        return FeatureRoleFeature.class;
-    }
-
-    /**
-     * 获取关系型传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<FeatureRoleFeatureDto> getRelationDtoClass() {
-        return FeatureRoleFeatureDto.class;
-    }
-
-    /**
-     * 获取父数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<FeatureRole> getParentEntityClass() {
-        return FeatureRole.class;
-    }
-
-    /**
-     * 获取父传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<FeatureRoleDto> getParentDtoClass() {
-        return FeatureRoleDto.class;
-    }
-
-    /**
-     * 获取子数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<Feature> getChildEntityClass() {
-        return Feature.class;
-    }
-
-    /**
-     * 获取子传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<FeatureDto> getChildDtoClass() {
-        return FeatureDto.class;
-    }
-
-    /**
      * 将父数据实体转换成DTO
      *
      * @param entity 业务实体
@@ -139,7 +78,7 @@ public class FeatureRoleFeatureController implements DefaultRelationController<F
      */
     @Override
     public FeatureRoleDto convertParentToDto(FeatureRole entity) {
-        return FeatureRoleController.custConvertToDto(entity);
+        return FeatureRoleController.convertToDtoStatic(entity);
     }
 
     /**
@@ -150,6 +89,6 @@ public class FeatureRoleFeatureController implements DefaultRelationController<F
      */
     @Override
     public FeatureDto convertChildToDto(Feature entity) {
-        return FeatureController.custConvertToDto(entity);
+        return FeatureController.convertToDtoStatic(entity);
     }
 }

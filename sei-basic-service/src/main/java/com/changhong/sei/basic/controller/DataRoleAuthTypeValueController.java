@@ -38,7 +38,7 @@ public class DataRoleAuthTypeValueController implements DataRoleAuthTypeValueApi
      * @return 操作结果
      */
     @Override
-    public ResultData insertRelations(DataRoleRelation relation) {
+    public ResultData<?> insertRelations(DataRoleRelation relation) {
         OperateResult result = service.insertRelations(relation);
         return ResultDataUtil.convertFromOperateResult(result);
     }
@@ -50,7 +50,7 @@ public class DataRoleAuthTypeValueController implements DataRoleAuthTypeValueApi
      * @return 操作结果
      */
     @Override
-    public ResultData removeRelations(DataRoleRelation relation) {
+    public ResultData<?> removeRelations(DataRoleRelation relation) {
         OperateResult result = service.removeRelations(relation);
         return ResultDataUtil.convertFromOperateResult(result);
     }
@@ -116,7 +116,7 @@ public class DataRoleAuthTypeValueController implements DataRoleAuthTypeValueApi
     @Override
     public ResultData<List<DataAuthorizeTypeDto>> getAuthorizeTypesByRoleId(String roleId) {
         List<DataAuthorizeType> authorizeTypes = service.getAuthorizeTypesByRoleId(roleId);
-        List<DataAuthorizeTypeDto> dtos = authorizeTypes.stream().map(DataAuthorizeTypeController::custConvertToDto).collect(Collectors.toList());
+        List<DataAuthorizeTypeDto> dtos = authorizeTypes.stream().map(DataAuthorizeTypeController::convertToDtoStatic).collect(Collectors.toList());
         return ResultData.success(dtos);
     }
 }

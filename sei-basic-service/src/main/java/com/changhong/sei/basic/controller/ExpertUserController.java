@@ -5,7 +5,7 @@ import com.changhong.sei.basic.dto.ExpertUserDto;
 import com.changhong.sei.basic.dto.ExpertUserVo;
 import com.changhong.sei.basic.entity.ExpertUser;
 import com.changhong.sei.basic.service.ExpertUserService;
-import com.changhong.sei.core.controller.DefaultBaseController;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.dto.serach.Search;
@@ -26,8 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Api(value = "ExpertUserApi", tags = "专家用户API服务实现")
 @RequestMapping(path = "expertUser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class ExpertUserController implements DefaultBaseController<ExpertUser, ExpertUserDto>,
-        ExpertUserApi {
+public class ExpertUserController extends BaseEntityController<ExpertUser, ExpertUserDto>
+        implements ExpertUserApi {
     @Autowired
     private ExpertUserService service;
     /**
@@ -49,7 +49,7 @@ public class ExpertUserController implements DefaultBaseController<ExpertUser, E
      * @return 操作结果
      */
     @Override
-    public ResultData freeze(String id, Boolean frozen) {
+    public ResultData<?> freeze(String id, Boolean frozen) {
         return ResultDataUtil.convertFromOperateResult(service.freeze(id, frozen));
     }
 
@@ -61,7 +61,7 @@ public class ExpertUserController implements DefaultBaseController<ExpertUser, E
      * @return 操作结果
      */
     @Override
-    public ResultData freezeByExpertId(String expertId, Boolean frozen) {
+    public ResultData<?> freezeByExpertId(String expertId, Boolean frozen) {
         return ResultDataUtil.convertFromOperateResult(service.freezeByExpertId(expertId, frozen));
     }
 
@@ -72,7 +72,7 @@ public class ExpertUserController implements DefaultBaseController<ExpertUser, E
      * @return 操作结果
      */
     @Override
-    public ResultData save(ExpertUserVo expertUserVo) {
+    public ResultData<?> save(ExpertUserVo expertUserVo) {
         return ResultDataUtil.convertFromOperateResult(service.save(expertUserVo));
     }
 
@@ -83,7 +83,7 @@ public class ExpertUserController implements DefaultBaseController<ExpertUser, E
      * @return 操作结果
      */
     @Override
-    public ResultData deleteByExpertId(String expertId) {
+    public ResultData<?> deleteByExpertId(String expertId) {
         return ResultDataUtil.convertFromOperateResult(service.deleteByExpertId(expertId));
     }
 
@@ -101,25 +101,5 @@ public class ExpertUserController implements DefaultBaseController<ExpertUser, E
     @Override
     public BaseEntityService<ExpertUser> getService() {
         return service;
-    }
-
-    /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<ExpertUser> getEntityClass() {
-        return ExpertUser.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<ExpertUserDto> getDtoClass() {
-        return ExpertUserDto.class;
     }
 }

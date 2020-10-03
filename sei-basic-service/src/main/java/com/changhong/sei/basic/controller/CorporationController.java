@@ -4,7 +4,7 @@ import com.changhong.sei.basic.api.CorporationApi;
 import com.changhong.sei.basic.dto.CorporationDto;
 import com.changhong.sei.basic.entity.Corporation;
 import com.changhong.sei.basic.service.CorporationService;
-import com.changhong.sei.core.controller.DefaultBaseEntityController;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.service.BaseEntityService;
@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
 @RestController
 @Api(value = "CorporationApi", tags = "公司API服务")
 @RequestMapping(path = "corporation", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class CorporationController implements DefaultBaseEntityController<Corporation, CorporationDto>,
-        CorporationApi {
+public class CorporationController extends BaseEntityController<Corporation, CorporationDto>
+        implements CorporationApi {
     @Autowired
     private CorporationService service;
     /**
@@ -58,26 +58,6 @@ public class CorporationController implements DefaultBaseEntityController<Corpor
     @Override
     public BaseEntityService<Corporation> getService() {
         return service;
-    }
-
-    /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<Corporation> getEntityClass() {
-        return Corporation.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<CorporationDto> getDtoClass() {
-        return CorporationDto.class;
     }
 
     /**

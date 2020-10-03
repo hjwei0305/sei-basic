@@ -5,15 +5,13 @@ import com.changhong.sei.basic.dto.FeatureDto;
 import com.changhong.sei.basic.dto.FeatureType;
 import com.changhong.sei.basic.entity.Feature;
 import com.changhong.sei.basic.service.FeatureService;
-import com.changhong.sei.core.controller.DefaultBaseEntityController;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
-import com.changhong.sei.core.dto.annotation.QueryFieldMapping;
 import com.changhong.sei.core.dto.annotation.QueryFieldMappingUtil;
 import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -33,8 +31,8 @@ import java.util.stream.Collectors;
 @RestController
 @Api(value = "FeatureApi", tags = "功能项API服务")
 @RequestMapping(path = "feature", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class FeatureController implements DefaultBaseEntityController<Feature, FeatureDto>,
-        FeatureApi {
+public class FeatureController extends BaseEntityController<Feature, FeatureDto>
+        implements FeatureApi {
     @Autowired
     private FeatureService service;
 
@@ -110,47 +108,10 @@ public class FeatureController implements DefaultBaseEntityController<Feature, F
     }
 
     /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
+     * 自定义设置Entity转换为DTO的转换器
      */
     @Override
-    public Class<Feature> getEntityClass() {
-        return Feature.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<FeatureDto> getDtoClass() {
-        return FeatureDto.class;
-    }
-
-    /**
-     * 将数据实体转换成DTO
-     *
-     * @param entity 业务实体
-     * @return DTO
-     */
-    @Override
-    public FeatureDto convertToDto(Feature entity) {
-        return FeatureController.custConvertToDto(entity);
-    }
-
-    /**
-     * 自定义将数据实体转换成DTO
-     *
-     * @param entity 业务实体
-     * @return DTO
-     */
-    public static FeatureDto custConvertToDto(Feature entity){
-        if (Objects.isNull(entity)){
-            return null;
-        }
-        ModelMapper custMapper = new ModelMapper();
+    protected void customConvertToDtoMapper() {
         // 创建自定义映射规则
         PropertyMap<Feature, FeatureDto> propertyMap = new PropertyMap<Feature, FeatureDto>() {
             @Override
@@ -161,9 +122,21 @@ public class FeatureController implements DefaultBaseEntityController<Feature, F
             }
         };
         // 添加映射器
-        custMapper.addMappings(propertyMap);
+        dtoModelMapper.addMappings(propertyMap);
+    }
+
+    /**
+     * 自定义将数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    public static FeatureDto convertToDtoStatic(Feature entity){
+        if (Objects.isNull(entity)){
+            return null;
+        }
         // 转换
-        return custMapper.map(entity, FeatureDto.class);
+        return dtoModelMapper.map(entity, FeatureDto.class);
     }
 
     /**

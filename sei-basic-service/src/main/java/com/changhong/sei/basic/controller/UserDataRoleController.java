@@ -9,7 +9,7 @@ import com.changhong.sei.basic.entity.DataRole;
 import com.changhong.sei.basic.entity.User;
 import com.changhong.sei.basic.entity.UserDataRole;
 import com.changhong.sei.basic.service.UserDataRoleService;
-import com.changhong.sei.core.controller.DefaultRelationController;
+import com.changhong.sei.core.controller.BaseRelationController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseRelationService;
 import io.swagger.annotations.Api;
@@ -29,74 +29,14 @@ import javax.validation.Valid;
 @RestController
 @Api(value = "UserDataRoleApi", tags = "用户分配的数据角色API服务实现")
 @RequestMapping(path = "userDataRole", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class UserDataRoleController implements DefaultRelationController<UserDataRole, User, DataRole, UserDataRoleDto, UserDto, DataRoleDto>,
-        UserDataRoleApi {
+public class UserDataRoleController extends BaseRelationController<UserDataRole, User, DataRole, UserDataRoleDto, UserDto, DataRoleDto>
+        implements UserDataRoleApi {
     @Autowired
     private UserDataRoleService service;
 
     @Override
     public BaseRelationService<UserDataRole, User, DataRole> getService() {
         return service;
-    }
-
-    /**
-     * 获取关系型数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<UserDataRole> getRelationEntityClass() {
-        return UserDataRole.class;
-    }
-
-    /**
-     * 获取关系型传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<UserDataRoleDto> getRelationDtoClass() {
-        return UserDataRoleDto.class;
-    }
-
-    /**
-     * 获取父数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<User> getParentEntityClass() {
-        return User.class;
-    }
-
-    /**
-     * 获取父传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<UserDto> getParentDtoClass() {
-        return UserDto.class;
-    }
-
-    /**
-     * 获取子数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<DataRole> getChildEntityClass() {
-        return DataRole.class;
-    }
-
-    /**
-     * 获取子传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<DataRoleDto> getChildDtoClass() {
-        return DataRoleDto.class;
     }
 
     /**
@@ -107,7 +47,7 @@ public class UserDataRoleController implements DefaultRelationController<UserDat
      */
     @Override
     public DataRoleDto convertChildToDto(DataRole entity) {
-        return DataRoleController.custConvertToDto(entity);
+        return DataRoleController.convertToDtoStatic(entity);
     }
 
     /**

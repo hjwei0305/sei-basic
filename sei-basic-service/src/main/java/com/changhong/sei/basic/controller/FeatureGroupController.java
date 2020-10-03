@@ -7,11 +7,9 @@ import com.changhong.sei.basic.entity.FeatureGroup;
 import com.changhong.sei.basic.service.AppModuleService;
 import com.changhong.sei.basic.service.FeatureGroupService;
 import com.changhong.sei.core.controller.BaseEntityController;
-import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -70,27 +68,10 @@ public class FeatureGroupController extends BaseEntityController<FeatureGroup, F
     }
 
     /**
-     * 将数据实体转换成DTO
-     *
-     * @param entity 业务实体
-     * @return DTO
+     * 自定义设置Entity转换为DTO的转换器
      */
     @Override
-    public FeatureGroupDto convertToDto(FeatureGroup entity) {
-        return FeatureGroupController.custConvertToDto(entity);
-    }
-
-    /**
-     * 自定义将数据实体转换成DTO
-     *
-     * @param entity 业务实体
-     * @return DTO
-     */
-    public static FeatureGroupDto custConvertToDto(FeatureGroup entity) {
-        if (Objects.isNull(entity)){
-            return null;
-        }
-        ModelMapper custMapper = new ModelMapper();
+    protected void customConvertToDtoMapper() {
         // 创建自定义映射规则
         PropertyMap<FeatureGroup,FeatureGroupDto> propertyMap = new PropertyMap<FeatureGroup, FeatureGroupDto>() {
             @Override
@@ -100,9 +81,21 @@ public class FeatureGroupController extends BaseEntityController<FeatureGroup, F
             }
         };
         // 添加映射器
-        custMapper.addMappings(propertyMap);
+        dtoModelMapper.addMappings(propertyMap);
+    }
+
+    /**
+     * 自定义将数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    public static FeatureGroupDto convertToDtoStatic(FeatureGroup entity) {
+        if (Objects.isNull(entity)){
+            return null;
+        }
         // 转换
-        return custMapper.map(entity,FeatureGroupDto.class);
+        return dtoModelMapper.map(entity,FeatureGroupDto.class);
     }
 
     /**

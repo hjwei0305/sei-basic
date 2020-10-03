@@ -8,14 +8,13 @@ import com.changhong.sei.basic.entity.UserProfile;
 import com.changhong.sei.basic.service.EmployeeService;
 import com.changhong.sei.basic.service.UserProfileService;
 import com.changhong.sei.core.context.ContextUtil;
-import com.changhong.sei.core.controller.DefaultBaseEntityController;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
-import com.changhong.sei.notify.dto.UserNotifyInfo;
 import com.changhong.sei.enums.UserType;
+import com.changhong.sei.notify.dto.UserNotifyInfo;
 import io.swagger.annotations.Api;
-import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -35,8 +34,8 @@ import java.util.Objects;
 @Api(value = "UserProfileService", tags = "用户配置API服务实现")
 @RequestMapping(path = "userProfile", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @SuppressWarnings("unchecked")
-public class UserProfileController implements DefaultBaseEntityController<UserProfile, UserProfileDto>,
-        UserProfileApi {
+public class UserProfileController extends BaseEntityController<UserProfile, UserProfileDto>
+        implements UserProfileApi {
     @Autowired
     private UserProfileService service;
     @Autowired
@@ -113,47 +112,10 @@ public class UserProfileController implements DefaultBaseEntityController<UserPr
     }
 
     /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
+     * 自定义设置Entity转换为DTO的转换器
      */
     @Override
-    public Class<UserProfile> getEntityClass() {
-        return UserProfile.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<UserProfileDto> getDtoClass() {
-        return UserProfileDto.class;
-    }
-
-    /**
-     * 将数据实体转换成DTO
-     *
-     * @param entity 业务实体
-     * @return DTO
-     */
-    @Override
-    public UserProfileDto convertToDto(UserProfile entity) {
-        return UserProfileController.custConvertToDto(entity);
-    }
-
-    /**
-     * 将数据实体转换成DTO
-     *
-     * @param entity 数据实体
-     * @return DTO
-     */
-    static UserProfileDto custConvertToDto(UserProfile entity) {
-        if (Objects.isNull(entity)) {
-            return null;
-        }
-        ModelMapper custMapper = new ModelMapper();
+    protected void customConvertToDtoMapper() {
         // 创建自定义映射规则
         PropertyMap<UserProfile, UserProfileDto> propertyMap = new PropertyMap<UserProfile, UserProfileDto>() {
             @Override
@@ -163,9 +125,7 @@ public class UserProfileController implements DefaultBaseEntityController<UserPr
             }
         };
         // 添加映射器
-        custMapper.addMappings(propertyMap);
-        // 转换
-        return custMapper.map(entity, UserProfileDto.class);
+        dtoModelMapper.addMappings(propertyMap);
     }
 
     /**
@@ -176,7 +136,7 @@ public class UserProfileController implements DefaultBaseEntityController<UserPr
      */
     @Override
     public ResultData<UserProfileDto> save(UserProfileDto dto) {
-        ResultData<UserProfileDto> resultData = DefaultBaseEntityController.super.save(dto);
+        ResultData<UserProfileDto> resultData = super.save(dto);
         if (resultData.failed()) {
             return resultData;
         }

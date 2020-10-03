@@ -195,7 +195,7 @@ public class FeatureRoleFeatureService extends BaseRelationService<FeatureRoleFe
         Iterator<Feature> iter = sortFeatures.iterator();
         while (iter.hasNext()) {
             Feature feature = iter.next();
-            FeatureDto featureDto = FeatureController.custConvertToDto(feature);
+            FeatureDto featureDto = FeatureController.convertToDtoStatic(feature);
             if (FeatureType.Page.equals(feature.getFeatureType())) {
                 AuthTreeVo authTreeVo = new AuthTreeVo(featureDto);
                 //层级

@@ -4,6 +4,7 @@ import com.changhong.sei.basic.api.FeatureRoleGroupApi;
 import com.changhong.sei.basic.dto.FeatureRoleGroupDto;
 import com.changhong.sei.basic.entity.FeatureRoleGroup;
 import com.changhong.sei.basic.service.FeatureRoleGroupService;
+import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
@@ -24,34 +25,14 @@ import java.util.List;
 @RestController
 @Api(value = "FeatureRoleGroupApi", tags = "功能角色组API服务实现")
 @RequestMapping(path = "featureRoleGroup", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class FeatureRoleGroupController implements DefaultBaseEntityController<FeatureRoleGroup, FeatureRoleGroupDto>,
-        FeatureRoleGroupApi {
+public class FeatureRoleGroupController extends BaseEntityController<FeatureRoleGroup, FeatureRoleGroupDto>
+        implements FeatureRoleGroupApi {
     @Autowired
     private FeatureRoleGroupService service;
 
     @Override
     public BaseEntityService<FeatureRoleGroup> getService() {
         return service;
-    }
-
-    /**
-     * 获取数据实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<FeatureRoleGroup> getEntityClass() {
-        return FeatureRoleGroup.class;
-    }
-
-    /**
-     * 获取传输实体的类型
-     *
-     * @return 类型Class
-     */
-    @Override
-    public Class<FeatureRoleGroupDto> getDtoClass() {
-        return FeatureRoleGroupDto.class;
     }
 
     /**
