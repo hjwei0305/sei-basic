@@ -12,10 +12,14 @@ import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Objects;
 
 /**
  * 实现功能: 专家用户API服务实现
@@ -26,10 +30,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Api(value = "ExpertUserApi", tags = "专家用户API服务实现")
 @RequestMapping(path = "expertUser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class ExpertUserController extends BaseEntityController<ExpertUser, ExpertUserDto>
-        implements ExpertUserApi {
+public class ExpertUserController implements ExpertUserApi {
     @Autowired
     private ExpertUserService service;
+    /**
+     * Entity转换为DTO的转换器
+     */
+    protected static final ModelMapper dtoModelMapper;
+    // 初始化静态属性
+    static {
+        // 初始化Entity转换为DTO的转换器
+        dtoModelMapper = new ModelMapper();
+    }
     /**
      * 分页查询业务实体
      *
@@ -88,6 +100,19 @@ public class ExpertUserController extends BaseEntityController<ExpertUser, Exper
     }
 
     /**
+     * 将数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    public ExpertUserDto convertToDto(ExpertUser entity) {
+        if (Objects.isNull(entity)) {
+            return null;
+        }
+        return dtoModelMapper.map(entity, ExpertUserDto.class);
+    }
+
+    /**
      * 通过Id获取一个业务实体
      *
      * @param id 业务实体Id
@@ -96,10 +121,5 @@ public class ExpertUserController extends BaseEntityController<ExpertUser, Exper
     @Override
     public ResultData<ExpertUserDto> findOne(String id) {
         return ResultData.success(convertToDto(service.findOne(id)));
-    }
-
-    @Override
-    public BaseEntityService<ExpertUser> getService() {
-        return service;
     }
 }
