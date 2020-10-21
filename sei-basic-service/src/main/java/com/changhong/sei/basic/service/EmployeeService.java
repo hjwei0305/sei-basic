@@ -3,6 +3,7 @@ package com.changhong.sei.basic.service;
 import com.changhong.sei.basic.dao.EmployeeDao;
 import com.changhong.sei.basic.dao.EmployeePositionDao;
 import com.changhong.sei.basic.dao.OrganizationDao;
+import com.changhong.sei.basic.dao.UserDao;
 import com.changhong.sei.basic.dto.*;
 import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.basic.entity.*;
@@ -92,17 +93,6 @@ public class EmployeeService extends BaseEntityService<Employee> {
     }
 
     /**
-     * 保存(使用外部加密密码)
-     *
-     * @param entity 实体
-     * @return 返回操作对象
-     */
-    @Transactional
-    public OperateResultWithData<Employee> saveWithPassword(Employee entity) {
-        return saveEmployee(entity);
-    }
-
-    /**
      * 保存(外部调用使用EmployeeService.save)
      *
      * @param entity 实体
@@ -114,6 +104,12 @@ public class EmployeeService extends BaseEntityService<Employee> {
         if (employeeDao.isCodeExist(entity.getCode(), entity.getId())) {
             //00040 = 该员工编号【{0}】已存在，请重新输入！
             return OperateResultWithData.operationFailure("00040", entity.getCode());
+        }
+        // 检查主账户是否已经存在
+        User existUser = ((UserDao)userService.getDao()).findFirstByAccount(entity.getCode());
+        if (Objects.nonNull(existUser)) {
+            // 已经存在主账户【{0}】的用户！
+            return OperateResultWithData.operationFailure("00117", entity.getCode());
         }
         if (isNew) {
             // 先保存user
