@@ -123,9 +123,9 @@ public class FeatureRoleFeatureService extends BaseRelationService<FeatureRoleFe
         }
         // 清理移除的功能项，如果存在页面项，则移除所有子项
         Set<String> childIdSet = new HashSet<>(childIds);
-        childIds.forEach(id-> {
+        childIds.forEach(id -> {
             Feature feature = featureDao.findOne(id);
-            if (Objects.nonNull(feature) && feature.getFeatureType()==FeatureType.Page) {
+            if (Objects.nonNull(feature) && feature.getFeatureType() == FeatureType.Page) {
                 List<Feature> childFeatures = featureDao.getChildrenByGroupCode(feature.getGroupCode());
                 if (CollectionUtils.isNotEmpty(childFeatures)) {
                     List<String> featureIds = childFeatures.stream().map(Feature::getId).collect(Collectors.toList());
@@ -269,19 +269,23 @@ public class FeatureRoleFeatureService extends BaseRelationService<FeatureRoleFe
 
     /**
      * 检查并生成页面功能项清单
+     *
      * @param menuFeatures 菜单功能项
-     * @param features 需要展示的功能项
+     * @param features     需要展示的功能项
      */
     private void buildPageFeatures(List<Feature> menuFeatures, List<Feature> features) {
         features.forEach(feature -> {
-            Optional<Feature> featureOptional = menuFeatures.stream().filter(f -> f.getGroupCode().equals(feature.getGroupCode())).findAny();
-            if (!featureOptional.isPresent()) {
-                // 获取菜单项，并追加到页面清单中
-                Feature pageFeature = featureDao.findFirstByGroupCodeAndFeatureType(feature.getGroupCode(), FeatureType.Page);
-                if (Objects.isNull(pageFeature)) {
-                    throw new ServiceException("功能项【"+feature.getCode()+"-"+feature.getName()+"】"+"没有配置对应的页面："+feature.getGroupCode());
+            // 操作功能项检查上级页面功能项是否存在
+            if (FeatureType.Page != feature.getFeatureType()) {
+                Optional<Feature> featureOptional = menuFeatures.stream().filter(f -> f.getGroupCode().equals(feature.getGroupCode())).findAny();
+                if (!featureOptional.isPresent()) {
+                    // 获取菜单项，并追加到页面清单中
+                    Feature pageFeature = featureDao.findFirstByGroupCodeAndFeatureType(feature.getGroupCode(), FeatureType.Page);
+                    if (Objects.isNull(pageFeature)) {
+                        throw new ServiceException("功能项【" + feature.getCode() + "-" + feature.getName() + "】" + "没有配置对应的页面：" + feature.getGroupCode());
+                    }
+                    menuFeatures.add(pageFeature);
                 }
-                menuFeatures.add(pageFeature);
             }
         });
     }

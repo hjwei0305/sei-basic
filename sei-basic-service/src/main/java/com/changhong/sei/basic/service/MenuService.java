@@ -45,6 +45,8 @@ public class MenuService extends BaseTreeService<Menu> {
     @Autowired
     private MenuDao menuDao;
     @Autowired
+    private FeatureService featureService;
+    @Autowired
     private NumberGenerator numberGenerator;
 
     @Override
@@ -83,7 +85,15 @@ public class MenuService extends BaseTreeService<Menu> {
         if (StringUtils.isBlank(menu.getCode())) {
             menu.setCode(numberGenerator.getNumber(Menu.class));
         }
-        return super.save(menu);
+        OperateResultWithData<Menu> result = super.save(menu);
+        if (result.successful()) {
+            Menu data = result.getData();
+            if (Objects.nonNull(data) && StringUtils.isNotBlank(data.getFeatureId())) {
+                Feature feature = featureService.findOne(data.getFeatureId());
+                data.setFeature(feature);
+            }
+        }
+        return result;
     }
 
     /**
@@ -118,7 +128,8 @@ public class MenuService extends BaseTreeService<Menu> {
 
     /**
      * 检查功能项是否已经配置给其他菜单
-     * @param id 菜单Id
+     *
+     * @param id        菜单Id
      * @param featureId 功能项Id
      * @return 检查结果
      */
@@ -142,6 +153,7 @@ public class MenuService extends BaseTreeService<Menu> {
 
     /**
      * 检查菜单父节点
+     *
      * @param parentId 父节点Id
      * @return 检查结果
      */
@@ -193,12 +205,12 @@ public class MenuService extends BaseTreeService<Menu> {
                 if (menu.getFeature().getFeatureGroup().getAppModule() != null) {
                     AppModule appModule = menu.getFeature().getFeatureGroup().getAppModule();
                     String apiBaseAddress = appModule.getApiBaseAddress();
-                    if (StringUtils.isNotBlank(apiBaseAddress)){
+                    if (StringUtils.isNotBlank(apiBaseAddress)) {
                         String baseAddress = ContextUtil.getProperty(apiBaseAddress);
                         menu.getFeature().getFeatureGroup().getAppModule().setApiBaseAddress(baseAddress);
                     }
                     String webBaseAddress = appModule.getWebBaseAddress();
-                    if (StringUtils.isNotBlank(webBaseAddress)){
+                    if (StringUtils.isNotBlank(webBaseAddress)) {
                         String baseAddress = ContextUtil.getProperty(webBaseAddress);
                         menu.getFeature().getFeatureGroup().getAppModule().setWebBaseAddress(baseAddress);
                     }
@@ -215,6 +227,7 @@ public class MenuService extends BaseTreeService<Menu> {
 
     /**
      * 获取名称匹配的菜单
+     *
      * @param name 名称
      * @return
      */
@@ -230,6 +243,7 @@ public class MenuService extends BaseTreeService<Menu> {
 
     /**
      * 通过功能项清单获取菜单
+     *
      * @param features 功能项清单
      * @return 菜单
      */
@@ -254,6 +268,7 @@ public class MenuService extends BaseTreeService<Menu> {
 
     /**
      * 通过功能项清单获取菜单
+     *
      * @param features 功能项清单
      * @param allMenus 所有菜单项
      * @return 菜单
@@ -265,7 +280,7 @@ public class MenuService extends BaseTreeService<Menu> {
         Set<Menu> featureMenus = new LinkedHashSet<>();
         features.forEach((f) -> {
             if (f.getCanMenu()) {
-                Optional<Menu> menuOptional = allMenus.stream().filter(m-> StringUtils.equals(f.getId(), m.getFeatureId())).findAny();
+                Optional<Menu> menuOptional = allMenus.stream().filter(m -> StringUtils.equals(f.getId(), m.getFeatureId())).findAny();
                 menuOptional.ifPresent(featureMenus::add);
             }
         });
@@ -274,13 +289,14 @@ public class MenuService extends BaseTreeService<Menu> {
 
     /**
      * 生成所有菜单节点
+     *
      * @param userMenus 用户的功能项菜单节点
-     * @param nodes 功能项菜单节点
-     * @param allMenus 所有菜单项
+     * @param nodes     功能项菜单节点
+     * @param allMenus  所有菜单项
      * @return 菜单
      */
     public static void generateUserMenuNodes(Set<Menu> userMenus, List<Menu> nodes, List<Menu> allMenus) {
-        nodes.forEach(node-> {
+        nodes.forEach(node -> {
             // 获取父节点
             getParentMenu(userMenus, node, allMenus);
         });
@@ -295,7 +311,7 @@ public class MenuService extends BaseTreeService<Menu> {
             if (userMenus.stream().anyMatch(predicate)) {
                 return;
             }
-            Optional<Menu> menuOptional = allMenus.stream().filter(m-> StringUtils.equals(parentId, m.getId())).findAny();
+            Optional<Menu> menuOptional = allMenus.stream().filter(m -> StringUtils.equals(parentId, m.getId())).findAny();
             if (menuOptional.isPresent()) {
                 Menu parentNode = menuOptional.get();
                 userMenus.add(parentNode);
