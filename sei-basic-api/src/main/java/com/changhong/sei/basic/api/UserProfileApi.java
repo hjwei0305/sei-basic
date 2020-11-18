@@ -5,13 +5,11 @@ import com.changhong.sei.basic.dto.UserProfileDto;
 import com.changhong.sei.core.api.BaseEntityApi;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.notify.dto.UserNotifyInfo;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -59,11 +57,23 @@ public interface UserProfileApi extends BaseEntityApi<UserProfileDto> {
     ResultData<String> findAccountor();
 
     /**
-     * 获取当前用户的头像
+     * 获取当前用户的偏好配置
      *
-     * @return 头像
+     * @return 偏好配置. 如:{portrait:'data:image/png;base64,XXX', guide:'true'}
      */
-    @GetMapping(path = "findPortrait")
-    @ApiOperation(value = "获取当前用户的头像", notes = "获取当前用户的头像文件数据")
-    ResultData<String> findPortrait();
+    @GetMapping(path = "getPreferences")
+    @ApiOperation(value = "获取当前用户的偏好配置", notes = "获取当前用户的偏好配置. 如: {portrait:'data:image/png;base64,XXX', guide:'true'}")
+    ResultData<String> getPreferences();
+
+    /**
+     * 设置用户偏好配置
+     *
+     * @param preference 偏好配置类型
+     * @param value      偏好配置
+     * @return 返回操作结果
+     */
+    @ApiImplicitParam(name = "preference", value = "偏好配置类型. portrait-头像;guide-系统引导", paramType = "path")
+    @ApiOperation(value = "设置用户偏好配置", notes = "设置用户偏好配置")
+    @PostMapping(path = "setUserPreference/{preference}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    ResultData<Void> setUserPreference(@PathVariable("preference") String preference, @RequestBody Object value);
 }

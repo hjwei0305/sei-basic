@@ -68,15 +68,23 @@ public class UserProfile extends BaseAuditableEntity {
      * 关联的用户
      */
     @OneToOne
-    @JoinColumn(name = "user_id",nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
     private User user;
 
     /**
-     * 头像
+     * 偏好设置.json格式字符串
+     *
+     * @see com.changhong.sei.basic.dto.UserPreferenceEnum 枚举名为key
+     * ex: {portrait:'data:image/png;base64,XXX', guide:'true'}
      */
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "portrait")
+    @Column(name = "preferences")
+    private String preferences;
+    /**
+     * 头像临时字段
+     */
+    @Transient
     private String portrait;
 
     public String getEmail() {
@@ -141,6 +149,14 @@ public class UserProfile extends BaseAuditableEntity {
 
     public void setAccountor(String accountor) {
         this.accountor = accountor;
+    }
+
+    public String getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(String preferences) {
+        this.preferences = preferences;
     }
 
     public String getPortrait() {

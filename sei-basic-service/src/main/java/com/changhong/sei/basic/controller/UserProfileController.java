@@ -2,6 +2,7 @@ package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.UserProfileApi;
 import com.changhong.sei.basic.dto.LanguageValue;
+import com.changhong.sei.basic.dto.UserPreferenceEnum;
 import com.changhong.sei.basic.dto.UserProfileDto;
 import com.changhong.sei.basic.entity.Employee;
 import com.changhong.sei.basic.entity.UserProfile;
@@ -14,6 +15,7 @@ import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import com.changhong.sei.enums.UserType;
 import com.changhong.sei.notify.dto.UserNotifyInfo;
+import com.changhong.sei.util.EnumUtils;
 import io.swagger.annotations.Api;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +35,17 @@ import java.util.Objects;
 @RestController
 @Api(value = "UserProfileService", tags = "用户配置API服务实现")
 @RequestMapping(path = "userProfile", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-@SuppressWarnings("unchecked")
 public class UserProfileController extends BaseEntityController<UserProfile, UserProfileDto>
         implements UserProfileApi {
     @Autowired
     private UserProfileService service;
     @Autowired
     private EmployeeService employeeService;
+
+    @Override
+    public BaseEntityService<UserProfile> getService() {
+        return service;
+    }
 
     /**
      * 获取支持的语言
@@ -97,18 +103,13 @@ public class UserProfileController extends BaseEntityController<UserProfile, Use
     }
 
     /**
-     * 获取当前用户的头像
+     * 获取当前用户的偏好配置
      *
-     * @return 头像
+     * @return 偏好配置. 如:{portrait:'data:image/png;base64,XXX', guide:'true'}
      */
     @Override
-    public ResultData<String> findPortrait() {
-        return ResultData.success(service.findPortrait(ContextUtil.getUserId()));
-    }
-
-    @Override
-    public BaseEntityService<UserProfile> getService() {
-        return service;
+    public ResultData<String> getPreferences() {
+        return ResultData.success(service.getPreferences(ContextUtil.getUserId()));
     }
 
     /**
@@ -143,5 +144,21 @@ public class UserProfileController extends BaseEntityController<UserProfile, Use
         // 重新获取数据
         ResultData<UserProfileDto> profileDto = findByUserId(resultData.getData().getUserId());
         return ResultData.success(resultData.getMessage(), profileDto.getData());
+    }
+
+    /**
+     * 设置用户偏好配置
+     *
+     * @param preference 偏好配置类型
+     * @param value      偏好配置
+     * @return 返回操作结果
+     */
+    @Override
+    public ResultData<Void> setUserPreference(String preference, Object value) {
+        UserPreferenceEnum preferenceEnum = EnumUtils.getEnum(UserPreferenceEnum.class, preference);
+        if (Objects.isNull(preferenceEnum)) {
+            return ResultData.fail(ContextUtil.getMessage("00119"));
+        }
+        return service.putUserPreference(ContextUtil.getUserId(), preferenceEnum, value);
     }
 }

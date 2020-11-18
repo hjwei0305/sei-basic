@@ -19,6 +19,7 @@ import javax.validation.constraints.Size;
  */
 @ApiModel(description = "用户配置DTO")
 public class UserProfileDto extends BaseEntityDto {
+    private static final long serialVersionUID = -6355884888586922596L;
     /**
      * 邮箱
      */

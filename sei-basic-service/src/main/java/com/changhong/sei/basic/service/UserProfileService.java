@@ -2,18 +2,22 @@ package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.UserProfileDao;
 import com.changhong.sei.basic.dto.LanguageValue;
+import com.changhong.sei.basic.dto.UserPreferenceEnum;
 import com.changhong.sei.basic.entity.UserProfile;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
+import com.changhong.sei.core.service.Validation;
+import com.changhong.sei.core.service.bo.OperateResultWithData;
+import com.changhong.sei.core.util.JsonUtils;
 import com.changhong.sei.notify.dto.UserNotifyInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * *************************************************************************************************
@@ -39,6 +43,7 @@ public class UserProfileService extends BaseEntityService<UserProfile> {
 
     /**
      * 获取用户配置的默认语言
+     *
      * @return 对象Id/Name/value
      */
     public ResultData<List<LanguageValue>> getLanguages() {
@@ -74,13 +79,108 @@ public class UserProfileService extends BaseEntityService<UserProfile> {
     }
 
     /**
+     * 数据保存操作
+     */
+    @Override
+    @Transactional
+    public OperateResultWithData<UserProfile> save(UserProfile entity) {
+        Validation.notNull(entity, "持久化对象不能为空");
+
+        try {
+            // 偏好设置
+            String id = entity.getId();
+            if (StringUtils.isNotBlank(id)) {
+                UserProfile userProfile = this.findOne(id);
+                if (Objects.isNull(userProfile)) {
+                    // 用户【{0}】配置不存在.
+                    return OperateResultWithData.operationFailure("00118", id);
+                }
+
+                Map<String, Object> preferenceMap;
+                String preferences = userProfile.getPreferences();
+                if (StringUtils.isNotBlank(preferences)) {
+                    preferenceMap = JsonUtils.fromJson(preferences, Map.class);
+                } else {
+                    preferenceMap = new HashMap<>();
+                    // 系统引导
+                    preferenceMap.put(UserPreferenceEnum.guide.name(), Boolean.FALSE);
+                }
+                String portrait = entity.getPortrait();
+                if (StringUtils.isNotBlank(portrait)) {
+                    // 头像
+                    preferenceMap.put(UserPreferenceEnum.portrait.name(), portrait);
+                }
+                entity.setPreferences(JsonUtils.toJson(preferenceMap));
+            } else {
+                Map<String, Object> preferenceMap = new HashMap<>();
+                // 系统引导
+                preferenceMap.put(UserPreferenceEnum.guide.name(), Boolean.FALSE);
+
+                String portrait = entity.getPortrait();
+                if (StringUtils.isNotBlank(portrait)) {
+                    // 头像
+                    preferenceMap.put(UserPreferenceEnum.portrait.name(), portrait);
+                }
+                entity.setPreferences(JsonUtils.toJson(preferenceMap));
+            }
+        } catch (Exception ignored) {
+        }
+        return super.save(entity);
+    }
+
+    /**
      * 查询一个用户配置
      *
      * @param userId 用户id
      * @return 用户配置
      */
     public UserProfile findByUserId(String userId) {
-        return userProfileDao.findByUserId(userId);
+        UserProfile userProfile = userProfileDao.findByUserId(userId);
+        if (Objects.nonNull(userProfile)) {
+            // 设置头像
+            String preferenceStr = userProfile.getPreferences();
+            if (StringUtils.isNotBlank(preferenceStr)) {
+                try {
+                    Map<String, Object> preferenceMap = JsonUtils.fromJson(preferenceStr, Map.class);
+                    userProfile.setPortrait((String) preferenceMap.get(UserPreferenceEnum.portrait.name()));
+                } catch (Exception ignored) {
+                }
+            }
+        }
+        return userProfile;
+    }
+
+    /**
+     * 设置用户偏好配置
+     *
+     * @param preference 偏好配置类型
+     * @param userId     用户id
+     * @param value      偏好配置
+     * @return 返回操作结果
+     */
+    public ResultData<Void> putUserPreference(String userId, UserPreferenceEnum preference, Object value) {
+        UserProfile userProfile = userProfileDao.findByUserId(userId);
+        if (Objects.isNull(userProfile)) {
+            // 用户【{0}】配置不存在.
+            return ResultData.fail(ContextUtil.getMessage("00118", userId));
+        }
+
+        Map<String, Object> preferenceMap;
+        String preferences = userProfile.getPreferences();
+        if (StringUtils.isNotBlank(preferences)) {
+            preferenceMap = JsonUtils.fromJson(preferences, Map.class);
+        } else {
+            preferenceMap = new HashMap<>();
+        }
+
+        preferenceMap.put(preference.name(), value);
+        userProfile.setPreferences(JsonUtils.toJson(preferenceMap));
+        OperateResultWithData<UserProfile> result = super.save(userProfile);
+        if (result.successful()) {
+            return ResultData.success();
+        } else {
+            return ResultData.fail(result.getMessage());
+        }
     }
 
     /**
@@ -89,7 +189,7 @@ public class UserProfileService extends BaseEntityService<UserProfile> {
      * @return 记账用户
      */
     public String findAccountor() {
-        UserProfile userProfile = findByUserId(ContextUtil.getUserId());
+        UserProfile userProfile = userProfileDao.findByUserId(ContextUtil.getUserId());
         if (Objects.nonNull(userProfile)) {
             return userProfile.getAccountor();
         }
@@ -101,30 +201,12 @@ public class UserProfileService extends BaseEntityService<UserProfile> {
      *
      * @return 头像文件数据
      */
-    public String findPortrait(String userId) {
-        UserProfile userProfile = findByUserId(userId);
+    public String getPreferences(String userId) {
+        UserProfile userProfile = userProfileDao.findByUserId(userId);
         if (Objects.isNull(userProfile)) {
             return null;
         }
-        return userProfile.getPortrait();
-    }
-
-    /**
-     * 获取8位数验证码
-     * @return 验证码
-     */
-    private String getVerifyCode () {
-        final char[] CHAR_SET = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
-                'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
-                'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
-        Random random = new Random();
-        StringBuffer buffer = new StringBuffer();
-        for (int i = 1; i < 9; i++) {
-            buffer.append(CHAR_SET[random.nextInt(CHAR_SET.length)]);
-        }
-        return buffer.toString();
+        return userProfile.getPreferences();
     }
 }
 
