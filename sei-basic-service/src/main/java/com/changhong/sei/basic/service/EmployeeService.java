@@ -4,11 +4,15 @@ import com.changhong.sei.basic.dao.EmployeeDao;
 import com.changhong.sei.basic.dao.EmployeePositionDao;
 import com.changhong.sei.basic.dao.OrganizationDao;
 import com.changhong.sei.basic.dao.UserDao;
-import com.changhong.sei.basic.dto.*;
+import com.changhong.sei.basic.dto.EmployeeCopyParam;
+import com.changhong.sei.basic.dto.EmployeeQueryParam;
+import com.changhong.sei.basic.dto.Executor;
+import com.changhong.sei.basic.dto.UserQueryParam;
 import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.service.client.AccountManager;
-import com.changhong.sei.basic.service.client.dto.*;
+import com.changhong.sei.basic.service.client.dto.CreateAccountRequest;
+import com.changhong.sei.basic.service.client.dto.UpdateAccountByAccountRequest;
 import com.changhong.sei.basic.service.util.EmailUtil;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
@@ -106,8 +110,8 @@ public class EmployeeService extends BaseEntityService<Employee> {
             return OperateResultWithData.operationFailure("00040", entity.getCode());
         }
         // 检查主账户是否已经存在
-        User existUser = ((UserDao)userService.getDao()).findFirstByAccount(entity.getCode());
-        if (Objects.nonNull(existUser)) {
+        Boolean accountExist = ((UserDao)userService.getDao()).isAccountExist(entity.getCode(), entity.getId());
+        if (accountExist) {
             // 已经存在主账户【{0}】的用户！
             return OperateResultWithData.operationFailure("00117", entity.getCode());
         }

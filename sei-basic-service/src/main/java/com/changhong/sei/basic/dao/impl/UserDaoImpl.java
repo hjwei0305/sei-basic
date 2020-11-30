@@ -71,5 +71,30 @@ public class UserDaoImpl extends BaseEntityDaoImpl<User> implements UserExtDao {
         }
         return PageResultUtil.getResult(entityManager,querySql,sqlParams, queryParam);
     }
+
+    /**
+     * 检查用户主账号是否存在
+     *
+     * @param account 员工编号
+     * @param id      实体id
+     * @return 是否存在
+     */
+    @Override
+    public Boolean isAccountExist(String account, String id) {
+        if(StringUtils.isBlank(id)){
+            id = IdGenerator.uuid();
+        }
+        String sql = "select r.id from User r " +
+                "where r.account is not null " +
+                "and r.account=:account " +
+                "and r.tenantCode=:tenantCode " +
+                "and r.id<>:id ";
+        Query query = entityManager.createQuery(sql);
+        query.setParameter("account", account);
+        query.setParameter("id",id);
+        query.setParameter("tenantCode",ContextUtil.getTenantCode());
+        List results = query.getResultList();
+        return !results.isEmpty();
+    }
 }
 

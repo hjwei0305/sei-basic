@@ -28,4 +28,12 @@ public interface UserExtDao {
      * @return 用户
      */
     PageResult<User> queryUsers(UserQuickQueryParam queryParam, List<String> excludeUserIds, String tenantCode);
+
+    /**
+     * 检查用户主账号是否存在
+     * @param account 员工编号
+     * @param id 实体id
+     * @return 是否存在
+     */
+    Boolean isAccountExist(String account, String id);
 }
