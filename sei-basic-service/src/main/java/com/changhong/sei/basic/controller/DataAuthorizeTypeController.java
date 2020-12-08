@@ -133,4 +133,16 @@ public class DataAuthorizeTypeController extends BaseEntityController<DataAuthor
     public ResultData<List<DataAuthorizeTypeDto>> findAllUnfrozen() {
         return ResultData.success(convertToDtos(service.findAllUnfrozen()));
     }
+
+    /**
+     * 通过实体类型名和功能项代码获取数据权限类型
+     *
+     * @param entityClassName 实体类型名
+     * @param featureCode     功能项代码
+     * @return 数据权限类型
+     */
+    @Override
+    public ResultData<DataAuthorizeTypeDto> getByEntityClassNameAndFeature(String entityClassName, String featureCode) {
+        return ResultData.success(convertToDto(service.getByEntityClassNameAndFeature(entityClassName, featureCode)));
+    }
 }

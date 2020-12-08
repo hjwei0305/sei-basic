@@ -113,7 +113,7 @@ public class DataAuthorizeTypeService extends BaseEntityService<DataAuthorizeTyp
      * @param featureCode     功能项代码
      * @return 数据权限类型
      */
-    DataAuthorizeType getByEntityClassNameAndFeature(String entityClassName, String featureCode) {
+    public DataAuthorizeType getByEntityClassNameAndFeature(String entityClassName, String featureCode) {
         //判断功能项代码是否为空
         List<DataAuthorizeType> result;
         if (StringUtils.isNotBlank(featureCode) && !StringUtils.equalsIgnoreCase("null", featureCode)) {

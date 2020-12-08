@@ -38,4 +38,15 @@ public interface DataAuthorizeTypeApi extends BaseEntityApi<DataAuthorizeTypeDto
     @GetMapping(path = "getByAppModuleAndDataRole")
     @ApiOperation(value = "获取数据权限类型清单",notes = "通过应用模块Id和数据角色Id获取数据权限类型（VO）")
     ResultData<List<DataAuthorizeTypeVo>> getByAppModuleAndDataRole(@RequestParam("appModuleId") String appModuleId, @RequestParam("roleId") String roleId);
+
+    /**
+     * 通过实体类型名和功能项代码获取数据权限类型
+     *
+     * @param entityClassName 实体类型名
+     * @param featureCode     功能项代码
+     * @return 数据权限类型
+     */
+    @GetMapping(path = "getByEntityClassNameAndFeature")
+    @ApiOperation(value = "通过实体类型名和功能项代码获取数据权限类型",notes = "通过实体类型名和功能项代码获取数据权限类型")
+    ResultData<DataAuthorizeTypeDto> getByEntityClassNameAndFeature(@RequestParam("entityClassName") String entityClassName, @RequestParam(name = "featureCode", required = false) String featureCode);
 }
