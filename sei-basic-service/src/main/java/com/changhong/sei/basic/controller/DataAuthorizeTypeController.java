@@ -50,6 +50,8 @@ public class DataAuthorizeTypeController extends BaseEntityController<DataAuthor
                 map().setAuthorizeEntityTypeId(source.getAuthorizeEntityTypeId());
                 map().setFeatureId(source.getFeatureId());
                 map().setAuthorizeEntityTypeAppModuleId(source.getAuthorizeEntityType().getAppModuleId());
+                map().setApiPath(source.getAuthorizeEntityType().getApiPath());
+                map().setApiBaseAddress(source.getAuthorizeEntityType().getAppModule().getApiBaseAddress());
             }
         };
         // 添加映射器

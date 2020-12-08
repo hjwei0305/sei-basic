@@ -15,6 +15,7 @@ import javax.validation.constraints.Size;
  */
 @ApiModel(description = "数据权限类型DTO")
 public class DataAuthorizeTypeDto extends BaseEntityDto {
+    private static final long serialVersionUID = -8595876493885390098L;
     /**
      * 代码
      */
@@ -74,6 +75,16 @@ public class DataAuthorizeTypeDto extends BaseEntityDto {
      */
     @ApiModelProperty(value = "功能项名称")
     private String featureName;
+    /**
+     * API基地址
+     */
+    @ApiModelProperty(value = "API基地址")
+    private String apiBaseAddress;
+    /**
+     * API URL
+     */
+    @ApiModelProperty(value = "API Path")
+    private String apiPath;
 
     /**
      * 应用模块Id
@@ -155,6 +166,22 @@ public class DataAuthorizeTypeDto extends BaseEntityDto {
 
     public void setFeatureName(String featureName) {
         this.featureName = featureName;
+    }
+
+    public String getApiBaseAddress() {
+        return apiBaseAddress;
+    }
+
+    public void setApiBaseAddress(String apiBaseAddress) {
+        this.apiBaseAddress = apiBaseAddress;
+    }
+
+    public String getApiPath() {
+        return apiPath;
+    }
+
+    public void setApiPath(String apiPath) {
+        this.apiPath = apiPath;
     }
 
     public String getAuthorizeEntityTypeAppModuleId() {

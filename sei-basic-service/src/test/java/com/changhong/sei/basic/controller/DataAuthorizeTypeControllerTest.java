@@ -8,8 +8,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.*;
-
 /**
  * 实现功能:
  *
@@ -45,6 +43,15 @@ public class DataAuthorizeTypeControllerTest extends BaseUnitTest {
     public void getByDataRole() {
         String dataRoleId = "72FA053A-4A23-11EA-8AF0-0242C0A84607";
         ResultData resultData = controller.getByDataRole(dataRoleId);
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
+
+    @Test
+    public void getByEntityClassNameAndFeature() {
+        String entityClassName = "com.changhong.sei.basic.entity.Organization";
+        String featureCode = null;
+        ResultData resultData = controller.getByEntityClassNameAndFeature(entityClassName, featureCode);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }
