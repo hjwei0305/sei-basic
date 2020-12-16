@@ -45,7 +45,7 @@ public interface DataAuthorizeTypeDao extends BaseEntityDao<DataAuthorizeType> {
      * @param featureCode 功能项代码
      * @return 数据权限类型
      */
-    @Query("select t from DataAuthorizeType t where t.authorizeEntityType.entityClassName=?1 and t.feature is not null and t.feature.code=?2")
+    @Query("select t from DataAuthorizeType t where t.authorizeEntityType.entityClassName=?1 and t.featureCode is not null and t.featureCode=?2")
     List<DataAuthorizeType> findByClassNameAndFeatureCode(String entityClassName, String featureCode);
 
     /**
@@ -53,14 +53,14 @@ public interface DataAuthorizeTypeDao extends BaseEntityDao<DataAuthorizeType> {
      * @param entityClassName 对象类型名
      * @return 数据权限类型
      */
-    @Query("select t from DataAuthorizeType t where t.authorizeEntityType.entityClassName=?1 and t.feature is null")
+    @Query("select t from DataAuthorizeType t where t.authorizeEntityType.entityClassName=?1 and t.featureCode is null")
     List<DataAuthorizeType> findByClassName(String entityClassName);
 
     /**
      * 通过权限对象Id和功能项Id获取数据权限类型
      * @param authorizeEntityTypeId 权限对象Id
-     * @param featureId 功能项Id
+     * @param featureCode 功能码
      * @return 数据权限类型
      */
-    DataAuthorizeType findByAuthorizeEntityTypeIdAndFeatureId(String authorizeEntityTypeId, String featureId);
+    DataAuthorizeType findByAuthorizeEntityTypeIdAndFeatureCode(String authorizeEntityTypeId, String featureCode);
 }

@@ -48,7 +48,6 @@ public class DataAuthorizeTypeController extends BaseEntityController<DataAuthor
             protected void configure() {
                 // 使用自定义转换规则
                 map().setAuthorizeEntityTypeId(source.getAuthorizeEntityTypeId());
-                map().setFeatureId(source.getFeatureId());
                 map().setAuthorizeEntityTypeAppModuleId(source.getAuthorizeEntityType().getAppModuleId());
                 map().setApiPath(source.getAuthorizeEntityType().getApiPath());
                 map().setApiBaseAddress(source.getAuthorizeEntityType().getAppModule().getApiBaseAddress());
@@ -81,7 +80,6 @@ public class DataAuthorizeTypeController extends BaseEntityController<DataAuthor
             @Override
             protected void configure() {
                 // 使用自定义转换规则,不映射关联对象
-                skip().setFeature(null);
                 skip().setAuthorizeEntityType(null);
             }
         };

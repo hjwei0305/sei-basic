@@ -52,17 +52,10 @@ public class DataAuthorizeType extends BaseAuditableEntity implements ICodeUniqu
     private AuthorizeEntityType authorizeEntityType;
 
     /**
-     * 功能项Id
+     * 功能码（界定数据权限适用范围）
      */
-    @Column(name = "feature_id", length = 36)
-    private String featureId;
-
-    /**
-     * 功能项
-     */
-    @ManyToOne
-    @JoinColumn(name = "feature_id", insertable = false, updatable = false)
-    private Feature feature;
+    @Column(name = "feature_code", length = 36)
+    private String featureCode;
 
     public String getCode() {
         return code;
@@ -96,19 +89,11 @@ public class DataAuthorizeType extends BaseAuditableEntity implements ICodeUniqu
         this.authorizeEntityType = authorizeEntityType;
     }
 
-    public String getFeatureId() {
-        return featureId;
+    public String getFeatureCode() {
+        return featureCode;
     }
 
-    public void setFeatureId(String featureId) {
-        this.featureId = featureId;
-    }
-
-    public Feature getFeature() {
-        return feature;
-    }
-
-    public void setFeature(Feature feature) {
-        this.feature = feature;
+    public void setFeatureCode(String featureCode) {
+        this.featureCode = featureCode;
     }
 }

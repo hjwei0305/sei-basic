@@ -58,23 +58,11 @@ public class DataAuthorizeTypeDto extends BaseEntityDto {
     private Boolean authorizeEntityTypeBeTree = Boolean.FALSE;
 
     /**
-     * 功能项Id
+     * 功能码（界定数据权限适用范围）
      */
-    @Size(max = 36)
-    @ApiModelProperty(value = "功能项Id(max = 36)")
-    private String featureId;
-
-    /**
-     * 功能项代码
-     */
-    @ApiModelProperty(value = "功能项代码")
+    @ApiModelProperty(value = "功能码")
     private String featureCode;
 
-    /**
-     * 功能项名称
-     */
-    @ApiModelProperty(value = "功能项名称")
-    private String featureName;
     /**
      * API基地址
      */
@@ -144,28 +132,12 @@ public class DataAuthorizeTypeDto extends BaseEntityDto {
         this.authorizeEntityTypeBeTree = authorizeEntityTypeBeTree;
     }
 
-    public String getFeatureId() {
-        return featureId;
-    }
-
-    public void setFeatureId(String featureId) {
-        this.featureId = featureId;
-    }
-
     public String getFeatureCode() {
         return featureCode;
     }
 
     public void setFeatureCode(String featureCode) {
         this.featureCode = featureCode;
-    }
-
-    public String getFeatureName() {
-        return featureName;
-    }
-
-    public void setFeatureName(String featureName) {
-        this.featureName = featureName;
     }
 
     public String getApiBaseAddress() {

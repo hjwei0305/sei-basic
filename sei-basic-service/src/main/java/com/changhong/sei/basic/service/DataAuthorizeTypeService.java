@@ -134,9 +134,8 @@ public class DataAuthorizeTypeService extends BaseEntityService<DataAuthorizeTyp
      */
     @Override
     protected OperateResultWithData<DataAuthorizeType> preInsert(DataAuthorizeType entity) {
-
         // 检查重复
-        DataAuthorizeType authorizeType = dao.findByAuthorizeEntityTypeIdAndFeatureId(entity.getAuthorizeEntityTypeId(), entity.getFeatureId());
+        DataAuthorizeType authorizeType = dao.findByAuthorizeEntityTypeIdAndFeatureCode(entity.getAuthorizeEntityTypeId(), entity.getFeatureCode());
         if (Objects.nonNull(authorizeType)) {
             // 存在相同权限对象和功能项的数据权限，禁止保存！
             return OperateResultWithData.operationFailure("00101");
@@ -152,7 +151,7 @@ public class DataAuthorizeTypeService extends BaseEntityService<DataAuthorizeTyp
     @Override
     protected OperateResultWithData<DataAuthorizeType> preUpdate(DataAuthorizeType entity) {
         // 检查重复
-        DataAuthorizeType authorizeType = dao.findByAuthorizeEntityTypeIdAndFeatureId(entity.getAuthorizeEntityTypeId(), entity.getFeatureId());
+        DataAuthorizeType authorizeType = dao.findByAuthorizeEntityTypeIdAndFeatureCode(entity.getAuthorizeEntityTypeId(), entity.getFeatureCode());
         if (Objects.nonNull(authorizeType) && !authorizeType.getId().equals(entity.getId())) {
             // 存在相同权限对象和功能项的数据权限，禁止保存！
             return OperateResultWithData.operationFailure("00101");

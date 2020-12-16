@@ -29,10 +29,9 @@ public class DataAuthorizeTypeControllerTest extends BaseUnitTest {
     public void save() {
         DataAuthorizeTypeDto dto = new DataAuthorizeTypeDto();
         dto.setAuthorizeEntityTypeId("6CDA2DD4-4984-11EA-ADFF-0242C0A84607");
-        dto.setFeatureId("4CFD6B6D-4691-11EA-911F-0242C0A84604");
+        dto.setFeatureCode("BEIS-HTPZ-YHZH");
         dto.setName("测试");
         dto.setCode("TEST");
-        dto.setFeatureName("新增与修改");
         dto.setAuthorizeEntityTypeName("bbb");
         ResultData resultData = controller.save(dto);
         System.out.println(JsonUtils.toJson(resultData));
@@ -49,8 +48,8 @@ public class DataAuthorizeTypeControllerTest extends BaseUnitTest {
 
     @Test
     public void getByEntityClassNameAndFeature() {
-        String entityClassName = "com.changhong.sei.basic.entity.Organization";
-        String featureCode = null;
+        String entityClassName = "com.changhong.sei.basic.entity.corporation";
+        String featureCode = "BEIS-HTPZ-YHZH";
         ResultData resultData = controller.getByEntityClassNameAndFeature(entityClassName, featureCode);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
