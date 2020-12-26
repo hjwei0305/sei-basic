@@ -2,19 +2,24 @@ package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.CorporationApi;
 import com.changhong.sei.basic.dto.CorporationDto;
+import com.changhong.sei.basic.dto.DataRoleDto;
 import com.changhong.sei.basic.entity.Corporation;
+import com.changhong.sei.basic.entity.DataRole;
 import com.changhong.sei.basic.service.CorporationService;
+import com.changhong.sei.basic.service.cust.CorporationServiceCust;
 import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
+import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -30,6 +35,27 @@ public class CorporationController extends BaseEntityController<Corporation, Cor
         implements CorporationApi {
     @Autowired
     private CorporationService service;
+    // 注入扩展业务逻辑
+    @Autowired
+    private CorporationServiceCust serviceCust;
+
+    /**
+     * 将数据实体转换成DTO
+     *
+     * @param entity 业务实体
+     * @return DTO
+     */
+    @Override
+    public CorporationDto convertToDto(Corporation entity) {
+        CorporationDto dto = super.convertToDto(entity);
+        if (Objects.isNull(dto)) {
+            return null;
+        }
+        // 自定义扩展实体转DTO属性赋值
+        serviceCust.customEntityToDto(entity, dto);
+        return dto;
+    }
+
     /**
      * 根据公司代码查询公司
      *

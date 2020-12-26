@@ -1,6 +1,8 @@
 package com.changhong.sei.basic.service.cust;
 
+import com.changhong.sei.basic.dto.CorporationDto;
 import com.changhong.sei.basic.entity.Corporation;
+import org.modelmapper.PropertyMap;
 
 /**
  * 实现功能: 公司业务逻辑扩展接口
@@ -15,4 +17,9 @@ public interface CorporationServiceCust {
      * @return  扩展处理结果
      */
     Corporation afterFindByCode(Corporation corporation);
+
+    /**
+     * 自定义扩展实体到DTO的属性转换器
+     */
+    void customEntityToDto(Corporation entity, CorporationDto dto);
 }

@@ -1,6 +1,8 @@
 package com.changhong.sei.basic.service.cust;
 
+import com.changhong.sei.basic.dto.CorporationDto;
 import com.changhong.sei.basic.entity.Corporation;
+import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,5 +23,13 @@ public class CorporationServiceCustBase implements CorporationServiceCust {
         // 公司业务逻辑扩展接口默认实现逻辑
         System.out.println("执行公司业务逻辑扩展接口默认实现！");
         return corporation;
+    }
+
+    /**
+     * 自定义扩展实体到DTO的属性转换器
+     */
+    @Override
+    public void customEntityToDto(Corporation entity, CorporationDto dto) {
+
     }
 }
