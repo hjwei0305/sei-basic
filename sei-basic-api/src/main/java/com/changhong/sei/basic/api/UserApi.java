@@ -150,6 +150,13 @@ public interface UserApi extends BaseEntityApi<UserDto>,
     void clearUserAuthorizedCaches(@PathVariable("userId") String userId);
 
     /**
+     * 清除用户权限相关的所有缓存
+     */
+    @PostMapping(path = "clearUserAuthorizedCaches")
+    @ApiOperation(value = "清除当前会话用户权限相关的所有缓存", notes = "在退出时清除当前会话用户权限相关的所有分布式缓存")
+    void clearUserAuthorizedCaches();
+
+    /**
      * 通过用户账户获取用户的数据角色
      * @param account 用户账户
      * @return 数据角色清单

@@ -9,6 +9,7 @@ import com.changhong.sei.basic.service.client.AccountManager;
 import com.changhong.sei.basic.service.client.dto.SessionUserResponse;
 import com.changhong.sei.commondata.sdk.annotation.MultilingualEnable;
 import com.changhong.sei.core.context.ContextUtil;
+import com.changhong.sei.core.context.SessionUser;
 import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthEntityData;
@@ -214,6 +215,21 @@ public class UserController extends BaseEntityController<User, UserDto>
         service.clearUserAuthorizedCaches(userId);
         // 异步加载用户的应用菜单
         asyncRunUtil.runAsync(() -> service.getUserAuthorizedMenus(userId));
+    }
+
+    /**
+     * 清除用户权限相关的所有缓存
+     */
+    @Override
+    public void clearUserAuthorizedCaches() {
+        SessionUser sessionUser = ContextUtil.getSessionUser();
+        if (!sessionUser.isAnonymous()) {
+            String userId = sessionUser.getUserId();
+            // 清除用户权限相关的缓存
+            service.clearUserAuthorizedCaches(userId);
+            // 异步加载用户的应用菜单
+            asyncRunUtil.runAsync(() -> service.getUserAuthorizedMenus(userId));
+        }
     }
 
     /**

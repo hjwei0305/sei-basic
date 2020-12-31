@@ -1,9 +1,9 @@
 sei: # 应用全局配置
   application:
     code: sei-basic
-    name: 平台基础应用服务
+    name: '@project_description@'
     env: DEV
-    version: 6.0.4
+    version: '@project_version@'
     swagger:
       title: "${sei.application.name} API"
       description: "${sei.application.name} 的API文档，运行环境: ${sei.application.env}"
