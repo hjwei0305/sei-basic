@@ -3,7 +3,10 @@ package com.changhong.sei.basic.service;
 import com.changhong.sei.basic.dao.UserProfileDao;
 import com.changhong.sei.basic.dto.LanguageValue;
 import com.changhong.sei.basic.dto.UserPreferenceEnum;
+import com.changhong.sei.basic.entity.User;
 import com.changhong.sei.basic.entity.UserProfile;
+import com.changhong.sei.basic.service.client.AccountManager;
+import com.changhong.sei.basic.service.client.dto.AccountInfoDto;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.dto.ResultData;
@@ -35,6 +38,10 @@ import java.util.*;
 public class UserProfileService extends BaseEntityService<UserProfile> {
     @Autowired
     private UserProfileDao userProfileDao;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AccountManager accountManager;
 
     @Override
     protected BaseEntityDao<UserProfile> getDao() {
@@ -86,9 +93,16 @@ public class UserProfileService extends BaseEntityService<UserProfile> {
     public OperateResultWithData<UserProfile> save(UserProfile entity) {
         Validation.notNull(entity, "持久化对象不能为空");
 
+        String id = entity.getId();
+        String userId = entity.getUserId();
+        User user = userService.findOne(userId);
+        if (Objects.isNull(user)) {
+            // 用户【{0}】配置不存在.
+            return OperateResultWithData.operationFailure("00092", userId);
+        }
+
         try {
             // 偏好设置
-            String id = entity.getId();
             if (StringUtils.isNotBlank(id)) {
                 UserProfile userProfile = this.findOne(id);
                 if (Objects.isNull(userProfile)) {
@@ -123,6 +137,17 @@ public class UserProfileService extends BaseEntityService<UserProfile> {
                 }
                 entity.setPreferences(JsonUtils.toJson(preferenceMap));
             }
+            AccountInfoDto accountInfo = new AccountInfoDto();
+            accountInfo.setTenantCode(user.getTenantCode());
+            accountInfo.setAccount(user.getAccount());
+            accountInfo.setAccountType(user.getUserType().name());
+            accountInfo.setAuthorityPolicy(user.getUserAuthorityPolicy().name());
+            accountInfo.setEmail(entity.getEmail());
+            accountInfo.setMobile(entity.getMobile());
+            accountInfo.setGender(entity.getGender());
+            accountInfo.setIdCard(entity.getIdCard());
+            accountInfo.setLanguageCode(entity.getLanguageCode());
+            accountManager.updateAccountInfo(accountInfo);
         } catch (Exception ignored) {
         }
         return super.save(entity);

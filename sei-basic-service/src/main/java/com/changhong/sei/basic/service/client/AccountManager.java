@@ -1,6 +1,9 @@
 package com.changhong.sei.basic.service.client;
 
-import com.changhong.sei.basic.service.client.dto.*;
+import com.changhong.sei.basic.service.client.dto.AccountInfoDto;
+import com.changhong.sei.basic.service.client.dto.CreateAccountRequest;
+import com.changhong.sei.basic.service.client.dto.SessionUserResponse;
+import com.changhong.sei.basic.service.client.dto.UpdateAccountRequest;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.util.JsonUtils;
 import com.changhong.sei.exception.ServiceException;
@@ -20,45 +23,64 @@ public class AccountManager {
 
     /**
      * 获取用户信息
+     *
      * @param tenantCode 租户代码
-     * @param account 用户账号
+     * @param account    用户账号
      * @return 用户信息
      */
     public SessionUserResponse getSessionUser(String tenantCode, String account) {
         ResultData<SessionUserResponse> resultData = client.getByTenantAccount(tenantCode, account);
         if (resultData.failed()) {
-            throw new ServiceException("租户【"+tenantCode+"】中获取账户【"+account+"】信息失败！"+resultData.getMessage());
+            throw new ServiceException("租户【" + tenantCode + "】中获取账户【" + account + "】信息失败！" + resultData.getMessage());
         }
         return resultData.getData();
     }
 
     /**
      * 创建新账户
+     *
      * @param request 创建参数
      */
     public void create(CreateAccountRequest request) {
         try {
             ResultData<String> resultData = client.create(request);
             if (resultData.failed()) {
-                throw new ServiceException("创建新账户失败！"+resultData.getMessage()+":"+ JsonUtils.toJson(request));
+                throw new ServiceException("创建新账户失败！" + resultData.getMessage() + ":" + JsonUtils.toJson(request));
             }
         } catch (Exception e) {
-            throw new ServiceException("创建新账户异常！"+e.getMessage()+":"+ JsonUtils.toJson(request));
+            throw new ServiceException("创建新账户异常！" + e.getMessage() + ":" + JsonUtils.toJson(request));
         }
     }
 
     /**
      * 更改账户
+     *
      * @param request 更改参数
      */
-    public void update(UpdateAccountByAccountRequest request) {
+    public void update(UpdateAccountRequest request) {
         try {
             ResultData<String> resultData = client.updateByTenantAccount(request);
             if (resultData.failed()) {
-                throw new ServiceException("更改账户失败！"+resultData.getMessage());
+                throw new ServiceException("更改账户失败！" + resultData.getMessage());
             }
         } catch (Exception e) {
-            throw new ServiceException("更改账户异常！"+e.getMessage());
+            throw new ServiceException("更改账户异常！" + e.getMessage());
+        }
+    }
+
+    /**
+     * 更改账户
+     *
+     * @param request 更改参数
+     */
+    public void updateAccountInfo(AccountInfoDto request) {
+        try {
+            ResultData<Void> resultData = client.updateAccountInfo(request);
+            if (resultData.failed()) {
+                throw new ServiceException("更改账户失败！" + resultData.getMessage());
+            }
+        } catch (Exception e) {
+            throw new ServiceException("更改账户异常！" + e.getMessage());
         }
     }
 }

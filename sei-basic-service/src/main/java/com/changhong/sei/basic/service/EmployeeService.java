@@ -12,7 +12,7 @@ import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.service.client.AccountManager;
 import com.changhong.sei.basic.service.client.dto.CreateAccountRequest;
-import com.changhong.sei.basic.service.client.dto.UpdateAccountByAccountRequest;
+import com.changhong.sei.basic.service.client.dto.UpdateAccountRequest;
 import com.changhong.sei.basic.service.util.EmailUtil;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
@@ -110,7 +110,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
             return OperateResultWithData.operationFailure("00040", entity.getCode());
         }
         // 检查主账户是否已经存在
-        Boolean accountExist = ((UserDao)userService.getDao()).isAccountExist(entity.getCode(), entity.getId());
+        Boolean accountExist = ((UserDao) userService.getDao()).isAccountExist(entity.getCode(), entity.getId());
         if (accountExist) {
             // 已经存在主账户【{0}】的用户！
             return OperateResultWithData.operationFailure("00117", entity.getCode());
@@ -146,10 +146,17 @@ public class EmployeeService extends BaseEntityService<Employee> {
             // 员工编号作为账号
             accountRequest.setTenantCode(userResult.getData().getTenantCode());
             accountRequest.setAccount(entity.getCode());
-            accountRequest.setName(entity.getUserName());
-            accountRequest.setAccountType(UserType.Employee.name());
             accountRequest.setUserId(userId);
+            accountRequest.setName(entity.getUserName());
+            accountRequest.setAccountType(entity.getUserType().name());
+            accountRequest.setAuthorityPolicy(entity.getUserAuthorityPolicy().name());
+            accountRequest.setMobile(entity.getMobile());
+            accountRequest.setEmail(entity.getEmail());
+            accountRequest.setGender(entity.getGender());
+            accountRequest.setIdCard(userProfile.getIdCard());
+            accountRequest.setLanguageCode(userProfile.getLanguageCode());
             accountRequest.setFrozen(entity.isFrozen());
+
             accountManager.create(accountRequest);
         } else {
             //修改用户
@@ -171,10 +178,18 @@ public class EmployeeService extends BaseEntityService<Employee> {
             employeeDao.save(entity, false);
             // 判断并更改用户账户
             if (isChangeAccount) {
-                UpdateAccountByAccountRequest accountRequest = new UpdateAccountByAccountRequest();
-                accountRequest.setTenant(user.getTenantCode());
+                // 员工编号作为账号
+                UpdateAccountRequest accountRequest = new UpdateAccountRequest();
+                accountRequest.setTenantCode(user.getTenantCode());
                 accountRequest.setAccount(entity.getCode());
                 accountRequest.setName(entity.getUserName());
+                accountRequest.setAccountType(entity.getUserType().name());
+                accountRequest.setAuthorityPolicy(entity.getUserAuthorityPolicy().name());
+                accountRequest.setMobile(entity.getMobile());
+                accountRequest.setEmail(entity.getEmail());
+                accountRequest.setGender(entity.getGender());
+                accountRequest.setIdCard(userProfile.getIdCard());
+                accountRequest.setLanguageCode(userProfile.getLanguageCode());
                 accountRequest.setFrozen(entity.isFrozen());
                 accountManager.update(accountRequest);
             }
@@ -246,6 +261,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
 
     /**
      * 获取一个用户的备注说明
+     *
      * @param userId 用户Id
      * @return 备注说明
      */
