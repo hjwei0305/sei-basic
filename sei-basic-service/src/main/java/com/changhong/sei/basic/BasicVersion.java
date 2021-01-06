@@ -10,6 +10,6 @@ import com.changhong.sei.core.context.Version;
  */
 public class BasicVersion extends Version {
     public BasicVersion() {
-        super(BasicVersion.class.getPackage().getName());
+        super(BasicVersion.class);
     }
 }
