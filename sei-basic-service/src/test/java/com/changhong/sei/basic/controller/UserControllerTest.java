@@ -85,7 +85,7 @@ public class UserControllerTest extends BaseUnitTest {
     @Test
     public void getNormalUserAuthorizedEntities() {
         String entityClassName = "com.changhong.erms.baf.entity.BudgetCorporation";
-        String userId = "A4DE07E5-69B6-11EA-8FCC-0242C0A8460F";
+        String userId = "B54E8964-D14D-11E8-A64B-0242C0A8441B";
         ResultData<List<String>> resultData = controller.getNormalUserAuthorizedEntities(entityClassName, null, userId);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());

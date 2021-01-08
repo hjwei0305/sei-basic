@@ -1,6 +1,6 @@
 package com.changhong.sei.basic.dto;
 
-import com.changhong.sei.core.dto.BaseEntityDto;
+import com.changhong.sei.basic.dto.cust.OrganizationCustDto;
 import com.changhong.sei.core.dto.auth.IDataAuthTreeEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,7 +18,8 @@ import java.util.List;
  * @version 2020-01-20 16:17
  */
 @ApiModel(description = "组织机构DTO")
-public class OrganizationDto extends BaseEntityDto implements IDataAuthTreeEntity {
+public class OrganizationDto extends OrganizationCustDto implements IDataAuthTreeEntity {
+    private static final long serialVersionUID = 5889624803970290804L;
     /**
      * 组织机构代码
      */
