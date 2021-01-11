@@ -20,14 +20,14 @@ public class CorporationControllerTest extends BaseUnitTest {
     @Test
     public void findByErpCode() {
         String erpCode = "Q000";
-        ResultData resultData = controller.findByErpCode(erpCode);
+        ResultData<?> resultData = controller.findByErpCode(erpCode);
         Assert.assertTrue(resultData.successful());
         System.out.println(JsonUtils.toJson(resultData));
     }
 
     @Test
     public void getUserAuthorizedEntities(){
-        ResultData resultData = controller.getUserAuthorizedEntities(null);
+        ResultData<?> resultData = controller.getUserAuthorizedEntities(null);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }

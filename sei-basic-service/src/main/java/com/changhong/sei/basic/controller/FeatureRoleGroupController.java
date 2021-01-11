@@ -5,7 +5,6 @@ import com.changhong.sei.basic.dto.FeatureRoleGroupDto;
 import com.changhong.sei.basic.entity.FeatureRoleGroup;
 import com.changhong.sei.basic.service.FeatureRoleGroupService;
 import com.changhong.sei.core.controller.BaseEntityController;
-import com.changhong.sei.core.controller.DefaultBaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
