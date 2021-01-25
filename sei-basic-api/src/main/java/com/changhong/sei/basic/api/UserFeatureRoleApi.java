@@ -27,7 +27,7 @@ public interface UserFeatureRoleApi extends BaseRelationApi<UserFeatureRoleDto, 
      * @param effective 授权有效期
      * @return 操作结果
      */
-    @PostMapping(path = "saveEffective", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "saveEffective", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "保存授权有效期", notes = "保存用户分配的功能角色有效期")
     ResultData<String> saveEffective(@RequestBody @Valid RelationEffective effective);
 }

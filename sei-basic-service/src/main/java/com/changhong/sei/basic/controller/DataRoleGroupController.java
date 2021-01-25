@@ -23,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @Api(value = "DataRoleGroupApi", tags = "数据角色组API服务")
-@RequestMapping(path = "dataRoleGroup", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "dataRoleGroup", produces = MediaType.APPLICATION_JSON_VALUE)
 public class DataRoleGroupController extends BaseEntityController<DataRoleGroup, DataRoleGroupDto>
         implements DataRoleGroupApi {
     @Autowired

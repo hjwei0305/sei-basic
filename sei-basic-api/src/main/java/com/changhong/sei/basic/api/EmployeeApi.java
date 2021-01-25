@@ -43,7 +43,7 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
      * @param queryParam 查询参数
      * @return 企业用户
      */
-    @PostMapping(path = "queryEmployees", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "queryEmployees", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "分页查询企业用户", notes = "通过快速查询参数，分页查询企业用户")
     ResultData<PageResult<EmployeeDto>> queryEmployees(@RequestBody EmployeeQuickQueryParam queryParam);
 
@@ -52,14 +52,14 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
      *
      * @param ids 主键集合
      */
-    @PostMapping(path = "findByIds", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "findByIds", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据员工的id列表获取员工", notes = "根据员工的id列表获取员工")
     ResultData<List<EmployeeDto>> findByIds(@RequestBody List<String> ids);
 
     /**
      * 根据组合条件获取员工
      */
-    @PostMapping(path = "findByFilters", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "findByFilters", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据组合条件获取员工", notes = "根据组合条件获取员工")
     ResultData<List<EmployeeDto>> findByFilters(@RequestBody Search searchConfig);
 
@@ -89,7 +89,7 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
      * @param param 企业员工用户查询参数
      * @return 员工用户查询结果
      */
-    @PostMapping(path = "findByUserQueryParam", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "findByUserQueryParam", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "获取企业员工用户", notes = "根据企业员工用户查询参数获取企业员工用户")
     ResultData<PageResult<EmployeeDto>> findByUserQueryParam(@RequestBody UserQueryParam param);
 
@@ -99,7 +99,7 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
      * @param employeeIds 企业员工的id列表
      * @return 执行人清单
      */
-    @PostMapping(path = "getExecutorsByEmployeeIds", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "getExecutorsByEmployeeIds", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据企业员工的id列表获取执行人", notes = "根据企业员工的id列表获取执行人")
     ResultData<List<Executor>> getExecutorsByEmployeeIds(@RequestBody List<String> employeeIds);
 
@@ -151,7 +151,7 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
      * @param param 快速查询参数
      * @return 企业用户查询结果
      */
-    @PostMapping(path = "quickSearch", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "quickSearch", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "快速查询企业用户", notes = "用用户名或员工编号快速查询企业用户")
     ResultData<PageResult<EmployeeDto>> quickSearch(@RequestBody QuickSearchParam param);
 
@@ -161,7 +161,7 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
      * @param param 快速查询参数
      * @return 企业用户查询结果
      */
-    @PostMapping(path = "quickSearchExecutors", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "quickSearchExecutors", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "快速查询企业用户", notes = "用用户名或员工编号快速查询企业用户")
     ResultData<PageResult<Executor>> quickSearchExecutors(@RequestBody QuickSearchParam param);
 
@@ -171,7 +171,7 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
      * @param queryParam     执行人查询参数
      * @return 执行人清单
      */
-    @PostMapping(path = "getExecutorsByPostCatAndOrg", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "getExecutorsByPostCatAndOrg", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据组织机构IDS与岗位分类IDS获取执行人", notes = "根据组织机构IDS与岗位分类IDS获取执行人")
     ResultData<List<Executor>> getExecutorsByPostCatAndOrg(@RequestBody ExecutorQueryParam queryParam);
 
@@ -181,7 +181,7 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
      * @param param      员工用户查询参数
      * @return 员工用户查询结果
      */
-    @PostMapping(path = "listAllCanAssignEmployees", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "listAllCanAssignEmployees", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据企业员工用户查询参数获取企业员工用户", notes = "根据企业员工用户查询参数获取企业员工用户")
     ResultData<List<EmployeeDto>> listAllCanAssignEmployees(@RequestBody UserQueryParam param);
 
@@ -201,7 +201,7 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
      * @param copyParam 复制参数
      * @return 操作结果
      */
-    @PostMapping(path = "copyToEmployees", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "copyToEmployees", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "把一个企业用户的角色复制到多个企业用户", notes = "实现快速配置用户权限，把一个用户的角色复制到多个企业用户，可以复制功能角色和数据角色")
     ResultData copyToEmployees(@RequestBody EmployeeCopyParam copyParam);
 
@@ -228,7 +228,7 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
      * @param employeeDto 企业员工用户
      * @return 操作结果
      */
-    @PostMapping(path = "saveTenantAdmin", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "saveTenantAdmin", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "保存一个租户的系统管理员", notes = "保存一个租户的系统管理员,需要确定租户代码")
     ResultData saveTenantAdmin(@RequestBody EmployeeDto employeeDto);
 }

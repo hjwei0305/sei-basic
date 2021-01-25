@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Api(value = "EmployeePositionApi", tags = "企业员工用户分配岗位的API服务实现")
-@RequestMapping(path = "employeePosition", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "employeePosition", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EmployeePositionController extends BaseRelationController<EmployeePosition, Employee, Position, EmployeePositionDto, EmployeeDto, PositionDto>
         implements EmployeePositionApi {
     @Autowired

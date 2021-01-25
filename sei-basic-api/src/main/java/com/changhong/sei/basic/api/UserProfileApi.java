@@ -43,7 +43,7 @@ public interface UserProfileApi extends BaseEntityApi<UserProfileDto> {
      *
      * @param userIds 用户id集合
      */
-    @PostMapping(path = "findNotifyInfoByUserIds", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "findNotifyInfoByUserIds", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "获取通知信息列表", notes = "根据用户id列表获取通知信息列表")
     ResultData<List<UserNotifyInfo>> findNotifyInfoByUserIds(@RequestBody List<String> userIds);
 
@@ -74,6 +74,6 @@ public interface UserProfileApi extends BaseEntityApi<UserProfileDto> {
      */
     @ApiImplicitParam(name = "preference", value = "偏好配置类型. portrait-头像;guide-系统引导", paramType = "path")
     @ApiOperation(value = "设置用户偏好配置", notes = "设置用户偏好配置")
-    @PostMapping(path = "setUserPreference/{preference}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "setUserPreference/{preference}", consumes = MediaType.APPLICATION_JSON_VALUE)
     ResultData<Void> setUserPreference(@PathVariable("preference") String preference, @RequestBody Object value);
 }

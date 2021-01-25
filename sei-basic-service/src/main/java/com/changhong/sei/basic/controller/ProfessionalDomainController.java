@@ -23,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @Api(value = "ProfessionalDomainApi", tags = "专业领域API服务")
-@RequestMapping(path = "professionalDomain", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "professionalDomain", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProfessionalDomainController extends BaseTreeController<ProfessionalDomain, ProfessionalDomainDto>
         implements ProfessionalDomainApi {
     @Autowired

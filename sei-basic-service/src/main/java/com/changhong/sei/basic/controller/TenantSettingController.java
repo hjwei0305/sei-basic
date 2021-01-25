@@ -24,7 +24,7 @@ import java.util.Objects;
  */
 @RestController
 @Api(value = "TenantSettingApi", tags = "租户配置服务")
-@RequestMapping(path = "tenantSetting", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "tenantSetting", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TenantSettingController implements TenantSettingApi {
     /**
      * 租户配置服务对象

@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Api(value = "OrganizationApi", tags = "组织机构API服务")
-@RequestMapping(path = "organization", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "organization", produces = MediaType.APPLICATION_JSON_VALUE)
 public class OrganizationController extends BaseTreeController<Organization, OrganizationDto>
         implements OrganizationApi {
     @Autowired

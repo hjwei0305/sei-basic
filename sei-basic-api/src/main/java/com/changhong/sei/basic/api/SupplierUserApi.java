@@ -30,7 +30,7 @@ public interface SupplierUserApi extends BaseEntityApi<SupplierUserDto> {
      * @param search 查询参数
      * @return 分页查询结果
      */
-    @PostMapping(path = "findVoByPage", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "findVoByPage", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "分页查询业务实体", notes = "分页查询业务实体")
     ResultData<PageResult<SupplierUserVo>> findVoByPage(@RequestBody Search search);
 
@@ -40,7 +40,7 @@ public interface SupplierUserApi extends BaseEntityApi<SupplierUserDto> {
      * @param supplierUserVo 供应商信息
      * @return 操作结果
      */
-    @PostMapping(path = "saveSupplierUserVo", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "saveSupplierUserVo", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "保存供应商", notes = "保存供应商")
     ResultData<SupplierUserVo> saveSupplierUserVo(@RequestBody SupplierUserVo supplierUserVo);
 
@@ -51,7 +51,7 @@ public interface SupplierUserApi extends BaseEntityApi<SupplierUserDto> {
      * @param roleCode       角色代码的KEY
      * @return 操作结果
      */
-    @PostMapping(path = "saveSupplierManager", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "saveSupplierManager", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "保存供应商管理员", notes = "保存供应商管理员")
     ResultData saveSupplierManager(@RequestBody SupplierUserVo supplierUserVo, @RequestParam("roleCodeKey") String roleCode);
 
@@ -62,7 +62,7 @@ public interface SupplierUserApi extends BaseEntityApi<SupplierUserDto> {
      * @param roleCode       角色代码的KEY
      * @return 操作结果
      */
-    @PostMapping(path = "saveSupplierManagerBackId", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "saveSupplierManagerBackId", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "保存供应商管理员返回供应商用户ID", notes = "保存供应商管理员返回供应商用户ID")
     ResultData<String> saveSupplierManagerBackId(@RequestBody SupplierUserVo supplierUserVo, @RequestParam("roleCodeKey") String roleCode);
 
@@ -72,7 +72,7 @@ public interface SupplierUserApi extends BaseEntityApi<SupplierUserDto> {
      * @param supplierUserVo 供应商用户VO  需要申请注册供应商ID，主数据供应商ID
      * @return 操作结果
      */
-    @PostMapping(path = "addSupplierIdToSupUser", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "addSupplierIdToSupUser", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "增加主数据供应商ID", notes = "增加主数据供应商ID")
     ResultData addSupplierIdToSupUser(@RequestBody SupplierUserVo supplierUserVo);
 

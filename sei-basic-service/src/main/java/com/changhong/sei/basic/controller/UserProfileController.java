@@ -34,7 +34,7 @@ import java.util.Objects;
  */
 @RestController
 @Api(value = "UserProfileService", tags = "用户配置API服务实现")
-@RequestMapping(path = "userProfile", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "userProfile", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserProfileController extends BaseEntityController<UserProfile, UserProfileDto>
         implements UserProfileApi {
     @Autowired

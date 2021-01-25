@@ -28,7 +28,7 @@ import javax.validation.Valid;
  */
 @RestController
 @Api(value = "UserDataRoleApi", tags = "用户分配的数据角色API服务实现")
-@RequestMapping(path = "userDataRole", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "userDataRole", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserDataRoleController extends BaseRelationController<UserDataRole, User, DataRole, UserDataRoleDto, UserDto, DataRoleDto>
         implements UserDataRoleApi {
     @Autowired

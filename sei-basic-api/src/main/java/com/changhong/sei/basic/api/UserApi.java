@@ -106,7 +106,7 @@ public interface UserApi extends BaseEntityApi<UserDto>,
      * @param userIds 用户的id列表
      * @return 执行人清单
      */
-    @PostMapping(path = "getExecutorsByUserIds", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "getExecutorsByUserIds", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据用户的id列表获取执行人", notes = "根据用户的id列表获取执行人")
     ResultData<List<Executor>> getExecutorsByUserIds(@RequestBody List<String> userIds);
 
@@ -116,7 +116,7 @@ public interface UserApi extends BaseEntityApi<UserDto>,
      * @param queryParam 执行人查询参数
      * @return 执行人清单
      */
-    @PostMapping(path = "getExecutorsByPostCatAndCorp", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "getExecutorsByPostCatAndCorp", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据公司IDS与岗位分类IDS获取执行人", notes = "根据公司IDS与岗位分类IDS获取执行人")
     ResultData<List<Executor>> getExecutorsByPostCatAndCorp(@RequestBody ExecutorQueryParam queryParam);
 
@@ -180,7 +180,7 @@ public interface UserApi extends BaseEntityApi<UserDto>,
      * @param queryParam 查询参数
      * @return 用户DTO
      */
-    @PostMapping(path = "queryUsers", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "queryUsers", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "分页查询平台用户", notes = "通过快速查询参数，分页查询未冻结的用户")
     ResultData<PageResult<UserDto>> queryUsers(@RequestBody UserQuickQueryParam queryParam);
 }

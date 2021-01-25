@@ -24,7 +24,7 @@ public interface PositionCategoryApi extends BaseEntityApi<PositionCategoryDto>,
     /**
      * 根据岗位类别id列表获取岗位类别
      */
-    @PostMapping(path = "findByIds", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "findByIds", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据岗位类别id列表获取岗位类别", notes = "根据岗位类别id列表获取岗位类别")
     ResultData<List<PositionCategoryDto>> findByIds(@RequestBody List<String> ids);
 }

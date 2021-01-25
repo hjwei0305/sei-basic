@@ -23,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @Api(value = "PositionCategoryApi", tags = "岗位类别API服务实现")
-@RequestMapping(path = "positionCategory", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "positionCategory", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PositionCategoryController extends BaseEntityController<PositionCategory, PositionCategoryDto>
         implements PositionCategoryApi {
     @Autowired

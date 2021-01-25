@@ -30,7 +30,7 @@ public interface DataRoleAuthTypeValueApi {
      * @param relation 数据角色分配参数
      * @return 操作结果
      */
-    @PostMapping(path = "insertRelations", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "insertRelations", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "创建数据角色的分配关系", notes = "通过数据角色分配参数创建分配关系")
     ResultData insertRelations(@RequestBody DataRoleRelation relation);
 
@@ -40,7 +40,7 @@ public interface DataRoleAuthTypeValueApi {
      * @param relation 数据角色分配参数
      * @return 操作结果
      */
-    @PostMapping(path = "removeRelations", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "removeRelations", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "移除数据角色的分配关系", notes = "通过数据角色分配参数移除分配关系")
     ResultData removeRelations(@RequestBody DataRoleRelation relation);
 

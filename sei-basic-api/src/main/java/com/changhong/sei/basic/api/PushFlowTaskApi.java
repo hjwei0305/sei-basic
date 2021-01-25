@@ -30,7 +30,7 @@ public interface PushFlowTaskApi {
      *
      * @param taskList 需要推送的待办
      */
-    @PostMapping(path = "pushNewTask", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "pushNewTask", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "推送流程模块待办", notes = "推送流程模块待办")
     default ResultData pushNewTask(@RequestBody List<FlowTask> taskList){
         return  ResultData.success("推送待办接口成功！");
@@ -41,7 +41,7 @@ public interface PushFlowTaskApi {
      *
      * @param taskList 需要推送的已办（待办转已办）
      */
-    @PostMapping(path = "pushOldTask", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "pushOldTask", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "推送流程模块已办（待办转已办）", notes = "推送流程模块已办（待办转已办）")
     default ResultData pushOldTask(@RequestBody List<FlowTask> taskList){
         return  ResultData.success("推送已办接口成功！");
@@ -52,7 +52,7 @@ public interface PushFlowTaskApi {
      *
      * @param taskList 需要删除的待办
      */
-    @PostMapping(path = "pushDelTask", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "pushDelTask", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "推送流程模块需要删除的待办", notes = "推送流程模块需要删除的待办")
     default ResultData pushDelTask(@RequestBody List<FlowTask> taskList){
         return  ResultData.success("推送删除接口成功！");
@@ -63,7 +63,7 @@ public interface PushFlowTaskApi {
      *
      * @param task 需要归档的任务
      */
-    @PostMapping(path = "pushEndTask", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "pushEndTask", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "推送流程模块归档（正常结束）的待办", notes = "推送流程模块归档（正常结束）的待办")
     default ResultData pushEndTask(@RequestBody FlowTask task){
         return  ResultData.success("推送归档接口成功！");

@@ -28,7 +28,7 @@ import java.util.List;
  */
 @RestController
 @Api(value = "SupplierUserApi", tags = "供应商用户API服务实现")
-@RequestMapping(path = "supplierUser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "supplierUser", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SupplierUserController extends BaseEntityController<SupplierUser, SupplierUserDto>
         implements SupplierUserApi {
     @Autowired

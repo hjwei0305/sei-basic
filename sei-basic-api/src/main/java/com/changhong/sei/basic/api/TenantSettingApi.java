@@ -28,7 +28,7 @@ public interface TenantSettingApi {
      * @param dto 业务实体DTO
      * @return 操作结果
      */
-    @PostMapping(path = "save", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "save", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "保存租户配置", notes = "保存租户配置")
     ResultData<TenantSettingDto> save(@RequestBody @Valid TenantSettingDto dto);
 

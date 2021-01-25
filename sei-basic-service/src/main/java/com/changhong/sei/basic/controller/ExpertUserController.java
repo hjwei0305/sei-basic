@@ -29,7 +29,7 @@ import java.util.Objects;
  */
 @RestController
 @Api(value = "ExpertUserApi", tags = "专家用户API服务实现")
-@RequestMapping(path = "expertUser", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "expertUser", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ExpertUserController implements ExpertUserApi {
     @Autowired
     private ExpertUserService service;

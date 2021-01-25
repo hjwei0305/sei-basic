@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Api(value = "PositionApi", tags = "岗位API服务实现")
-@RequestMapping(path = "position", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "position", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PositionController extends BaseEntityController<Position, PositionDto>
         implements PositionApi {
     @Autowired

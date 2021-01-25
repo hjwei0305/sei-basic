@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Api(value = "PositionFeatureRoleApi", tags = "岗位分配的功能角色API服务实现")
-@RequestMapping(path = "positionFeatureRole", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "positionFeatureRole", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PositionFeatureRoleController extends BaseRelationController<PositionFeatureRole, Position, FeatureRole, PositionFeatureRoleDto, PositionDto, FeatureRoleDto>
         implements PositionFeatureRoleApi {
     @Autowired

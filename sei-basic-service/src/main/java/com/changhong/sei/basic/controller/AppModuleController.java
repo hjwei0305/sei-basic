@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @Api(value = "AppModuleApi", tags = "应用模块的API服务")
-@RequestMapping(path = "appModule", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "appModule", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AppModuleController extends BaseEntityController<AppModule, AppModuleDto>
         implements AppModuleApi {
     @Autowired

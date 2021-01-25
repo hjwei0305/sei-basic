@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Api(value = "UserEmailAlertApi", tags = "用户邮件提醒API服务")
-@RequestMapping(path = "userEmailAlert", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "userEmailAlert", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserEmailAlertController extends BaseEntityController<UserEmailAlert, UserEmailAlertDto>
         implements UserEmailAlertApi {
     @Autowired

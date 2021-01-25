@@ -30,7 +30,7 @@ import java.util.List;
  */
 @RestController
 @Api(value = "UserMenuApi", tags = "用户收藏的菜单API服务实现")
-@RequestMapping(path = "userMenu", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "userMenu", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserMenuController extends BaseRelationController<UserMenu, User, Menu, UserMenuDto, UserDto, MenuDto>
         implements UserMenuApi {
     @Autowired

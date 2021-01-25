@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Api(value = "DataRoleApi", tags = "数据角色API服务")
-@RequestMapping(path = "dataRole", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "dataRole", produces = MediaType.APPLICATION_JSON_VALUE)
 public class DataRoleController extends BaseEntityController<DataRole, DataRoleDto>
         implements DataRoleApi {
     @Autowired

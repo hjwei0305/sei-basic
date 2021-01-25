@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Api(value = "FeatureGroupApi", tags = "功能项组API服务")
-@RequestMapping(path = "featureGroup", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "featureGroup", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FeatureGroupController extends BaseEntityController<FeatureGroup, FeatureGroupDto>
         implements FeatureGroupApi {
     @Autowired

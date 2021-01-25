@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Api(value = "TenantAppModuleApi", tags = "租户分配应用模块API服务")
-@RequestMapping(path = "tenantAppModule", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "tenantAppModule", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TenantAppModuleController extends BaseRelationController<TenantAppModule, Tenant, AppModule, TenantAppModuleDto, TenantDto, AppModuleDto>
         implements TenantAppModuleApi {
     @Autowired

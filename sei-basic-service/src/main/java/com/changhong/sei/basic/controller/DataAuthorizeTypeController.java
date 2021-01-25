@@ -27,7 +27,7 @@ import java.util.Objects;
  */
 @RestController
 @Api(value = "DataAuthorizeTypeApi", tags = "数据权限类型API服务")
-@RequestMapping(path = "dataAuthorizeType", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "dataAuthorizeType", produces = MediaType.APPLICATION_JSON_VALUE)
 public class DataAuthorizeTypeController extends BaseEntityController<DataAuthorizeType, DataAuthorizeTypeDto>
         implements DataAuthorizeTypeApi {
     @Autowired

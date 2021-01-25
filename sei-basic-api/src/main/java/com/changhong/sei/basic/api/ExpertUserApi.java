@@ -26,7 +26,7 @@ public interface ExpertUserApi {
      * @param search 查询参数
      * @return 分页查询结果
      */
-    @PostMapping(path = "findVoByPage", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "findVoByPage", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "分页查询业务实体", notes = "分页查询业务实体")
     ResultData<PageResult<ExpertUserVo>> findVoByPage(@RequestBody Search search);
 
@@ -58,7 +58,7 @@ public interface ExpertUserApi {
      * @param expertUserVo 专家用户
      * @return 操作结果
      */
-    @PostMapping(path = "save", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "save", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "保存专家用户", notes = "保存专家用户")
     ResultData save(@RequestBody ExpertUserVo expertUserVo);
 

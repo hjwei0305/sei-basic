@@ -26,7 +26,7 @@ import java.util.List;
  */
 @RestController
 @Api(value = "TenantApi", tags = "租户的API服务")
-@RequestMapping(path = "tenant", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "tenant", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TenantController extends BaseEntityController<Tenant, TenantDto>
         implements TenantApi {
     @Autowired

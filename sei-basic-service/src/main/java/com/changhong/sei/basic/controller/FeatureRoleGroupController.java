@@ -23,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @Api(value = "FeatureRoleGroupApi", tags = "功能角色组API服务实现")
-@RequestMapping(path = "featureRoleGroup", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "featureRoleGroup", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FeatureRoleGroupController extends BaseEntityController<FeatureRoleGroup, FeatureRoleGroupDto>
         implements FeatureRoleGroupApi {
     @Autowired

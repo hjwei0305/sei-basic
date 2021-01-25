@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Api(value = "DataRoleAuthTypeValueApi", tags = "数据角色分配权限类型的值API服务实现")
-@RequestMapping(path = "dataRoleAuthTypeValue", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "dataRoleAuthTypeValue", produces = MediaType.APPLICATION_JSON_VALUE)
 public class DataRoleAuthTypeValueController implements DataRoleAuthTypeValueApi {
     @Autowired
     private DataRoleAuthTypeValueService service;

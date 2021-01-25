@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Api(value = "UserApi", tags = "用户API服务实现")
-@RequestMapping(path = "user", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(path = "user", produces = MediaType.APPLICATION_JSON_VALUE)
 @SuppressWarnings("unchecked")
 public class UserController extends BaseEntityController<User, UserDto>
         implements UserApi {

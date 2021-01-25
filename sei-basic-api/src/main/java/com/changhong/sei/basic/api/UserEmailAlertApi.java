@@ -25,7 +25,7 @@ public interface UserEmailAlertApi extends BaseEntityApi<UserEmailAlertDto> {
      * @param userIdS 用户ID列表
      * @return 操作结果
      */
-    @PostMapping(path = "findByUserIds", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "findByUserIds", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据用户ID查找", notes = "根据用户ID查找")
     ResultData<List<UserEmailAlertDto>> findByUserIds(@RequestBody List<String> userIdS);
 
@@ -34,7 +34,7 @@ public interface UserEmailAlertApi extends BaseEntityApi<UserEmailAlertDto> {
      * @param userIds 用户ID列表
      * @return 操作结果
      */
-    @PostMapping(path = "updateLastTimes", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "updateLastTimes", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "通过用户ID列表更新最新提醒时间", notes = "通过用户ID列表更新最新提醒时间")
     ResultData updateLastTimes(@RequestBody List<String> userIds);
 

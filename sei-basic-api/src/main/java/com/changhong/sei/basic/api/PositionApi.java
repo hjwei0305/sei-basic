@@ -29,7 +29,7 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
     /**
      * 根据岗位id列表获取岗位
      */
-    @PostMapping(path = "findByIds", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "findByIds", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据岗位id列表获取岗位", notes = "根据岗位id列表获取岗位")
     ResultData<List<PositionDto>> findByIds(@RequestBody Collection<String> ids);
 
@@ -59,7 +59,7 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
      * @param param 岗位查询参数
      * @return 岗位查询结果
      */
-    @PostMapping(path = "findByPositionQueryParam", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "findByPositionQueryParam", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据岗位查询参数获取岗位", notes = "根据岗位查询参数获取获取岗位")
     ResultData<PageResult<PositionDto>> findByPositionQueryParam(@RequestBody PositionQueryParam param);
 
@@ -69,7 +69,7 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
      * @param param 岗位查询参数
      * @return 岗位查询结果
      */
-    @PostMapping(path = "findAllByPositionQueryParam", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "findAllByPositionQueryParam", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据岗位查询参数获取获取全部岗位", notes = "根据岗位查询参数获取获取全部岗位")
     ResultData<List<PositionDto>> findAllByPositionQueryParam(@RequestBody PositionQueryParam param);
 
@@ -89,7 +89,7 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
      * @param findParam 查询参数
      * @return 执行人清单
      */
-    @PostMapping(path = "getExecutorsByPositionIds", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "getExecutorsByPositionIds", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据岗位的id列表获取执行人", notes = "根据岗位的id列表获取执行人")
     ResultData<List<Executor>> getExecutors(@RequestBody FindExecutorByPositionParam findParam);
 
@@ -109,7 +109,7 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
      * @param posCateIds 岗位类别的id列表
      * @return 执行人清单
      */
-    @PostMapping(path = "getExecutorsByPosCateIds", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "getExecutorsByPosCateIds", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据岗位类别的id列表获取执行人", notes = "根据岗位类别的id列表获取执行人")
     ResultData<List<Executor>> getExecutorsByPosCateIds(@RequestBody List<String> posCateIds);
 
@@ -119,7 +119,7 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
      * @param findParam 岗位类别参数
      * @return 执行人清单
      */
-    @PostMapping(path = "getExecutorsByPostCatAndOrgToRoot", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "getExecutorsByPostCatAndOrgToRoot", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据组织机构IDS与岗位分类IDS获取执行人，组织向上至根节点直到有企业员工", notes = "根据组织机构IDS与岗位分类IDS获取执行人，组织向上至根节点直到有企业员工")
     ResultData<List<Executor>> getExecutorsByPostCatAndOrgToRoot(@RequestBody FindExecutorByPositionCateParam findParam);
 
@@ -192,7 +192,7 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
      * @param param 岗位查询参数
      * @return 岗位查询结果
      */
-    @PostMapping(path = "listAllCanAssignPositions", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "listAllCanAssignPositions", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据用户获取所有可分配岗位", notes = "根据用户获取所有可分配岗位")
     ResultData<List<PositionDto>> listAllCanAssignPositions(@RequestBody PositionQueryParam param);
 
@@ -202,7 +202,7 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
      * @param copyParam 复制参数
      * @return 操作结果
      */
-    @PostMapping(path = "copyToOrgNodes", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "copyToOrgNodes", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "把一个岗位复制到多个组织机构节点上", notes = "实现快速配置岗位，把一个岗位复制到多个组织机构节点上，可以复制功能角色")
     ResultData<?> copyToOrgNodes(@RequestBody PositionCopyParam copyParam);
 
@@ -212,7 +212,7 @@ public interface PositionApi extends BaseEntityApi<PositionDto>,
      * @param queryParam 查询参数
      * @return 岗位DTO
      */
-    @PostMapping(path = "queryPositions", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "queryPositions", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "分页查询岗位", notes = "通过快速查询参数，分页查询岗位")
     ResultData<PageResult<PositionDto>> queryPositions(@RequestBody PositionQuickQueryParam queryParam);
 }
