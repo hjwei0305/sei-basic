@@ -166,6 +166,10 @@ public class EmployeeDaoImpl extends BaseEntityDaoImpl<Employee> implements Empl
             fromAndWhere += "where o.id = :orgId ";
             sqlParams.put("orgId", organization.getId());
         }
+        // 是否包含冻结的用户
+        if (!queryParam.getIncludeFrozen()) {
+            fromAndWhere += "and (e.user.frozen = 0) ";
+        }
         // 限制排除的企业用户
         if (CollectionUtils.isNotEmpty(excludeEmployeeIds)) {
             fromAndWhere += "and (e.id not in :excludeIds) ";

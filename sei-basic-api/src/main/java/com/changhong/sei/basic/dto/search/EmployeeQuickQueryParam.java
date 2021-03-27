@@ -30,10 +30,18 @@ public class EmployeeQuickQueryParam extends QuickQueryParam {
     private Boolean includeSubNode = Boolean.FALSE;
 
     /**
+     * 包含冻结的用户
+     */
+    @NotNull
+    @ApiModelProperty(value = "包含冻结的用户", required = true)
+    private Boolean includeFrozen = Boolean.FALSE;
+
+    /**
      * 需要排除企业用户的岗位Id
      */
     @ApiModelProperty(value = "需要排除企业用户的岗位Id")
     private String excludePositionId;
+
 
     public String getOrganizationId() {
         return organizationId;
@@ -49,6 +57,14 @@ public class EmployeeQuickQueryParam extends QuickQueryParam {
 
     public void setIncludeSubNode(Boolean includeSubNode) {
         this.includeSubNode = includeSubNode;
+    }
+
+    public Boolean getIncludeFrozen() {
+        return includeFrozen;
+    }
+
+    public void setIncludeFrozen(Boolean includeFrozen) {
+        this.includeFrozen = includeFrozen;
     }
 
     public String getExcludePositionId() {
