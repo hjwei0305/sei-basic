@@ -1,6 +1,12 @@
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
+// 扩展定义
+ext {
+    // 启动类
+    MainClass = 'com.changhong.sei.basic.BasicRestApplication'
+}
+
 dependencies {
     // 本项目依赖模块
     compile project(':sei-basic-api')
