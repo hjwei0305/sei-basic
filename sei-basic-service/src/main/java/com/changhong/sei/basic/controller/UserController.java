@@ -241,7 +241,7 @@ public class UserController extends BaseEntityController<User, UserDto>
     @Override
     public ResultData<List<DataRoleDto>> getDataRolesByAccount(String account) {
         // 获取用户信息
-        ResultData<User> userResultData = getNormalUserByAccount(account);
+        ResultData<User> userResultData = getNormalUserByAccountFilterByPolicy(account);
         if (userResultData.failed()) {
             return ResultData.fail(userResultData.getMessage());
         }
@@ -251,20 +251,32 @@ public class UserController extends BaseEntityController<User, UserDto>
     }
 
     /**
-     * 通过用户账号获取平台的一般用户
+     * 通过用户账号获取平台的一般用户, 一般用户只能获取自己的用户信息，租户管理员和全局管理员无限制
      *
      * @param account 用户账号
      * @return 操作结果
      */
-    private ResultData<User> getNormalUserByAccount(String account) {
-        // 获取用户信息
-        String tenantCode = ContextUtil.getTenantCode();
-        SessionUserResponse userResponse = accountManager.getSessionUser(tenantCode, account);
-        if (Objects.isNull(userResponse)) {
-            // 用户账号【{0}】不存在！
-            return ResultDataUtil.fail("00108", account);
+    private ResultData<User> getNormalUserByAccountFilterByPolicy(String account) {
+        // 获取当前用户信息
+        SessionUser sessionUser = ContextUtil.getSessionUser();
+        if (sessionUser.getAuthorityPolicy().equals(UserAuthorityPolicy.NormalUser) &&
+                !sessionUser.getAccount().equals(account)) {
+            return ResultDataUtil.fail("00120", account);
         }
-        User user = service.findOne(userResponse.getUserId());
+        String userId = null;
+
+        // 和当前账号相同直接获取用户id
+        if (sessionUser.getAccount().equals(account)) {
+            userId = sessionUser.getUserId();
+        } else {
+            SessionUserResponse userResponse = accountManager.getSessionUser(sessionUser.getTenantCode(), account);
+            if (Objects.isNull(userResponse)) {
+                // 用户账号【{0}】不存在！
+                return ResultDataUtil.fail("00108", account);
+            }
+            userId = userResponse.getUserId();
+        }
+        User user = service.findOne(userId);
         if (Objects.isNull(user)) {
             // 用户账号【【{0}】不存在对应的系统用户！
             return ResultDataUtil.fail("00098", account);
@@ -276,7 +288,7 @@ public class UserController extends BaseEntityController<User, UserDto>
         }
         if (authorityPolicy == UserAuthorityPolicy.TenantAdmin) {
             // 用户账号【{0}】是租户【{1}】的系统管理员！
-            return ResultDataUtil.fail("00110", account, tenantCode);
+            return ResultDataUtil.fail("00110", account, sessionUser.getTenantCode());
         }
 
         return ResultData.success(user);
@@ -291,7 +303,7 @@ public class UserController extends BaseEntityController<User, UserDto>
     @Override
     public ResultData<List<FeatureRoleDto>> getFeatureRolesByAccount(String account) {
         // 获取用户信息
-        ResultData<User> userResultData = getNormalUserByAccount(account);
+        ResultData<User> userResultData = getNormalUserByAccountFilterByPolicy(account);
         if (userResultData.failed()) {
             return ResultData.fail(userResultData.getMessage());
         }
@@ -329,11 +341,12 @@ public class UserController extends BaseEntityController<User, UserDto>
 
     /**
      * 转换数据实体为DTO
+     *
      * @param entity 数据实体
      * @return DTO
      */
     static UserDto convertToDtoStatic(User entity) {
-        if (Objects.isNull(entity)){
+        if (Objects.isNull(entity)) {
             return null;
         }
         // 转换
