@@ -12,6 +12,7 @@ import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
+import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -38,6 +39,9 @@ public class CorporationController extends BaseEntityController<Corporation, Cor
     // 注入扩展业务逻辑
     @Autowired
     private CorporationServiceCust serviceCust;
+    @Autowired
+    private ModelMapper modelMapper;
+
 
     /**
      * 将数据实体转换成DTO
@@ -47,10 +51,10 @@ public class CorporationController extends BaseEntityController<Corporation, Cor
      */
     @Override
     public CorporationDto convertToDto(Corporation entity) {
-        CorporationDto dto = super.convertToDto(entity);
-        if (Objects.isNull(dto)) {
+        if (Objects.isNull(entity)) {
             return null;
         }
+        CorporationDto dto = modelMapper.map(entity, getDtoClass());
         // 自定义扩展实体转DTO属性赋值
         serviceCust.customEntityToDto(entity, dto);
         return dto;
