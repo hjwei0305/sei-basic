@@ -71,20 +71,20 @@ public class Corporation extends CorporationCust
      * ERP公司代码
      */
     @DataHistory(name = "ERP公司代码")
-    @Column(name = "erp_code",length = 10, nullable = false)
+    @Column(name = "erp_code", length = 10, nullable = false)
     private String erpCode;
 
     /**
      * 排序
      */
-    @Column(name = "rank",nullable = false)
+    @Column(name = "rank", nullable = false)
     private Integer rank = 0;
 
     /**
      * 冻结标志
      */
     @DataHistory(name = "冻结标志")
-    @Column(name = "frozen",nullable = false)
+    @Column(name = "frozen", nullable = false)
     private Boolean frozen = Boolean.FALSE;
 
     /**
@@ -132,8 +132,21 @@ public class Corporation extends CorporationCust
     /**
      * 是否为模板公司
      */
-    @Column(name = "template_sign",nullable = false)
+    @Column(name = "template_sign", nullable = false)
     private Boolean templateSign = Boolean.FALSE;
+
+    /**
+     * 组织机构Id
+     */
+    @Column(name = "organization_id", length = 36)
+    private String organizationId;
+
+    /**
+     * 组织机构
+     */
+    @ManyToOne
+    @JoinColumn(name = "organization_id", insertable = false, updatable = false)
+    private Organization organization;
 
     @Override
     public String getName() {
@@ -187,6 +200,7 @@ public class Corporation extends CorporationCust
         return frozen;
     }
 
+    @Override
     public void setFrozen(Boolean frozen) {
         this.frozen = frozen;
     }
@@ -261,5 +275,21 @@ public class Corporation extends CorporationCust
 
     public void setShortName(String shortName) {
         this.shortName = shortName;
+    }
+
+    public String getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(String organizationId) {
+        this.organizationId = organizationId;
+    }
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 }

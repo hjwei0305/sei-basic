@@ -43,4 +43,15 @@ public interface CorporationApi extends BaseEntityApi<CorporationDto>,
     @GetMapping(path = "findByErpCode")
     @ApiOperation(value = "根据ERP公司代码查询公司", notes = "根据ERP公司代码查询公司")
     ResultData<List<CorporationDto>> findByErpCode(@RequestParam("erpCode") String erpCode);
+
+
+    /**
+     * 根据组织机构Id查询公司
+     *
+     * @param organizationId 组织机构Id
+     * @return 公司
+     */
+    @GetMapping(path = "findByCode")
+    @ApiOperation(value = "根据组织机构Id查询公司", notes = "根据组织机构Id查询公司")
+    ResultData<CorporationDto> findByOrganizationId(@RequestParam("organizationId")String organizationId);
 }

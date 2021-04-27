@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
 
 /**
  * 实现功能: 公司DTO
- *
  */
 @ApiModel(description = "公司DTO")
 public class CorporationDto extends CorporationCustDto {
@@ -123,6 +122,19 @@ public class CorporationDto extends CorporationCustDto {
     @NotNull
     @ApiModelProperty(value = "是否为模板公司", required = true)
     private Boolean templateSign = Boolean.FALSE;
+
+    /**
+     * 组织机构Id
+     */
+    @ApiModelProperty(value = "组织机构Id")
+    private String organizationId;
+
+    /**
+     * 组织机构
+     */
+    @ApiModelProperty(value = "组织机构")
+    private OrganizationDto organization;
+
 
     public String getCode() {
         return code;
@@ -242,5 +254,21 @@ public class CorporationDto extends CorporationCustDto {
 
     public void setTemplateSign(Boolean templateSign) {
         this.templateSign = templateSign;
+    }
+
+    public String getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(String organizationId) {
+        this.organizationId = organizationId;
+    }
+
+    public OrganizationDto getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(OrganizationDto organization) {
+        this.organization = organization;
     }
 }

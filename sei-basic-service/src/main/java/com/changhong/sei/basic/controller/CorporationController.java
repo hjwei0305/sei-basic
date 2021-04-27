@@ -81,6 +81,7 @@ public class CorporationController extends BaseEntityController<Corporation, Cor
         return ResultData.success(dtos);
     }
 
+
     @Override
     public BaseEntityService<Corporation> getService() {
         return service;
@@ -147,5 +148,17 @@ public class CorporationController extends BaseEntityController<Corporation, Cor
     @Override
     public ResultData<List<CorporationDto>> getUserAuthEntitiesIncludeFrozen(String featureCode) {
         return ResultData.success(convertToDtos(service.getUserAuthorizedEntities(featureCode, Boolean.TRUE)));
+    }
+
+
+    /**
+     * 根据组织机构Id查询公司
+     *
+     * @param organizationId 组织机构Id
+     * @return 公司
+     */
+    @Override
+    public ResultData<CorporationDto> findByOrganizationId(String organizationId) {
+        return ResultData.success(convertToDto(service.findByOrganizationId(organizationId)));
     }
 }

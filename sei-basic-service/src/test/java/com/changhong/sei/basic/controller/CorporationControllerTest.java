@@ -31,4 +31,11 @@ public class CorporationControllerTest extends BaseUnitTest {
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }
+
+    @Test
+    public void findByOrganizationId(){
+        ResultData<?> resultData = controller.findByOrganizationId("09A226B8-A343-11EB-AC9E-0242C0A8461F");
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
 }

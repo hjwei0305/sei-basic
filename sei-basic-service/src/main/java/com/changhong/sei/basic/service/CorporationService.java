@@ -1,16 +1,22 @@
 package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.CorporationDao;
+import com.changhong.sei.basic.dto.CorporationDto;
 import com.changhong.sei.basic.entity.Corporation;
+import com.changhong.sei.basic.entity.Organization;
 import com.changhong.sei.basic.service.cust.CorporationServiceCust;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
+import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.DataAuthEntityService;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * *************************************************************************************************
@@ -34,6 +40,8 @@ public class CorporationService extends BaseEntityService<Corporation> implement
     private CorporationDao corporationDao;
     @Autowired
     private UserService userService;
+    @Autowired(required = false)
+    private OrganizationService organizationService;
 
     // 注入扩展业务逻辑
     @Autowired
@@ -78,5 +86,39 @@ public class CorporationService extends BaseEntityService<Corporation> implement
     @Override
     public List<String> getNormalUserAuthorizedEntitiesFromBasic(String entityClassName, String featureCode, String userId) {
         return userService.getNormalUserAuthorizedEntities(entityClassName, featureCode, userId);
+    }
+
+
+    /**
+     * 根据组织机构Id查询公司
+     *
+     * @param organizationId 组织机构Id
+     * @return 公司
+     */
+    public Corporation findByOrganizationId(String organizationId) {
+        List<Corporation> corporationList = findAllUnfrozen();
+        if (CollectionUtils.isNotEmpty(corporationList)) {
+            return findByOrgTree(organizationId, corporationList);
+        }
+        return null;
+    }
+
+
+    /**
+     * 根据组织机构树往上查找公司
+     *
+     * @param organizationId  组织机构树开始节点
+     * @param corporationList 所有公司
+     * @return
+     */
+    private Corporation findByOrgTree(String organizationId, List<Corporation> corporationList) {
+        Corporation corporation = corporationList.parallelStream().filter(i -> Objects.equals(i.getOrganizationId(), organizationId)).findFirst().orElse(null);
+        if (Objects.isNull(corporation)) {
+            Organization organization = organizationService.findOne(organizationId);
+            if (Objects.nonNull(organization) && StringUtils.isNoneBlank(organization.getParentId())) {
+                corporation = findByOrgTree(organization.getParentId(), corporationList);
+            }
+        }
+        return corporation;
     }
 }
