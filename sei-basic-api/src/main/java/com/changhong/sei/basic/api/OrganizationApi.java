@@ -131,7 +131,7 @@ public interface OrganizationApi extends BaseTreeApi<OrganizationDto>,
      * @return 组织机构树
      */
     @GetMapping(path = "getOrgAuthTreeByCorp")
-    @ApiOperation(value = "根据组织机构Id查询公司", notes = "根据组织机构Id查询公司")
+    @ApiOperation(value = "根据公司获取用户有权限的组织机构树", notes = "根据公司获取用户有权限的组织机构树")
     ResultData<List<OrganizationDto>> getOrgAuthTreeByCorp(@RequestParam("corporationCode") String corporationCode,
                                                      @RequestParam(value = "featureCode", required = false, defaultValue = "") String featureCode);
 
