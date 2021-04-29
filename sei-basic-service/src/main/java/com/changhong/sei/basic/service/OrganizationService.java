@@ -1,17 +1,24 @@
 package com.changhong.sei.basic.service;
 
+import com.changhong.sei.basic.dao.CorporationDao;
 import com.changhong.sei.basic.dao.OrganizationDao;
 import com.changhong.sei.basic.dto.OrganizationDimension;
+import com.changhong.sei.basic.dto.OrganizationDto;
+import com.changhong.sei.basic.entity.Corporation;
 import com.changhong.sei.basic.entity.Employee;
 import com.changhong.sei.basic.entity.Organization;
 import com.changhong.sei.basic.service.client.NumberGenerator;
 import com.changhong.sei.core.context.ContextUtil;
+import com.changhong.sei.core.context.SessionUser;
 import com.changhong.sei.core.dao.BaseTreeDao;
+import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.core.dto.auth.IDataAuthTreeEntity;
 import com.changhong.sei.core.entity.BaseEntity;
 import com.changhong.sei.core.service.BaseTreeService;
 import com.changhong.sei.core.service.DataAuthEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.service.bo.OperateResultWithData;
+import com.changhong.sei.core.service.bo.ResponseData;
 import com.changhong.sei.enums.UserAuthorityPolicy;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -51,6 +58,8 @@ public class OrganizationService extends BaseTreeService<Organization>
     private DataRoleService dataRoleService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CorporationDao corporationDao;
 
     @Override
     protected BaseTreeDao<Organization> getDao() {
@@ -118,9 +127,9 @@ public class OrganizationService extends BaseTreeService<Organization>
 
     @Override
     public Organization findOne(String s) {
-        if(ContextUtil.getSessionUser().getAuthorityPolicy()== UserAuthorityPolicy.GlobalAdmin){
+        if (ContextUtil.getSessionUser().getAuthorityPolicy() == UserAuthorityPolicy.GlobalAdmin) {
             Organization organization = findRootById(s);
-            if(organization != null){
+            if (organization != null) {
                 return organization;
             }
         }
@@ -256,12 +265,12 @@ public class OrganizationService extends BaseTreeService<Organization>
     protected List<String> getNormalUserAuthorizedEntityIds(String featureCode, String userId) {
         Set<String> authorizedEntityIds = new HashSet<>();
         List<String> entityIds = super.getNormalUserAuthorizedEntityIds(featureCode, userId);
-        if (Objects.nonNull(entityIds) && !entityIds.isEmpty()){
+        if (Objects.nonNull(entityIds) && !entityIds.isEmpty()) {
             authorizedEntityIds.addAll(entityIds);
         }
         // 获取企业用户的组织机构
         Employee employee = employeeService.findOne(userId);
-        if (Objects.nonNull(employee) && Objects.nonNull(employee.getOrganization())){
+        if (Objects.nonNull(employee) && Objects.nonNull(employee.getOrganization())) {
             // 获取所有子节点清单(包含冻结的节点)
             List<Organization> children = organizationDao.getChildrenNodes(employee.getOrganization().getId());
             List<String> childIds = children.stream().map(BaseEntity::getId).collect(Collectors.toList());
@@ -311,5 +320,57 @@ public class OrganizationService extends BaseTreeService<Organization>
     @Override
     public List<String> getNormalUserAuthorizedEntitiesFromBasic(String entityClassName, String featureCode, String userId) {
         return userService.getNormalUserAuthorizedEntities(entityClassName, featureCode, userId);
+    }
+
+
+    /**
+     * 根据公司获取用户有权限的组织机构树
+     *
+     * @param corporationCode 公司代码
+     * @return 组织机构树
+     */
+    public ResponseData<List<Organization>> getOrgAuthTreeByCorp(String corporationCode, String featureCode) {
+        Corporation corporation = corporationDao.findByCode(corporationCode);
+        if (Objects.isNull(corporation)) {
+            //00121 = 公司【{0}】不存在，请检查！
+            return ResponseData.operationFailure("00121", corporationCode);
+        }
+        if (StringUtils.isBlank(corporation.getOrganizationId())) {
+            //00122 = 公司【{0}】对应的组织机构未配置，请检查！
+            return ResponseData.operationFailure("00122", corporationCode);
+        }
+        List<Organization> allList = organizationDao.getChildrenNodes(corporation.getOrganizationId());
+        List<Organization> resultList = Collections.emptyList();
+        if (CollectionUtils.isNotEmpty(allList)) {
+            //过滤掉冻结部分
+            allList = allList.parallelStream().filter(i -> !i.getFrozen()).collect(Collectors.toList());
+            //获取当前用户
+            SessionUser sessionUser = ContextUtil.getSessionUser();
+            //如果是匿名用户无数据
+            if (!sessionUser.isAnonymous()) {
+                UserAuthorityPolicy authorityPolicy = sessionUser.getAuthorityPolicy();
+                switch (authorityPolicy) {
+                    case GlobalAdmin:
+                        //如果是全局管理，无数据
+                        break;
+                    case TenantAdmin:
+                        //如果是租户管理员，返回节点下的所有未冻结数据
+                        resultList = buildTree(allList);
+                        break;
+                    case NormalUser:
+                    default:
+                        //如果是一般用户，先获取有权限的角色对应的业务实体Id清单
+                        List<String> entityIds = getNormalUserAuthorizedEntityIds(featureCode, sessionUser.getUserId());
+                        if (CollectionUtils.isEmpty(entityIds) || CollectionUtils.isEmpty(allList)) {
+                            resultList = Collections.emptyList();
+                        } else {
+                            List<Organization> entities = allList.parallelStream().filter((p) -> entityIds.contains(p.getId())).collect(Collectors.toList());
+                            resultList = buildTree(entities);
+                        }
+                        break;
+                }
+            }
+        }
+        return ResponseData.operationSuccessWithData(resultList);
     }
 }

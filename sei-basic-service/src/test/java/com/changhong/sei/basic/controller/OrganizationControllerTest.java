@@ -66,4 +66,13 @@ public class OrganizationControllerTest extends BaseUnitTest {
         LOG.debug(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }
+
+    @Test
+    public void getOrgAuthTreeByCorp() {
+        String featureCode = null;
+        ResultData<List<OrganizationDto>> resultData = controller.getOrgAuthTreeByCorp("Q600",featureCode);
+        LOG.debug(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
+
 }

@@ -9,6 +9,8 @@ import com.changhong.sei.core.controller.BaseTreeController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
 import com.changhong.sei.core.service.BaseTreeService;
+import com.changhong.sei.core.service.bo.ResponseData;
+import com.changhong.sei.core.utils.ResultDataUtil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,6 +34,7 @@ public class OrganizationController extends BaseTreeController<Organization, Org
         implements OrganizationApi {
     @Autowired
     private OrganizationService service;
+
     /**
      * 通过代码获取组织机构
      *
@@ -196,5 +199,17 @@ public class OrganizationController extends BaseTreeController<Organization, Org
     @Override
     public ResultData<List<OrganizationDto>> getUserAuthTreeEntitiesIncludeFrozen(String featureCode) {
         return ResultData.success(convertToDtos(service.getUserAuthorizedTreeEntities(featureCode, Boolean.TRUE)));
+    }
+
+    /**
+     * 根据公司获取用户有权限的组织机构树
+     *
+     * @param corporationCode 公司代码
+     * @return 组织机构树
+     */
+    @Override
+    public ResultData<List<OrganizationDto>> getOrgAuthTreeByCorp(String corporationCode, String featureCode) {
+        ResponseData<List<Organization>> responseData = service.getOrgAuthTreeByCorp(corporationCode, featureCode);
+        return ResultDataUtil.convertFromResponseData(responseData, convertToDtos(responseData.getData()));
     }
 }

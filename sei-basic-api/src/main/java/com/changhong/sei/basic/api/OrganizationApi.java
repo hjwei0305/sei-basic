@@ -104,6 +104,7 @@ public interface OrganizationApi extends BaseTreeApi<OrganizationDto>,
 
     /**
      * 通过id集合获取组织机构清单
+     *
      * @param orgIds id集合
      * @return 组织机构
      */
@@ -120,4 +121,18 @@ public interface OrganizationApi extends BaseTreeApi<OrganizationDto>,
     @GetMapping(path = "getUserAuthorizedTreeNodeCodes")
     @ApiOperation(value = "获取当前用户有权限的树形节点代码清单", notes = "获取当前用户有权限的树形业务实体中的所有节点代码清单")
     ResultData<List<String>> getUserAuthorizedTreeNodeCodes(@RequestParam(value = "featureCode", required = false, defaultValue = "") String featureCode);
+
+
+    /**
+     * 根据公司获取用户有权限的组织机构树
+     *
+     * @param corporationCode 公司代码
+     * @param featureCode     功能项代码
+     * @return 组织机构树
+     */
+    @GetMapping(path = "getOrgAuthTreeByCorp")
+    @ApiOperation(value = "根据组织机构Id查询公司", notes = "根据组织机构Id查询公司")
+    ResultData<List<OrganizationDto>> getOrgAuthTreeByCorp(@RequestParam("corporationCode") String corporationCode,
+                                                     @RequestParam(value = "featureCode", required = false, defaultValue = "") String featureCode);
+
 }
