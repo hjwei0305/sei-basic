@@ -330,7 +330,7 @@ public class OrganizationService extends BaseTreeService<Organization>
      * @return 组织机构树
      */
     public ResponseData<List<Organization>> getOrgAuthTreeByCorp(String corporationCode, String featureCode) {
-        Corporation corporation = corporationDao.findByCode(corporationCode);
+        Corporation corporation = corporationDao.findByCodeAndTenantCode(corporationCode, ContextUtil.getTenantCode());
         if (Objects.isNull(corporation)) {
             //00121 = 公司【{0}】不存在，请检查！
             return ResponseData.operationFailure("00121", corporationCode);

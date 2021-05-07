@@ -59,7 +59,7 @@ public class CorporationService extends BaseEntityService<Corporation> implement
      * @return 公司
      */
     public Corporation findByCode(String code) {
-        Corporation corporation = corporationDao.findByCode(code);
+        Corporation corporation = corporationDao.findByCodeAndTenantCode(code, ContextUtil.getTenantCode());
         // 执行扩展业务逻辑
         return serviceCust.afterFindByCode(corporation);
     }
@@ -71,7 +71,7 @@ public class CorporationService extends BaseEntityService<Corporation> implement
      * @return 公司
      */
     public List<Corporation> findByErpCode(String erpCode) {
-        return corporationDao.findAllByErpCode(erpCode);
+        return corporationDao.findByErpCodeAndTenantCode(erpCode, ContextUtil.getTenantCode());
     }
 
     /**

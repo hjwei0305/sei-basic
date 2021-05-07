@@ -28,15 +28,17 @@ public interface CorporationDao extends BaseEntityDao<Corporation>, CorporationE
      * 根据公司代码查询公司
      *
      * @param code 公司代码
+     * @param tenantCode 租户代码
      * @return 公司
      */
-    Corporation findByCode(String code);
+    Corporation findByCodeAndTenantCode(String code, String tenantCode);
 
     /**
      * 根据ERP公司代码查询公司
      *
      * @param erpCode ERP公司代码
+     * @param tenantCode 租户代码
      * @return 公司
      */
-    List<Corporation> findAllByErpCode(String erpCode);
+    List<Corporation> findByErpCodeAndTenantCode(String erpCode, String tenantCode);
 }
