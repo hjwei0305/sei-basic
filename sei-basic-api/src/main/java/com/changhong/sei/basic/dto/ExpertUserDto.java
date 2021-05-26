@@ -19,6 +19,7 @@ import java.util.Date;
  */
 @ApiModel(description = "专家用户DTO")
 public class ExpertUserDto extends BaseEntityDto {
+    private static final long serialVersionUID = -1686281691296654038L;
     /**
      * 代码
      */
@@ -54,6 +55,14 @@ public class ExpertUserDto extends BaseEntityDto {
     @Size(max = 36)
     @ApiModelProperty(value = "专家ID(max = 36)", required = true)
     private String expertId;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getName() {
         return name;
