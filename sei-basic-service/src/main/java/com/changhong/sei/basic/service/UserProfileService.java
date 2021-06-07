@@ -72,6 +72,7 @@ public class UserProfileService extends BaseEntityService<UserProfile> {
             UserNotifyInfo userNotifyInfo = new UserNotifyInfo();
             userNotifyInfo.setUserId(r.getUser().getId());
             userNotifyInfo.setUserName(r.getUser().getUserName());
+            userNotifyInfo.setUserAccount(r.getUser().getAccount());
             userNotifyInfo.setEmail(r.getEmail());
             userNotifyInfo.setMobile(r.getMobile());
             //TODO 获取用户的微信用户和小程序用户openid
