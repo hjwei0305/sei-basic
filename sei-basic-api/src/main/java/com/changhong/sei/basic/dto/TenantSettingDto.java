@@ -39,6 +39,12 @@ private static final long serialVersionUID = 533710441253115570L;
     @ApiModelProperty(value = "水印")
     private String watermark;
 
+    /**
+     * 流程引擎代码
+     */
+    @ApiModelProperty(value = "流程引擎代码")
+    private String flowEngineCode;
+
         
     public String getCode() {
         return code;
@@ -64,4 +70,11 @@ private static final long serialVersionUID = 533710441253115570L;
         this.watermark = watermark;
     }
 
+    public String getFlowEngineCode() {
+        return flowEngineCode;
+    }
+
+    public void setFlowEngineCode(String flowEngineCode) {
+        this.flowEngineCode = flowEngineCode;
+    }
 }

@@ -41,6 +41,9 @@ private static final long serialVersionUID = -33069859473213493L;
     @Column(name = "watermark")
     private String watermark;
 
+    @Column(name = "flow_engine_code")
+    private String flowEngineCode;
+
     @Override
     public String getCode() {
         return code;
@@ -67,4 +70,12 @@ private static final long serialVersionUID = -33069859473213493L;
         this.watermark = watermark;
     }
 
+
+    public String getFlowEngineCode() {
+        return flowEngineCode;
+    }
+
+    public void setFlowEngineCode(String flowEngineCode) {
+        this.flowEngineCode = flowEngineCode;
+    }
 }
