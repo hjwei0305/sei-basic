@@ -1,11 +1,9 @@
 package com.changhong.sei.basic.service.client;
 
-import com.changhong.sei.commondata.sdk.client.TranslationManager;
-import com.changhong.sei.commondata.sdk.client.dto.TranslateQuery;
-import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.util.JsonUtils;
-import org.junit.Assert;
+import com.changhong.sei.dms.multilingual.sdk.client.TranslationManager;
+import com.changhong.sei.dms.multilingual.sdk.client.dto.TranslateQuery;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
