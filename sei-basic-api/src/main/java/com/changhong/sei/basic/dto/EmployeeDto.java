@@ -24,8 +24,8 @@ public class EmployeeDto extends EmployeeCustDto {
      * 员工编号
      */
     @NotBlank
-    @Size(max = 10)
-    @ApiModelProperty(value = "员工编号(max = 10)", required = true)
+    @Size(max = 20)
+    @ApiModelProperty(value = "员工编号(max = 20)", required = true)
     private String code;
 
     /**

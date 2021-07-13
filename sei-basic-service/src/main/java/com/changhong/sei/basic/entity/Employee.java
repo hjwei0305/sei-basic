@@ -31,7 +31,7 @@ public class Employee extends EmployeeCust implements ITenant {
     /**
      * 员工编号
      */
-    @Column(name = "code", length = 10, nullable = false)
+    @Column(name = "code", length = 20, nullable = false)
     private String code;
 
     /**
