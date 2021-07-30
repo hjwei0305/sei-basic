@@ -87,6 +87,7 @@ public class ExpertUserService extends BaseEntityService<ExpertUser> {
             //新增用户配置
             UserProfile userProfile = new UserProfile();
             userProfile.setUser(user);
+            userProfile.setUserId(user.getId());
             userProfile.setEmail(expertUserVo.getEmail());
             userProfile.setGender(expertUserVo.getGender());
             userProfile.setIdCard(expertUserVo.getIdCard());
@@ -120,6 +121,7 @@ public class ExpertUserService extends BaseEntityService<ExpertUser> {
             //修改用户配置
             UserProfile userProfile = userProfileDao.findByUserId(expertUserId);
             userProfile.setUser(user);
+            userProfile.setUserId(user.getId());
             userProfile.setEmail(expertUserVo.getEmail());
             userProfile.setGender(expertUserVo.getGender());
             userProfile.setIdCard(expertUserVo.getIdCard());
