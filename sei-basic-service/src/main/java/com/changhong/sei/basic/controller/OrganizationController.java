@@ -48,6 +48,17 @@ public class OrganizationController extends BaseTreeController<Organization, Org
     }
 
     /**
+     * 通过参考码获取组织机构
+     *
+     * @param refCode 参考码
+     * @return 组织机构
+     */
+    @Override
+    public ResultData<OrganizationDto> findByRefCode(String refCode) {
+        return ResultData.success(convertToDto(service.findFirstByProperty("refCode",refCode)));
+    }
+
+    /**
      * 通过租户代码获取组织机构根节点
      *
      * @param tenantCode 租户代码

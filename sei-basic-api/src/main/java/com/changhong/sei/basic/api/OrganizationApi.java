@@ -37,6 +37,16 @@ public interface OrganizationApi extends BaseTreeApi<OrganizationDto>,
     ResultData<OrganizationDto> findByCode(@RequestParam("code") String code);
 
     /**
+     * 通过参考码获取组织机构
+     *
+     * @param refCode 参考码
+     * @return 组织机构
+     */
+    @GetMapping(path = "findByRefCode")
+    @ApiOperation(value = "通过参考码获取组织机构", notes = "通过参考码获取组织机构")
+    ResultData<OrganizationDto> findByRefCode(@RequestParam("refCode") String refCode);
+
+    /**
      * 通过租户代码获取组织机构根节点
      *
      * @param tenantCode 租户代码
