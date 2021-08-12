@@ -100,6 +100,12 @@ public class Employee extends EmployeeCust implements ITenant {
     private String userName;
 
     /**
+     * 用户账号
+     */
+    @Transient
+    private String userAccount;
+
+    /**
      * 用户姓名
      */
     @Transient
@@ -171,6 +177,14 @@ public class Employee extends EmployeeCust implements ITenant {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(String userAccount) {
+        this.userAccount = userAccount;
     }
 
     public User getUser() {

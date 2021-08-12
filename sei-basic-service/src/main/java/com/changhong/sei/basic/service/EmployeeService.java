@@ -220,6 +220,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
         if (!CollectionUtils.isEmpty(employees)) {
             for (Employee employee : employees) {
                 employee.setUserName(employee.getUser().getUserName());
+                employee.setUserAccount(employee.getUser().getAccount());
             }
         }
         return result;
@@ -307,6 +308,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
                 removeCount += 1;
             }
             employee.setUserName(employee.getUser().getUserName());
+            employee.setUserAccount(employee.getUser().getAccount());
             employee.setFrozen(employee.getUser().getFrozen());
         }
         // 调整总记录数
@@ -325,6 +327,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
         if (!CollectionUtils.isEmpty(employees)) {
             for (Employee employee : employees) {
                 employee.setUserName(employee.getUser().getUserName());
+                employee.setUserAccount(employee.getUser().getAccount());
             }
         }
         return employees;
@@ -571,6 +574,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
         //填充名称和冻结状态
         for (Employee entity : result) {
             entity.setUserName(entity.getUser().getUserName());
+            entity.setUserAccount(entity.getUser().getAccount());
             entity.setFrozen(entity.getUser().getFrozen());
         }
         return result;

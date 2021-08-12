@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.beans.Transient;
 
 /**
  * 实现功能: 企业用户DTO
@@ -40,6 +41,11 @@ public class EmployeeDto extends EmployeeCustDto {
     @NotBlank
     @ApiModelProperty(value = "用户名称")
     private String userName;
+    /**
+     * 用户账号
+     */
+    @ApiModelProperty(value = "用户账号")
+    private String userAccount;
     /**
      * 用户类型
      */
