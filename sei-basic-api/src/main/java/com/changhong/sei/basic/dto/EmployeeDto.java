@@ -240,4 +240,12 @@ public class EmployeeDto extends EmployeeCustDto {
     public void setGender(Boolean gender) {
         this.gender = gender;
     }
+
+    public String getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(String userAccount) {
+        this.userAccount = userAccount;
+    }
 }
