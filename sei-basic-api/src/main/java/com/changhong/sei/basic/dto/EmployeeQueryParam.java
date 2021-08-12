@@ -1,5 +1,6 @@
 package com.changhong.sei.basic.dto;
 
+import com.changhong.sei.core.dto.serach.QuickQueryParam;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -19,7 +20,7 @@ import java.util.List;
  * *************************************************************************************************
  */
 @ApiModel(description = "员工用户查询参数")
-public class EmployeeQueryParam implements Serializable {
+public class EmployeeQueryParam extends QuickQueryParam {
 
     private static final long serialVersionUID = 1L;
 

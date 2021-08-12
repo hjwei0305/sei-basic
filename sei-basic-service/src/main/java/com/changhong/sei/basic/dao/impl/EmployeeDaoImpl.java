@@ -94,8 +94,15 @@ public class EmployeeDaoImpl extends BaseEntityDaoImpl<Employee> implements Empl
         if(idsNotEmpty){
             sql += " and e.id not in (:ids)";
         }
+        //支持模糊搜索
+        if (StringUtils.isNoneBlank(employeeQueryParam.getQuickSearchValue())){
+            sql += " and ((u.userName like :quickSearchValue) or (u.account like :quickSearchValue) )";
+        }
         Query query = entityManager.createQuery(sql);
         query.setParameter("tenantCode",ContextUtil.getTenantCode());
+        if (StringUtils.isNoneBlank(employeeQueryParam.getQuickSearchValue())){
+            query.setParameter("quickSearchValue", "%"+employeeQueryParam.getQuickSearchValue()+"%");
+        }
         if(idsNotEmpty){
             query.setParameter("ids", employeeQueryParam.getIds());
         }
