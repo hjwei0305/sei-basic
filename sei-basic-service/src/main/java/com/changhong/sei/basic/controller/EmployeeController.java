@@ -325,6 +325,7 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
                 map().setId(source.getId());
                 map().setOrganizationId(source.getOrganizationId());
                 map().setFrozen(source.isFrozen());
+                map().setUserAccount(source.getUserAccount());
             }
         };
         // 添加映射器
