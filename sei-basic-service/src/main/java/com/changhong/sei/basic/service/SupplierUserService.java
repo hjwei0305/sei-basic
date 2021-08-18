@@ -6,6 +6,8 @@ import com.changhong.sei.basic.entity.FeatureRole;
 import com.changhong.sei.basic.entity.SupplierUser;
 import com.changhong.sei.basic.entity.User;
 import com.changhong.sei.basic.entity.UserProfile;
+import com.changhong.sei.basic.service.client.AccountManager;
+import com.changhong.sei.basic.service.client.dto.CreateAccountRequest;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.dto.serach.PageResult;
@@ -56,6 +58,8 @@ public class SupplierUserService extends BaseEntityService<SupplierUser> {
     private UserFeatureRoleDao userFeatureRoleDao;
     @Autowired
     private UserDataRoleDao userDataRoleDao;
+    @Autowired
+    private AccountManager accountManager;
 
     @Override
     protected BaseEntityDao<SupplierUser> getDao() {
@@ -118,6 +122,9 @@ public class SupplierUserService extends BaseEntityService<SupplierUser> {
             //新增用户配置
             UserProfile userProfile = new UserProfile();
             userProfile.setUser(user);
+            userProfile.setEmail(supplierUserVo.getEmail());
+            userProfile.setMobile(supplierUserVo.getMobile());
+            userProfile.setUserId(user.getId());
             userProfileDao.save(userProfile);
 
             //新增供应商用户
@@ -153,6 +160,25 @@ public class SupplierUserService extends BaseEntityService<SupplierUser> {
             } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new RuntimeException("数据处理错误");
             }
+
+            // 创建用户账户
+            CreateAccountRequest accountRequest = new CreateAccountRequest();
+            // 员工编号作为账号
+            accountRequest.setTenantCode(supplierUser.getTenantCode());
+            accountRequest.setAccount(supplierUser.getCode());
+            accountRequest.setUserId(supplierUser.getId());
+            accountRequest.setName(supplierUser.getName());
+            accountRequest.setAccountType(UserType.Supplier.name());
+            accountRequest.setAuthorityPolicy(UserAuthorityPolicy.NormalUser.name());
+            accountRequest.setMobile(userProfile.getMobile());
+            accountRequest.setEmail(userProfile.getEmail());
+            accountRequest.setGender(userProfile.getGender());
+            accountRequest.setIdCard(userProfile.getIdCard());
+            accountRequest.setLanguageCode(userProfile.getLanguageCode());
+            accountRequest.setFrozen(supplierUserVo.isFrozen());
+
+            accountManager.create(accountRequest);
+
             return OperateResultWithData.operationSuccessWithData(vo, "core_service_00026");
         } else {
             //修改用户
@@ -167,6 +193,7 @@ public class SupplierUserService extends BaseEntityService<SupplierUser> {
             userProfile.setGender(supplierUserVo.getGender());
             userProfile.setMobile(supplierUserVo.getMobile());
             userProfile.setIdCard(supplierUserVo.getIdNumber());
+            userProfile.setUserId(user.getId());
             userProfile.setUser(user);
 
             userProfileDao.save(userProfile);
