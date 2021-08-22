@@ -39,7 +39,7 @@ public interface FeatureDao extends BaseEntityDao<Feature> {
     @Query("select f from Feature f inner join FeatureGroup g on f.featureGroup.id=g.id " +
             "inner join AppModule a on g.appModule.id=a.id " +
             "inner join TenantAppModule t on a.id=t.child.id " +
-            "where t.parent.id=?1 and f.tenantCanUse=1 ")
+            "where t.parent.id=?1 and f.tenantCanUse=true ")
     List<Feature> getTenantCanUseFeatures(String tenantId);
 
     @Query("update Feature f set f.groupCode=:groupCode where f.groupCode = :originGroupCode")
