@@ -161,6 +161,7 @@ public class SupplierUserService extends BaseEntityService<SupplierUser> {
                 throw new RuntimeException("数据处理错误");
             }
 
+
             // 创建用户账户
             CreateAccountRequest accountRequest = new CreateAccountRequest();
             // 员工编号作为账号
@@ -200,7 +201,7 @@ public class SupplierUserService extends BaseEntityService<SupplierUser> {
             //修改用户账户,设置可以修改的属性
             SupplierUser supplierUserFromDb = supplierUserDao.findOne(supplierUserId);
             //修改专家用户
-            supplierUserFromDb.setCode(supplierUserVo.getCode());
+//            supplierUserFromDb.setCode(supplierUserVo.getCode());
             supplierUserFromDb.setName(supplierUserVo.getName());
             supplierUserFromDb.setUser(user);
             supplierUser = supplierUserDao.save(supplierUserFromDb, false);
