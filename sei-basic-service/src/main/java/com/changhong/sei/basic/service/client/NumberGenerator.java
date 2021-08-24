@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 @Component
 public class NumberGenerator {
-    @Autowired
+    @Autowired(required = false)
     private SerialService serialService;
 
     /**

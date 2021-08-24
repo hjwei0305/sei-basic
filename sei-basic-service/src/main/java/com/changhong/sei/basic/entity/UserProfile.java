@@ -77,7 +77,6 @@ public class UserProfile extends BaseAuditableEntity {
      * @see com.changhong.sei.basic.dto.UserPreferenceEnum 枚举名为key
      * ex: {portrait:'data:image/png;base64,XXX', guide:'true'}
      */
-    @Lob
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "preferences")
     private String preferences;

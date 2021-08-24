@@ -29,14 +29,12 @@ private static final long serialVersionUID = -33069859473213493L;
     /**
      * logo图片base64
      */
-    @Lob
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "logo")
     private String logo;
     /**
      * 水印
      */
-    @Lob
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "watermark")
     private String watermark;
