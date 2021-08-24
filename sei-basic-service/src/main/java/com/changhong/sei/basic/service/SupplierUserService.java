@@ -203,6 +203,7 @@ public class SupplierUserService extends BaseEntityService<SupplierUser> {
             //修改专家用户
 //            supplierUserFromDb.setCode(supplierUserVo.getCode());
             supplierUserFromDb.setName(supplierUserVo.getName());
+            supplierUserFromDb.setSupplierCode(supplierUserVo.getSupplierCode());
             supplierUserFromDb.setUser(user);
             supplierUser = supplierUserDao.save(supplierUserFromDb, false);
             //返回
