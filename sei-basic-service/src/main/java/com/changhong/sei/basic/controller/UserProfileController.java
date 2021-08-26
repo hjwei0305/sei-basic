@@ -11,7 +11,6 @@ import com.changhong.sei.basic.service.UserProfileService;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
-import com.changhong.sei.core.log.LogUtil;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import com.changhong.sei.enums.UserType;
@@ -138,13 +137,10 @@ public class UserProfileController extends BaseEntityController<UserProfile, Use
      */
     @Override
     public ResultData<UserProfileDto> save(UserProfileDto dto) {
-        LogUtil.bizLog("当前默认语言: {}", ContextUtil.getDefaultLanguage());
-        LogUtil.bizLog("当前会话语言: {}", ContextUtil.getLocale());
         ResultData<UserProfileDto> resultData = super.save(dto);
         if (resultData.failed()) {
             return resultData;
         }
-        LogUtil.bizLog("语言: {},  保存结果: {}", ContextUtil.getLocale().toString(), resultData.getMessage());
         // 重新获取数据
         ResultData<UserProfileDto> profileDto = findByUserId(resultData.getData().getUserId());
         return ResultData.success(resultData.getMessage(), profileDto.getData());
