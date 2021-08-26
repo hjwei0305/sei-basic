@@ -51,7 +51,7 @@ public class UserDaoImpl extends BaseEntityDaoImpl<User> implements UserExtDao {
     @Override
     public PageResult<User> queryUsers(UserQuickQueryParam queryParam, List<String> excludeUserIds, String tenantCode) {
         String select = "select u ";
-        String fromAndWhere = "from User u where u.frozen=0 and u.tenantCode=:tenantCode ";
+        String fromAndWhere = "from User u where u.frozen=false and u.tenantCode=:tenantCode ";
         Map<String, Object> sqlParams = new HashMap<>();
         sqlParams.put("tenantCode", tenantCode);
         String quickSearchValue = queryParam.getQuickSearchValue();

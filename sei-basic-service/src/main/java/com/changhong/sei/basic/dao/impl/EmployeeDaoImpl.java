@@ -90,7 +90,7 @@ public class EmployeeDaoImpl extends BaseEntityDaoImpl<Employee> implements Empl
         }
         boolean idsNotEmpty = !CollectionUtils.isEmpty(employeeQueryParam.getIds());
         PageResult<Employee> pageResult = new PageResult<>();
-        String sql = "select e from Employee e inner join User u on u.id=e.id where e.tenantCode=:tenantCode and u.frozen=0";
+        String sql = "select e from Employee e inner join User u on u.id=e.id where e.tenantCode=:tenantCode and u.frozen=false";
         if(idsNotEmpty){
             sql += " and e.id not in (:ids)";
         }
@@ -175,7 +175,7 @@ public class EmployeeDaoImpl extends BaseEntityDaoImpl<Employee> implements Empl
         }
         // 是否包含冻结的用户
         if (!queryParam.getIncludeFrozen()) {
-            fromAndWhere += "and (e.user.frozen = 0) ";
+            fromAndWhere += "and (e.user.frozen = false) ";
         }
         // 限制排除的企业用户
         if (CollectionUtils.isNotEmpty(excludeEmployeeIds)) {
