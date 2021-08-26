@@ -138,6 +138,7 @@ public class UserProfileController extends BaseEntityController<UserProfile, Use
      */
     @Override
     public ResultData<UserProfileDto> save(UserProfileDto dto) {
+        LogUtil.bizLog("当前默认语言: {}", ContextUtil.getDefaultLanguage());
         LogUtil.bizLog("当前会话语言: {}", ContextUtil.getLocale());
         ResultData<UserProfileDto> resultData = super.save(dto);
         if (resultData.failed()) {
