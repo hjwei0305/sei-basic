@@ -1,6 +1,8 @@
 package com.changhong.sei.basic.controller;
 
+import com.changhong.sei.basic.dto.EmployeeBriefInfo;
 import com.changhong.sei.basic.dto.EmployeeDto;
+import com.changhong.sei.basic.dto.search.EmployeeBriefInfoQueryParam;
 import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageInfo;
@@ -84,6 +86,17 @@ public class EmployeeControllerTest extends BaseUnitTest {
         orders.add(new SearchOrder("e.code", SearchOrder.Direction.ASC));
         queryParam.setSortOrders(orders);
         ResultData<PageResult<EmployeeDto>> resultData = controller.queryEmployees(queryParam);
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
+
+    @Test
+    public void queryEmployeeBriefInfos() {
+        EmployeeBriefInfoQueryParam queryParam = new EmployeeBriefInfoQueryParam();
+        queryParam.setIncludeFrozen(true);
+        queryParam.setQuickSearchValue("测试");
+        queryParam.setPageInfo(new PageInfo());
+        ResultData<PageResult<EmployeeBriefInfo>> resultData = controller.queryEmployeeBriefInfos(queryParam);
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }

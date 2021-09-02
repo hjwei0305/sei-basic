@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
  */
 @ApiModel("企业用户的分页查询参数")
 public class EmployeeQuickQueryParam extends QuickQueryParam {
+    private static final long serialVersionUID = 5275654378932854144L;
     /**
      * 组织机构Id
      */

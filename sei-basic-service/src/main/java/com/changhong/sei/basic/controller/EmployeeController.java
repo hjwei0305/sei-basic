@@ -2,6 +2,7 @@ package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.EmployeeApi;
 import com.changhong.sei.basic.dto.*;
+import com.changhong.sei.basic.dto.search.EmployeeBriefInfoQueryParam;
 import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.service.EmployeePositionService;
@@ -11,6 +12,7 @@ import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageResult;
+import com.changhong.sei.core.dto.serach.QuickQueryParam;
 import com.changhong.sei.core.dto.serach.QuickSearchParam;
 import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.service.BaseEntityService;
@@ -294,7 +296,7 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
      * @return 操作结果
      */
     @Override
-    public ResultData<?> saveTenantAdmin(EmployeeDto employeeDto) {
+    public ResultData<EmployeeDto> saveTenantAdmin(EmployeeDto employeeDto) {
         // 检查租户代码
         if (StringUtils.isBlank(employeeDto.getTenantCode())){
             // 保存一个租户的系统管理员，需要确定租户代码！
@@ -305,6 +307,17 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
         employeeDto.setUserAuthorityPolicy(UserAuthorityPolicy.TenantAdmin);
         employeeDto.setCreateAdmin(Boolean.TRUE);
         return super.save(employeeDto);
+    }
+
+    /**
+     * 分页查询企业用户简要信息
+     *
+     * @param queryParam 查询参数
+     * @return 企业用户简要信息
+     */
+    @Override
+    public ResultData<PageResult<EmployeeBriefInfo>> queryEmployeeBriefInfos(EmployeeBriefInfoQueryParam queryParam) {
+        return ResultData.success(service.queryEmployeeBriefInfos(queryParam));
     }
 
     @Override

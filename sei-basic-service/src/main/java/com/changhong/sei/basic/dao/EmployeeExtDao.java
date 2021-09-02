@@ -1,6 +1,8 @@
 package com.changhong.sei.basic.dao;
 
+import com.changhong.sei.basic.dto.EmployeeBriefInfo;
 import com.changhong.sei.basic.dto.EmployeeQueryParam;
+import com.changhong.sei.basic.dto.search.EmployeeBriefInfoQueryParam;
 import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.basic.entity.Employee;
 import com.changhong.sei.basic.entity.Organization;
@@ -58,4 +60,12 @@ public interface EmployeeExtDao {
     PageResult<Employee> queryEmployees(EmployeeQuickQueryParam queryParam,
                                         Organization organization,
                                         List<String> excludeEmployeeIds);
+
+    /**
+     * 分页查询企业用户简要信息
+     * @param queryParam 查询参数
+     * @param tenantCode 租户代码
+     * @return 企业用户简要信息
+     */
+    PageResult<EmployeeBriefInfo> queryEmployeeBriefInfos(EmployeeBriefInfoQueryParam queryParam, String tenantCode);
 }

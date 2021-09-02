@@ -4,10 +4,8 @@ import com.changhong.sei.basic.dao.EmployeeDao;
 import com.changhong.sei.basic.dao.EmployeePositionDao;
 import com.changhong.sei.basic.dao.OrganizationDao;
 import com.changhong.sei.basic.dao.UserDao;
-import com.changhong.sei.basic.dto.EmployeeCopyParam;
-import com.changhong.sei.basic.dto.EmployeeQueryParam;
-import com.changhong.sei.basic.dto.Executor;
-import com.changhong.sei.basic.dto.UserQueryParam;
+import com.changhong.sei.basic.dto.*;
+import com.changhong.sei.basic.dto.search.EmployeeBriefInfoQueryParam;
 import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.service.client.AccountManager;
@@ -463,7 +461,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
         // 构造查询参数
         Search search = new Search(param);
         Collection<String> quickSearchProperties = param.getQuickSearchProperties();
-        if (Objects.isNull(quickSearchProperties) || quickSearchProperties.isEmpty()) {
+        if (CollectionUtils.isEmpty(quickSearchProperties)) {
             //以员工编号或姓名查询
             quickSearchProperties = new ArrayList<>();
             quickSearchProperties.add("code");
@@ -471,7 +469,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
             search.setQuickSearchProperties(quickSearchProperties);
         }
         List<SearchOrder> sortOrders = param.getSortOrders();
-        if (Objects.isNull(sortOrders) || sortOrders.isEmpty()) {
+        if (CollectionUtils.isEmpty(sortOrders)) {
             //以员工编号排序
             sortOrders = new ArrayList<>();
             sortOrders.add(new SearchOrder("code"));
@@ -686,5 +684,15 @@ public class EmployeeService extends BaseEntityService<Employee> {
             excludeEmployeeIds.addAll(employees.stream().map(Employee::getId).collect(Collectors.toList()));
         }
         return employeeDao.queryEmployees(queryParam, organization, excludeEmployeeIds);
+    }
+
+    /**
+     * 分页查询企业用户简要信息
+     *
+     * @param queryParam 查询参数
+     * @return 企业用户简要信息
+     */
+    public PageResult<EmployeeBriefInfo> queryEmployeeBriefInfos(EmployeeBriefInfoQueryParam queryParam) {
+        return employeeDao.queryEmployeeBriefInfos(queryParam,ContextUtil.getTenantCode());
     }
 }

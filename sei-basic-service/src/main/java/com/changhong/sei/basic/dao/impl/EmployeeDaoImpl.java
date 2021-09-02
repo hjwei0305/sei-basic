@@ -1,7 +1,9 @@
 package com.changhong.sei.basic.dao.impl;
 
 import com.changhong.sei.basic.dao.EmployeeExtDao;
+import com.changhong.sei.basic.dto.EmployeeBriefInfo;
 import com.changhong.sei.basic.dto.EmployeeQueryParam;
+import com.changhong.sei.basic.dto.search.EmployeeBriefInfoQueryParam;
 import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.basic.entity.Employee;
 import com.changhong.sei.basic.entity.Organization;
@@ -185,6 +187,39 @@ public class EmployeeDaoImpl extends BaseEntityDaoImpl<Employee> implements Empl
         // 限制关键字
         if (!StringUtils.isBlank(quickSearchValue)){
             fromAndWhere += "and (e.code like :quickSearchValue or e.user.userName like :quickSearchValue) ";
+            sqlParams.put("quickSearchValue", "%"+quickSearchValue+"%");
+        }
+        QuerySql querySql = new QuerySql(select,fromAndWhere);
+        // 默认排序
+        if (CollectionUtils.isEmpty(queryParam.getSortOrders())) {
+            querySql.setOrderBy("order by e.code");
+        }
+        return PageResultUtil.getResult(entityManager,querySql,sqlParams, queryParam);
+    }
+
+    /**
+     * 分页查询企业用户简要信息
+     *
+     * @param queryParam 查询参数
+     * @param tenantCode 租户代码
+     * @return 企业用户简要信息
+     */
+    @Override
+    public PageResult<EmployeeBriefInfo> queryEmployeeBriefInfos(EmployeeBriefInfoQueryParam queryParam, String tenantCode) {
+        String select = "select new com.changhong.sei.basic.dto.EmployeeBriefInfo(e.id, e.code, u.userName, o.name) ";
+        String fromAndWhere = "from Employee e inner join Organization o on e.organizationId = o.id " +
+                "inner join User u on e.id = u.id " +
+                "where e.tenantCode = :tenantCode ";
+        Map<String, Object> sqlParams = new HashMap<>();
+        sqlParams.put("tenantCode", tenantCode);
+        String quickSearchValue = queryParam.getQuickSearchValue();
+        // 是否包含冻结的用户
+        if (!queryParam.getIncludeFrozen()) {
+            fromAndWhere += "and (u.frozen = false) ";
+        }
+        // 限制关键字
+        if (!StringUtils.isBlank(quickSearchValue)){
+            fromAndWhere += "and (e.code like :quickSearchValue or u.userName like :quickSearchValue) ";
             sqlParams.put("quickSearchValue", "%"+quickSearchValue+"%");
         }
         QuerySql querySql = new QuerySql(select,fromAndWhere);

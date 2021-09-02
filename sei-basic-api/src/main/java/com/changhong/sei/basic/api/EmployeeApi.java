@@ -1,11 +1,13 @@
 package com.changhong.sei.basic.api;
 
 import com.changhong.sei.basic.dto.*;
+import com.changhong.sei.basic.dto.search.EmployeeBriefInfoQueryParam;
 import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.core.api.BaseEntityApi;
 import com.changhong.sei.core.api.FindByPageApi;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.PageResult;
+import com.changhong.sei.core.dto.serach.QuickQueryParam;
 import com.changhong.sei.core.dto.serach.QuickSearchParam;
 import com.changhong.sei.core.dto.serach.Search;
 import io.swagger.annotations.ApiOperation;
@@ -230,5 +232,15 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
      */
     @PostMapping(path = "saveTenantAdmin", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "保存一个租户的系统管理员", notes = "保存一个租户的系统管理员,需要确定租户代码")
-    ResultData saveTenantAdmin(@RequestBody EmployeeDto employeeDto);
+    ResultData<EmployeeDto> saveTenantAdmin(@RequestBody EmployeeDto employeeDto);
+
+    /**
+     * 分页查询企业用户简要信息
+     *
+     * @param queryParam 查询参数
+     * @return 企业用户简要信息
+     */
+    @PostMapping(path = "queryEmployeeBriefInfos", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "分页查询企业用户简要信息", notes = "通过快速查询参数，分页查询企业用户简要信息")
+    ResultData<PageResult<EmployeeBriefInfo>> queryEmployeeBriefInfos(@RequestBody EmployeeBriefInfoQueryParam queryParam);
 }
