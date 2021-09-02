@@ -8,11 +8,13 @@ import com.changhong.sei.core.dto.auth.IDataAuthEntity;
 import com.changhong.sei.core.entity.ICodeUnique;
 import com.changhong.sei.core.entity.IFrozen;
 import com.changhong.sei.core.entity.ITenant;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 /**
  * *************************************************************************************************
@@ -73,6 +75,13 @@ public class Corporation extends CorporationCust
     @DataHistory(name = "ERP公司代码")
     @Column(name = "erp_code", length = 10, nullable = false)
     private String erpCode;
+
+    /**
+     * 税号
+     */
+    @DataHistory(name = "税号")
+    @Column(name = "tax_no", length = 50)
+    private String taxNo;
 
     /**
      * 排序
@@ -184,6 +193,14 @@ public class Corporation extends CorporationCust
 
     public void setErpCode(String erpCode) {
         this.erpCode = erpCode;
+    }
+
+    public String getTaxNo() {
+        return taxNo;
+    }
+
+    public void setTaxNo(String taxNo) {
+        this.taxNo = taxNo;
     }
 
     @Override

@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
  */
 @ApiModel(description = "公司DTO")
 public class CorporationDto extends CorporationCustDto {
+    private static final long serialVersionUID = 7327363565908833222L;
     /**
      * 代码
      */
@@ -49,6 +50,13 @@ public class CorporationDto extends CorporationCustDto {
     @Size(max = 10)
     @ApiModelProperty(value = "ERP公司代码(max = 10)", required = true)
     private String erpCode;
+
+    /**
+     * 税号
+     */
+    @Size(max = 50)
+    @ApiModelProperty(value = "税号")
+    private String taxNo;
 
     /**
      * 排序
@@ -174,6 +182,14 @@ public class CorporationDto extends CorporationCustDto {
 
     public void setErpCode(String erpCode) {
         this.erpCode = erpCode;
+    }
+
+    public String getTaxNo() {
+        return taxNo;
+    }
+
+    public void setTaxNo(String taxNo) {
+        this.taxNo = taxNo;
     }
 
     public Integer getRank() {
