@@ -10,12 +10,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
-import sun.rmi.runtime.Log;
 
-import java.lang.reflect.Type;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * 实现功能:
