@@ -4,7 +4,7 @@ FROM openjdk:8-jre-alpine
 LABEL maintainer="hua.feng@changhong.com"
 
 # 环境变量 JAVA_OPTS：JAVA启动参数 APP_NAME：应用名称（各项目需要修改）
-ENV JAVA_OPTS=""  APP_NAME="sei-basic"
+ENV JAVA_OPTS=""  APP_NAME="sei-basic-v6"
 
 # 设置时区
 RUN rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime

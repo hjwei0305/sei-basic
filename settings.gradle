@@ -1,4 +1,4 @@
-rootProject.name = 'sei-basic'
+rootProject.name = 'sei-basic-v6'
 include 'sei-basic-api'
 include 'sei-basic-service'
 include 'sei-basic-sdk'
