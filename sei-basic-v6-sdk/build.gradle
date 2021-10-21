@@ -8,25 +8,21 @@ dependencyManagement {
 }
 
 dependencies {
-    compile("com.changhong.sei:sei-service-starter:$sei_version")
-    testCompile(
-            "com.changhong.sei:sei-test-starter:$sei_version"
-    )
+    // SEI平台包依赖
+    compile("com.changhong.sei:sei-cloud:$sei_version")
+    compile("com.changhong.sei:sei-core-api:$sei_version")
 }
 
 //打包源代码jar包
 bootJar { enabled = false }
 jar {
     enabled = true
-    exclude('bootstrap.yaml')
-    exclude('com/changhong/sei/basic/sdk/RestApplication.*')
     manifest {
         attributes("Manifest-Version": "6.0")
         attributes("Created-By": "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})".toString())
-        attributes("Implementation-Title": "$project.rootProject.name")
+        attributes("Implementation-Title": "$project.name")
         attributes("Implementation-Version": "$project.version")
         attributes("Implementation-Vendor": "rcsit.cn")
-        attributes("Description": "$project.description")
         attributes("Build-Time": new Date().format("yyyy-MM-dd HH:mm:ss"))
     }
 }
