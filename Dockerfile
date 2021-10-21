@@ -10,7 +10,7 @@ ENV JAVA_OPTS=""  APP_NAME="sei-basic"
 RUN rm -rf /etc/localtime && ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 # 添加应用
-ADD $APP_NAME-service/build/libs/$APP_NAME.jar $APP_NAME.jar
+ADD $APP_NAME-v6-service/build/libs/$APP_NAME.jar $APP_NAME.jar
 
 # 开放8080端口
 EXPOSE 8080
