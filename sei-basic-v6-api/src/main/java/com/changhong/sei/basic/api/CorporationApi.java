@@ -32,7 +32,7 @@ public interface CorporationApi extends BaseEntityApi<CorporationDto>,
      */
     @GetMapping(path = "findByCode")
     @ApiOperation(value = "根据公司代码查询公司", notes = "根据公司代码查询公司")
-    ResultData<CorporationDto> findByCode(@RequestParam("code")String code);
+    ResultData<CorporationDto> findByCode(@RequestParam("code") String code);
 
     /**
      * 根据ERP公司代码查询公司
@@ -44,6 +44,16 @@ public interface CorporationApi extends BaseEntityApi<CorporationDto>,
     @ApiOperation(value = "根据ERP公司代码查询公司", notes = "根据ERP公司代码查询公司")
     ResultData<List<CorporationDto>> findByErpCode(@RequestParam("erpCode") String erpCode);
 
+    /**
+     * 根据纳税人识别号查询公司
+     *
+     * @param taxNo 纳税人识别号(税号)
+     * @return 公司
+     */
+    @GetMapping(path = "findByTaxNo")
+    @ApiOperation(value = "根据纳税人识别号(税号)查询公司", notes = "根据纳税人识别号(税号)查询公司")
+    ResultData<CorporationDto> findByTaxNo(@RequestParam("taxNo") String taxNo);
+
 
     /**
      * 根据组织机构Id查询公司
@@ -53,5 +63,5 @@ public interface CorporationApi extends BaseEntityApi<CorporationDto>,
      */
     @GetMapping(path = "findByOrganizationId")
     @ApiOperation(value = "根据组织机构Id查询公司", notes = "根据组织机构Id查询公司")
-    ResultData<CorporationDto> findByOrganizationId(@RequestParam("organizationId")String organizationId);
+    ResultData<CorporationDto> findByOrganizationId(@RequestParam("organizationId") String organizationId);
 }

@@ -8,6 +8,7 @@ import com.changhong.sei.core.api.DataAuthTreeEntityIncludeFrozenApi;
 import com.changhong.sei.core.dto.ResultData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 实现功能: 组织机构API接口
@@ -104,6 +106,16 @@ public interface OrganizationApi extends BaseTreeApi<OrganizationDto>,
     ResultData<List<OrganizationDto>> getChildrenNodes4Unfrozen(@RequestParam("nodeId") String nodeId);
 
     /**
+     * 通过组织机构id清单获取下级组织机构清单
+     *
+     * @param orgIds 组织机构id清单
+     * @return 组织机构清单（非树形）
+     */
+    @PostMapping(path = "getChildrenNodes4UnfrozenByIds", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "获取下级非树形组织机构清单", notes = "通过组织机构id清单获取下级非树形组织机构清单")
+    ResultData<List<OrganizationDto>> getChildrenNodes4UnfrozenByIds(@RequestBody Set<String> orgIds);
+
+    /**
      * 获取组织机构维度清单
      *
      * @return 组织机构维度清单
@@ -118,9 +130,9 @@ public interface OrganizationApi extends BaseTreeApi<OrganizationDto>,
      * @param orgIds id集合
      * @return 组织机构
      */
-    @PostMapping(path = "findOrganizationByIds")
+    @PostMapping(path = "findOrganizationByIds", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "通过id集合获取组织机构清单", notes = "通过id集合获取组织机构清单")
-    ResultData<List<OrganizationDto>> findOrganizationByIds(@RequestBody Collection<String> orgIds);
+    ResultData<List<OrganizationDto>> findOrganizationByIds(@RequestBody Set<String> orgIds);
 
     /**
      * 获取当前用户有权限的树形节点代码清单
@@ -143,6 +155,6 @@ public interface OrganizationApi extends BaseTreeApi<OrganizationDto>,
     @GetMapping(path = "getOrgAuthTreeByCorp")
     @ApiOperation(value = "根据公司获取用户有权限的组织机构树", notes = "根据公司获取用户有权限的组织机构树")
     ResultData<List<OrganizationDto>> getOrgAuthTreeByCorp(@RequestParam("corporationCode") String corporationCode,
-                                                     @RequestParam(value = "featureCode", required = false, defaultValue = "") String featureCode);
+                                                           @RequestParam(value = "featureCode", required = false, defaultValue = "") String featureCode);
 
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -131,6 +132,19 @@ public class OrganizationController extends BaseTreeController<Organization, Org
     }
 
     /**
+     * 通过组织机构id清单获取下级组织机构清单
+     *
+     * @param orgIds 组织机构id清单
+     * @return 组织机构清单（非树形）
+     */
+    @Override
+    public ResultData<List<OrganizationDto>> getChildrenNodes4UnfrozenByIds(Set<String> orgIds) {
+        List<Organization> organizations = service.getChildrenNodes4UnfrozenByIds(orgIds);
+        List<OrganizationDto> dtos = organizations.stream().map(this::convertToDto).collect(Collectors.toList());
+        return ResultData.success(dtos);
+    }
+
+    /**
      * 获取组织机构维度清单
      *
      * @return 组织机构维度清单
@@ -147,7 +161,7 @@ public class OrganizationController extends BaseTreeController<Organization, Org
      * @return 组织机构
      */
     @Override
-    public ResultData<List<OrganizationDto>> findOrganizationByIds(Collection<String> orgIds) {
+    public ResultData<List<OrganizationDto>> findOrganizationByIds(Set<String> orgIds) {
         List<Organization> organizations = service.findOrganizationByIds(orgIds);
         List<OrganizationDto> dtos = organizations.stream().map(this::convertToDto).collect(Collectors.toList());
         return ResultData.success(dtos);

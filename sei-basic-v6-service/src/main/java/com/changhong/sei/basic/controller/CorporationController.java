@@ -2,9 +2,7 @@ package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.CorporationApi;
 import com.changhong.sei.basic.dto.CorporationDto;
-import com.changhong.sei.basic.dto.DataRoleDto;
 import com.changhong.sei.basic.entity.Corporation;
-import com.changhong.sei.basic.entity.DataRole;
 import com.changhong.sei.basic.service.CorporationService;
 import com.changhong.sei.basic.service.cust.CorporationServiceCust;
 import com.changhong.sei.core.controller.BaseEntityController;
@@ -13,7 +11,6 @@ import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,6 +82,17 @@ public class CorporationController extends BaseEntityController<Corporation, Cor
         return ResultData.success(dtos);
     }
 
+    /**
+     * 根据纳税人识别号查询公司
+     *
+     * @param taxNo 纳税人识别号(税号)
+     * @return 公司
+     */
+    @Override
+    public ResultData<CorporationDto> findByTaxNo(String taxNo) {
+        Corporation corporation = service.findByTaxNo(taxNo);
+        return ResultData.success(convertToDto(corporation));
+    }
 
     @Override
     public BaseEntityService<Corporation> getService() {

@@ -8,13 +8,11 @@ import com.changhong.sei.core.dto.auth.IDataAuthEntity;
 import com.changhong.sei.core.entity.ICodeUnique;
 import com.changhong.sei.core.entity.IFrozen;
 import com.changhong.sei.core.entity.ITenant;
-import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 
 /**
  * *************************************************************************************************
@@ -42,6 +40,9 @@ public class Corporation extends CorporationCust
         implements ITenant, ICodeUnique, IRank, IFrozen, IDataAuthEntity {
 
     private static final long serialVersionUID = -7327336960931783751L;
+
+    public static final String FIELD_TAX_NO = "taxNo";
+
     /**
      * 名称
      */

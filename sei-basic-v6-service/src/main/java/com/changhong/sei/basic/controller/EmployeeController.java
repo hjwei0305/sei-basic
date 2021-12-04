@@ -49,6 +49,44 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
     private OrganizationService organizationService;
     @Autowired
     private EmployeePositionService employeePositionService;
+    @Override
+    public BaseEntityService<Employee> getService() {
+        return service;
+    }
+
+    /**
+     * 自定义设置Entity转换为DTO的转换器
+     */
+    @Override
+    protected void customConvertToDtoMapper() {
+        // 创建自定义映射规则
+        PropertyMap<Employee, EmployeeDto> propertyMap = new PropertyMap<Employee, EmployeeDto>() {
+            @Override
+            protected void configure() {
+                // 使用自定义转换规则
+                map().setId(source.getId());
+                map().setOrganizationId(source.getOrganizationId());
+                map().setFrozen(source.getUser().getFrozen());
+                map().setUserAccount(source.getUser().getAccount());
+            }
+        };
+        // 添加映射器
+        dtoModelMapper.addMappings(propertyMap);
+    }
+
+    /**
+     * 将数据实体转换成DTO
+     * @param entity 数据实体
+     * @return DTO
+     */
+    static EmployeeDto convertToDtoStatic(Employee entity){
+        if (Objects.isNull(entity)){
+            return null;
+        }
+        // 转换
+        return dtoModelMapper.map(entity, EmployeeDto.class);
+    }
+
     /**
      * 根据查询参数获取企业员工(分页)
      *
@@ -318,44 +356,6 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
     @Override
     public ResultData<PageResult<EmployeeBriefInfo>> queryEmployeeBriefInfos(EmployeeBriefInfoQueryParam queryParam) {
         return ResultData.success(service.queryEmployeeBriefInfos(queryParam));
-    }
-
-    @Override
-    public BaseEntityService<Employee> getService() {
-        return service;
-    }
-
-    /**
-     * 自定义设置Entity转换为DTO的转换器
-     */
-    @Override
-    protected void customConvertToDtoMapper() {
-        // 创建自定义映射规则
-        PropertyMap<Employee, EmployeeDto> propertyMap = new PropertyMap<Employee, EmployeeDto>() {
-            @Override
-            protected void configure() {
-                // 使用自定义转换规则
-                map().setId(source.getId());
-                map().setOrganizationId(source.getOrganizationId());
-                map().setFrozen(source.isFrozen());
-                map().setUserAccount(source.getUserAccount());
-            }
-        };
-        // 添加映射器
-        dtoModelMapper.addMappings(propertyMap);
-    }
-
-    /**
-     * 将数据实体转换成DTO
-     * @param entity 数据实体
-     * @return DTO
-     */
-    static EmployeeDto convertToDtoStatic(Employee entity){
-        if (Objects.isNull(entity)){
-            return null;
-        }
-        // 转换
-        return dtoModelMapper.map(entity, EmployeeDto.class);
     }
 
     /**

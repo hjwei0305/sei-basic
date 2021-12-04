@@ -23,7 +23,7 @@ public class OrganizationDto extends OrganizationCustDto implements IDataAuthTre
     /**
      * 组织机构代码
      */
-    @Size(max = 10)
+    @Size(max = 20)
     @ApiModelProperty(value = "组织机构代码(系统给号)")
     private String code;
 

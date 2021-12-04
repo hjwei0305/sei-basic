@@ -3,7 +3,6 @@ package com.changhong.sei.basic.service;
 import com.changhong.sei.basic.dao.CorporationDao;
 import com.changhong.sei.basic.dao.OrganizationDao;
 import com.changhong.sei.basic.dto.OrganizationDimension;
-import com.changhong.sei.basic.dto.OrganizationDto;
 import com.changhong.sei.basic.entity.Corporation;
 import com.changhong.sei.basic.entity.Employee;
 import com.changhong.sei.basic.entity.Organization;
@@ -11,8 +10,6 @@ import com.changhong.sei.basic.service.client.NumberGenerator;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.context.SessionUser;
 import com.changhong.sei.core.dao.BaseTreeDao;
-import com.changhong.sei.core.dto.ResultData;
-import com.changhong.sei.core.dto.auth.IDataAuthTreeEntity;
 import com.changhong.sei.core.entity.BaseEntity;
 import com.changhong.sei.core.service.BaseTreeService;
 import com.changhong.sei.core.service.DataAuthEntityService;
@@ -226,6 +223,25 @@ public class OrganizationService extends BaseTreeService<Organization>
      */
     public List<Organization> getChildrenNodes4Unfrozen(String nodeId) {
         return organizationDao.getChildrenNodes4Unfrozen(nodeId);
+    }
+
+    /**
+     * 通过组织机构id清单获取下级组织机构清单
+     *
+     * @param nodeIds 组织机构id清单
+     * @return 组织机构清单（非树形）
+     */
+    public List<Organization> getChildrenNodes4UnfrozenByIds(Set<String> nodeIds) {
+        if (CollectionUtils.isNotEmpty(nodeIds)) {
+            List<Organization> list = new ArrayList<>();
+            for (String nodeId : nodeIds) {
+                list.addAll(organizationDao.getChildrenNodes4Unfrozen(nodeId));
+            }
+            list = list.stream().distinct().collect(Collectors.toList());
+            return list;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     /**

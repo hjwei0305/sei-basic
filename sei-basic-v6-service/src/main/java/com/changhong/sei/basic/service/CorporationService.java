@@ -1,15 +1,14 @@
 package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.CorporationDao;
-import com.changhong.sei.basic.dto.CorporationDto;
 import com.changhong.sei.basic.entity.Corporation;
 import com.changhong.sei.basic.entity.Organization;
 import com.changhong.sei.basic.service.cust.CorporationServiceCust;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
-import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.DataAuthEntityService;
+import com.changhong.sei.core.service.bo.OperateResultWithData;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +52,44 @@ public class CorporationService extends BaseEntityService<Corporation> implement
     }
 
     /**
+     * 创建数据保存数据之前额外操作回调方法 默认为空逻辑，子类根据需要覆写添加逻辑即可
+     *
+     * @param entity 待创建数据对象
+     */
+    @Override
+    protected OperateResultWithData<Corporation> preInsert(Corporation entity) {
+        // 检查税号是否已关联其他公司
+        String taxNo = entity.getTaxNo();
+        if (StringUtils.isNotBlank(taxNo)) {
+            Corporation corp = this.findByTaxNo(taxNo);
+            if  (Objects.nonNull(corp)) {
+                // 税号[{0}]已关联[{1}]
+                return OperateResultWithData.operationFailure("00111", taxNo, corp.getName());
+            }
+        }
+        return super.preInsert(entity);
+    }
+
+    /**
+     * 更新数据保存数据之前额外操作回调方法 默认为空逻辑，子类根据需要覆写添加逻辑即可
+     *
+     * @param entity 待更新数据对象
+     */
+    @Override
+    protected OperateResultWithData<Corporation> preUpdate(Corporation entity) {
+        // 检查税号是否已关联其他公司
+        String taxNo = entity.getTaxNo();
+        if (StringUtils.isNotBlank(taxNo)) {
+            Corporation corp = this.findByTaxNo(taxNo);
+            if  (Objects.nonNull(corp) && !Objects.equals(corp.getId(), entity.getId())) {
+                // 税号[{0}]已关联[{1}]
+                return OperateResultWithData.operationFailure("00111", taxNo, corp.getName());
+            }
+        }
+        return super.preUpdate(entity);
+    }
+
+    /**
      * 根据公司代码查询公司
      *
      * @param code 公司代码
@@ -72,6 +109,16 @@ public class CorporationService extends BaseEntityService<Corporation> implement
      */
     public List<Corporation> findByErpCode(String erpCode) {
         return corporationDao.findByErpCodeAndTenantCode(erpCode, ContextUtil.getTenantCode());
+    }
+
+    /**
+     * 根据纳税人识别号查询公司
+     *
+     * @param taxNo 纳税人识别号(税号)
+     * @return 公司
+     */
+    public Corporation findByTaxNo(String taxNo) {
+        return corporationDao.findFirstByProperty(Corporation.FIELD_TAX_NO, taxNo);
     }
 
     /**
