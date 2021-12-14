@@ -6,7 +6,7 @@ import com.changhong.sei.basic.dto.OrganizationDimension;
 import com.changhong.sei.basic.entity.Corporation;
 import com.changhong.sei.basic.entity.Employee;
 import com.changhong.sei.basic.entity.Organization;
-import com.changhong.sei.basic.service.client.NumberGenerator;
+import com.changhong.sei.basic.service.client.SerialGenerator;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.context.SessionUser;
 import com.changhong.sei.core.dao.BaseTreeDao;
@@ -44,7 +44,7 @@ public class OrganizationService extends BaseTreeService<Organization>
     @Autowired
     private OrganizationDao organizationDao;
     @Autowired
-    private NumberGenerator numberGenerator;
+    private SerialGenerator serialGenerator;
     @Autowired
     private PositionService positionService;
     @Autowired
@@ -67,7 +67,7 @@ public class OrganizationService extends BaseTreeService<Organization>
     @Transactional
     public OperateResultWithData<Organization> save(Organization entity) {
         if (StringUtils.isBlank(entity.getCode())) {
-            entity.setCode(numberGenerator.getNumber(Organization.class));
+            entity.setCode(serialGenerator.getNumber(Organization.class));
         }
         if (!entity.isNew()) {
             //冻结，级联冻结所有子节点

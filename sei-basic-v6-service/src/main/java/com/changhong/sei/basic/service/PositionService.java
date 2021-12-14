@@ -4,11 +4,10 @@ import com.changhong.sei.basic.dao.OrganizationDao;
 import com.changhong.sei.basic.dao.PositionDao;
 import com.changhong.sei.basic.dto.Executor;
 import com.changhong.sei.basic.dto.PositionCopyParam;
-import com.changhong.sei.basic.dto.PositionDto;
 import com.changhong.sei.basic.dto.PositionQueryParam;
 import com.changhong.sei.basic.dto.search.PositionQuickQueryParam;
 import com.changhong.sei.basic.entity.*;
-import com.changhong.sei.basic.service.client.NumberGenerator;
+import com.changhong.sei.basic.service.client.SerialGenerator;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.dto.ResultData;
@@ -19,12 +18,10 @@ import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.service.bo.OperateResultWithData;
 import com.changhong.sei.core.util.JsonUtils;
-import com.changhong.sei.exception.ServiceException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -61,7 +58,7 @@ public class PositionService extends BaseEntityService<Position> {
     @Autowired
     private PositionDataRoleService positionDataRoleService;
     @Autowired
-    private NumberGenerator numberGenerator;
+    private SerialGenerator serialGenerator;
 
     @Override
     protected BaseEntityDao<Position> getDao() {
@@ -91,7 +88,7 @@ public class PositionService extends BaseEntityService<Position> {
             return OperateResultWithData.operationFailure("00048", entity.getName());
         }
         if (StringUtils.isBlank(entity.getCode())) {
-            entity.setCode(numberGenerator.getNumber(Position.class));
+            entity.setCode(serialGenerator.getNumber(Position.class));
         }
         return super.save(entity);
     }

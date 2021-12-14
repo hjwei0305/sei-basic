@@ -4,7 +4,7 @@ import com.changhong.sei.basic.dao.MenuDao;
 import com.changhong.sei.basic.entity.AppModule;
 import com.changhong.sei.basic.entity.Feature;
 import com.changhong.sei.basic.entity.Menu;
-import com.changhong.sei.basic.service.client.NumberGenerator;
+import com.changhong.sei.basic.service.client.SerialGenerator;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseTreeDao;
 import com.changhong.sei.core.dto.serach.SearchFilter;
@@ -47,7 +47,7 @@ public class MenuService extends BaseTreeService<Menu> {
     @Autowired
     private FeatureService featureService;
     @Autowired
-    private NumberGenerator numberGenerator;
+    private SerialGenerator serialGenerator;
 
     @Override
     protected BaseTreeDao<Menu> getDao() {
@@ -83,7 +83,7 @@ public class MenuService extends BaseTreeService<Menu> {
             return OperateResult.converterWithData(checkFeatureResult, menu);
         }
         if (StringUtils.isBlank(menu.getCode())) {
-            menu.setCode(numberGenerator.getNumber(Menu.class));
+            menu.setCode(serialGenerator.getNumber(Menu.class));
         }
         OperateResultWithData<Menu> result = super.save(menu);
         if (result.successful()) {

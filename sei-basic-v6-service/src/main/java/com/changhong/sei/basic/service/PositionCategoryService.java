@@ -2,14 +2,13 @@ package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.PositionCategoryDao;
 import com.changhong.sei.basic.entity.PositionCategory;
-import com.changhong.sei.basic.service.client.NumberGenerator;
+import com.changhong.sei.basic.service.client.SerialGenerator;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.service.bo.OperateResultWithData;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,7 +31,7 @@ public class PositionCategoryService extends BaseEntityService<PositionCategory>
     @Autowired
     private PositionService positionService;
     @Autowired
-    private NumberGenerator numberGenerator;
+    private SerialGenerator serialGenerator;
 
     @Override
     protected BaseEntityDao<PositionCategory> getDao() {
@@ -42,7 +41,7 @@ public class PositionCategoryService extends BaseEntityService<PositionCategory>
     @Override
     public OperateResultWithData<PositionCategory> save(PositionCategory entity) {
         if(StringUtils.isBlank(entity.getCode())){
-            entity.setCode(numberGenerator.getNumber(PositionCategory.class));
+            entity.setCode(serialGenerator.getNumber(PositionCategory.class));
         }
         return super.save(entity);
     }
