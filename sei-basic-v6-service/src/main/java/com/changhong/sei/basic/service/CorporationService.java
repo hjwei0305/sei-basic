@@ -182,7 +182,7 @@ public class CorporationService extends BaseEntityService<Corporation> implement
         // 检查数据权限值是否已经使用
         if (dataRoleAuthTypeValueService.isExistsByProperty("entityId", id)) {
             // 公司已经使用，禁止删除！
-            return OperateResult.operationFailure("00123");
+            return OperateResult.operationFailure("00125");
         }
         return super.preDelete(id);
     }
