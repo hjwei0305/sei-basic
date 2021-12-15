@@ -8,6 +8,7 @@ import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.DataAuthEntityService;
+import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.service.bo.OperateResultWithData;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -41,6 +42,8 @@ public class CorporationService extends BaseEntityService<Corporation> implement
     private UserService userService;
     @Autowired(required = false)
     private OrganizationService organizationService;
+    @Autowired
+    private DataRoleAuthTypeValueService dataRoleAuthTypeValueService;
 
     // 注入扩展业务逻辑
     @Autowired
@@ -167,5 +170,20 @@ public class CorporationService extends BaseEntityService<Corporation> implement
             }
         }
         return corporation;
+    }
+
+    /**
+     * 删除数据保存数据之前额外操作回调方法 子类根据需要覆写添加逻辑即可
+     *
+     * @param id 公司Id标识
+     */
+    @Override
+    protected OperateResult preDelete(String id) {
+        // 检查数据权限值是否已经使用
+        if (dataRoleAuthTypeValueService.isExistsByProperty("entityId", id)) {
+            // 公司已经使用，禁止删除！
+            return OperateResult.operationFailure("00123");
+        }
+        return super.preDelete(id);
     }
 }
