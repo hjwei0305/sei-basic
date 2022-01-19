@@ -8,10 +8,14 @@ import com.changhong.sei.core.api.FindAllApi;
 import com.changhong.sei.core.dto.ResultData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 实现功能: 公司API接口
@@ -54,6 +58,15 @@ public interface CorporationApi extends BaseEntityApi<CorporationDto>,
     @ApiOperation(value = "根据纳税人识别号(税号)查询公司", notes = "根据纳税人识别号(税号)查询公司")
     ResultData<CorporationDto> findByTaxNo(@RequestParam("taxNo") String taxNo);
 
+    /**
+     * 根据纳税人识别号查询公司
+     *
+     * @param taxNos 纳税人识别号(税号)
+     * @return 公司
+     */
+    @PostMapping(path = "findByTaxNos", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "根据纳税人识别号(税号)查询公司", notes = "根据纳税人识别号(税号)查询公司")
+    ResultData<List<CorporationDto>> findByTaxNos(@RequestBody Set<String> taxNos);
 
     /**
      * 根据组织机构Id查询公司

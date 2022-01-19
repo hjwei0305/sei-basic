@@ -10,14 +10,17 @@ import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthEntityData;
 import com.changhong.sei.core.service.BaseEntityService;
 import io.swagger.annotations.Api;
+import org.apache.commons.collections.CollectionUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -38,6 +41,11 @@ public class CorporationController extends BaseEntityController<Corporation, Cor
     private CorporationServiceCust serviceCust;
     @Autowired
     private ModelMapper modelMapper;
+
+    @Override
+    public BaseEntityService<Corporation> getService() {
+        return service;
+    }
 
 
     /**
@@ -94,9 +102,22 @@ public class CorporationController extends BaseEntityController<Corporation, Cor
         return ResultData.success(convertToDto(corporation));
     }
 
+    /**
+     * 根据纳税人识别号查询公司
+     *
+     * @param taxNos 纳税人识别号(税号)
+     * @return 公司
+     */
     @Override
-    public BaseEntityService<Corporation> getService() {
-        return service;
+    public ResultData<List<CorporationDto>> findByTaxNos(Set<String> taxNos) {
+        List<CorporationDto> list;
+        List<Corporation> corporations = service.findByTaxNos(taxNos);
+        if (CollectionUtils.isNotEmpty(corporations)) {
+            list = corporations.stream().map(this::convertToDto).collect(Collectors.toList());
+        } else {
+            list = new ArrayList<>();
+        }
+        return ResultData.success(list);
     }
 
     /**

@@ -6,6 +6,7 @@ import com.changhong.sei.basic.entity.Organization;
 import com.changhong.sei.basic.service.cust.CorporationServiceCust;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
+import com.changhong.sei.core.dto.serach.SearchFilter;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.DataAuthEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
@@ -15,8 +16,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * *************************************************************************************************
@@ -65,7 +69,7 @@ public class CorporationService extends BaseEntityService<Corporation> implement
         String taxNo = entity.getTaxNo();
         if (StringUtils.isNotBlank(taxNo)) {
             Corporation corp = this.findByTaxNo(taxNo);
-            if  (Objects.nonNull(corp)) {
+            if (Objects.nonNull(corp)) {
                 // 税号[{0}]已关联[{1}]
                 return OperateResultWithData.operationFailure("00111", taxNo, corp.getName());
             }
@@ -84,7 +88,7 @@ public class CorporationService extends BaseEntityService<Corporation> implement
         String taxNo = entity.getTaxNo();
         if (StringUtils.isNotBlank(taxNo)) {
             Corporation corp = this.findByTaxNo(taxNo);
-            if  (Objects.nonNull(corp) && !Objects.equals(corp.getId(), entity.getId())) {
+            if (Objects.nonNull(corp) && !Objects.equals(corp.getId(), entity.getId())) {
                 // 税号[{0}]已关联[{1}]
                 return OperateResultWithData.operationFailure("00111", taxNo, corp.getName());
             }
@@ -122,6 +126,22 @@ public class CorporationService extends BaseEntityService<Corporation> implement
      */
     public Corporation findByTaxNo(String taxNo) {
         return corporationDao.findFirstByProperty(Corporation.FIELD_TAX_NO, taxNo);
+    }
+
+    /**
+     * 根据纳税人识别号查询公司
+     *
+     * @param taxNos 纳税人识别号(税号)
+     * @return 公司
+     */
+    public List<Corporation> findByTaxNos(Set<String> taxNos) {
+        if (CollectionUtils.isNotEmpty(taxNos)) {
+            taxNos = taxNos.stream().filter(StringUtils::isNotBlank).collect(Collectors.toSet());
+            if (CollectionUtils.isNotEmpty(taxNos)) {
+                return corporationDao.findByFilter(new SearchFilter(Corporation.FIELD_TAX_NO, taxNos, SearchFilter.Operator.IN));
+            }
+        }
+        return new ArrayList<>();
     }
 
     /**
