@@ -94,7 +94,8 @@ public class EmployeeControllerTest extends BaseUnitTest {
     public void queryEmployeeBriefInfos() {
         EmployeeBriefInfoQueryParam queryParam = new EmployeeBriefInfoQueryParam();
         queryParam.setIncludeFrozen(true);
-        queryParam.setQuickSearchValue("测试");
+        queryParam.setQuickSearchValue("王");
+        queryParam.setCorporationCode("Q000");
         queryParam.setPageInfo(new PageInfo());
         ResultData<PageResult<EmployeeBriefInfo>> resultData = controller.queryEmployeeBriefInfos(queryParam);
         System.out.println(JsonUtils.toJson(resultData));

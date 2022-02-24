@@ -71,6 +71,8 @@ public class EmployeeService extends BaseEntityService<Employee> {
     private UserDataRoleService userDataRoleService;
     @Autowired
     private AccountManager accountManager;
+    @Autowired
+    private CorporationService corporationService;
 
     @Override
     protected BaseEntityDao<Employee> getDao() {
@@ -693,6 +695,14 @@ public class EmployeeService extends BaseEntityService<Employee> {
      * @return 企业用户简要信息
      */
     public PageResult<EmployeeBriefInfo> queryEmployeeBriefInfos(EmployeeBriefInfoQueryParam queryParam) {
-        return employeeDao.queryEmployeeBriefInfos(queryParam,ContextUtil.getTenantCode());
+        // 获取公司
+        Organization organization = null;
+        if (StringUtils.isNotBlank(queryParam.getCorporationCode())) {
+            Corporation corporation = corporationService.findByCode(queryParam.getCorporationCode());
+            if (Objects.nonNull(corporation.getOrganization())) {
+                organization = corporation.getOrganization();
+            }
+        }
+        return employeeDao.queryEmployeeBriefInfos(queryParam, organization, ContextUtil.getTenantCode());
     }
 }

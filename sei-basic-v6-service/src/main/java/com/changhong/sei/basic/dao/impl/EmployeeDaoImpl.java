@@ -201,11 +201,14 @@ public class EmployeeDaoImpl extends BaseEntityDaoImpl<Employee> implements Empl
      * 分页查询企业用户简要信息
      *
      * @param queryParam 查询参数
+     * @param organization 查询的组织节点
      * @param tenantCode 租户代码
      * @return 企业用户简要信息
      */
     @Override
-    public PageResult<EmployeeBriefInfo> queryEmployeeBriefInfos(EmployeeBriefInfoQueryParam queryParam, String tenantCode) {
+    public PageResult<EmployeeBriefInfo> queryEmployeeBriefInfos(EmployeeBriefInfoQueryParam queryParam,
+                                                                 Organization organization,
+                                                                 String tenantCode) {
         String select = "select new com.changhong.sei.basic.dto.EmployeeBriefInfo(e.id, e.code, u.userName, o.name) ";
         String fromAndWhere = "from Employee e inner join Organization o on e.organizationId = o.id " +
                 "inner join User u on e.id = u.id " +
@@ -216,6 +219,12 @@ public class EmployeeDaoImpl extends BaseEntityDaoImpl<Employee> implements Empl
         // 是否包含冻结的用户
         if (!queryParam.getIncludeFrozen()) {
             fromAndWhere += "and (u.frozen = false) ";
+        }
+        // 判断是否包含子节点
+        if (Objects.nonNull(organization)) {
+            String startWithCode = organization.getCodePath();
+            fromAndWhere += "and o.codePath like :startWithCode ";
+            sqlParams.put("startWithCode", startWithCode+"%");
         }
         // 限制关键字
         if (!StringUtils.isBlank(quickSearchValue)){

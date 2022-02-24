@@ -22,11 +22,25 @@ public class EmployeeBriefInfoQueryParam extends QuickQueryParam {
     @ApiModelProperty(value = "包含冻结的用户", required = true)
     private Boolean includeFrozen = Boolean.FALSE;
 
+    /**
+     * 公司代码
+     */
+    @ApiModelProperty(value = "公司代码")
+    private String corporationCode;
+
     public Boolean getIncludeFrozen() {
         return includeFrozen;
     }
 
     public void setIncludeFrozen(Boolean includeFrozen) {
         this.includeFrozen = includeFrozen;
+    }
+
+    public String getCorporationCode() {
+        return corporationCode;
+    }
+
+    public void setCorporationCode(String corporationCode) {
+        this.corporationCode = corporationCode;
     }
 }

@@ -64,8 +64,9 @@ public interface EmployeeExtDao {
     /**
      * 分页查询企业用户简要信息
      * @param queryParam 查询参数
+     * @param organization 组织机构
      * @param tenantCode 租户代码
      * @return 企业用户简要信息
      */
-    PageResult<EmployeeBriefInfo> queryEmployeeBriefInfos(EmployeeBriefInfoQueryParam queryParam, String tenantCode);
+    PageResult<EmployeeBriefInfo> queryEmployeeBriefInfos(EmployeeBriefInfoQueryParam queryParam, Organization organization, String tenantCode);
 }
