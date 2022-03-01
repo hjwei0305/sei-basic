@@ -21,7 +21,14 @@ public class TenantControllerTest extends BaseUnitTest {
 
     @Test
     public void findAll() {
-        ResultData resultData = controller.findAll();
+        ResultData<?> resultData = controller.findAll();
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
+
+    @Test
+    public void enableCreditManagement() {
+        ResultData<?> resultData = controller.enableCreditManagement();
         System.out.println(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
     }

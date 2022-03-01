@@ -2,15 +2,20 @@ package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.TenantAppModuleDao;
 import com.changhong.sei.basic.dao.TenantDao;
+import com.changhong.sei.basic.entity.AppModule;
 import com.changhong.sei.basic.entity.Organization;
 import com.changhong.sei.basic.entity.Tenant;
+import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
+import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -63,6 +68,19 @@ public class TenantService extends BaseEntityService<Tenant> {
             return OperateResult.operationFailure("00099");
         }
         return super.preDelete(id);
+    }
+
+    /**
+     * 判断是否启用信用管理
+     *
+     * @return 否启用信用管理
+     */
+    public Boolean enableCreditManagement() {
+        List<AppModule> appModules = tenantAppModuleDao.getAppModuleByTenantCode(ContextUtil.getTenantCode());
+        if (appModules.stream().anyMatch(a -> StringUtils.startsWith(a.getCode(), "SOMS"))) {
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
     }
 
     /**

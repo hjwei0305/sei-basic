@@ -75,4 +75,14 @@ public class TenantController extends BaseEntityController<Tenant, TenantDto>
     public ResultData<List<TenantDto>> findAllUnfrozen() {
         return ResultData.success(convertToDtos(service.findAllUnfrozen()));
     }
+
+    /**
+     * 判断是否启用信用管理
+     *
+     * @return 否启用信用管理
+     */
+    @Override
+    public ResultData<Boolean> enableCreditManagement() {
+        return ResultData.success(service.enableCreditManagement());
+    }
 }
