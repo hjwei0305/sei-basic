@@ -18,6 +18,7 @@ import com.changhong.sei.enums.UserType;
 import com.changhong.sei.notify.dto.UserNotifyInfo;
 import com.changhong.sei.util.EnumUtils;
 import io.swagger.annotations.Api;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -108,6 +109,57 @@ public class UserProfileController extends BaseEntityController<UserProfile, Use
             }
         }
         return ResultData.success(profileDto);
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param dto 业务实体DTO
+     * @return 操作结果
+     */
+    @Override
+    public ResultData<UserInfoDto> updateInfo(UserProfileDto dto) {
+        if (Objects.isNull(dto)) {
+            // 输入的数据传输对象为空！
+            return ResultData.fail(ContextUtil.getMessage("core_service_00002"));
+        }
+        String id = dto.getId();
+        if (StringUtils.isBlank(id)) {
+            // 用户【{0}】配置不存在.
+            return ResultData.fail(ContextUtil.getMessage("00092", id));
+        }
+        UserProfile profile = service.findOne(id);
+        if (Objects.isNull(profile)) {
+            // 用户【{0}】配置不存在.
+            return ResultData.fail(ContextUtil.getMessage("00092", id));
+        }
+        UserProfile userProfile = convertToEntity(dto);
+        String email = userProfile.getEmail();
+        if (StringUtils.isNotBlank(email) && StringUtils.contains(email, "*")) {
+            userProfile.setEmail(profile.getEmail());
+        }
+        String idCard = userProfile.getIdCard();
+        if (StringUtils.isNotBlank(idCard) && StringUtils.contains(idCard, "*")) {
+            userProfile.setIdCard(profile.getIdCard());
+        }
+        String mobile = userProfile.getMobile();
+        if (StringUtils.isNotBlank(mobile) && StringUtils.contains(mobile, "*")) {
+            userProfile.setMobile(profile.getMobile());
+        }
+        service.save(userProfile);
+
+        UserInfoDto userInfoDto = dtoModelMapper.map(userProfile, UserInfoDto.class);
+        // 获取企业员工信息
+        if (userInfoDto.getUserType() == UserType.Employee) {
+            Employee employee = employeeService.findOne(userProfile.getUserId());
+            if (Objects.nonNull(employee)) {
+                userInfoDto.setEmployeeCode(employee.getCode());
+                if (Objects.nonNull(employee.getOrganization())) {
+                    userInfoDto.setOrganizationName(employee.getOrganization().getName());
+                }
+            }
+        }
+        return ResultData.success(userInfoDto);
     }
 
     /**

@@ -12,6 +12,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -47,6 +48,16 @@ public interface UserProfileApi extends BaseEntityApi<UserProfileDto> {
     @GetMapping(path = "getUserInfo")
     @ApiOperation(value = "查询一个用户配置", notes = "查询一个用户配置")
     ResultData<UserInfoDto> getUserInfo();
+
+    /**
+     * 更新用户信息
+     *
+     * @param dto 业务实体DTO
+     * @return 操作结果
+     */
+    @PostMapping(path = "updateInfo", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "更新用户信息", notes = "更新用户信息")
+    ResultData<UserInfoDto> updateInfo(@RequestBody @Valid UserProfileDto dto);
 
     /**
      * 根据用户id列表获取通知信息
