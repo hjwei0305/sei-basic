@@ -155,6 +155,16 @@ public class UserProfileController extends BaseEntityController<UserProfile, Use
         };
         // 添加映射器
         dtoModelMapper.addMappings(propertyMap);
+        // 创建自定义映射规则
+        PropertyMap<UserProfile, UserInfoDto> propertyMap1 = new PropertyMap<UserProfile, UserInfoDto>() {
+            @Override
+            protected void configure() {
+                // 使用自定义转换规则
+                map().setUserId(source.getUserId());
+            }
+        };
+        // 添加映射器
+        dtoModelMapper.addMappings(propertyMap1);
     }
 
     /**

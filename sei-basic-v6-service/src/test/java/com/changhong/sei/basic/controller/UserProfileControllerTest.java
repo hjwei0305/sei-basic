@@ -42,6 +42,13 @@ public class UserProfileControllerTest extends BaseUnitTest {
     }
 
     @Test
+    public void getUserInfo() {
+        ResultData resultData = controller.getUserInfo();
+        System.out.println(JsonUtils.toJson(resultData));
+        Assert.assertTrue(resultData.successful());
+    }
+
+    @Test
     public void getLanguages() {
         ResultData resultData = controller.getLanguages();
         System.out.println(JsonUtils.toJson(resultData));
