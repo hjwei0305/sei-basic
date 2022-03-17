@@ -2,6 +2,7 @@ package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.api.UserProfileApi;
 import com.changhong.sei.basic.dto.LanguageValue;
+import com.changhong.sei.basic.dto.UserInfoDto;
 import com.changhong.sei.basic.dto.UserPreferenceEnum;
 import com.changhong.sei.basic.dto.UserProfileDto;
 import com.changhong.sei.basic.entity.Employee;
@@ -35,8 +36,7 @@ import java.util.Objects;
 @RestController
 @Api(value = "UserProfileService", tags = "用户配置API服务实现")
 @RequestMapping(path = "userProfile", produces = MediaType.APPLICATION_JSON_VALUE)
-public class UserProfileController extends BaseEntityController<UserProfile, UserProfileDto>
-        implements UserProfileApi {
+public class UserProfileController extends BaseEntityController<UserProfile, UserProfileDto> implements UserProfileApi {
     @Autowired
     private UserProfileService service;
     @Autowired
@@ -69,6 +69,34 @@ public class UserProfileController extends BaseEntityController<UserProfile, Use
             // 用户【{0}】没有创建配置信息！
             return ResultDataUtil.fail("00095", userId);
         }
+        // 获取企业员工信息
+        if (profileDto.getUserType() == UserType.Employee) {
+            Employee employee = employeeService.findOne(userId);
+            if (Objects.nonNull(employee)) {
+                profileDto.setEmployeeCode(employee.getCode());
+                if (Objects.nonNull(employee.getOrganization())) {
+                    profileDto.setOrganizationName(employee.getOrganization().getName());
+                }
+            }
+        }
+        return ResultData.success(profileDto);
+    }
+
+    /**
+     * 查询一个用户配置
+     *
+     * @return 用户配置
+     */
+    @Override
+    public ResultData<UserInfoDto> getUserInfo() {
+        String userId = ContextUtil.getUserId();
+        // 获取用户配置信息
+        UserProfile userProfile = service.findByUserId(userId);
+        if (Objects.isNull(userProfile)) {
+            // 用户【{0}】没有创建配置信息！
+            return ResultDataUtil.fail("00095", userId);
+        }
+        UserInfoDto profileDto = dtoModelMapper.map(userProfile, UserInfoDto.class);
         // 获取企业员工信息
         if (profileDto.getUserType() == UserType.Employee) {
             Employee employee = employeeService.findOne(userId);

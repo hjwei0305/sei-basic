@@ -1,6 +1,7 @@
 package com.changhong.sei.basic.api;
 
 import com.changhong.sei.basic.dto.LanguageValue;
+import com.changhong.sei.basic.dto.UserInfoDto;
 import com.changhong.sei.basic.dto.UserProfileDto;
 import com.changhong.sei.core.api.BaseEntityApi;
 import com.changhong.sei.core.dto.ResultData;
@@ -37,6 +38,15 @@ public interface UserProfileApi extends BaseEntityApi<UserProfileDto> {
     @GetMapping(path = "findByUserId")
     @ApiOperation(value = "查询一个用户配置", notes = "查询一个用户配置")
     ResultData<UserProfileDto> findByUserId(@RequestParam("userId") String userId);
+
+    /**
+     * 查询一个用户配置
+     *
+     * @return 用户配置
+     */
+    @GetMapping(path = "getUserInfo")
+    @ApiOperation(value = "查询一个用户配置", notes = "查询一个用户配置")
+    ResultData<UserInfoDto> getUserInfo();
 
     /**
      * 根据用户id列表获取通知信息
