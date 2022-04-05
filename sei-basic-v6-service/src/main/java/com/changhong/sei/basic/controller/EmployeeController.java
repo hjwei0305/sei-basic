@@ -315,6 +315,25 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
     }
 
     /**
+     * 获取用户的组织机构Id清单
+     *
+     * @param userId 用户Id
+     * @return 组织机构Id清单
+     */
+    @Override
+    public ResultData<List<String>> getEmployeeOrgIds(String userId) {
+        List<String> orgCodes = new ArrayList<>();
+        // 获取企业员工的组织
+        Employee employee = service.findOne(userId);
+        if (Objects.isNull(employee) || Objects.isNull(employee.getOrganization())){
+            return ResultData.success(orgCodes);
+        }
+        // 获取组织机构节点清单
+        List<Organization> organizations = organizationService.getParentNodes(employee.getOrganization(), true);
+        return ResultData.success(organizations.stream().map(Organization::getId).collect(Collectors.toList()));
+    }
+
+    /**
      * 获取用户的岗位代码清单
      *
      * @param userId 用户Id
@@ -325,6 +344,19 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
         // 获取企业用户的岗位
         List<Position> positions = employeePositionService.getChildrenFromParentId(userId);
         return ResultData.success(positions.stream().map(Position::getCode).collect(Collectors.toList()));
+    }
+
+    /**
+     * 获取用户的岗位Id清单
+     *
+     * @param userId 用户Id
+     * @return 岗位Id清单
+     */
+    @Override
+    public ResultData<List<String>> getEmployeePositionIds(String userId) {
+        // 获取企业用户的岗位
+        List<Position> positions = employeePositionService.getChildrenFromParentId(userId);
+        return ResultData.success(positions.stream().map(Position::getId).collect(Collectors.toList()));
     }
 
     /**

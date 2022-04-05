@@ -217,6 +217,15 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
     ResultData<List<String>> getEmployeeOrgCodes(@RequestParam("userId") String userId);
 
     /**
+     * 获取用户的组织机构Id清单
+     * @param userId 用户Id
+     * @return 组织机构Id清单
+     */
+    @GetMapping(path = "getEmployeeOrgIds")
+    @ApiOperation(value = "获取用户的组织机构Id清单", notes = "获取企业用户所在组织机构节点的所有父节点Id清单")
+    ResultData<List<String>> getEmployeeOrgIds(@RequestParam("userId") String userId);
+
+    /**
      * 获取用户的岗位代码清单
      * @param userId 用户Id
      * @return 岗位代码清单
@@ -224,6 +233,15 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
     @GetMapping(path = "getEmployeePositionCodes")
     @ApiOperation(value = "获取用户的岗位代码清单", notes = "获取企业用户已分配的所有岗位代码")
     ResultData<List<String>> getEmployeePositionCodes(@RequestParam("userId") String userId);
+
+    /**
+     * 获取用户的岗位Id清单
+     * @param userId 用户Id
+     * @return 岗位Id清单
+     */
+    @GetMapping(path = "getEmployeePositionIds")
+    @ApiOperation(value = "获取用户的岗位Id清单", notes = "获取用户的岗位Id清单")
+    ResultData<List<String>> getEmployeePositionIds(@RequestParam("userId") String userId);
 
     /**
      * 保存一个租户的系统管理员

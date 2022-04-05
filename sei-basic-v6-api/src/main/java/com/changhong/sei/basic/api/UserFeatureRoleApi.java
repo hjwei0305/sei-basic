@@ -9,10 +9,13 @@ import com.changhong.sei.core.dto.ResultData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 实现功能: 用户分配的功能角色API接口
@@ -30,4 +33,13 @@ public interface UserFeatureRoleApi extends BaseRelationApi<UserFeatureRoleDto, 
     @PostMapping(path = "saveEffective", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "保存授权有效期", notes = "保存用户分配的功能角色有效期")
     ResultData<String> saveEffective(@RequestBody @Valid RelationEffective effective);
+
+    /**
+     * 获取用户的功能角色Id清单
+     * @param userId 用户Id
+     * @return 功能角色Id清单
+     */
+    @GetMapping(path = "getRoleIdsByUserId")
+    @ApiOperation(value = "获取用户的功能角色Id清单", notes = "获取用户的功能角色Id清单")
+    ResultData<List<String>> getRoleIdsByUserId(@RequestParam("userId") String userId);
 }

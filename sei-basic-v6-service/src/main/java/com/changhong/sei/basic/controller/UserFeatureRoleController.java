@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 实现功能: 用户分配的功能角色API服务实现
@@ -59,5 +61,17 @@ public class UserFeatureRoleController extends BaseRelationController<UserFeatur
     @Override
     public ResultData<String> saveEffective(@Valid RelationEffective effective) {
         return service.saveEffective(effective);
+    }
+
+    /**
+     * 获取用户的功能角色Id清单
+     *
+     * @param userId 用户Id
+     * @return 功能角色Id清单
+     */
+    @Override
+    public ResultData<List<String>> getRoleIdsByUserId(String userId) {
+        List<FeatureRole> featureRoles = service.getEffectiveChildren(userId);
+        return ResultData.success(featureRoles.stream().map(FeatureRole::getId).collect(Collectors.toList()));
     }
 }
