@@ -63,7 +63,9 @@ public interface CorporationApi extends BaseEntityApi<CorporationDto>,
      *
      * @param taxNos 纳税人识别号(税号)
      * @return 公司
+     * @deprecated 更新ias后删除 预计在2022-05-01前更新删除
      */
+    @Deprecated
     @PostMapping(path = "findByTaxNos", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据纳税人识别号(税号)查询公司", notes = "根据纳税人识别号(税号)查询公司")
     ResultData<List<CorporationDto>> findByTaxNos(@RequestBody Set<String> taxNos);

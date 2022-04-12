@@ -107,8 +107,10 @@ public class CorporationController extends BaseEntityController<Corporation, Cor
      *
      * @param taxNos 纳税人识别号(税号)
      * @return 公司
+     * @deprecated 更新ias后删除 预计在2022-05-01前更新删除
      */
     @Override
+    @Deprecated
     public ResultData<List<CorporationDto>> findByTaxNos(Set<String> taxNos) {
         List<CorporationDto> list;
         List<Corporation> corporations = service.findByTaxNos(taxNos);
