@@ -1,12 +1,11 @@
-sei: # 应用全局配置
+sei:
   application:
-    env: PROD
+    env: DEV
     code: sei-basic
     version: '@project_version@'
-    description: '@project_description@'
-  mock: # 本地调试的当前用户配置
+  mock:
     user:
-      tenant-code: RCSIT
+      tenant-code: DONLIM
 #      tenant-code: global
       account: admin
 #       account: sei
@@ -15,27 +14,27 @@ spring:
   application:
     name: ${sei.application.code}
   cloud:
-    config: # 配置中心地址
-      uri: http://sei.changhong.com/sei-manager/configserver
-      token: DEjjbZxTrSWNf
-      profile: ${sei.application.env} #当前环境
+    config:
+      uri: http://10.233.0.171/sei-manager/configserver
+      token: BiWWR1gWtU7lDJP
+      profile: ${sei.application.env}
       name: ${spring.application.name}
-    zookeeper: #启用平台注册发现
-      # zk地址
+    zookeeper:
+
       connect-string: 10.4.208.129:2181
-      # 关闭zk可用不用依赖平台注册中心
+
       enabled: true
     consul:
-      # consul注册中心开关
+
       enabled: false
       host: 10.4.3.6
       port: 8500
       discovery:
-        # 注册到consul的服务名称
+
         service-name: ${spring.application.name}
         hostname: ${spring.application.name}.industry
 #        healthCheckInterval: 15s
 #        health-check-url: http://${spring.cloud.client.ip-address}:${server.port}/actuator/health
-#  service-registry: # 不自动注册到注册中心
+#  service-registry: #
 #    auto-registration:
 #      enabled: false

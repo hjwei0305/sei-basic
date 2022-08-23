@@ -1,7 +1,9 @@
 package com.changhong.sei.basic.service;
 
+import com.changhong.sei.basic.connector.HRMSConnector;
 import com.changhong.sei.basic.dao.CorporationDao;
 import com.changhong.sei.basic.dao.OrganizationDao;
+import com.changhong.sei.basic.dto.OrgDTO;
 import com.changhong.sei.basic.dto.OrganizationDimension;
 import com.changhong.sei.basic.entity.Corporation;
 import com.changhong.sei.basic.entity.Employee;
@@ -388,5 +390,78 @@ public class OrganizationService extends BaseTreeService<Organization>
             }
         }
         return ResponseData.operationSuccessWithData(resultList);
+    }
+
+    /**
+     * 同步/更新组织信息
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void synOrg(){
+        List<OrgDTO.DataDTO> orgList = HRMSConnector.getOrg().subList(0,2);
+        List<Organization> allList = findAll();
+//        List<Organization> allList = new ArrayList<>();
+        ArrayList<Organization> saveList = new ArrayList<>();
+        for (OrgDTO.DataDTO dataDTO : orgList) {
+            // 对比信息
+            List<Organization> pmOrganizes = allList.stream()
+                    .filter(org -> org.getCode().equals(dataDTO.getCode()))
+                    .collect(Collectors.toList());
+            if(pmOrganizes.size()>0){
+                // 更新
+                Organization organization  = pmOrganizes.get(0);
+                organization.setNodeLevel(organization.getNodeLevel()+1);
+                organization.setCodePath("|DONLIM"+organization.getCodePath());
+                organization.setNamePath("/广东新宝电器股份有限公司"+organization.getNamePath());
+                organization.setFrozen(false);
+                saveList.add(organization);
+            }else {
+                // 新增
+                Organization organization = new Organization();
+                organization.setShortName(dataDTO.getOrgname());
+                organization.setCode(dataDTO.getCode());
+                organization.setName(dataDTO.getExtorgname());
+                organization.setFrozen(false);
+                saveList.add(organization);
+            }
+        }
+        save(saveList);
+        saveParentId();
+    }
+
+    private void saveParentId() {
+        List<Organization> allList = findAll();
+        ArrayList<Organization> saveList = new ArrayList<>();
+        allList.stream().forEach(org -> {
+            if(org.getName().contains("-")){
+                List<Organization> parentOrg = allList.stream()
+                        .filter(allOrg -> allOrg.getName().equals(org.getName().substring(0,org.getName().lastIndexOf("-")))).collect(Collectors.toList());
+                if(parentOrg.size() > 0){
+                    org.setParentId(parentOrg.get(0).getId());
+                    saveList.add(org);
+                }
+
+            }
+        });
+        save(saveList);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void Org(){
+//        List<OrgDTO.DataDTO> orgList = HRMSConnector.getOrg().subList(0,2);
+        List<Organization> allList = findAll();
+//        List<Organization> allList = new ArrayList<>();
+        ArrayList<Organization> saveList = new ArrayList<>();
+        for (Organization dataDTO : allList) {
+                // 更新
+                Organization organization  = dataDTO;
+                if(organization.getCodePath().startsWith("|00000001|") && !organization.getCodePath().startsWith("|DONLIM|")){
+                    organization.setNodeLevel(organization.getNodeLevel()+1);
+                    organization.setCodePath("|DONLIM"+organization.getCodePath());
+                    organization.setNamePath("/广东新宝电器股份有限公司"+organization.getNamePath());
+//                    organization.setFrozen(false);
+                    saveList.add(organization);
+                }
+            }
+        save(saveList);
     }
 }

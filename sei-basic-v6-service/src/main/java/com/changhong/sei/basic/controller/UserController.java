@@ -17,7 +17,6 @@ import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.dto.serach.Search;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
-import com.changhong.sei.dms.multilingual.sdk.annotation.MultilingualEnable;
 import com.changhong.sei.enums.UserAuthorityPolicy;
 import com.changhong.sei.utils.AsyncRunUtil;
 import io.swagger.annotations.Api;
@@ -70,7 +69,7 @@ public class UserController extends BaseEntityController<User, UserDto>
      * @return 操作菜单树
      */
     @Override
-    @MultilingualEnable(className = "com.changhong.sei.basic.dto.MenuDto")
+//    @MultilingualEnable(className = "com.changhong.sei.basic.dto.MenuDto")
     public ResultData<List<MenuDto>> getUserAuthorizedMenus(String userId) {
         // 获取用户有权限的菜单项清单
         List<Menu> menus = service.getUserAuthorizedMenus(userId);
