@@ -20,6 +20,7 @@ dependencies {
 
     testCompile(
             "com.changhong.sei:sei-test-starter:$sei_version"
+
     )
     implementation 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'

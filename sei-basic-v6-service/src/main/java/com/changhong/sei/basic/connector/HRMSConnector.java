@@ -2,6 +2,7 @@ package com.changhong.sei.basic.connector;
 
 import com.alibaba.fastjson.JSONObject;
 import com.changhong.sei.basic.constant.HRMSConstant;
+import com.changhong.sei.basic.dto.HrmsEmployeeDto;
 import com.changhong.sei.basic.dto.OrgDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -27,6 +28,26 @@ public class HRMSConnector {
      */
     public static final String ERROR = "HRMS服务器响应超时!";
     public static String url = null;
+
+    /**
+     * 人员信息
+     *
+     * @param
+     * @return
+     */
+    public static List<HrmsEmployeeDto.DataDTO> getEmp() {
+        REST_TEMPLATE.getMessageConverters().set(1, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+        url = HRMSConstant.HRMSURL + HRMSConstant.GET_EMP;
+        try {
+            result = REST_TEMPLATE.getForEntity(url, String.class);
+        } catch (Exception e) {
+            throw (e);
+        }
+        List<HrmsEmployeeDto> empList = JSONObject.parseArray("[" + result.getBody() + "]", HrmsEmployeeDto.class);
+        return empList.get(0).getData().stream()
+                .filter(emp -> emp.getIdpath().startsWith(HRMSConstant.XB_IDPATH))
+                .collect(Collectors.toList());
+    }
 
     /**
      * 组织信息

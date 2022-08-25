@@ -2,9 +2,7 @@ package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.dao.OrganizationDao;
 import com.changhong.sei.basic.dao.PositionDao;
-import com.changhong.sei.basic.dto.Executor;
-import com.changhong.sei.basic.dto.PositionCopyParam;
-import com.changhong.sei.basic.dto.PositionQueryParam;
+import com.changhong.sei.basic.dto.*;
 import com.changhong.sei.basic.dto.search.PositionQuickQueryParam;
 import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.service.client.SerialGenerator;
@@ -22,6 +20,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -608,5 +607,65 @@ public class PositionService extends BaseEntityService<Position> {
             organization = organizationDao.findOne(queryParam.getOrganizationId());
         }
         return positionDao.queryPositions(queryParam, new ArrayList<>(excludeIds), tenantCode, organization);
+    }
+
+
+    /**
+     * 初始化岗位
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void initPostion(){
+        List<Organization>allOrgs = organizationService.getChildrenNodes4Unfrozen("734FB618-BA26-11EC-9755-0242AC14001A");
+        for(Organization organization :allOrgs){
+            List<Position>byOrganizationId = this.findByOrganizationId(organization.getId());
+            //部门负责人
+            long countDeportManagerCount=byOrganizationId.stream().filter(a->a.getPositionCategory().getName().equals("部门负责人")).count();
+            if(countDeportManagerCount==0){
+                Position position=new Position();
+                position.setOrganizationId(organization.getId());
+                position.setPositionCategoryId("825C6ECD-1C5F-11ED-A70D-0242AC14000B");
+                position.setName("部门负责人");
+                this.save(position);
+            }
+            //资产管理员
+            long assetsManagerCount=byOrganizationId.stream().filter(a->a.getPositionCategory().getName().equals("资产管理员")).count();
+            if(assetsManagerCount==0){
+                Position position=new Position();
+                position.setOrganizationId(organization.getId());
+                position.setPositionCategoryId("15A8CD95-1D40-11ED-A70D-0242AC14000B");
+                position.setName("资产管理员");
+                this.save(position);
+            }
+
+            //模块负责人
+            long moduleManagerCount=byOrganizationId.stream().filter(a->a.getPositionCategory().getName().equals("模块负责人")).count();
+            if(moduleManagerCount==0){
+                Position position=new Position();
+                position.setOrganizationId(organization.getId());
+                position.setPositionCategoryId("56C8B56B-1D40-11ED-A70D-0242AC14000B");
+                position.setName("模块负责人");
+                this.save(position);
+            }
+
+            //模具负责人
+            long moldManagerCount=byOrganizationId.stream().filter(a->a.getPositionCategory().getName().equals("模具负责人")).count();
+            if(moldManagerCount==0){
+                Position position=new Position();
+                position.setOrganizationId(organization.getId());
+                position.setPositionCategoryId("5EC64D51-1D40-11ED-A70D-0242AC14000B");
+                position.setName("模具负责人");
+                this.save(position);
+            }
+
+            //单位负责人
+            long unitManagerCount=byOrganizationId.stream().filter(a->a.getPositionCategory().getName().equals("单位负责人")).count();
+            if(unitManagerCount==0){
+                Position position=new Position();
+                position.setOrganizationId(organization.getId());
+                position.setPositionCategoryId("054F030F-1D40-11ED-A70D-0242AC14000B");
+                position.setName("单位负责人");
+                this.save(position);
+            }
+        }
     }
 }

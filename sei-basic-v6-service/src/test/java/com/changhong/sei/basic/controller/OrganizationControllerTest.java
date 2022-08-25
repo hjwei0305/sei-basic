@@ -1,6 +1,8 @@
 package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.apitemplate.ApiTemplate;
+import com.changhong.sei.basic.connector.HRMSConnector;
+import com.changhong.sei.basic.dto.OrgDTO;
 import com.changhong.sei.basic.dto.OrganizationDto;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
@@ -69,6 +71,14 @@ public class OrganizationControllerTest extends BaseUnitTest {
         ResultData<List<OrganizationDto>> resultData = controller.getOrgAuthTreeByCorp("Q600",featureCode);
         LOG.debug(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
+    }
+
+    @Test
+    public  void getHrmsOrg(){
+        List<OrgDTO.DataDTO> orgList = HRMSConnector.getOrg();
+
+
+
     }
 
 }

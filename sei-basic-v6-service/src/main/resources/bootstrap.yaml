@@ -33,6 +33,8 @@ spring:
 
         service-name: ${spring.application.name}
         hostname: ${spring.application.name}.industry
+  jpa:
+    show-sql: true
 #        healthCheckInterval: 15s
 #        health-check-url: http://${spring.cloud.client.ip-address}:${server.port}/actuator/health
 #  service-registry: #

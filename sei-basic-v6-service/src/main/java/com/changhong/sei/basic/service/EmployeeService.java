@@ -1,5 +1,7 @@
 package com.changhong.sei.basic.service;
 
+import com.changhong.sei.basic.connector.HRMSConnector;
+import com.changhong.sei.basic.constant.HRMSConstant;
 import com.changhong.sei.basic.dao.EmployeeDao;
 import com.changhong.sei.basic.dao.EmployeePositionDao;
 import com.changhong.sei.basic.dao.OrganizationDao;
@@ -73,7 +75,8 @@ public class EmployeeService extends BaseEntityService<Employee> {
     private AccountManager accountManager;
     @Autowired
     private CorporationService corporationService;
-
+    @Autowired
+    private OrganizationService organizationService;
     @Override
     protected BaseEntityDao<Employee> getDao() {
         return employeeDao;
@@ -96,6 +99,144 @@ public class EmployeeService extends BaseEntityService<Employee> {
         return saveEmployee(entity);
     }
 
+    /**
+     * 初始化用户
+     * author:czq
+     */
+    @Transactional
+    public void initEmployee(){
+        //先取出所有组织
+        List<Organization>allOrgs = organizationService.getChildrenNodes4Unfrozen("734FB618-BA26-11EC-9755-0242AC14001A");
+        List<HrmsEmployeeDto.DataDTO> empList = HRMSConnector.getEmp().stream().filter(c->c.getLvNum()>5 && c.getLvNum()<=6.2).collect(Collectors.toList());
+        for (HrmsEmployeeDto.DataDTO emp :empList){
+            Employee entity =new Employee();
+            entity.setPassword(DigestUtils.md5Hex("123456"));
+            entity.setUserType(UserType.Employee);
+            if (Objects.isNull(entity.getUserAuthorityPolicy())) {
+                entity.setUserAuthorityPolicy(UserAuthorityPolicy.NormalUser);
+            }
+            entity.setCode(emp.getEmployeeCode());
+            entity.setUserName(emp.getEmployeeName());
+            entity.setFrozen(false);
+            //根据组织编码匹配
+            Optional<Organization> organization = allOrgs.stream().filter(c -> c.getCode().equals(emp.getOrgcode())).findFirst();
+            if(organization.isPresent()){
+                entity.setOrganizationId(organization.get().getId());
+            }else{
+                continue;
+            }
+            boolean isNew = entity.isNew();
+            //检查该租户下员工编号不能重复
+            if (employeeDao.isCodeExist(entity.getCode(), entity.getId())) {
+                //00040 = 该员工编号【{0}】已存在，请重新输入！
+                System.out.println("该员工编号【"+entity.getCode()+"】已存在，请重新输入");
+                continue;
+            }
+            // 检查主账户是否已经存在
+            Boolean accountExist = ((UserDao) userService.getDao()).isAccountExist(entity.getCode(), entity.getId());
+            if (accountExist) {
+                // 已经存在主账户【{0}】的用户！
+                System.out.println("已经存在主账户【"+entity.getCode()+"】的用户");
+                continue;
+            }
+            if (isNew) {
+                // 先保存user
+                User user = new User();
+                user.setTenantCode(entity.getTenantCode());
+                user.setUserName(entity.getUserName());
+                user.setUserType(entity.getUserType());
+                user.setUserAuthorityPolicy(entity.getUserAuthorityPolicy());
+                user.setFrozen(entity.isFrozen());
+                // 设置主账号=员工编号
+                user.setAccount(entity.getCode());
+                OperateResultWithData<User> userResult = userService.save(user);
+                if (userResult.notSuccessful()) {
+                   continue;
+                }
+                String userId = userResult.getData().getId();
+                // 设置员工用户的Id
+                entity.setId(userId);
+                // 保存用户配置信息
+                UserProfile userProfile = new UserProfile();
+                userProfile.setUserId(userId);
+                userProfile.setEmail(entity.getEmail());
+                userProfile.setMobile(entity.getMobile());
+                userProfile.setGender(entity.getGender());
+                userProfileService.save(userProfile);
+                // 保存企业用户
+               // employeeDao.save(entity, true);
+                try{
+                    saveEmp(entity, false);
+                }catch (Exception e){
+
+                }
+
+                // 创建用户账户
+                CreateAccountRequest accountRequest = new CreateAccountRequest();
+                // 员工编号作为账号
+                accountRequest.setTenantCode(userResult.getData().getTenantCode());
+                accountRequest.setAccount(entity.getCode());
+                accountRequest.setUserId(userId);
+                accountRequest.setName(entity.getUserName());
+                accountRequest.setAccountType(entity.getUserType().name());
+                accountRequest.setAuthorityPolicy(entity.getUserAuthorityPolicy().name());
+                accountRequest.setMobile(entity.getMobile());
+                accountRequest.setEmail(entity.getEmail());
+                accountRequest.setGender(entity.getGender());
+                accountRequest.setIdCard(userProfile.getIdCard());
+                accountRequest.setLanguageCode(userProfile.getLanguageCode());
+                accountRequest.setFrozen(entity.isFrozen());
+
+                accountManager.create(accountRequest);
+            } else {
+                //修改用户
+                User user = userService.findById(entity.getId());
+                boolean isChangeAccount = !user.getUserName().equals(entity.getUserName())
+                        || user.getFrozen() != entity.isFrozen();
+                user.setUserName(entity.getUserName());
+                user.setFrozen(entity.isFrozen());
+                userService.save(user);
+                //如果是修改管理员，修改用户配置邮箱
+                UserProfile userProfile = userProfileService.findByUserId(entity.getId());
+                if (Objects.nonNull(userProfile)) {
+                    userProfile.setEmail(entity.getEmail());
+                    userProfile.setMobile(entity.getMobile());
+                    userProfile.setGender(entity.getGender());
+                    userProfileService.save(userProfile);
+                }
+                // 保存企业用户
+                try{
+                    saveEmp(entity, false);
+                }catch (Exception e){
+
+                }
+
+                // 判断并更改用户账户
+                if (isChangeAccount) {
+                    // 员工编号作为账号
+                    UpdateAccountRequest accountRequest = new UpdateAccountRequest();
+                    accountRequest.setTenantCode(user.getTenantCode());
+                    accountRequest.setAccount(entity.getCode());
+                    accountRequest.setName(entity.getUserName());
+                    accountRequest.setAccountType(entity.getUserType().name());
+                    accountRequest.setAuthorityPolicy(entity.getUserAuthorityPolicy().name());
+                    accountRequest.setMobile(entity.getMobile());
+                    accountRequest.setEmail(entity.getEmail());
+                    accountRequest.setGender(entity.getGender());
+                    accountRequest.setIdCard(userProfile.getIdCard());
+                    accountRequest.setLanguageCode(userProfile.getLanguageCode());
+                    accountRequest.setFrozen(entity.isFrozen());
+                    accountManager.update(accountRequest);
+                }
+            }
+        }
+    }
+
+    @Transactional
+    public void saveEmp(Employee entity, boolean isNew){
+
+        employeeDao.save(entity,isNew);
+    }
     /**
      * 保存(外部调用使用EmployeeService.save)
      *
