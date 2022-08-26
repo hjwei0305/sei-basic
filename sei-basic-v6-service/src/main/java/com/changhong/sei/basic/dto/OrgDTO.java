@@ -37,6 +37,8 @@ public class OrgDTO {
         private Boolean usable;
         @JsonProperty("orgtype")
         private String orgtype;
+        @JsonProperty("attribute1")
+        private String attribute1;
         @JsonProperty("stat")
         private String stat;
         @JsonProperty("orglevel")
