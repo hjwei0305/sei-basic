@@ -6,6 +6,7 @@ import com.changhong.sei.core.dto.ResultData;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +31,7 @@ public interface SysUserApi extends BaseEntityApi<SysUserDto> {
     @ApiOperation(value = "定时更新员工信息", notes = "定时更新员工信息")
     ResultData updateEmpTask(@RequestBody Map<String, String> params);
 
-    @PostMapping(path = "findByEmployeeCode", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "findByEmployeeCode", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据工号查询", notes = "根据工号查询")
     ResultData findByEmployeeCode(@RequestParam("employeeCode") String employeeCode);
 }
