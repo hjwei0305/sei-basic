@@ -87,5 +87,7 @@ public class HrmsEmployeeDto {
         private String idNumber;
         @JsonProperty("telphone")
         private String telphone;
+        @JsonProperty("birthday")
+        private String birthday;
     }
 }
