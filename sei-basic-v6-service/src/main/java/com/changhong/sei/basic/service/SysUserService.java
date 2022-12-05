@@ -44,7 +44,7 @@ public class SysUserService extends BaseEntityService<SysUser> {
         empList.stream().forEach(emp -> {
             LocalDate updateTime = LocalDate.parse(emp.getUpdatetime(), DateTimeFormatter.ofPattern(DateUtils.DEFAULT_TIME_FORMAT));
             // 有更新的赋id进行update
-            if(emp.getEmployeeCode().equals("456924") && updateTime.format(DateTimeFormatter.ofPattern(DateUtils.DEFAULT_DATE_FORMAT)).compareTo(LocalDate.now().toString()) >= 0) {
+            if(updateTime.format(DateTimeFormatter.ofPattern(DateUtils.DEFAULT_DATE_FORMAT)).compareTo(LocalDate.now().toString()) >= 0) {
                 SysUser sysUser = modelMapper.map(emp, SysUser.class);
                 SysUser employeeCode = findByProperty("employeeCode", emp.getEmployeeCode());
                 if(employeeCode != null){
