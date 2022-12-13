@@ -618,7 +618,7 @@ public class PositionService extends BaseEntityService<Position> {
         List<Organization>allOrgs = organizationService.getChildrenNodes4Unfrozen("734FB618-BA26-11EC-9755-0242AC14001A");
         for(Organization organization :allOrgs){
             List<Position>byOrganizationId = this.findByOrganizationId(organization.getId());
-            //部门负责人
+/*            //部门负责人
             long countDeportManagerCount=byOrganizationId.stream().filter(a->a.getPositionCategory().getName().equals("部门负责人")).count();
             if(countDeportManagerCount==0){
                 Position position=new Position();
@@ -664,6 +664,16 @@ public class PositionService extends BaseEntityService<Position> {
                 position.setOrganizationId(organization.getId());
                 position.setPositionCategoryId("054F030F-1D40-11ED-A70D-0242AC14000B");
                 position.setName("单位负责人");
+                this.save(position);
+            }*/
+
+            //财务主管
+            long treasurerCount=byOrganizationId.stream().filter(a->a.getPositionCategory().getName().equals("财务主管")).count();
+            if(treasurerCount==0){
+                Position position=new Position();
+                position.setOrganizationId(organization.getId());
+                position.setPositionCategoryId("F810F779-1D3F-11ED-A70D-0242AC14000B");
+                position.setName("财务主管");
                 this.save(position);
             }
         }
