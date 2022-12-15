@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -388,6 +389,12 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
     @Override
     public ResultData<PageResult<EmployeeBriefInfo>> queryEmployeeBriefInfos(EmployeeBriefInfoQueryParam queryParam) {
         return ResultData.success(service.queryEmployeeBriefInfos(queryParam));
+    }
+
+    @Override
+    public ResultData updateEmployeeFormHrmsTask(Map<String, String> params) {
+        service.initEmployee();
+        return ResultData.success();
     }
 
     /**

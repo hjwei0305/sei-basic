@@ -107,17 +107,22 @@ public class EmployeeService extends BaseEntityService<Employee> {
     public void initEmployee(){
         //先取出所有组织
         List<Organization>allOrgs = organizationService.getChildrenNodes4Unfrozen("734FB618-BA26-11EC-9755-0242AC14001A");
-        List<HrmsEmployeeDto.DataDTO> empList = HRMSConnector.getEmp().stream().filter(c->c.getLvNum()>5 && c.getLvNum()<=6.2).collect(Collectors.toList());
+        List<HrmsEmployeeDto.DataDTO> empList = HRMSConnector.getEmp().stream().collect(Collectors.toList());
+        List<Employee>employeeList=employeeDao.findAll();
         for (HrmsEmployeeDto.DataDTO emp :empList){
             Employee entity =new Employee();
-            entity.setPassword(DigestUtils.md5Hex("123456"));
-            entity.setUserType(UserType.Employee);
-            if (Objects.isNull(entity.getUserAuthorityPolicy())) {
-                entity.setUserAuthorityPolicy(UserAuthorityPolicy.NormalUser);
+            Optional<Employee> employeeOptional = employeeList.stream().filter(a -> a.getCode().equals(emp.getEmployeeCode())).findFirst();
+            if(employeeOptional.isPresent()){
+                entity=employeeOptional.get();
+            }else{
+                entity.setUserType(UserType.Employee);
+                if (Objects.isNull(entity.getUserAuthorityPolicy())) {
+                    entity.setUserAuthorityPolicy(UserAuthorityPolicy.NormalUser);
+                }
+                entity.setCode(emp.getEmployeeCode());
+                entity.setUserName(emp.getEmployeeName());
+                entity.setFrozen(false);
             }
-            entity.setCode(emp.getEmployeeCode());
-            entity.setUserName(emp.getEmployeeName());
-            entity.setFrozen(false);
             //根据组织编码匹配
             Optional<Organization> organization = allOrgs.stream().filter(c -> c.getCode().equals(emp.getOrgcode())).findFirst();
             if(organization.isPresent()){
@@ -186,7 +191,6 @@ public class EmployeeService extends BaseEntityService<Employee> {
                 accountRequest.setIdCard(userProfile.getIdCard());
                 accountRequest.setLanguageCode(userProfile.getLanguageCode());
                 accountRequest.setFrozen(entity.isFrozen());
-
                 accountManager.create(accountRequest);
             } else {
                 //修改用户

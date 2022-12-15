@@ -17,14 +17,14 @@ dependencies {
     compile("com.changhong.sei:sei-mq-starter:$sei_version")
     // 第三方组件包
     compile("mysql:mysql-connector-java:$mysqlVersion")
-
+    compile ('com.alibaba:fastjson:+')
     testCompile(
             "com.changhong.sei:sei-test-starter:$sei_version"
 
     )
     implementation 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
-    implementation group: 'com.alibaba', name: 'fastjson', version: '1.2.83'
+   // implementation group: 'com.alibaba', name: 'fastjson', version: '1.2.83'
 }
 
 // 处理资源配置文件

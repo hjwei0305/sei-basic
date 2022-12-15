@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 实现功能: 企业用户API接口
@@ -261,4 +262,13 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
     @PostMapping(path = "queryEmployeeBriefInfos", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "分页查询企业用户简要信息", notes = "通过快速查询参数，分页查询企业用户简要信息")
     ResultData<PageResult<EmployeeBriefInfo>> queryEmployeeBriefInfos(@RequestBody EmployeeBriefInfoQueryParam queryParam);
+
+    /**
+     * 变定时更新订单更
+     * @param params
+     * @return
+     */
+    @PostMapping(path = "updateEmployeeFormHrmsTask", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "每天从HRMS更新人员信息", notes = "每天从HRMS更新人员信息")
+    ResultData updateEmployeeFormHrmsTask(@RequestBody Map<String, String> params);
 }
