@@ -15,6 +15,7 @@ import com.changhong.sei.core.dto.serach.PageResult;
 import com.changhong.sei.core.dto.serach.QuickQueryParam;
 import com.changhong.sei.core.dto.serach.QuickSearchParam;
 import com.changhong.sei.core.dto.serach.Search;
+import com.changhong.sei.core.log.LogUtil;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.utils.ResultDataUtil;
 import com.changhong.sei.enums.UserAuthorityPolicy;
@@ -393,7 +394,9 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
 
     @Override
     public ResultData updateEmployeeFormHrmsTask(Map<String, String> params) {
+        LogUtil.bizLog("同步HRMS人员信息开始！");
         service.initEmployee();
+        LogUtil.bizLog("同步HRMS人员信息结束！");
         return ResultData.success();
     }
 
