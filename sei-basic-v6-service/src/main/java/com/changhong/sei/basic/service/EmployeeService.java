@@ -18,6 +18,7 @@ import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.serach.*;
+import com.changhong.sei.core.log.LogUtil;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import com.changhong.sei.core.service.bo.OperateResultWithData;
@@ -105,15 +106,24 @@ public class EmployeeService extends BaseEntityService<Employee> {
      */
     @Transactional
     public void initEmployee(){
-        //先取出所有组织
-        List<Organization>allOrgs = organizationService.getChildrenNodes4Unfrozen("734FB618-BA26-11EC-9755-0242AC14001A");
+        //新宝组织ID
+        String orgId="734FB618-BA26-11EC-9755-0242AC14001A";
+        List<Organization>allOrgs = organizationService.getChildrenNodes4Unfrozen(orgId);
         List<HrmsEmployeeDto.DataDTO> empList = HRMSConnector.getEmp().stream().collect(Collectors.toList());
-        List<Employee>employeeList=employeeDao.findAll();
+        List<Employee>employeeList=employeeDao.findByOrganizationIdAndUserFrozenFalse(orgId);
+        long num=0;
         for (HrmsEmployeeDto.DataDTO emp :empList){
+            if(num%100==0){
+                LogUtil.bizLog("同步HRMS人员信息进行中："+num);
+            }
             Employee entity =new Employee();
             Optional<Employee> employeeOptional = employeeList.stream().filter(a -> a.getCode().equals(emp.getEmployeeCode())).findFirst();
             if(employeeOptional.isPresent()){
                 entity=employeeOptional.get();
+                //有离职日期的停用
+                if(StringUtils.isNotEmpty(( emp.getLjdate()))){
+                    entity.setFrozen(true);
+                }
             }else{
                 entity.setUserType(UserType.Employee);
                 if (Objects.isNull(entity.getUserAuthorityPolicy())) {
@@ -233,6 +243,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
                     accountManager.update(accountRequest);
                 }
             }
+            num++;
         }
     }
 
