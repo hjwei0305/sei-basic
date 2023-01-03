@@ -44,9 +44,7 @@ public class HRMSConnector {
             throw (e);
         }
         List<HrmsEmployeeDto> empList = JSONObject.parseArray("[" + result.getBody() + "]", HrmsEmployeeDto.class);
-        return empList.get(0).getData().stream()
-                .filter(emp -> emp.getIdpath().startsWith(HRMSConstant.XB_IDPATH))
-                .collect(Collectors.toList());
+        return empList.get(0).getData();
     }
 
     /**
@@ -64,9 +62,7 @@ public class HRMSConnector {
             throw (e);
         }
         List<OrgDTO> orgList = JSONObject.parseArray("[" + result.getBody() + "]", OrgDTO.class);
-        return orgList.get(0).getData().stream()
-                .filter(org -> org.getUsable() && org.getIdpath().startsWith(HRMSConstant.XB_IDPATH))
-                .collect(Collectors.toList());
+        return orgList.get(0).getData();
     }
 
 }

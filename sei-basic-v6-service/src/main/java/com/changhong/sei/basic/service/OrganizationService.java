@@ -397,13 +397,12 @@ public class OrganizationService extends BaseTreeService<Organization>
      */
     @Transactional(rollbackFor = Exception.class)
     public void synOrg(){
-        List<OrgDTO.DataDTO> orgList = HRMSConnector.getOrg().subList(0,2);
-        List<Organization> allList = findAll();
-//        List<Organization> allList = new ArrayList<>();
+        List<OrgDTO.DataDTO> hrmsOrgList = HRMSConnector.getOrg();
+        List<Organization> organizationList = findAllUnfrozen();
         ArrayList<Organization> saveList = new ArrayList<>();
-        for (OrgDTO.DataDTO dataDTO : orgList) {
+        for (OrgDTO.DataDTO dataDTO : hrmsOrgList) {
             // 对比信息
-            List<Organization> pmOrganizes = allList.stream()
+            List<Organization> pmOrganizes = organizationList.stream()
                     .filter(org -> org.getCode().equals(dataDTO.getCode()))
                     .collect(Collectors.toList());
             if(pmOrganizes.size()>0){
@@ -421,6 +420,14 @@ public class OrganizationService extends BaseTreeService<Organization>
                 organization.setCode(dataDTO.getCode());
                 organization.setName(dataDTO.getExtorgname());
                 organization.setFrozen(false);
+                saveList.add(organization);
+            }
+        }
+        //更新已经作废的组织
+        for (Organization organization : organizationList) {
+            int size = hrmsOrgList.stream().filter(a -> a.getCode().equals(organization.getCode())).collect(Collectors.toList()).size();
+            if(size==0){
+                organization.setFrozen(true);
                 saveList.add(organization);
             }
         }
@@ -442,6 +449,7 @@ public class OrganizationService extends BaseTreeService<Organization>
 
             }
         });
+
         save(saveList);
     }
 
