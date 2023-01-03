@@ -397,6 +397,8 @@ public class OrganizationService extends BaseTreeService<Organization>
      */
     @Transactional(rollbackFor = Exception.class)
     public void synOrg(){
+        List<Organization> allRootNode = this.getAllRootNode();
+        String parentId=  allRootNode.get(0).getId();
         List<OrgDTO.DataDTO> hrmsOrgList = HRMSConnector.getOrg();
         List<Organization> organizationList = findAllUnfrozen();
         ArrayList<Organization> saveList = new ArrayList<>();
@@ -407,10 +409,15 @@ public class OrganizationService extends BaseTreeService<Organization>
                     .collect(Collectors.toList());
             if(pmOrganizes.size()>0){
                 // 更新
+                //00000001 新宝股份
+                //00011334 东菱科技
+                //00016720 凯恒电机
                 Organization organization  = pmOrganizes.get(0);
-                organization.setNodeLevel(organization.getNodeLevel()+1);
-                organization.setCodePath("|DONLIM"+organization.getCodePath());
-                organization.setNamePath("/广东新宝电器股份有限公司"+organization.getNamePath());
+                if(organization.getCode().equals("00000001") ||organization.getCode().equals("00011334") ||organization.getCode().equals("00016720")){
+                    organization.setParentId(parentId);
+                }
+                organization.setShortName(dataDTO.getOrgname());
+                organization.setName(dataDTO.getExtorgname());
                 organization.setFrozen(false);
                 saveList.add(organization);
             }else {
@@ -436,14 +443,18 @@ public class OrganizationService extends BaseTreeService<Organization>
     }
 
     private void saveParentId() {
-        List<Organization> allList = findAll();
+        List<Organization> allList = findAllUnfrozen();
         ArrayList<Organization> saveList = new ArrayList<>();
         allList.stream().forEach(org -> {
             if(org.getName().contains("-")){
                 List<Organization> parentOrg = allList.stream()
                         .filter(allOrg -> allOrg.getName().equals(org.getName().substring(0,org.getName().lastIndexOf("-")))).collect(Collectors.toList());
                 if(parentOrg.size() > 0){
-                    org.setParentId(parentOrg.get(0).getId());
+                    if(org.getCode().equals("00000001") ||org.getCode().equals("00011334") ||org.getCode().equals("00016720")){
+
+                    }else{
+                        org.setParentId(parentOrg.get(0).getId());
+                    }
                     saveList.add(org);
                 }
 

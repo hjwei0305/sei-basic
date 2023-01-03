@@ -4,6 +4,7 @@ import com.changhong.sei.apitemplate.ApiTemplate;
 import com.changhong.sei.basic.connector.HRMSConnector;
 import com.changhong.sei.basic.dto.OrgDTO;
 import com.changhong.sei.basic.dto.OrganizationDto;
+import com.changhong.sei.basic.service.OrganizationService;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
 import com.changhong.sei.core.test.BaseUnitTest;
@@ -26,6 +27,8 @@ public class OrganizationControllerTest extends BaseUnitTest {
     private OrganizationController controller;
     @Autowired
     private ApiTemplate apiTemplate;
+    @Autowired
+    private OrganizationService organizationService;
 
     @Test
     public void findAllAuthTreeEntityData() {
@@ -75,7 +78,7 @@ public class OrganizationControllerTest extends BaseUnitTest {
 
     @Test
     public  void getHrmsOrg(){
-        List<OrgDTO.DataDTO> orgList = HRMSConnector.getOrg();
+        organizationService.synOrg();
 
 
 
