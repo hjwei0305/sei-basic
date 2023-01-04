@@ -426,6 +426,9 @@ public class OrganizationService extends BaseTreeService<Organization>
                 organization.setShortName(dataDTO.getOrgname());
                 organization.setCode(dataDTO.getCode());
                 organization.setName(dataDTO.getExtorgname());
+                if("00011334".equals(organization.getCode()) || "00016720".equals(organization.getCode())){
+                    organization.setParentId(parentId);
+                }
                 organization.setFrozen(false);
                 saveList.add(organization);
             }
@@ -433,15 +436,12 @@ public class OrganizationService extends BaseTreeService<Organization>
         //更新已经作废的组织
         for (Organization organization : organizationList) {
             int size = hrmsOrgList.stream().filter(a -> a.getCode().equals(organization.getCode())).collect(Collectors.toList()).size();
-            if(size==0){
-                if(!organization.getCode().equals("DONLIM")){
-                    //排除根节点
-                    organization.setFrozen(true);
-                    saveList.add(organization);
-                }
-
+            if(size==0 && !organization.getId().equals(parentId)){
+                organization.setFrozen(true);
+                saveList.add(organization);
             }
         }
+        //System.out.println("xx");
         save(saveList);
         saveParentId();
     }
