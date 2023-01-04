@@ -434,8 +434,12 @@ public class OrganizationService extends BaseTreeService<Organization>
         for (Organization organization : organizationList) {
             int size = hrmsOrgList.stream().filter(a -> a.getCode().equals(organization.getCode())).collect(Collectors.toList()).size();
             if(size==0){
-                organization.setFrozen(true);
-                saveList.add(organization);
+                if(!organization.getCode().equals("DONLIM")){
+                    //排除根节点
+                    organization.setFrozen(true);
+                    saveList.add(organization);
+                }
+
             }
         }
         save(saveList);
