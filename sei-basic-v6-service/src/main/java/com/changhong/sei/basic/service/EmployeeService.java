@@ -104,7 +104,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
      * 初始化用户
      * author:czq
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void initEmployee(){
         //新宝组织ID
         String orgId="734FB618-BA26-11EC-9755-0242AC14001A";

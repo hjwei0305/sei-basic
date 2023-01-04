@@ -8,6 +8,7 @@ import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.service.EmployeePositionService;
 import com.changhong.sei.basic.service.EmployeeService;
 import com.changhong.sei.basic.service.OrganizationService;
+import com.changhong.sei.basic.service.PositionService;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
@@ -55,7 +56,8 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
     public BaseEntityService<Employee> getService() {
         return service;
     }
-
+    @Autowired
+    public PositionService positionService;
     /**
      * 自定义设置Entity转换为DTO的转换器
      */
@@ -396,7 +398,10 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
     public ResultData updateEmployeeFormHrmsTask(Map<String, String> params) {
         LogUtil.bizLog("同步HRMS人员信息开始！");
         try{
+            organizationService.synOrg();
+            positionService.initPostion();
             service.initEmployee();
+            employeePositionService.initUserPosition();
         }catch (Exception e){
             LogUtil.bizLog("同步HRMS人员信息出错！"+e.toString());
         }
