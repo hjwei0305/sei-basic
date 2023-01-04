@@ -412,14 +412,18 @@ public class OrganizationService extends BaseTreeService<Organization>
                 //00000001 新宝股份
                 //00011334 东菱科技
                 //00016720 凯恒电机
+
                 Organization organization  = pmOrganizes.get(0);
-                if(organization.getCode().equals("00000001") ||organization.getCode().equals("00011334") ||organization.getCode().equals("00016720")){
-                    organization.setParentId(parentId);
+                //名称有变更的才更新
+                if(!dataDTO.getExtorgname().equals(organization.getName())){
+                    if(organization.getCode().equals("00000001") ||organization.getCode().equals("00011334") ||organization.getCode().equals("00016720")){
+                        organization.setParentId(parentId);
+                    }
+                    organization.setShortName(dataDTO.getOrgname());
+                    organization.setName(dataDTO.getExtorgname());
+                    organization.setFrozen(false);
+                    saveList.add(organization);
                 }
-                organization.setShortName(dataDTO.getOrgname());
-                organization.setName(dataDTO.getExtorgname());
-                organization.setFrozen(false);
-                saveList.add(organization);
             }else {
                 // 新增
                 Organization organization = new Organization();
