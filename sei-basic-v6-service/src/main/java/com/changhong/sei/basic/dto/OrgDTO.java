@@ -51,5 +51,11 @@ public class OrgDTO {
         private String updatetime;
         @JsonProperty("superid")
         private Integer superid;
+        @JsonProperty("dept_manager")
+        private String deptManager;
+        @JsonProperty("unit_manager")
+        private String unitManager;
+        @JsonProperty("moduleManager")
+        private String moduleManager;
     }
 }
