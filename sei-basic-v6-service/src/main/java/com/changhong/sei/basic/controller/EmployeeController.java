@@ -400,8 +400,9 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
     public ResultData updateEmployeeFormHrmsTask(Map<String, String> params) {
         LogUtil.bizLog("同步HRMS人员信息开始！");
         try{
-            /*organizationService.synOrg();
-            positionService.initPostion();*/
+            //1、同步组织。2、同步岗位。3、同步人员 4、同步角色
+            organizationService.synOrg();
+            positionService.initPostion();
             service.initEmployee();
             employeePositionService.initUserPosition();
         }catch (Exception e){
