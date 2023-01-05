@@ -148,7 +148,7 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
         });
         return result;
     }
-    @Transactional(rollbackFor = Exception.class)
+
     public void initUserPosition() {
         //先处理一次EIP的数据
         //List<OrgDTO.DataDTO> hrmsOrgList = HRMSConnector.getOrg();
