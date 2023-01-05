@@ -394,19 +394,49 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
         return ResultData.success(service.queryEmployeeBriefInfos(queryParam));
     }
 
+
+
     @Override
     public ResultData updateEmployeeFormHrmsTask(Map<String, String> params) {
         LogUtil.bizLog("同步HRMS人员信息开始！");
         try{
-            organizationService.synOrg();
-            positionService.initPostion();
+            /*organizationService.synOrg();
+            positionService.initPostion();*/
             service.initEmployee();
-            employeePositionService.initUserPosition();
+           /* employeePositionService.initUserPosition();*/
         }catch (Exception e){
             LogUtil.bizLog("同步HRMS人员信息出错！"+e.toString());
         }
 
         LogUtil.bizLog("同步HRMS人员信息结束！");
+        return ResultData.success();
+    }
+
+
+    @Override
+    public ResultData updateOrgFormHrmsTask() {
+        LogUtil.bizLog("同步HRMS组织信息开始！");
+        try{
+            organizationService.synOrg();
+        }catch (Exception e){
+            LogUtil.bizLog("同步HRMS组织信息出错！"+e.toString());
+        }
+
+        LogUtil.bizLog("同步HRMS组织信息结束！");
+        return ResultData.success();
+    }
+
+    @Override
+    public ResultData updatePosition() {
+        LogUtil.bizLog("同步岗位信息开始！");
+        try{
+            positionService.initPostion();
+            employeePositionService.initUserPosition();
+        }catch (Exception e){
+            LogUtil.bizLog("同步岗位信息出错！"+e.toString());
+        }
+
+        LogUtil.bizLog("同步岗位信息结束！");
         return ResultData.success();
     }
 
