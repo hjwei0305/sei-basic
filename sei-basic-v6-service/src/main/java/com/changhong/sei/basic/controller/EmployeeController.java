@@ -414,14 +414,14 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
 
     @Override
     public ResultData updateOrgFormHrmsTask() {
-        LogUtil.bizLog("同步HRMS人员信息开始！");
+        LogUtil.bizLog("同步HRMS组织信息开始！");
         try{
             organizationService.synOrg();
         }catch (Exception e){
-            LogUtil.bizLog("同步HRMS人员信息出错！"+e.toString());
+            LogUtil.bizLog("同步HRMS组织信息出错！"+e.toString());
         }
 
-        LogUtil.bizLog("同步HRMS人员信息结束！");
+        LogUtil.bizLog("同步HRMS组织信息结束！");
         return ResultData.success();
     }
 
