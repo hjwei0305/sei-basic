@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * *************************************************************************************************
@@ -151,6 +152,7 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
     public void initUserPosition() {
         //先处理一次EIP的数据
         List<OrgDTO.DataDTO> hrmsOrgList = HRMSConnector.getOrg();
+       // List<OrgDTO.DataDTO> hrmsOrgList = HRMSConnector.getOrg().stream().filter(a->a.getIdpath().startsWith("16694,")).collect(Collectors.toList());
         HashMap<String, List<String>> deptManagerHashMap = new HashMap<>();
         HashMap<String, List<String>> unitManagerHashMap = new HashMap<>();
         HashMap<String, List<String>> moduleManagerHashMap = new HashMap<>();

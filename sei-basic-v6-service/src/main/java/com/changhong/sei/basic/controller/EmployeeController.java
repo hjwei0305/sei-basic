@@ -403,7 +403,7 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
             /*organizationService.synOrg();
             positionService.initPostion();*/
             service.initEmployee();
-           /* employeePositionService.initUserPosition();*/
+            employeePositionService.initUserPosition();
         }catch (Exception e){
             LogUtil.bizLog("同步HRMS人员信息出错！"+e.toString());
         }
