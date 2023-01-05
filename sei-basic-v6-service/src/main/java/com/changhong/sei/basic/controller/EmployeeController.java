@@ -430,7 +430,7 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
     public ResultData updatePosition() {
         LogUtil.bizLog("同步岗位信息开始！");
         try{
-            positionService.initPostion();
+            //positionService.initPostion();
             employeePositionService.initUserPosition();
         }catch (Exception e){
             LogUtil.bizLog("同步岗位信息出错！"+e.toString());
