@@ -1,7 +1,9 @@
 package com.changhong.sei.basic.controller;
 
+import com.changhong.sei.basic.service.EmployeePositionService;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.core.log.LogUtil;
 import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.util.JsonUtils;
 import com.changhong.sei.utils.AsyncRunUtil;
@@ -26,13 +28,20 @@ public class HelloControllerTest extends BaseUnitTest {
     private HelloController controller;
     @Autowired
     private AsyncRunUtil runAsync;
+    @Autowired
+    private EmployeePositionService employeePositionService;
 
     @Test
     public void sayHello() {
-        String name = "王锦光";
+        employeePositionService.initUserPosition();
+      /*  for(int i=0;i<2000;i++)
+        if(i%100==0){
+            System.out.println("同步HRMS人员信息进行中："+i);
+        }*/
+/*        String name = "王锦光";
         ResultData<String> result = controller.sayHello(name);
         System.out.println(JsonUtils.toJson(result));
-        LOG.debug(ContextUtil.getUserId());
+        LOG.debug(ContextUtil.getUserId());*/
     }
 
     @Test

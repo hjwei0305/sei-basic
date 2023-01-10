@@ -431,8 +431,8 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
     public ResultData updatePosition() {
         LogUtil.bizLog("同步岗位信息开始！");
         try{
-            //positionService.initPostion();
-            employeePositionService.initUserPosition();
+            positionService.initPostion();
+
         }catch (Exception e){
             LogUtil.bizLog("同步岗位信息出错！"+e.toString());
         }
@@ -440,6 +440,20 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
         LogUtil.bizLog("同步岗位信息结束！");
         return ResultData.success();
     }
+    @Override
+    public ResultData updateUserPosition() {
+        LogUtil.bizLog("同步岗位信息开始！");
+        try{
+            employeePositionService.initUserPosition();
+
+        }catch (Exception e){
+            LogUtil.bizLog("同步岗位信息出错！"+e.toString());
+        }
+
+        LogUtil.bizLog("同步岗位信息结束！");
+        return ResultData.success();
+    }
+
 
     /**
      * 分页查询业务实体

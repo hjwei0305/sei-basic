@@ -287,4 +287,12 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
     @PostMapping(path = "updatePosition", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "每天更新岗位信息", notes = "每天更新岗位信息")
     ResultData updatePosition();
+
+    /**
+     * 变定时更新订单更
+     * @return
+     */
+    @PostMapping(path = "updateUserPosition", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "每天更新人员岗位信息", notes = "每天更新人员岗位信息")
+    ResultData updateUserPosition();
 }

@@ -149,6 +149,9 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
         return result;
     }
 
+    /**
+     * 初始化人员岗位
+     */
     public void initUserPosition() {
         //先处理一次EIP的数据
         List<OrgDTO.DataDTO> hrmsOrgList = HRMSConnector.getOrg();
@@ -231,7 +234,6 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                     ParentRelationParam relationParam = new ParentRelationParam();
                     relationParam.setChildId(positionDept.get().getId());
                     relationParam.setParentIds(empList);
-                    System.out.println(relationParam.getChildId() + "   " + relationParam.getParentIds());
                     try {
                         ResultData resultData = controller.insertRelationsByParents(relationParam);
                     } catch (Exception e) {
@@ -280,7 +282,6 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                     ParentRelationParam relationParam = new ParentRelationParam();
                     relationParam.setChildId(positionModule.get().getId());
                     relationParam.setParentIds(empList);
-                    System.out.println(relationParam.getChildId() + "   " + relationParam.getParentIds());
                     try {
                         ResultData resultData = controller.insertRelationsByParents(relationParam);
                     } catch (Exception e) {
