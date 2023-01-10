@@ -398,7 +398,6 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
 
     @Override
     public ResultData updateEmployeeFormHrmsTask(Map<String, String> params) {
-        LogUtil.bizLog("同步HRMS人员信息开始！");
         try{
             //1、同步组织。2、同步岗位。3、同步人员 4、同步角色
             organizationService.synOrg();
@@ -406,7 +405,6 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
             service.initEmployee();
             employeePositionService.initUserPosition();
         }catch (Exception e){
-            LogUtil.bizLog("同步HRMS人员信息出错！"+e.toString());
         }
 
         LogUtil.bizLog("同步HRMS人员信息结束！");
@@ -416,41 +414,31 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
 
     @Override
     public ResultData updateOrgFormHrmsTask() {
-        LogUtil.bizLog("同步HRMS组织信息开始！");
         try{
             organizationService.synOrg();
         }catch (Exception e){
             LogUtil.bizLog("同步HRMS组织信息出错！"+e.toString());
         }
-
-        LogUtil.bizLog("同步HRMS组织信息结束！");
         return ResultData.success();
     }
 
     @Override
     public ResultData updatePosition() {
-        LogUtil.bizLog("同步岗位信息开始！");
         try{
             positionService.initPostion();
-
         }catch (Exception e){
             LogUtil.bizLog("同步岗位信息出错！"+e.toString());
         }
-
-        LogUtil.bizLog("同步岗位信息结束！");
         return ResultData.success();
     }
     @Override
     public ResultData updateUserPosition() {
-        LogUtil.bizLog("同步岗位信息开始！");
+
         try{
             employeePositionService.initUserPosition();
-
         }catch (Exception e){
             LogUtil.bizLog("同步岗位信息出错！"+e.toString());
         }
-
-        LogUtil.bizLog("同步岗位信息结束！");
         return ResultData.success();
     }
 
