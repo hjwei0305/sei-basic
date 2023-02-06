@@ -14,6 +14,7 @@ import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseRelationDao;
 import com.changhong.sei.core.dto.ParentRelationParam;
 import com.changhong.sei.core.dto.ResultData;
+import com.changhong.sei.core.log.LogUtil;
 import com.changhong.sei.core.service.BaseRelationService;
 import com.changhong.sei.core.service.bo.OperateResult;
 import org.apache.commons.lang.StringUtils;
@@ -55,6 +56,7 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
     private EmployeeDao employeeDao;
     @Autowired
     private OrganizationService organizationService;
+
     /**
      * 获取可以分配的子实体清单
      *
@@ -161,8 +163,8 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
         HashMap<String, List<String>> moduleManagerHashMap = new HashMap<>();
         List<Organization> organizationList = organizationService.findAllUnfrozen();
         List<Position> positionList = positionService.findAll();
+        List<ParentRelationParam> parentRelationParamList = new ArrayList<>();
         //找出所有涉及的人员
-
         //   List<Employee> employeeList = employeeDao.findAll();
         for (OrgDTO.DataDTO data : hrmsOrgList) {
             //过滤不用设置的组织
@@ -234,11 +236,7 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                     ParentRelationParam relationParam = new ParentRelationParam();
                     relationParam.setChildId(positionDept.get().getId());
                     relationParam.setParentIds(empList);
-                    try {
-                        ResultData resultData = controller.insertRelationsByParents(relationParam);
-                    } catch (Exception e) {
-
-                    }
+                    parentRelationParamList.add(relationParam);
                 }
             }
         }
@@ -248,7 +246,7 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
             if (positionUnit.isPresent()) {
                 List<String> empList = new ArrayList<>();
                 for (String emp : dept.getValue()) {
-                    Optional<Employee> employee =Optional.ofNullable(employeeDao.findByCodeAndTenantCode(emp, "DONLIM"));
+                    Optional<Employee> employee = Optional.ofNullable(employeeDao.findByCodeAndTenantCode(emp, "DONLIM"));
                     if (employee.isPresent()) {
                         empList.add(employee.get().getId());
                     }
@@ -257,12 +255,7 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                     ParentRelationParam relationParam = new ParentRelationParam();
                     relationParam.setChildId(positionUnit.get().getId());
                     relationParam.setParentIds(empList);
-                    try {
-                        ResultData resultData = controller.insertRelationsByParents(relationParam);
-                    } catch (Exception e) {
-
-                    }
-
+                    parentRelationParamList.add(relationParam);
                 }
             }
         }
@@ -282,12 +275,16 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                     ParentRelationParam relationParam = new ParentRelationParam();
                     relationParam.setChildId(positionModule.get().getId());
                     relationParam.setParentIds(empList);
-                    try {
-                        ResultData resultData = controller.insertRelationsByParents(relationParam);
-                    } catch (Exception e) {
-
-                    }
+                    parentRelationParamList.add(relationParam);
                 }
+            }
+        }
+        for (ParentRelationParam parentRelationParam : parentRelationParamList) {
+            try {
+                controller.removeRelationsByParents(parentRelationParam);
+                controller.insertRelationsByParents(parentRelationParam);
+            } catch (Exception e) {
+
             }
         }
     }
