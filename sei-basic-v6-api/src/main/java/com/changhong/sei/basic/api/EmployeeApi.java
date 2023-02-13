@@ -263,8 +263,10 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
     @ApiOperation(value = "分页查询企业用户简要信息", notes = "通过快速查询参数，分页查询企业用户简要信息")
     ResultData<PageResult<EmployeeBriefInfo>> queryEmployeeBriefInfos(@RequestBody EmployeeBriefInfoQueryParam queryParam);
 
+
+
     /**
-     * 变定时更新订单更
+     * 每天从HRMS更新信息
      * @param params
      * @return
      */
@@ -273,7 +275,16 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
     ResultData updateEmployeeFormHrmsTask(@RequestBody Map<String, String> params);
 
     /**
-     * 变定时更新订单更
+     * 每天从HRMS更新人员信息
+     * @param params
+     * @return
+     */
+    @PostMapping(path = "updateEmployeeFormHrmsTask", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "每天从HRMS更新人员信息", notes = "每天从HRMS更新人员信息")
+    ResultData updateDataFormHrmsTask(@RequestBody Map<String, String> params);
+
+    /**
+     * 每天从HRMS更新组织信息
      * @return
      */
     @PostMapping(path = "updateOrgFormHrmsTask", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -281,7 +292,7 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
     ResultData updateOrgFormHrmsTask();
 
     /**
-     * 变定时更新订单更
+     * 每天更新岗位信息
      * @return
      */
     @PostMapping(path = "updatePosition", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -289,7 +300,7 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
     ResultData updatePosition();
 
     /**
-     * 变定时更新订单更
+     * 每天更新人员岗位信息
      * @return
      */
     @PostMapping(path = "updateUserPosition", consumes = MediaType.APPLICATION_JSON_VALUE)

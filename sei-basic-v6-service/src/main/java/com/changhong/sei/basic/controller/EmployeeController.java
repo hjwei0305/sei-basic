@@ -399,6 +399,17 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
     @Override
     public ResultData updateEmployeeFormHrmsTask(Map<String, String> params) {
         try{
+            service.initEmployee();
+        }catch (Exception e){
+        }
+
+        LogUtil.bizLog("同步HRMS人员信息结束！");
+        return ResultData.success();
+    }
+
+    @Override
+    public ResultData updateDataFormHrmsTask(Map<String, String> params) {
+        try{
             //1、同步组织。2、同步岗位。3、同步人员 4、同步角色
             organizationService.synOrg();
             positionService.initPostion();
