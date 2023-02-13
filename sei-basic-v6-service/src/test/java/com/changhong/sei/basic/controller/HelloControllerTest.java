@@ -30,10 +30,12 @@ public class HelloControllerTest extends BaseUnitTest {
     private AsyncRunUtil runAsync;
     @Autowired
     private EmployeePositionService employeePositionService;
-
+@Autowired
+private EmployeePositionController employeePositionController;
     @Test
     public void sayHello() {
-        employeePositionService.initUserPosition();
+        employeePositionController.getParentsFromChildId("57B77366-1D46-11ED-A70D-0242AC14000B");
+      //  employeePositionService.initUserPosition();
       /*  for(int i=0;i<2000;i++)
         if(i%100==0){
             System.out.println("同步HRMS人员信息进行中："+i);

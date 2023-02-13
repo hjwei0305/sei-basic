@@ -266,7 +266,7 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
 
 
     /**
-     * 每天从HRMS更新信息
+     * 每天从HRMS更新人员信息
      * @param params
      * @return
      */
@@ -275,12 +275,12 @@ public interface EmployeeApi extends BaseEntityApi<EmployeeDto>,
     ResultData updateEmployeeFormHrmsTask(@RequestBody Map<String, String> params);
 
     /**
-     * 每天从HRMS更新人员信息
+     * 每天从HRMS更新信息
      * @param params
      * @return
      */
-    @PostMapping(path = "updateEmployeeFormHrmsTask", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "每天从HRMS更新人员信息", notes = "每天从HRMS更新人员信息")
+    @PostMapping(path = "updateDataFormHrmsTask", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "每天从HRMS更新信息", notes = "每天从HRMS更新信息")
     ResultData updateDataFormHrmsTask(@RequestBody Map<String, String> params);
 
     /**
