@@ -400,7 +400,7 @@ public class OrganizationService extends BaseTreeService<Organization>
         List<Organization> allRootNode = this.getAllRootNode();
         String parentId=  allRootNode.get(0).getId();
         List<OrgDTO.DataDTO> hrmsOrgList = HRMSConnector.getOrg();
-        List<Organization> organizationList = findAllUnfrozen();
+        List<Organization> organizationList = findAll();
         ArrayList<Organization> saveList = new ArrayList<>();
         for (OrgDTO.DataDTO dataDTO : hrmsOrgList) {
             // 对比信息
@@ -424,6 +424,11 @@ public class OrganizationService extends BaseTreeService<Organization>
                     organization.setFrozen(false);
                     saveList.add(organization);
                 }
+                //冻结的解冻
+               if(!organization.getFrozen()){
+                   organization.setFrozen(true);
+                   saveList.add(organization);
+               }
             }else {
                 // 新增
                 Organization organization = new Organization();
