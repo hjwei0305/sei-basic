@@ -4,6 +4,7 @@ import com.changhong.sei.basic.connector.HRMSConnector;
 import com.changhong.sei.basic.controller.EmployeePositionController;
 import com.changhong.sei.basic.dao.EmployeeDao;
 import com.changhong.sei.basic.dao.EmployeePositionDao;
+import com.changhong.sei.basic.dto.EmployeeDto;
 import com.changhong.sei.basic.dto.OrgDTO;
 import com.changhong.sei.basic.entity.Employee;
 import com.changhong.sei.basic.entity.EmployeePosition;
@@ -157,7 +158,7 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
     public void initUserPosition() {
         //先处理一次EIP的数据
         List<OrgDTO.DataDTO> hrmsOrgList = HRMSConnector.getOrg();
-        // List<OrgDTO.DataDTO> hrmsOrgList = HRMSConnector.getOrg().stream().filter(a->a.getIdpath().startsWith("16694,")).collect(Collectors.toList());
+        // List<OrgDTO.DataDTO> hrmsOrgList = HRMSConnector.getOrg().stream().filter(a->a.getIdpath().startsWith("1,265,7602,")).collect(Collectors.toList());
         HashMap<String, List<String>> deptManagerHashMap = new HashMap<>();
         HashMap<String, List<String>> unitManagerHashMap = new HashMap<>();
         HashMap<String, List<String>> moduleManagerHashMap = new HashMap<>();
@@ -281,8 +282,41 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
         }
         for (ParentRelationParam parentRelationParam : parentRelationParamList) {
             try {
-                controller.removeRelationsByParents(parentRelationParam);
-                controller.insertRelationsByParents(parentRelationParam);
+                ResultData<List<EmployeeDto>> parentsFromChildId = controller.getParentsFromChildId(parentRelationParam.getChildId());
+                List<EmployeeDto> existEmployeeList=new ArrayList<>();
+                if(parentsFromChildId.successful()){
+                    existEmployeeList = parentsFromChildId.getData();
+                }
+                if(existEmployeeList.size()>0){
+                    List<String>newEmpList=parentRelationParam.getParentIds();
+                    List<String>removeEmpList=new ArrayList<>();
+                    for (EmployeeDto existEmployee : existEmployeeList) {
+                       if(newEmpList.contains(existEmployee.getId())) {
+                           //已经存在的先排除,不用更新
+                           newEmpList.remove(existEmployee.getId());
+                       }else{
+                           //移除
+                           removeEmpList.add(existEmployee.getId());
+                       }
+                    }
+                    //执行移除
+                    if(removeEmpList.size()>0){
+                        ParentRelationParam removeParentRelationParam=new ParentRelationParam();
+                        removeParentRelationParam.setParentIds(removeEmpList);
+                        removeParentRelationParam.setChildId(parentRelationParam.getChildId());
+                        controller.removeRelationsByParents(removeParentRelationParam);
+                    }
+                    //添加
+                    if(newEmpList.size()>0){
+                        parentRelationParam.setParentIds(newEmpList);
+                        controller.insertRelationsByParents(parentRelationParam);
+                    }
+
+
+                }
+
+
+
             } catch (Exception e) {
 
             }
