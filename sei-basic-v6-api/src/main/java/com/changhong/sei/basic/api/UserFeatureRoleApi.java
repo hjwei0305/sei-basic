@@ -39,7 +39,7 @@ public interface UserFeatureRoleApi extends BaseRelationApi<UserFeatureRoleDto, 
      * @param userId 用户Id
      * @return 功能角色Id清单
      */
-    @GetMapping(path = "getRoleIdsByUserId")
+    @PostMapping(path = "getRoleIdsByUserId")
     @ApiOperation(value = "获取用户的功能角色Id清单", notes = "获取用户的功能角色Id清单")
     ResultData<List<String>> getRoleIdsByUserId(@RequestParam("userId") String userId);
 }
