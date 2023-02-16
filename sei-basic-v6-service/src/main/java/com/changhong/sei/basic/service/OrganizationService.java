@@ -426,7 +426,7 @@ public class OrganizationService extends BaseTreeService<Organization>
                 }
                 //冻结的解冻
                if(!organization.getFrozen()){
-                   organization.setFrozen(true);
+                   organization.setFrozen(false);
                    saveList.add(organization);
                }
             }else {
