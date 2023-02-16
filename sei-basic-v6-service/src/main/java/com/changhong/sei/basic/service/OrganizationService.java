@@ -13,6 +13,7 @@ import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.context.SessionUser;
 import com.changhong.sei.core.dao.BaseTreeDao;
 import com.changhong.sei.core.entity.BaseEntity;
+import com.changhong.sei.core.log.LogUtil;
 import com.changhong.sei.core.service.BaseTreeService;
 import com.changhong.sei.core.service.DataAuthEntityService;
 import com.changhong.sei.core.service.bo.OperateResult;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -84,7 +86,8 @@ public class OrganizationService extends BaseTreeService<Organization>
                     //解冻，判断父节点是否冻结
                     Organization parentNode = organizationDao.findOne(entity.getParentId());
                     if (parentNode.getFrozen()) {
-                        //00047 = 禁止解冻，请先解冻【{0}】的所有父节点！
+                        //00047 = 【{0}】的所有父禁止解冻，请先解冻节点！
+
                         return OperateResultWithData.operationFailure("00047", entity.getName());
                     }
                 }
@@ -97,6 +100,7 @@ public class OrganizationService extends BaseTreeService<Organization>
                 if (parentNode.getFrozen()) {
                     if (!entity.getFrozen()) {
                         //00047 = 禁止解冻，请先解冻【{0}】的所有父节点！
+                       // LogUtil.bizLog();
                         return OperateResultWithData.operationFailure("00069", entity.getName());
                     }
                 }

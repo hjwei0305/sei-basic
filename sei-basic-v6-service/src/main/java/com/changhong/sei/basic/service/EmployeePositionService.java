@@ -313,6 +313,8 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                     }
 
 
+                }else{
+                    controller.insertRelationsByParents(parentRelationParam);
                 }
 
 
