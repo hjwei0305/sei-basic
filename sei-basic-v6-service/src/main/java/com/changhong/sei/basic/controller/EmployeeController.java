@@ -446,6 +446,7 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
     public ResultData updateUserPosition() {
 
         try{
+            employeePositionService.initEssPosition();
             employeePositionService.initUserPosition();
         }catch (Exception e){
             LogUtil.bizLog("同步岗位信息出错！"+e.toString());

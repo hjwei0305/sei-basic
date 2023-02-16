@@ -6,10 +6,7 @@ import com.changhong.sei.basic.dao.EmployeeDao;
 import com.changhong.sei.basic.dao.EmployeePositionDao;
 import com.changhong.sei.basic.dto.EmployeeDto;
 import com.changhong.sei.basic.dto.OrgDTO;
-import com.changhong.sei.basic.entity.Employee;
-import com.changhong.sei.basic.entity.EmployeePosition;
-import com.changhong.sei.basic.entity.Organization;
-import com.changhong.sei.basic.entity.Position;
+import com.changhong.sei.basic.entity.*;
 import com.changhong.sei.basic.service.util.AuthorityUtil;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dao.BaseRelationDao;
@@ -57,7 +54,8 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
     private EmployeeDao employeeDao;
     @Autowired
     private OrganizationService organizationService;
-
+    @Autowired
+    private EssEmployeePositionService essService;
     /**
      * 获取可以分配的子实体清单
      *
@@ -152,6 +150,145 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
         return result;
     }
 
+    /**
+     * 初始化ESS角色
+     */
+    public void initEssPosition() {
+        List<OrgDTO.DataDTO> hrmsOrgList = HRMSConnector.getOrg();
+        HashMap<String, List<String>> treasurerHashMap = new HashMap<>();
+        HashMap<String, List<String>> assetManagerHashMap = new HashMap<>();
+        HashMap<String, List<String>> moldManagerHashMap = new HashMap<>();
+        List<EssEmployeePosition> eipDataList = essService.findAll();
+        List<Organization> organizationList = organizationService.findAllUnfrozen();
+        List<Position> positionList = positionService.findAll();
+        List<Employee> employeeList = employeeDao.findAll();
+        for (EssEmployeePosition data : eipDataList) {
+            //替换成HRMS编码
+            Optional<OrgDTO.DataDTO> hrmsOrg = hrmsOrgList.stream().filter(c -> c.getAttribute1().equals(data.getDeptCode())).findFirst();
+            if (hrmsOrg.isPresent()) {
+                //替换成SEI组织编码
+                Optional<Organization> optionalOrganization = organizationList.stream().filter(c -> c.getCode().equals(hrmsOrg.get().getCode())).findFirst();
+                if (optionalOrganization.isPresent()) {
+                    data.setDeptCode(optionalOrganization.get().getId());
+                    //财务主管
+                    if (data.getTreasurer() != null) {
+                        if (data.getTreasurer().contains(",")) {
+                            List<String> employeeAddList = new ArrayList<>();
+                            String[] deptMangers = data.getTreasurer().split(",");
+                            for (String deptManager : deptMangers) {
+                                employeeAddList.add(deptManager.split(" ")[0]);
+                            }
+                            treasurerHashMap.put(data.getDeptCode(), employeeAddList);
+                        } else {
+                            List<String> employeeAddList = new ArrayList<>();
+                            employeeAddList.add(data.getTreasurer());
+                            treasurerHashMap.put(data.getDeptCode(), employeeAddList);
+                        }
+                    }
+
+                    //资产管理员
+                    if (data.getAssetManager() != null) {
+                        if (data.getAssetManager().contains(",")) {
+                            List<String> employeeAddList = new ArrayList<>();
+                            assetManagerHashMap.put(data.getDeptCode(), employeeAddList);
+                        } else {
+                            List<String> employeeAddList = new ArrayList<>();
+                            employeeAddList.add(data.getAssetManager().split(" ")[0]);
+                            assetManagerHashMap.put(data.getDeptCode(), employeeAddList);
+                        }
+                    }
+                    if (data.getMoldManager() != null) {
+                        //模具管理员
+                        if (data.getMoldManager().contains(",")) {
+                            List<String> employeeAddList = new ArrayList<>();
+                            String[] deptMangers = data.getMoldManager().split(",");
+                            for (String deptManager : deptMangers) {
+                                employeeAddList.add(deptManager.split(" ")[0]);
+                            }
+                            moldManagerHashMap.put(data.getDeptCode(), employeeAddList);
+                        } else {
+                            List<String> employeeAddList = new ArrayList<>();
+                            employeeAddList.add(data.getMoldManager().split(" ")[0]);
+                            moldManagerHashMap.put(data.getDeptCode(), employeeAddList);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (Map.Entry<String, List<String>> dept : treasurerHashMap.entrySet()) {
+            Optional<Position> positionDept = positionList.stream().filter(c -> c.getOrganizationId().equals(dept.getKey())).filter(n -> n.getName().equals("财务主管")).findFirst();
+            if (positionDept.isPresent()) {
+                List<String> empList = new ArrayList<>();
+                for (String emp : dept.getValue()) {
+                    Optional<Employee> employee = employeeList.stream().filter(a -> a.getCode().equals(emp)).findFirst();
+                    if (employee.isPresent()) {
+                        empList.add(employee.get().getId());
+                    }
+                }
+                if (empList.size() > 0) {
+                    ParentRelationParam relationParam = new ParentRelationParam();
+                    relationParam.setChildId(positionDept.get().getId());
+                    relationParam.setParentIds(empList);
+                    System.out.println(relationParam.getChildId() + "   " + relationParam.getParentIds());
+                    try {
+                        ResultData resultData = controller.insertRelationsByParents(relationParam);
+                    } catch (Exception e) {
+
+                    }
+                }
+            }
+        }
+
+        for (Map.Entry<String, List<String>> dept : assetManagerHashMap.entrySet()) {
+            Optional<Position> positionUnit = positionList.stream().filter(c -> c.getOrganizationId().equals(dept.getKey())).filter(n -> n.getName().equals("资产管理员")).findFirst();
+            if (positionUnit.isPresent()) {
+                List<String> empList = new ArrayList<>();
+                for (String emp : dept.getValue()) {
+                    Optional<Employee> employee = employeeList.stream().filter(a -> a.getCode().equals(emp)).findFirst();
+                    if (employee.isPresent()) {
+                        empList.add(employee.get().getId());
+                    }
+                }
+                if (empList.size() > 0) {
+                    ParentRelationParam relationParam = new ParentRelationParam();
+                    relationParam.setChildId(positionUnit.get().getId());
+                    relationParam.setParentIds(empList);
+                    try {
+                        ResultData resultData = controller.insertRelationsByParents(relationParam);
+                    } catch (Exception e) {
+
+                    }
+
+                }
+            }
+        }
+
+
+        for (Map.Entry<String, List<String>> dept : moldManagerHashMap.entrySet()) {
+            Optional<Position> positionModule = positionList.stream().filter(c -> c.getOrganizationId().equals(dept.getKey())).filter(n -> n.getName().equals("模具负责人")).findFirst();
+            if (positionModule.isPresent()) {
+                List<String> empList = new ArrayList<>();
+                for (String emp : dept.getValue()) {
+                    Optional<Employee> employee = employeeList.stream().filter(a -> a.getCode().equals(emp)).findFirst();
+                    if (employee.isPresent()) {
+                        empList.add(employee.get().getId());
+                    }
+                }
+                if (empList.size() > 0) {
+                    ParentRelationParam relationParam = new ParentRelationParam();
+                    relationParam.setChildId(positionModule.get().getId());
+                    relationParam.setParentIds(empList);
+                    System.out.println(relationParam.getChildId() + "   " + relationParam.getParentIds());
+                    try {
+                        ResultData resultData = controller.insertRelationsByParents(relationParam);
+                    } catch (Exception e) {
+
+                    }
+                }
+            }
+        }
+    }
     /**
      * 初始化人员岗位
      */
