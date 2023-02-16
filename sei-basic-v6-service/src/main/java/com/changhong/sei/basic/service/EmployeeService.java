@@ -126,7 +126,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
                     entity.setFrozen(true);
                     isUpdate=true;
                 }
-                if(!employeeOptional.get().getOrganization().getCode().equals(emp.getOrgcode())){
+               // if(!employeeOptional.get().getOrganization().getCode().equals(emp.getOrgcode())){
                     //根据组织编码匹配
                     Optional<Organization> organization = allOrgs.stream().filter(c -> c.getCode().equals(emp.getOrgcode())).findFirst();
                     if(organization.isPresent()){
@@ -136,7 +136,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
                         continue;
                     }
                     isUpdate=true;
-                }
+              //  }
 
             }else{
                 entity.setUserType(UserType.Employee);
