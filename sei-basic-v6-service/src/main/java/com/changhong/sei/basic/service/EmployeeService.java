@@ -112,12 +112,24 @@ public class EmployeeService extends BaseEntityService<Employee> {
         List<HrmsEmployeeDto.DataDTO> empList = HRMSConnector.getEmp();
         List<Employee>employeeList=employeeDao.findByTenantCodeAndUserUserAuthorityPolicyAndUserFrozenFalse("DONLIM",UserAuthorityPolicy.NormalUser);
         long num=1;
+        //停用在HRMS接口不存在的人员
+        List<Employee>empForzenList=new ArrayList<>();
+        for(Employee employee :employeeList){
+            Optional<HrmsEmployeeDto.DataDTO> hrmsEmployeeOptional = empList.stream().filter(a -> a.getEmployeeCode().equals(employee.getCode())).findFirst();
+            if(!hrmsEmployeeOptional.isPresent()){
+                employee.getUser().setFrozen(true);
+                empForzenList.add(employee);
+            }
+
+        }
+        save(empForzenList);
         for (HrmsEmployeeDto.DataDTO emp :empList){
             if(num%100==0){
                 LogUtil.bizLog("同步HRMS人员信息进行中："+num);
             }
             Employee entity =new Employee();
             boolean isUpdate=false;
+
             Optional<Employee> employeeOptional = employeeList.stream().filter(a -> a.getCode().equals(emp.getEmployeeCode())).findFirst();
             if(employeeOptional.isPresent()){
                 entity=employeeOptional.get();
@@ -126,7 +138,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
                     entity.setFrozen(true);
                     isUpdate=true;
                 }
-               // if(!employeeOptional.get().getOrganization().getCode().equals(emp.getOrgcode())){
+                if(!employeeOptional.get().getOrganization().getCode().equals(emp.getOrgcode())){
                     //根据组织编码匹配
                     Optional<Organization> organization = allOrgs.stream().filter(c -> c.getCode().equals(emp.getOrgcode())).findFirst();
                     if(organization.isPresent()){
@@ -136,7 +148,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
                         continue;
                     }
                     isUpdate=true;
-              //  }
+                }
 
             }else{
                 entity.setUserType(UserType.Employee);
@@ -152,19 +164,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
 
 
             if (isNew) {
-              /*  //检查该租户下员工编号不能重复
-                if (employeeDao.isCodeExist(entity.getCode(), entity.getId())) {
-                    //00040 = 该员工编号【{0}】已存在，请重新输入！
-                    System.out.println("该员工编号【"+entity.getCode()+"】已存在，请重新输入");
-                    continue;
-                }
-                // 检查主账户是否已经存在
-                Boolean accountExist = ((UserDao) userService.getDao()).isAccountExist(entity.getCode(), entity.getId());
-                if (accountExist) {
-                    // 已经存在主账户【{0}】的用户！
-                    System.out.println("已经存在主账户【"+entity.getCode()+"】的用户");
-                    continue;
-                }*/
+
                 //匹配部门
                 Optional<Organization> organization = allOrgs.stream().filter(c -> c.getCode().equals(emp.getOrgcode())).findFirst();
                 if(organization.isPresent()){
@@ -221,46 +221,16 @@ public class EmployeeService extends BaseEntityService<Employee> {
                 accountManager.create(accountRequest);
             } else if(isUpdate) {
                 //先判断用户是否需要修改，不需要直接跳过
-
                 //修改用户
                 User user = userService.findById(entity.getId());
-               // boolean isChangeAccount = !user.getUserName().equals(entity.getUserName())
-               //         || user.getFrozen() != entity.isFrozen();
-                //user.setUserName(entity.getUserName());
                 user.setFrozen(entity.isFrozen());
                 userService.save(user);
-                //如果是修改管理员，修改用户配置邮箱
-                //UserProfile userProfile = userProfileService.findByUserId(entity.getId());
-                //if (Objects.nonNull(userProfile)) {
-                 //   userProfile.setEmail(entity.getEmail());
-                 //   userProfile.setMobile(entity.getMobile());
-                //    userProfile.setGender(entity.getGender());
-                //    userProfileService.save(userProfile);
-               // }
                 // 保存企业用户
                 try{
                     saveEmp(entity, false);
                 }catch (Exception e){
 
                 }
-
-                // 判断并更改用户账户
-            /*    if (isChangeAccount) {
-                    // 员工编号作为账号
-                    UpdateAccountRequest accountRequest = new UpdateAccountRequest();
-                    accountRequest.setTenantCode(user.getTenantCode());
-                    accountRequest.setAccount(entity.getCode());
-                    accountRequest.setName(entity.getUserName());
-                    accountRequest.setAccountType(entity.getUserType().name());
-                    accountRequest.setAuthorityPolicy(entity.getUserAuthorityPolicy().name());
-                    accountRequest.setMobile(entity.getMobile());
-                    accountRequest.setEmail(entity.getEmail());
-                    accountRequest.setGender(entity.getGender());
-                    accountRequest.setIdCard(userProfile.getIdCard());
-                    accountRequest.setLanguageCode(userProfile.getLanguageCode());
-                    accountRequest.setFrozen(entity.isFrozen());
-                    accountManager.update(accountRequest);
-                }*/
             }
             num++;
         }

@@ -107,8 +107,8 @@ public class EmployeeControllerTest extends BaseUnitTest {
 
     @Test
     public void init() {
-        controller.updateUserPosition();
-        //employeeService.initEmployee();
+       // controller.updateUserPosition();
+        employeeService.initEmployee();
 
 /*        List<Organization> allOrgs = organizationService.getChildrenNodes4Unfrozen("734FB618-BA26-11EC-9755-0242AC14001A");
         List<User> userList = userService.findAllUnfrozen();
