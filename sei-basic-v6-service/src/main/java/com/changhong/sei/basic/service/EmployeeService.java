@@ -119,15 +119,17 @@ public class EmployeeService extends BaseEntityService<Employee> {
         for(Employee employee :employeeList){
             Optional<HrmsEmployeeDto.DataDTO> hrmsEmployeeOptional = empList.stream().filter(a -> a.getEmployeeCode().equals(employee.getCode())).findFirst();
             if(!hrmsEmployeeOptional.isPresent()){
+                if(!employee.getUser().getFrozen()){
                     employee.getUser().setFrozen(true);
                     empForzenList.add(employee);
                     User user = employee.getUser();
                     user.setFrozen(true);
                     userService.save(user);
-                   // UpdateAccountRequest updateAccountRequest=new UpdateAccountRequest();
+                    // UpdateAccountRequest updateAccountRequest=new UpdateAccountRequest();
                     //updateAccountRequest.setAccount(user.getAccount());
-                   // updateAccountRequest.setFrozen(true);
+                    // updateAccountRequest.setFrozen(true);
                     //accountManager.update(updateAccountRequest);
+                }
             }
 
         }
