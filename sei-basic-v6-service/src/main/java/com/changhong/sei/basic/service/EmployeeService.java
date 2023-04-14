@@ -106,10 +106,12 @@ public class EmployeeService extends BaseEntityService<Employee> {
      */
     @Transactional(rollbackFor = Exception.class)
     public void initEmployee(){
+        long start = System.currentTimeMillis();
         //新宝组织ID
         String orgId="734FB618-BA26-11EC-9755-0242AC14001A";
         List<Organization>allOrgs = organizationService.getChildrenNodes4Unfrozen(orgId);
         List<HrmsEmployeeDto.DataDTO> empList = HRMSConnector.getEmp();
+        empList=  empList.stream().filter(c->c.getEmployeeCode().equals("455780")).collect(Collectors.toList());
         List<Employee>employeeList=employeeDao.findByTenantCodeAndUserUserAuthorityPolicyAndUserFrozenFalse("DONLIM",UserAuthorityPolicy.NormalUser);
         long num=1;
         //停用在HRMS接口不存在的人员
@@ -117,8 +119,15 @@ public class EmployeeService extends BaseEntityService<Employee> {
         for(Employee employee :employeeList){
             Optional<HrmsEmployeeDto.DataDTO> hrmsEmployeeOptional = empList.stream().filter(a -> a.getEmployeeCode().equals(employee.getCode())).findFirst();
             if(!hrmsEmployeeOptional.isPresent()){
-                employee.getUser().setFrozen(true);
-                empForzenList.add(employee);
+                    employee.getUser().setFrozen(true);
+                    empForzenList.add(employee);
+                    User user = employee.getUser();
+                    user.setFrozen(true);
+                    userService.save(user);
+                   // UpdateAccountRequest updateAccountRequest=new UpdateAccountRequest();
+                    //updateAccountRequest.setAccount(user.getAccount());
+                   // updateAccountRequest.setFrozen(true);
+                    //accountManager.update(updateAccountRequest);
             }
 
         }
@@ -161,8 +170,6 @@ public class EmployeeService extends BaseEntityService<Employee> {
             }
 
             boolean isNew = entity.isNew();
-
-
             if (isNew) {
 
                 //匹配部门
@@ -234,6 +241,9 @@ public class EmployeeService extends BaseEntityService<Employee> {
             }
             num++;
         }
+       long end= System.currentTimeMillis();
+        LogUtil.bizLog("同步人员耗时：{}", end - start);
+
     }
 
     @Transactional
