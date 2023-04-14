@@ -115,13 +115,12 @@ public class EmployeeService extends BaseEntityService<Employee> {
         List<Employee>employeeList=employeeDao.findByTenantCodeAndUserUserAuthorityPolicyAndUserFrozenFalse("DONLIM",UserAuthorityPolicy.NormalUser);
         long num=1;
         //停用在HRMS接口不存在的人员
-        List<Employee>empForzenList=new ArrayList<>();
+
         for(Employee employee :employeeList){
             Optional<HrmsEmployeeDto.DataDTO> hrmsEmployeeOptional = empList.stream().filter(a -> a.getEmployeeCode().equals(employee.getCode())).findFirst();
             if(!hrmsEmployeeOptional.isPresent()){
                 if(!employee.getUser().getFrozen()){
                     employee.getUser().setFrozen(true);
-                    empForzenList.add(employee);
                     User user = employee.getUser();
                     user.setFrozen(true);
                     userService.save(user);
@@ -133,7 +132,6 @@ public class EmployeeService extends BaseEntityService<Employee> {
             }
 
         }
-        save(empForzenList);
         for (HrmsEmployeeDto.DataDTO emp :empList){
             if(num%100==0){
                 LogUtil.bizLog("同步HRMS人员信息进行中："+num);
