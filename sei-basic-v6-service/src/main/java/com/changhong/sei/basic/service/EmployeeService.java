@@ -111,11 +111,9 @@ public class EmployeeService extends BaseEntityService<Employee> {
         String orgId="734FB618-BA26-11EC-9755-0242AC14001A";
         List<Organization>allOrgs = organizationService.getChildrenNodes4Unfrozen(orgId);
         List<HrmsEmployeeDto.DataDTO> empList = HRMSConnector.getEmp();
-        empList=  empList.stream().filter(c->c.getEmployeeCode().equals("455780")).collect(Collectors.toList());
         List<Employee>employeeList=employeeDao.findByTenantCodeAndUserUserAuthorityPolicyAndUserFrozenFalse("DONLIM",UserAuthorityPolicy.NormalUser);
         long num=1;
         //停用在HRMS接口不存在的人员
-
         for(Employee employee :employeeList){
             Optional<HrmsEmployeeDto.DataDTO> hrmsEmployeeOptional = empList.stream().filter(a -> a.getEmployeeCode().equals(employee.getCode())).findFirst();
             if(!hrmsEmployeeOptional.isPresent()){
