@@ -111,10 +111,11 @@ public class EmployeeService extends BaseEntityService<Employee> {
         String orgId="734FB618-BA26-11EC-9755-0242AC14001A";
         List<Organization>allOrgs = organizationService.getChildrenNodes4Unfrozen(orgId);
         List<HrmsEmployeeDto.DataDTO> empList = HRMSConnector.getEmp();
+        //取出有效的用户
         List<Employee>employeeList=employeeDao.findByTenantCodeAndUserUserAuthorityPolicyAndUserFrozenFalse("DONLIM",UserAuthorityPolicy.NormalUser);
         long num=1;
         //停用在HRMS接口不存在的人员
-        for(Employee employee :employeeList){
+       for(Employee employee :employeeList){
             Optional<HrmsEmployeeDto.DataDTO> hrmsEmployeeOptional = empList.stream().filter(a -> a.getEmployeeCode().equals(employee.getCode())).findFirst();
             if(!hrmsEmployeeOptional.isPresent()){
                 if(!employee.getUser().getFrozen()){
@@ -122,21 +123,15 @@ public class EmployeeService extends BaseEntityService<Employee> {
                     User user = employee.getUser();
                     user.setFrozen(true);
                     userService.save(user);
-                    // UpdateAccountRequest updateAccountRequest=new UpdateAccountRequest();
-                    //updateAccountRequest.setAccount(user.getAccount());
-                    // updateAccountRequest.setFrozen(true);
-                    //accountManager.update(updateAccountRequest);
                 }
             }
-
         }
         for (HrmsEmployeeDto.DataDTO emp :empList){
-            if(num%100==0){
+            if(num%1000==0){
                 LogUtil.bizLog("同步HRMS人员信息进行中："+num);
             }
             Employee entity =new Employee();
             boolean isUpdate=false;
-
             Optional<Employee> employeeOptional = employeeList.stream().filter(a -> a.getCode().equals(emp.getEmployeeCode())).findFirst();
             if(employeeOptional.isPresent()){
                 entity=employeeOptional.get();
@@ -157,14 +152,21 @@ public class EmployeeService extends BaseEntityService<Employee> {
                     isUpdate=true;
                 }
 
-            }else{
-                entity.setUserType(UserType.Employee);
-                if (Objects.isNull(entity.getUserAuthorityPolicy())) {
-                    entity.setUserAuthorityPolicy(UserAuthorityPolicy.NormalUser);
+            }else {
+                if (StringUtils.isEmpty(emp.getLjdate())){
+                    //不存在离职日期的更新
+                    entity.setUserType(UserType.Employee);
+                    if (Objects.isNull(entity.getUserAuthorityPolicy())) {
+                        entity.setUserAuthorityPolicy(UserAuthorityPolicy.NormalUser);
+                    }
+                    entity.setCode(emp.getEmployeeCode());
+                    entity.setUserName(emp.getEmployeeName());
+                    entity.setFrozen(false);
+                }else{
+                    //不执行后面的。
+                    continue;
                 }
-                entity.setCode(emp.getEmployeeCode());
-                entity.setUserName(emp.getEmployeeName());
-                entity.setFrozen(false);
+
             }
 
             boolean isNew = entity.isNew();
@@ -227,14 +229,14 @@ public class EmployeeService extends BaseEntityService<Employee> {
             } else if(isUpdate) {
                 //先判断用户是否需要修改，不需要直接跳过
                 //修改用户
+                try{
                 User user = userService.findById(entity.getId());
                 user.setFrozen(entity.isFrozen());
                 userService.save(user);
                 // 保存企业用户
-                try{
                     saveEmp(entity, false);
                 }catch (Exception e){
-
+                    LogUtil.bizLog("同步HRMS人员信息出错："+e.toString());
                 }
             }
             num++;
