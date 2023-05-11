@@ -450,11 +450,13 @@ public class OrganizationService extends BaseTreeService<Organization>
         for (Organization organization : organizationList) {
             int size = hrmsOrgList.stream().filter(a -> a.getCode().equals(organization.getCode())).collect(Collectors.toList()).size();
             if(size==0 && !organization.getId().equals(parentId)){
-                organization.setFrozen(true);
-                saveList.add(organization);
+                if(!organization.getCode().startsWith("A")){
+                    organization.setFrozen(true);
+                    saveList.add(organization);
+                }
+
             }
         }
-        //System.out.println("xx");
         save(saveList);
         saveParentId();
     }
