@@ -56,6 +56,7 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
     private OrganizationService organizationService;
     @Autowired
     private EssEmployeePositionService essService;
+
     /**
      * 获取可以分配的子实体清单
      *
@@ -432,8 +433,14 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                            //已经存在的先排除,不用更新
                            newEmpList.remove(existEmployee.getId());
                        }else{
-                           //移除
-                           removeEmpList.add(existEmployee.getId());
+                           //不存在的,需要移除
+                           EmployeePosition employeePosition = getRelation(existEmployee.getId(), parentRelationParam.getChildId());
+                           //如果不是admin创建的,则不移除
+                           if(employeePosition!=null && employeePosition.getCreatorAccount()=="admin"){
+                               removeEmpList.add(existEmployee.getId());
+                           }else{
+                               LogUtil.bizLog("ERROR", "更新组织架构负责人失败", "组织架构负责人不是admin创建,不允许移除",existEmployee.getId(),parentRelationParam.getChildId());
+                           }
                        }
                     }
                     //执行移除
@@ -448,16 +455,11 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                         parentRelationParam.setParentIds(newEmpList);
                         controller.insertRelationsByParents(parentRelationParam);
                     }
-
-
                 }else{
                     controller.insertRelationsByParents(parentRelationParam);
                 }
-
-
-
             } catch (Exception e) {
-
+                LogUtil.bizLog("ERROR", "更新组织架构负责人失败", e.getMessage());
             }
         }
     }
