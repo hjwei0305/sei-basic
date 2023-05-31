@@ -231,9 +231,9 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                     ParentRelationParam relationParam = new ParentRelationParam();
                     relationParam.setChildId(positionDept.get().getId());
                     relationParam.setParentIds(empList);
-                    System.out.println(relationParam.getChildId() + "   " + relationParam.getParentIds());
                     try {
-                        ResultData resultData = controller.insertRelationsByParents(relationParam);
+                        insertRelationsByParents(relationParam.getChildId(), relationParam.getParentIds());
+                      //  ResultData resultData = controller.insertRelationsByParents(relationParam);
                     } catch (Exception e) {
 
                     }
@@ -256,7 +256,7 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                     relationParam.setChildId(positionUnit.get().getId());
                     relationParam.setParentIds(empList);
                     try {
-                        ResultData resultData = controller.insertRelationsByParents(relationParam);
+                        insertRelationsByParents(relationParam.getChildId(), relationParam.getParentIds());
                     } catch (Exception e) {
 
                     }
@@ -280,9 +280,8 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                     ParentRelationParam relationParam = new ParentRelationParam();
                     relationParam.setChildId(positionModule.get().getId());
                     relationParam.setParentIds(empList);
-                    System.out.println(relationParam.getChildId() + "   " + relationParam.getParentIds());
                     try {
-                        ResultData resultData = controller.insertRelationsByParents(relationParam);
+                        insertRelationsByParents(relationParam.getChildId(), relationParam.getParentIds());
                     } catch (Exception e) {
 
                     }
@@ -420,15 +419,11 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
         }
         for (ParentRelationParam parentRelationParam : parentRelationParamList) {
             try {
-                ResultData<List<EmployeeDto>> parentsFromChildId = controller.getParentsFromChildId(parentRelationParam.getChildId());
-                List<EmployeeDto> existEmployeeList=new ArrayList<>();
-                if(parentsFromChildId.successful()){
-                    existEmployeeList = parentsFromChildId.getData();
-                }
+                List<Employee> existEmployeeList = getParentsFromChildId(parentRelationParam.getChildId());
                 if(existEmployeeList.size()>0){
                     List<String>newEmpList=parentRelationParam.getParentIds();
                     List<String>removeEmpList=new ArrayList<>();
-                    for (EmployeeDto existEmployee : existEmployeeList) {
+                    for (Employee existEmployee : existEmployeeList) {
                        if(newEmpList.contains(existEmployee.getId())) {
                            //已经存在的先排除,不用更新
                            newEmpList.remove(existEmployee.getId());
@@ -445,18 +440,14 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                     }
                     //执行移除
                     if(removeEmpList.size()>0){
-                        ParentRelationParam removeParentRelationParam=new ParentRelationParam();
-                        removeParentRelationParam.setParentIds(removeEmpList);
-                        removeParentRelationParam.setChildId(parentRelationParam.getChildId());
-                        controller.removeRelationsByParents(removeParentRelationParam);
+                        removeRelationsByParents(parentRelationParam.getChildId(),removeEmpList);
                     }
                     //添加
                     if(newEmpList.size()>0){
-                        parentRelationParam.setParentIds(newEmpList);
-                        controller.insertRelationsByParents(parentRelationParam);
+                        insertRelationsByParents(parentRelationParam.getChildId(),newEmpList);
                     }
                 }else{
-                    controller.insertRelationsByParents(parentRelationParam);
+                    insertRelationsByParents(parentRelationParam.getChildId(),parentRelationParam.getParentIds());
                 }
             } catch (Exception e) {
                 LogUtil.bizLog("ERROR", "更新组织架构负责人失败", e.getMessage());
