@@ -150,7 +150,7 @@ public class SupplierUserService extends BaseEntityService<SupplierUser> {
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                     //当前用户类型不是供应商！
                     return OperateResultWithData.operationFailure("00060", supplierUserVo.getCode());
-                }
+                }1
             }*/
             supplierUser = supplierUserDao.save(supplierUser, true);
             //返回
