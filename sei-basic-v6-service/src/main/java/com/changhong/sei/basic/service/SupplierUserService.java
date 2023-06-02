@@ -136,7 +136,7 @@ public class SupplierUserService extends BaseEntityService<SupplierUser> {
             supplierUser.setSupplierApplyId(supplierUserVo.getSupplierApplyId());
             supplierUser.setUser(user);
             //如果不是创建供应商管理员
-            if (supplierUserVo.isCreateSupplierManager()) {
+           /* if (supplierUserVo.isCreateSupplierManager()) {
                 supplierUser.setSupplierId(supplierUserVo.getSupplierId());
                 supplierUser.setSupplierCode(supplierUserVo.getSupplierCode());
                 supplierUser.setSupplierName(supplierUserVo.getSupplierName());
@@ -151,7 +151,7 @@ public class SupplierUserService extends BaseEntityService<SupplierUser> {
                     //当前用户类型不是供应商！
                     return OperateResultWithData.operationFailure("00060", supplierUserVo.getCode());
                 }
-            }
+            }*/
             supplierUser = supplierUserDao.save(supplierUser, true);
             //返回
             SupplierUserVo vo = new SupplierUserVo();
