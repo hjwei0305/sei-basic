@@ -15,5 +15,5 @@ import java.util.Optional;
  */
 @Repository
 public interface SysUserDao extends BaseEntityDao<SysUser> {
-    Optional<SysUser> findByEmployeeCode(String employeeCode);
+    SysUser findByEmployeeCode(String employeeCode);
 }

@@ -23,7 +23,7 @@ import java.util.Map;
  * TODO @FeignClient(name = "请修改为项目服务名")
  */
 @Valid
-@FeignClient(name = "sei-basic-v6", path = SysUserApi.PATH)
+@FeignClient(name = "sei-basic", path = SysUserApi.PATH)
 public interface SysUserApi extends BaseEntityApi<SysUserDto> {
     String PATH = "sysUser";
 
@@ -33,5 +33,5 @@ public interface SysUserApi extends BaseEntityApi<SysUserDto> {
 
     @GetMapping(path = "findByEmployeeCode", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "根据工号查询", notes = "根据工号查询")
-    ResultData findByEmployeeCode(@RequestParam("employeeCode") String employeeCode);
+    ResultData<SysUserDto> findByEmployeeCode(@RequestParam("employeeCode") String employeeCode);
 }

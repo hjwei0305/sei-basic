@@ -4,11 +4,14 @@ import com.changhong.sei.apitemplate.ApiTemplate;
 import com.changhong.sei.basic.connector.HRMSConnector;
 import com.changhong.sei.basic.dto.OrgDTO;
 import com.changhong.sei.basic.dto.OrganizationDto;
+import com.changhong.sei.basic.entity.Organization;
 import com.changhong.sei.basic.service.OrganizationService;
+import com.changhong.sei.basic.service.client.SerialGenerator;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.dto.auth.AuthTreeEntityData;
 import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.util.JsonUtils;
+import com.changhong.sei.serial.sdk.SerialService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +32,16 @@ public class OrganizationControllerTest extends BaseUnitTest {
     private ApiTemplate apiTemplate;
     @Autowired
     private OrganizationService organizationService;
-
+    @Autowired
+    private SerialGenerator serialGenerator;
+    @Autowired
+    private SerialService serialService;
+    @Test
+    //用SerialGenerator生成序列号
+    public void testSerialGenerator(){
+        String serialNumber = serialService.getNumber(Organization.class);
+        System.out.println(serialNumber);
+    }
     @Test
     public void findAllAuthTreeEntityData() {
         ResultData resultData = controller.findAllAuthTreeEntityData();

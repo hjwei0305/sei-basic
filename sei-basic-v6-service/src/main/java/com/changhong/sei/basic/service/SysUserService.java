@@ -56,8 +56,8 @@ public class SysUserService extends BaseEntityService<SysUser> {
         save(userList);
     }
 
-    public Optional<SysUser> findByEmployeeCode(String employeeCode) {
-        Optional<SysUser> emp = dao.findByEmployeeCode(employeeCode);
-        return emp;
+    public SysUser findByEmployeeCode(String employeeCode) {
+        return dao.findByEmployeeCode(employeeCode);
+
     }
 }

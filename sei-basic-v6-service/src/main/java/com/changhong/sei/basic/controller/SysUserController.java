@@ -49,13 +49,8 @@ public class SysUserController extends BaseEntityController<SysUser, SysUserDto>
     }
 
     @Override
-    public ResultData findByEmployeeCode(String employeeCode) {
-        Optional<SysUser> emp = service.findByEmployeeCode(employeeCode);
-        if (emp.isPresent()){
-            return ResultData.success(emp.get());
-        }else {
-            return ResultData.success("没有工号" + employeeCode + "员工");
-        }
+    public ResultData<SysUserDto> findByEmployeeCode(String employeeCode) {
+        return ResultData.success(convertToDto(service.findByEmployeeCode(employeeCode)));
     }
 
 
