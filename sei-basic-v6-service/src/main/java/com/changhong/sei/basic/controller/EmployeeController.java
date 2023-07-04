@@ -5,10 +5,7 @@ import com.changhong.sei.basic.dto.*;
 import com.changhong.sei.basic.dto.search.EmployeeBriefInfoQueryParam;
 import com.changhong.sei.basic.dto.search.EmployeeQuickQueryParam;
 import com.changhong.sei.basic.entity.*;
-import com.changhong.sei.basic.service.EmployeePositionService;
-import com.changhong.sei.basic.service.EmployeeService;
-import com.changhong.sei.basic.service.OrganizationService;
-import com.changhong.sei.basic.service.PositionService;
+import com.changhong.sei.basic.service.*;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.controller.BaseEntityController;
 import com.changhong.sei.core.dto.ResultData;
@@ -58,6 +55,8 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
     }
     @Autowired
     public PositionService positionService;
+    @Autowired
+    public UserFeatureRoleService userFeatureRoleService;
     /**
      * 自定义设置Entity转换为DTO的转换器
      */
@@ -410,11 +409,12 @@ public class EmployeeController extends BaseEntityController<Employee, EmployeeD
     @Override
     public ResultData updateDataFormHrmsTask(Map<String, String> params) {
         try{
-            //1、同步组织。2、同步岗位。3、同步人员 4、同步角色
+            //1、同步组织。2、同步岗位。3、同步人员 4、同步角色 5、调动岗位人员清除功能角色
             organizationService.synOrg();
             positionService.initPostion();
             service.initEmployee();
             employeePositionService.initUserPosition();
+            userFeatureRoleService.removeTransferUserRole();
         }catch (Exception e){
         }
 

@@ -1,6 +1,9 @@
 package com.changhong.sei.basic.controller;
 
 import com.changhong.sei.basic.dto.FeatureRoleDto;
+import com.changhong.sei.basic.entity.FeatureRole;
+import com.changhong.sei.basic.entity.User;
+import com.changhong.sei.basic.service.UserFeatureRoleService;
 import com.changhong.sei.core.dto.ResultData;
 import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.util.JsonUtils;
@@ -9,6 +12,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 实现功能:
@@ -19,6 +23,8 @@ import java.util.List;
 public class UserFeatureRoleControllerTest extends BaseUnitTest {
     @Autowired
     private UserFeatureRoleController controller;
+    @Autowired
+    private UserFeatureRoleService userFeatureRoleService;
 
     @Test
     public void getChildrenFromParentId() {
@@ -26,5 +32,10 @@ public class UserFeatureRoleControllerTest extends BaseUnitTest {
         ResultData<List<FeatureRoleDto>> resultData = controller.getChildrenFromParentId(parentId);
         LOG.debug(JsonUtils.toJson(resultData));
         Assert.assertTrue(resultData.successful());
+    }
+    @Test
+    public  void removeRelation()
+    {
+        userFeatureRoleService.removeTransferUserRole();
     }
 }

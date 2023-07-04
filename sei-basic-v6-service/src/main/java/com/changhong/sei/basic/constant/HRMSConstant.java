@@ -11,6 +11,9 @@ public class HRMSConstant {
     public static final String GET_EMP = "/dlhr/hr/api/getEmpData.co";
     // 获取组织信息
     public static final String GET_ORG = "/dlhr/hr/api/getOrgData.co";
+    //获取调动信息
+    public static final String GET_TRANSFER = "/dlhr/hr/published1/hrGetTransfer.co";
+
     // 信息化idpath
     public static final String IT_IDPATH = "1,265,266,";
 

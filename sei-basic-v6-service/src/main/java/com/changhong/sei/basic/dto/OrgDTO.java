@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Carol
  * @date 2022/8/11 13:51
- * @description
+ * @description HRMS组织
  */
 @NoArgsConstructor
 @Data

@@ -27,5 +27,13 @@ public interface UserDao extends BaseEntityDao<User>, UserExtDao {
      * @return 用户
      */
     User getById(String id);
+
+    /**
+     * 根据用户账号查询用户
+     *
+     * @param account 用户账号
+     * @return 用户
+     */
+    User getByAccount(String account);
 }
 

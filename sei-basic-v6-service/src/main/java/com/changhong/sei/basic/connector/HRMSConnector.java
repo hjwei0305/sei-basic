@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.changhong.sei.basic.constant.HRMSConstant;
 import com.changhong.sei.basic.dto.HrmsEmployeeDto;
 import com.changhong.sei.basic.dto.OrgDTO;
+import com.changhong.sei.basic.dto.TransferDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Carol
@@ -63,6 +63,24 @@ public class HRMSConnector {
         }
         List<OrgDTO> orgList = JSONObject.parseArray("[" + result.getBody() + "]", OrgDTO.class);
         return orgList.get(0).getData();
+    }
+
+    /**
+     * 调动信息
+     *
+     * @param start 开始时间 end 结束时间
+     * @return
+     */
+    public static List<TransferDto.DataDTO> getTransfer(String start, String end) {
+        REST_TEMPLATE.getMessageConverters().set(1, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+        url = HRMSConstant.HRMSURL + HRMSConstant.GET_TRANSFER+"?starttime="+start+"&endtime="+end;
+        try {
+            result = REST_TEMPLATE.getForEntity(url, String.class);
+        } catch (Exception e) {
+            throw (e);
+        }
+        List<TransferDto> transferList = JSONObject.parseArray("[" + result.getBody() + "]", TransferDto.class);
+        return transferList.get(0).getData();
     }
 
 }

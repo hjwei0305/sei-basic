@@ -1,11 +1,12 @@
 package com.changhong.sei.basic.service;
 
+import com.changhong.sei.basic.connector.HRMSConnector;
 import com.changhong.sei.basic.dao.UserFeatureRoleDao;
 import com.changhong.sei.basic.dto.RelationEffective;
 import com.changhong.sei.basic.dto.RoleSourceType;
+import com.changhong.sei.basic.dto.TransferDto;
 import com.changhong.sei.basic.entity.FeatureRole;
 import com.changhong.sei.basic.entity.User;
-import com.changhong.sei.basic.entity.UserDataRole;
 import com.changhong.sei.basic.entity.UserFeatureRole;
 import com.changhong.sei.basic.service.util.AuthorityUtil;
 import com.changhong.sei.core.context.ContextUtil;
@@ -21,7 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * *************************************************************************************************
@@ -49,6 +52,8 @@ public class UserFeatureRoleService extends BaseRelationService<UserFeatureRole,
     private FeatureRoleService featureRoleService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private UserService userService;
 
     /**
      * 获取可以分配的子实体清单
@@ -119,6 +124,30 @@ public class UserFeatureRoleService extends BaseRelationService<UserFeatureRole,
             featureRoles.add(featureRole);
         });
         return featureRoles;
+    }
+
+    /**
+     * 清除HRMS调动后的功能角色
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void removeTransferUserRole(){
+        String today = LocalDate.now().toString();
+        String tomorrow = LocalDate.now().plusDays(1).toString();
+        List<TransferDto.DataDTO> transfer = HRMSConnector.getTransfer(today, tomorrow);
+        //遍历transfer
+        for (TransferDto.DataDTO dataDTO : transfer) {
+            //获取员工编号
+            String employeeCode = dataDTO.getEmployeeCode();
+            //获取员工信息
+            User user = userService.getUserByAccount(employeeCode);
+            //获取员工的功能角色
+            List<FeatureRole> featureRoles = getChildrenFromParentId(user.getId());
+            if(featureRoles.size()>0){
+                List<String> ids = featureRoles.stream().map(a -> a.getId()).collect(Collectors.toList());
+                removeRelations(user.getId(), ids);
+            }
+        }
+
     }
 
     /**

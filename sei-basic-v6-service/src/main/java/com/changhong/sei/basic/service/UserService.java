@@ -901,4 +901,8 @@ public class UserService extends BaseEntityService<User> {
         }
         return result;
     }
+    //根据accout查询用户
+    public User getUserByAccount(String account) {
+        return userDao.getByAccount(account);
+    }
 }
