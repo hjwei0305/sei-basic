@@ -14,6 +14,6 @@ import java.util.Optional;
  * @since 2022-12-02 14:34:52
  */
 @Repository
-public interface SysUserDao extends BaseEntityDao<SysUser> {
+public interface SysUserDao extends BaseEntityDao<SysUser>,SysUserExtDao {
     SysUser findByEmployeeCode(String employeeCode);
 }

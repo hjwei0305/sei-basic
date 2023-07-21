@@ -4,6 +4,7 @@ import com.changhong.sei.basic.connector.HRMSConnector;
 import com.changhong.sei.basic.dao.SysUserDao;
 import com.changhong.sei.basic.dto.HrmsEmployeeDto;
 import com.changhong.sei.basic.entity.SysUser;
+import com.changhong.sei.basic.entity.User;
 import com.changhong.sei.core.dao.BaseEntityDao;
 import com.changhong.sei.core.service.BaseEntityService;
 import com.changhong.sei.util.DateUtils;
@@ -17,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 /**
@@ -31,6 +33,8 @@ public class SysUserService extends BaseEntityService<SysUser> {
     private SysUserDao dao;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private UserService userService;
 
     @Override
     protected BaseEntityDao<SysUser> getDao() {
@@ -40,20 +44,25 @@ public class SysUserService extends BaseEntityService<SysUser> {
     @Transactional(rollbackFor = Exception.class)
     public void updateEmpTask() {
         List<HrmsEmployeeDto.DataDTO> empList = HRMSConnector.getEmp();
-        List<SysUser> userList = new ArrayList<>();
+        List<User> userList = userService.findAllUnfrozen();
+
         empList.stream().forEach(emp -> {
-            LocalDate updateTime = LocalDate.parse(emp.getUpdatetime(), DateTimeFormatter.ofPattern(DateUtils.DEFAULT_TIME_FORMAT));
-            // 有更新的赋id进行update
-            if(updateTime.format(DateTimeFormatter.ofPattern(DateUtils.DEFAULT_DATE_FORMAT)).compareTo(LocalDate.now().toString()) >= 0) {
-                SysUser sysUser = modelMapper.map(emp, SysUser.class);
-                SysUser employeeCode = findByProperty("employeeCode", emp.getEmployeeCode());
-                if(employeeCode != null){
-                    sysUser.setId(employeeCode.getId());
-                }
-                userList.add(sysUser);
-            }
+                 LocalDate updateTime = LocalDate.parse(emp.getUpdatetime(), DateTimeFormatter.ofPattern(DateUtils.DEFAULT_TIME_FORMAT));
+               // 有更新的赋id进行update
+               if(updateTime.format(DateTimeFormatter.ofPattern(DateUtils.DEFAULT_DATE_FORMAT)).compareTo(LocalDate.now().toString()) >= 0) {
+                   SysUser sysUser = modelMapper.map(emp, SysUser.class);
+                   userList.stream().filter(a -> a.getAccount() != null && a.getAccount().equals(emp.getEmployeeCode())).findFirst().ifPresent(user -> {
+                       SysUser byEmployeeCode = dao.findByEmployeeCode(user.getAccount());
+                       if(byEmployeeCode==null){
+                           sysUser.setId(user.getId());
+                           dao.save(sysUser, true);
+                       }else{
+                            sysUser.setId(byEmployeeCode.getId());
+                            dao.save(sysUser, false);
+                       }
+                   });
+               }
         });
-        save(userList);
     }
 
     public SysUser findByEmployeeCode(String employeeCode) {

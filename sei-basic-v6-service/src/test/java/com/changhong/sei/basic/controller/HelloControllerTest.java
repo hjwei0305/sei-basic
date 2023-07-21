@@ -1,9 +1,8 @@
 package com.changhong.sei.basic.controller;
 
-import com.changhong.sei.basic.service.EmployeePositionService;
+import com.changhong.sei.basic.service.SysUserService;
 import com.changhong.sei.core.context.ContextUtil;
 import com.changhong.sei.core.dto.ResultData;
-import com.changhong.sei.core.log.LogUtil;
 import com.changhong.sei.core.test.BaseUnitTest;
 import com.changhong.sei.core.util.JsonUtils;
 import com.changhong.sei.utils.AsyncRunUtil;
@@ -13,7 +12,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.print.DocFlavor;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -28,13 +26,14 @@ public class HelloControllerTest extends BaseUnitTest {
     private HelloController controller;
     @Autowired
     private AsyncRunUtil runAsync;
+
+
     @Autowired
-    private EmployeePositionService employeePositionService;
-@Autowired
-private EmployeePositionController employeePositionController;
+    private SysUserService service;
     @Test
     public void sayHello() {
-        employeePositionController.getParentsFromChildId("57B77366-1D46-11ED-A70D-0242AC14000B");
+        service.updateEmpTask();
+      //  employeePositionController.getParentsFromChildId("57B77366-1D46-11ED-A70D-0242AC14000B");
       //  employeePositionService.initUserPosition();
       /*  for(int i=0;i<2000;i++)
         if(i%100==0){
@@ -77,7 +76,7 @@ private EmployeePositionController employeePositionController;
 
     /**
      * 测试获取系统应用配置的值
-     * @return MQ Topic
+     * MQ Topic
      */
     @Test
     public void getTopic() {
