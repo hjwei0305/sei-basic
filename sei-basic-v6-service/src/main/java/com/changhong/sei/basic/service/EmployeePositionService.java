@@ -427,13 +427,12 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                        if(newEmpList.contains(existEmployee.getId())) {
                            //已经存在的先排除,不用更新
                            newEmpList.remove(existEmployee.getId());
-                       }else{
+                       }else {
                            //不存在的,需要移除
                            EmployeePosition employeePosition = getRelation(existEmployee.getId(), parentRelationParam.getChildId());
                            //如果不是admin创建的,则不移除
-                           if(employeePosition!=null && employeePosition.getCreatorAccount()=="admin"){
+                           if (employeePosition != null && "admin".equals(employeePosition.getCreatorAccount())) {
                                removeEmpList.add(existEmployee.getId());
-                           }else{
                            }
                        }
                     }
