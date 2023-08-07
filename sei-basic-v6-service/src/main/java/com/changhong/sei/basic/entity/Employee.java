@@ -221,6 +221,9 @@ public class Employee extends EmployeeCust implements ITenant {
     public void setFrozen(boolean frozen) {
         this.frozen = frozen;
     }
+    public boolean getFrozen() {
+        return frozen;
+    }
 
     public String getUserRemark() {
         return userRemark;

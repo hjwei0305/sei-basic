@@ -56,5 +56,5 @@ public interface EmployeeDao extends BaseEntityDao<Employee>, EmployeeExtDao {
       */
      Employee findByCodeAndTenantCode(String code, String tenantCode);
 
-     List<Employee> findByTenantCodeAndUserUserAuthorityPolicyAndUserFrozenFalse(String tenantCode, UserAuthorityPolicy userAuthorityPolicy);
+     List<Employee> findByTenantCodeAndCodeInAndUserUserAuthorityPolicyAndUserFrozenFalse(String tenantCode,List<String>codeList, UserAuthorityPolicy userAuthorityPolicy);
 }

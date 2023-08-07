@@ -111,9 +111,10 @@ public class EmployeeService extends BaseEntityService<Employee> {
         //新宝组织ID
         String orgId="734FB618-BA26-11EC-9755-0242AC14001A";
         List<Organization>allOrgs = organizationService.getChildrenNodes4Unfrozen(orgId);
-        List<HrmsEmployeeDto.DataDTO> empList = HRMSConnector.getEmp();
+        List<HrmsEmployeeDto.DataDTO> empList = HRMSConnector.getEmp().stream().filter(a->a.getEmployeeCode().equals("381804")).collect(Collectors.toList());
+        List<String> emps = empList.stream().map(a -> a.getEmployeeCode()).collect(Collectors.toList());
         //取出有效的用户
-        List<Employee>employeeList=employeeDao.findByTenantCodeAndUserUserAuthorityPolicyAndUserFrozenFalse("DONLIM",UserAuthorityPolicy.NormalUser);
+        List<Employee>employeeList=employeeDao.findByTenantCodeAndCodeInAndUserUserAuthorityPolicyAndUserFrozenFalse("DONLIM",emps,UserAuthorityPolicy.NormalUser);
         long num=1;
         //停用在HRMS接口不存在的人员，初始化时使用，2023-8-7停用
        /*for(Employee employee :employeeList){
@@ -128,7 +129,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
             }
         }*/
         //只更新最近3天变更日期的信息
-        LocalDateTime calcTime = LocalDateTime.now().plusDays(-3);
+        LocalDateTime calcTime = LocalDateTime.now().plusDays(-90);
         empList= empList.stream().filter(a->a.getUpdatetime().isAfter(calcTime)).collect(Collectors.toList());
         for (HrmsEmployeeDto.DataDTO emp :empList){
             if(num%1000==0){
@@ -235,8 +236,8 @@ public class EmployeeService extends BaseEntityService<Employee> {
                 //修改用户
                 try{
                 User user = userService.findById(entity.getId());
-                user.setFrozen(entity.isFrozen());
-                userService.save(user);
+                user.setFrozen(entity.getFrozen());
+                    System.out.println(userService.save(user).getSuccess());  ;
                 // 保存企业用户
                     saveEmp(entity, false);
                 }catch (Exception e){

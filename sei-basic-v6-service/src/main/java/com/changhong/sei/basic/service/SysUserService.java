@@ -50,7 +50,7 @@ public class SysUserService extends BaseEntityService<SysUser> {
         empList.stream().forEach(emp -> {
                  LocalDateTime updateTime = emp.getUpdatetime();
                // 有更新的赋id进行update
-               if(updateTime.isBefore(LocalDateTime.now().plusDays(-3))) {
+               if(updateTime.isBefore(LocalDateTime.now().plusDays(-90))) {
                    SysUser sysUser = modelMapper.map(emp, SysUser.class);
                    userList.stream().filter(a -> a.getAccount() != null && a.getAccount().equals(emp.getEmployeeCode())).findFirst().ifPresent(user -> {
                        SysUser byEmployeeCode = dao.findByEmployeeCode(user.getAccount());
