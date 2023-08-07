@@ -33,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -114,8 +115,8 @@ public class EmployeeService extends BaseEntityService<Employee> {
         //取出有效的用户
         List<Employee>employeeList=employeeDao.findByTenantCodeAndUserUserAuthorityPolicyAndUserFrozenFalse("DONLIM",UserAuthorityPolicy.NormalUser);
         long num=1;
-        //停用在HRMS接口不存在的人员
-       for(Employee employee :employeeList){
+        //停用在HRMS接口不存在的人员，初始化时使用，2023-8-7停用
+       /*for(Employee employee :employeeList){
             Optional<HrmsEmployeeDto.DataDTO> hrmsEmployeeOptional = empList.stream().filter(a -> a.getEmployeeCode().equals(employee.getCode())).findFirst();
             if(!hrmsEmployeeOptional.isPresent()){
                 if(!employee.getUser().getFrozen()){
@@ -125,7 +126,10 @@ public class EmployeeService extends BaseEntityService<Employee> {
                     userService.save(user);
                 }
             }
-        }
+        }*/
+        //只更新最近3天变更日期的信息
+        LocalDateTime calcTime = LocalDateTime.now().plusDays(-3);
+        empList= empList.stream().filter(a->a.getUpdatetime().isAfter(calcTime)).collect(Collectors.toList());
         for (HrmsEmployeeDto.DataDTO emp :empList){
             if(num%1000==0){
                 LogUtil.bizLog("同步HRMS人员信息进行中："+num);

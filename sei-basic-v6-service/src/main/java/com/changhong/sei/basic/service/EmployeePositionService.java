@@ -326,7 +326,6 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                         deptManagerHashMap.put(optionalOrganization.get().getId(), employeeAddList);
                     }
                 }
-
                 //单位负责人
                 if (data.getUnitManager() != null) {
                     if (data.getUnitManager().contains(",")) {
@@ -358,7 +357,6 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                     }
                 }
             }
-
         }
         for (Map.Entry<String, List<String>> dept : deptManagerHashMap.entrySet()) {
             Optional<Position> positionDept = positionList.stream().filter(c -> c.getOrganizationId().equals(dept.getKey())).filter(n -> n.getName().equals("部门负责人")).findFirst();
@@ -378,7 +376,6 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                 }
             }
         }
-
         for (Map.Entry<String, List<String>> dept : unitManagerHashMap.entrySet()) {
             Optional<Position> positionUnit = positionList.stream().filter(c -> c.getOrganizationId().equals(dept.getKey())).filter(n -> n.getName().equals("单位负责人")).findFirst();
             if (positionUnit.isPresent()) {
@@ -397,8 +394,6 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                 }
             }
         }
-
-
         for (Map.Entry<String, List<String>> dept : moduleManagerHashMap.entrySet()) {
             Optional<Position> positionModule = positionList.stream().filter(c -> c.getOrganizationId().equals(dept.getKey())).filter(n -> n.getName().equals("模块负责人")).findFirst();
             if (positionModule.isPresent()) {
@@ -452,6 +447,4 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
             }
         }
     }
-
-
 }

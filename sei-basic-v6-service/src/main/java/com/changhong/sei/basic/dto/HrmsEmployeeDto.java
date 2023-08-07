@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -80,7 +81,7 @@ public class HrmsEmployeeDto {
         @JsonProperty("updator")
         private String updator;
         @JsonProperty("updatetime")
-        private String updatetime;
+        private LocalDateTime updatetime;
         @JsonProperty("noclock")
         private String noclock;
         @JsonProperty("id_number")

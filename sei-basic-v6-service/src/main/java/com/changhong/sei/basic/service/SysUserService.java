@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +48,9 @@ public class SysUserService extends BaseEntityService<SysUser> {
         List<User> userList = userService.findAllUnfrozen();
 
         empList.stream().forEach(emp -> {
-                 LocalDate updateTime = LocalDate.parse(emp.getUpdatetime(), DateTimeFormatter.ofPattern(DateUtils.DEFAULT_TIME_FORMAT));
+                 LocalDateTime updateTime = emp.getUpdatetime();
                // 有更新的赋id进行update
-               if(updateTime.format(DateTimeFormatter.ofPattern(DateUtils.DEFAULT_DATE_FORMAT)).compareTo(LocalDate.now().toString()) >= 0) {
+               if(updateTime.isBefore(LocalDateTime.now().plusDays(-3))) {
                    SysUser sysUser = modelMapper.map(emp, SysUser.class);
                    userList.stream().filter(a -> a.getAccount() != null && a.getAccount().equals(emp.getEmployeeCode())).findFirst().ifPresent(user -> {
                        SysUser byEmployeeCode = dao.findByEmployeeCode(user.getAccount());
