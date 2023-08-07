@@ -1,6 +1,7 @@
 package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.connector.HRMSConnector;
+import com.changhong.sei.basic.constant.SeiConstant;
 import com.changhong.sei.basic.dao.SysUserDao;
 import com.changhong.sei.basic.dto.HrmsEmployeeDto;
 import com.changhong.sei.basic.entity.SysUser;
@@ -50,7 +51,7 @@ public class SysUserService extends BaseEntityService<SysUser> {
         empList.stream().forEach(emp -> {
                  LocalDateTime updateTime = emp.getUpdatetime();
                // 有更新的赋id进行update
-               if(updateTime.isBefore(LocalDateTime.now().plusDays(-90))) {
+               if(updateTime.isBefore(LocalDateTime.now().plusDays(SeiConstant.UPDATE_DAY))) {
                    SysUser sysUser = modelMapper.map(emp, SysUser.class);
                    userList.stream().filter(a -> a.getAccount() != null && a.getAccount().equals(emp.getEmployeeCode())).findFirst().ifPresent(user -> {
                        SysUser byEmployeeCode = dao.findByEmployeeCode(user.getAccount());

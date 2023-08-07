@@ -2,6 +2,7 @@ package com.changhong.sei.basic.service;
 
 import com.changhong.sei.basic.connector.HRMSConnector;
 import com.changhong.sei.basic.constant.HRMSConstant;
+import com.changhong.sei.basic.constant.SeiConstant;
 import com.changhong.sei.basic.dao.EmployeeDao;
 import com.changhong.sei.basic.dao.EmployeePositionDao;
 import com.changhong.sei.basic.dao.OrganizationDao;
@@ -129,7 +130,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
             }
         }*/
         //只更新最近3天变更日期的信息
-        LocalDateTime calcTime = LocalDateTime.now().plusDays(-90);
+        LocalDateTime calcTime = LocalDateTime.now().plusDays(SeiConstant.UPDATE_DAY);
         empList= empList.stream().filter(a->a.getUpdatetime().isAfter(calcTime)).collect(Collectors.toList());
         for (HrmsEmployeeDto.DataDTO emp :empList){
             if(num%1000==0){
