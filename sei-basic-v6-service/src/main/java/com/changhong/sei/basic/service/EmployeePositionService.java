@@ -434,7 +434,6 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                            if(employeePosition!=null && employeePosition.getCreatorAccount()=="admin"){
                                removeEmpList.add(existEmployee.getId());
                            }else{
-                               LogUtil.bizLog("ERROR", "更新组织架构负责人失败", "组织架构负责人不是admin创建,不允许移除",existEmployee.getId(),parentRelationParam.getChildId());
                            }
                        }
                     }
@@ -450,7 +449,7 @@ public class EmployeePositionService extends BaseRelationService<EmployeePositio
                     insertRelationsByParents(parentRelationParam.getChildId(),parentRelationParam.getParentIds());
                 }
             } catch (Exception e) {
-                LogUtil.bizLog("ERROR", "更新组织架构负责人失败", e.getMessage());
+                LogUtil.error("更新组织架构负责人失败{}", e.getMessage());
             }
         }
     }
