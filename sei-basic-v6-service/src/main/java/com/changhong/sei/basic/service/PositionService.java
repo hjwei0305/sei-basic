@@ -613,7 +613,7 @@ public class PositionService extends BaseEntityService<Position> {
     /**
      * 初始化岗位
      */
-
+    @Transactional(rollbackFor = Exception.class)
     public void initPostion(){
         List<Organization>allOrgs = organizationService.getChildrenNodes4Unfrozen("734FB618-BA26-11EC-9755-0242AC14001A");
         for(Organization organization :allOrgs){
