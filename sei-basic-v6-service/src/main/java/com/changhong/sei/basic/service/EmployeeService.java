@@ -112,7 +112,7 @@ public class EmployeeService extends BaseEntityService<Employee> {
         //新宝组织ID
         String orgId="734FB618-BA26-11EC-9755-0242AC14001A";
         List<Organization>allOrgs = organizationService.getChildrenNodes4Unfrozen(orgId);
-        List<HrmsEmployeeDto.DataDTO> empList = HRMSConnector.getEmp().stream().filter(a->a.getEmployeeCode().equals("381804")).collect(Collectors.toList());
+        List<HrmsEmployeeDto.DataDTO> empList = HRMSConnector.getEmp();
         List<String> emps = empList.stream().map(a -> a.getEmployeeCode()).collect(Collectors.toList());
         //取出有效的用户
         List<Employee>employeeList=employeeDao.findByTenantCodeAndCodeInAndUserUserAuthorityPolicyAndUserFrozenFalse("DONLIM",emps,UserAuthorityPolicy.NormalUser);
